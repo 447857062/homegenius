@@ -3,6 +3,12 @@ package com.deplink.homegenius.activity.device.doorbell;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -29,7 +35,6 @@ import com.deplink.homegenius.manager.device.smartlock.SmartLockListener;
 import com.deplink.homegenius.manager.device.smartlock.SmartLockManager;
 import com.deplink.homegenius.util.Perfence;
 import com.deplink.homegenius.util.WeakRefHandler;
-import com.deplink.homegenius.util.bitmap.BitmapHandler;
 import com.deplink.homegenius.view.combinationwidget.TitleLayout;
 import com.deplink.homegenius.view.dialog.AlertDialog;
 import com.deplink.homegenius.view.dialog.doorbeel.DoorbeelMenuDialog;
@@ -61,6 +66,7 @@ public class DoorbeelMainActivity extends Activity implements View.OnClickListen
     private EventCallback ec;
     private DeviceListener mDeviceListener;
     private TitleLayout layout_title;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,23 +105,50 @@ public class DoorbeelMainActivity extends Activity implements View.OnClickListen
         mDoorBellListener = new DoorBellListener() {
             public void responseVisitorImage(Bitmap bitmap, int count) {
                 super.responseVisitorImage(bitmap, count);
-                Log.i(TAG,"bitmap !=null"+(bitmap!=null));
-                BitmapDrawable bbb = new BitmapDrawable(BitmapHandler.toRoundCorner(bitmap, 30));
+                Log.i(TAG, "bitmap !=null" + (bitmap != null));
+                BitmapDrawable bbb = new BitmapDrawable(toRoundCorner(bitmap, 30));
                 imageview_visitor.setBackgroundDrawable(bbb);
+
             }
         };
         mDeviceListener = new DeviceListener() {
             @Override
             public void responseQueryResult(String result) {
                 super.responseQueryResult(result);
-                    Log.i(TAG, "本地接口接收到设备列表:" + result);
+                Log.i(TAG, "本地接口接收到设备列表:" + result);
                 parseOpenDoorXml(result);
-                }
+            }
 
         };
         initMqttCallback();
     }
+
     private boolean isUserLogin;
+
+    /**
+     * 获取圆角位图的方法
+     *
+     * @param bitmap 需要转化成圆角的位图
+     * @param pixels 圆角的度数，数值越大，圆角越大
+     * @return 处理后的圆角位图
+     */
+    public Bitmap toRoundCorner(Bitmap bitmap, int pixels) {
+        Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
+                bitmap.getHeight(), Bitmap.Config.ARGB_4444);
+        Canvas canvas = new Canvas(output);
+        int color = 0xff424242;
+        Paint paint = new Paint();
+        Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+        RectF rectF = new RectF(rect);
+        paint.setAntiAlias(true);
+        canvas.drawARGB(0, 0, 0, 0);
+        paint.setColor(color);
+        canvas.drawRoundRect(rectF, (float) pixels, (float) pixels, paint);
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        canvas.drawBitmap(bitmap, rect, rect, paint);
+        return output;
+    }
+
     private void initMqttCallback() {
         DeplinkSDK.initSDK(getApplicationContext(), Perfence.SDK_APP_KEY);
         manager = DeplinkSDK.getSDKManager();
@@ -131,7 +164,7 @@ public class DoorbeelMainActivity extends Activity implements View.OnClickListen
             @Override
             public void notifyHomeGeniusResponse(String result) {
                 super.notifyHomeGeniusResponse(result);
-                Log.i(TAG,"门铃界面门锁设置返回"+result);
+                Log.i(TAG, "门铃界面门锁设置返回" + result);
                 parseOpenDoorXml(result);
             }
 
@@ -197,10 +230,10 @@ public class DoorbeelMainActivity extends Activity implements View.OnClickListen
                                 }
                                 break;
                         }
-                        if(result!=null){
-                            Message msg=Message.obtain();
-                            msg.what=MSG_SHOW_OPENLOCK_RESULT;
-                            msg.obj=result;
+                        if (result != null) {
+                            Message msg = Message.obtain();
+                            msg.what = MSG_SHOW_OPENLOCK_RESULT;
+                            msg.obj = result;
                             mHandler.sendMessage(msg);
                         }
                     }
@@ -215,33 +248,33 @@ public class DoorbeelMainActivity extends Activity implements View.OnClickListen
         isUserLogin = Perfence.getBooleanPerfence(AppConstant.USER_LOGIN);
         manager.addEventCallback(ec);
         mDeviceManager.addDeviceListener(mDeviceListener);
-        if(mDoorbeelManager!=null){
+        if (mDoorbeelManager != null) {
             mDoorbeelManager = DoorbeelManager.getInstance();
             mDoorbeelManager.InitDoorbeelManager(this);
         }
-        if(mDoorBellListener!=null){
+        if (mDoorBellListener != null) {
             mDoorbeelManager.addDeviceListener(mDoorBellListener);
         }
-        if(mSmartLockManager!=null){
+        if (mSmartLockManager != null) {
             mSmartLockManager.addSmartLockListener(this);
         }
         isStartFromExperience = DeviceManager.getInstance().isStartFromExperience();
         XGPushClickedResult clickedResult = XGPushManager.onActivityStarted(this);
-        Log.i(TAG,"clickedResult="+(clickedResult!=null));
+        Log.i(TAG, "clickedResult=" + (clickedResult != null));
         if (clickedResult != null) { // 判断是否来自信鸽的打开方式
-            String  customContent= clickedResult.getCustomContent();
-            isStartFromExperience=false;
-            Log.i(TAG,"customContent="+customContent);
+            String customContent = clickedResult.getCustomContent();
+            isStartFromExperience = false;
+            Log.i(TAG, "customContent=" + customContent);
             Gson gson = new Gson();
             pushMessage = gson.fromJson(customContent, PushMessage.class);
             if (pushMessage != null) {
 
-                if(pushMessage.getFile()!=null && !pushMessage.getFile().equalsIgnoreCase("")){
-                    SmartDev dbSmartDev = DataSupport.where("Uid = ?", pushMessage.getBell_uid()).findFirst(SmartDev.class,true);
-                    if(dbSmartDev!=null){
+                if (pushMessage.getFile() != null && !pushMessage.getFile().equalsIgnoreCase("")) {
+                    SmartDev dbSmartDev = DataSupport.where("Uid = ?", pushMessage.getBell_uid()).findFirst(SmartDev.class, true);
+                    if (dbSmartDev != null) {
                         mDoorbeelManager.setCurrentSelectedDoorbeel(dbSmartDev);
                     }
-                    filename=pushMessage.getFile();
+                    filename = pushMessage.getFile();
                     Log.i(TAG, "filename=" + filename);
                     if (filename != null && !filename.equalsIgnoreCase("")) {
                         mDoorbeelManager.getDoorbellVistorImage(filename, 0);
@@ -257,8 +290,8 @@ public class DoorbeelMainActivity extends Activity implements View.OnClickListen
                 String lockuid = mDoorbeelManager.getCurrentSelectedDoorbeel().getBindLockUid();
                 lockDevice = DataSupport.where("Uid=?", lockuid).findFirst(SmartDev.class, true);
             }
-            if (lockDevice != null && (lockDevice.getStatus().equalsIgnoreCase("在线")|| lockDevice.getStatus().equalsIgnoreCase("ON"))) {
-                Log.i(TAG,"lockDevice="+lockDevice.toString());
+            if (lockDevice != null && (lockDevice.getStatus().equalsIgnoreCase("在线") || lockDevice.getStatus().equalsIgnoreCase("ON"))) {
+                Log.i(TAG, "lockDevice=" + lockDevice.toString());
                 button_opendoor.setBackgroundResource(R.drawable.login_button_enable_background);
             } else {
                 button_opendoor.setBackgroundResource(R.drawable.radius4_background_disable);
@@ -268,8 +301,10 @@ public class DoorbeelMainActivity extends Activity implements View.OnClickListen
         }
 
     }
+
     private PushMessage pushMessage;
     private DeviceManager mDeviceManager;
+
     @Override
     protected void onPause() {
         super.onPause();
@@ -282,7 +317,7 @@ public class DoorbeelMainActivity extends Activity implements View.OnClickListen
     }
 
     private void initViews() {
-        layout_title= findViewById(R.id.layout_title);
+        layout_title = findViewById(R.id.layout_title);
         button_opendoor = findViewById(R.id.button_opendoor);
         layout_no_vistor = findViewById(R.id.layout_no_vistor);
         imageview_visitor = findViewById(R.id.imageview_visitor);
@@ -302,31 +337,33 @@ public class DoorbeelMainActivity extends Activity implements View.OnClickListen
                     ToastSingleShow.showText(this, "门锁已开");
                 } else {
                     if (lockDevice != null && selfUserId != null) {
-                        Log.i(TAG,"lockDevice="+lockDevice.toString()+"selfUserId="+selfUserId);
+                        Log.i(TAG, "lockDevice=" + lockDevice.toString() + "selfUserId=" + selfUserId);
                         savedManagePassword = lockDevice.getLockPassword();
                         mSmartLockManager.setCurrentSelectLock(lockDevice);
                         mSmartLockManager.setSmartLockParmars(SmartLockConstant.OPEN_LOCK, selfUserId, savedManagePassword, null, null);
-                    }else{
-                        ToastSingleShow.showText(this,"未绑定门锁,无法开门");
+                    } else {
+                        ToastSingleShow.showText(this, "未绑定门锁,无法开门");
                     }
                 }
                 break;
 
         }
     }
+
     private Handler.Callback mCallback = new Handler.Callback() {
         @Override
         public boolean handleMessage(Message msg) {
-            switch(msg.what){
+            switch (msg.what) {
                 case MSG_SHOW_OPENLOCK_RESULT:
-                    ToastSingleShow.showText(DoorbeelMainActivity.this,""+msg.obj);
+                    ToastSingleShow.showText(DoorbeelMainActivity.this, "" + msg.obj);
                     break;
             }
             return true;
         }
     };
     private Handler mHandler = new WeakRefHandler(mCallback);
-    private static final int MSG_SHOW_OPENLOCK_RESULT=100;
+    private static final int MSG_SHOW_OPENLOCK_RESULT = 100;
+
     @Override
     public void responseQueryResult(String result) {
 
@@ -334,10 +371,10 @@ public class DoorbeelMainActivity extends Activity implements View.OnClickListen
 
     @Override
     public void responseSetResult(String result) {
-        Message msg=Message.obtain();
-        msg.what=MSG_SHOW_OPENLOCK_RESULT;
-        if(result!=null){
-            msg.obj=result;
+        Message msg = Message.obtain();
+        msg.what = MSG_SHOW_OPENLOCK_RESULT;
+        if (result != null) {
+            msg.obj = result;
             mHandler.sendMessage(msg);
         }
     }
@@ -354,7 +391,7 @@ public class DoorbeelMainActivity extends Activity implements View.OnClickListen
 
     @Override
     public void responseUserIdInfo(UserIdInfo userIdInfo) {
-        Log.i(TAG,"userIdInfo="+userIdInfo.toString());
+        Log.i(TAG, "userIdInfo=" + userIdInfo.toString());
         List<UserIdPairs> mUserIdPairs = userIdInfo.getAlluser();
         for (int i = 0; i < mUserIdPairs.size(); i++) {
             UserIdPairs tempUserIdPair = DataSupport.where("userid = ?", mUserIdPairs.get(i).getUserid()).findFirst(UserIdPairs.class);

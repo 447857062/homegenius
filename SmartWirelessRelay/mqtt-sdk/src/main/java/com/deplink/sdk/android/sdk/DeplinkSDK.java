@@ -50,7 +50,6 @@ public class DeplinkSDK {
         this.key = key;
         sdkManager = new SDKManager();
     }
-
     public static DeplinkSDK initSDK(Context context,String key) {
         if (singleton == null) {
             synchronized (DeplinkSDK.class) {
@@ -61,7 +60,6 @@ public class DeplinkSDK {
         }
         RestfulTools.getSingleton();
         DepUncaughtExceptionHandler.register();
-
         return singleton;
     }
 

@@ -80,26 +80,5 @@ public class BitmapHandler {
         ByteArrayInputStream isBm = new ByteArrayInputStream(baos.toByteArray());//把压缩后的数据baos存放到ByteArrayInputStream中
         return BitmapFactory.decodeStream(isBm, null, null);
     }
-    /**
-     * 获取圆角位图的方法
-     * @param bitmap 需要转化成圆角的位图
-     * @param pixels 圆角的度数，数值越大，圆角越大
-     * @return 处理后的圆角位图
-     */
-    public static Bitmap toRoundCorner(Bitmap bitmap, int pixels) {
-        Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
-                bitmap.getHeight(), Bitmap.Config.ARGB_4444);
-        Canvas canvas = new Canvas(output);
-        final int color = 0xff424242;
-        final Paint paint = new Paint();
-        final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
-        final RectF rectF = new RectF(rect);
-        paint.setAntiAlias(true);
-        canvas.drawARGB(0, 0, 0, 0);
-        paint.setColor(color);
-        canvas.drawRoundRect(rectF, (float) pixels, (float) pixels, paint);
-        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
-        canvas.drawBitmap(bitmap, rect, rect, paint);
-        return output;
-    }
+
 }
