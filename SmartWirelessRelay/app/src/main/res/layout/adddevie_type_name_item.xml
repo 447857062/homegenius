@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/devices_grid_device_icon_width_height"
+    android:layout_height="@dimen/devices_grid_device_icon_width_height"
+    android:background="@drawable/button_add_device_gridview_background"
+    android:minHeight="@dimen/devices_grid_device_icon_width_height"
+    android:minWidth="@dimen/devices_grid_device_icon_width_height">
+
+    <ImageView
+        android:id="@+id/device_type"
+        android:layout_width="@dimen/devices_list_device_icon_width_height"
+        android:layout_height="@dimen/devices_list_device_icon_width_height"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/devices_grid_device_icon_margin_top"
+        android:src="@drawable/gatewayicon" />
+
+    <TextView
+        android:id="@+id/textview_device_type_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/device_type"
+        android:layout_marginBottom="@dimen/devices_grid_device_icon_margin_top"
+        android:gravity="center_horizontal"
+        android:textColor="@color/add_device_text_show_explan"
+        android:textSize="@dimen/text_size_small" />
+
+</RelativeLayout>

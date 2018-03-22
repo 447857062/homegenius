@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@android:color/transparent"
+    android:gravity="center_vertical"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/imageview_room_item_add"
+        android:layout_width="@dimen/room_item_room_image_width_height"
+        android:layout_height="@dimen/room_item_room_image_width_height"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:background="@drawable/button_add_device_roomselect_add_background" />
+</FrameLayout>

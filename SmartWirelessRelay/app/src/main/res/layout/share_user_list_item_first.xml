@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="85dp"
+    android:minHeight="85dp"
+    >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        android:background="@drawable/button_delete_background"
+        android:minHeight="75dp">
+
+        <com.deplink.homegenius.view.imageview.CircleImageView
+            android:id="@+id/user_portrait"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/layout_content_margin_left_right" />
+
+        <TextView
+            android:id="@+id/user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:layout_toRightOf="@+id/user_portrait"
+            android:textColor="@color/room_type_text"
+            android:textSize="@dimen/text_size_small" />
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/layout_content_margin_left_right">
+
+            <RelativeLayout
+                android:id="@+id/layout_mamager"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@+id/textview_manager"
+                    android:src="@drawable/administratoricon" />
+
+                <TextView
+                    android:id="@+id/textview_manager"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="5dp"
+                    android:text="管理员"
+                    android:textColor="@color/room_type_text"
+                    android:textSize="@dimen/text_size_small" />
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/textview_share_user_bind_state"
+                android:layout_width="60dp"
+                android:layout_height="20dp"
+                android:layout_gravity="right|center_vertical"
+                android:background="@drawable/radius10_bg_blue_layout_background"
+                android:gravity="center_horizontal"
+                android:text="已绑定"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_small" />
+        </FrameLayout>
+    </RelativeLayout>
+
+</RelativeLayout>

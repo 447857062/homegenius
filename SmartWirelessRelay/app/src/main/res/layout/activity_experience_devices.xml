@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/page_background"
+    tools:context="com.deplink.homegenius.activity.personal.experienceCenter.ExperienceDevicesActivity">
+
+    <RelativeLayout
+        android:id="@+id/layout_title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/layout_item_content_height"
+        android:paddingLeft="@dimen/title_layout_margin_left"
+        android:paddingRight="@dimen/title_layout_margin_right"
+        android:background="@color/white">
+        <ImageView
+            android:id="@+id/image_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:scaleType="centerInside"
+            android:src="@drawable/returnicon" />
+        <TextView
+            android:id="@+id/textview_title"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:gravity="center_horizontal|center_vertical"
+            android:text=""
+            android:textColor="@color/room_type_text"
+            android:textSize="@dimen/layout_top_bar_item_text_size" />
+
+    </RelativeLayout>
+
+    <ListView
+        android:id="@+id/listview_experience_center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layout_title"
+        android:background="@null"
+        android:divider="@null"
+        android:dividerHeight="5dp"
+        android:paddingTop="15dp"
+        android:scrollbars="none"/>
+</RelativeLayout>

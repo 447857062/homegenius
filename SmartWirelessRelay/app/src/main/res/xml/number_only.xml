@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Keyboard xmlns:android="http://schemas.android.com/apk/res/android"
+    android:horizontalGap="25dp"
+    android:keyHeight="@dimen/keybord_icon_size"
+    android:keyWidth="@dimen/keybord_icon_size"
+    android:verticalGap="25dp" >
+
+    <Row>
+        <Key
+
+          android:keyLabel="1"
+            android:codes="49"
+             />
+        <Key
+            android:keyLabel="2"
+            android:codes="50"
+             />
+        <Key
+            android:keyLabel="3"
+            android:codes="51"
+            />
+    </Row>
+    <Row>
+        <Key
+            android:keyLabel="4"
+            android:codes="52"
+             />
+        <Key
+            android:keyLabel="5"
+            android:codes="53"
+            />
+        <Key
+            android:keyLabel="6"
+            android:codes="54"
+             />
+    </Row>
+    <Row>
+        <Key
+            android:keyLabel="7"
+            android:codes="55"
+            />
+        <Key
+            android:keyLabel="8"
+            android:codes="56"
+            />
+        <Key
+            android:keyLabel="9"
+            android:codes="57"
+            />
+    </Row>
+    <Row>
+        <Key
+            android:keyIcon="@drawable/cancel"
+            android:keyLabel="取消"
+            android:codes="-2"
+             />
+        <Key
+
+            android:keyLabel="0"
+            android:codes="48"
+            />
+        <Key
+            android:keyIcon="@drawable/undo"
+            android:keyLabel="撤销"
+            android:codes="-5"
+           />
+           <!-- android:keyIcon="撤销"-->
+    </Row>
+</Keyboard>

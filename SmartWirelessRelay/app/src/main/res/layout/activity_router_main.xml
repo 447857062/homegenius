@@ -1,0 +1,378 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:titlelayout="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.deplink.homegenius.activity.device.router.RouterMainActivity">
+
+    <com.deplink.homegenius.view.combinationwidget.TitleLayout
+        android:id="@+id/layout_title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/title_bar_height"
+        titlelayout:edit_image_src="@drawable/settingicon"
+        titlelayout:edit_text_show="false"
+        titlelayout:menu_image_show="true"
+        titlelayout:return_image_show="true"
+        titlelayout:title_text="路由器" />
+
+    <RelativeLayout
+        android:id="@+id/layout_top_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/title_bar_height"
+        android:background="@drawable/routerbackground"
+        android:gravity="center_vertical">
+
+        <RelativeLayout
+            android:id="@+id/layout_cpu_memory"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/router_device_cpu_speed_layout_height"
+            android:gravity="center_horizontal">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@+id/cpu_center_dividing_line"
+                android:gravity="center_horizontal"
+                android:weightSum="2">
+
+                <RelativeLayout
+                    android:id="@+id/layout_cpu_use"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="right">
+
+                    <TextView
+                        android:id="@+id/textview_cpu_use"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="31"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/router_device_cpu_speed_text_big_size" />
+
+                    <TextView
+                        android:id="@+id/textview_cpu_use_precent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_toRightOf="@+id/textview_cpu_use"
+                        android:text="%"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/router_device_cpu_speed_text_small_size" />
+                </RelativeLayout>
+
+
+                <TextView
+                    android:id="@+id/textview_cpu"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/router_device_cpu_use_marginleft_precent"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical|left"
+                    android:text="CPU"
+                    android:textColor="@color/white" />
+            </LinearLayout>
+
+            <View
+                android:id="@+id/cpu_center_dividing_line"
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_centerHorizontal="true"
+                android:background="@color/white" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:layout_toRightOf="@+id/cpu_center_dividing_line"
+                android:gravity="center_horizontal"
+                android:weightSum="2">
+
+                <RelativeLayout
+                    android:id="@+id/layout_memory_use"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical|right">
+
+                    <TextView
+                        android:id="@+id/textview_memory_use"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="52"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/router_device_cpu_speed_text_big_size" />
+
+                    <TextView
+                        android:id="@+id/textview_memory_use_precent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_toRightOf="@+id/textview_memory_use"
+                        android:text="%"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/router_device_cpu_speed_text_small_size" />
+                </RelativeLayout>
+
+
+                <TextView
+                    android:id="@+id/textview_memory"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical|left"
+                    android:layout_marginLeft="@dimen/router_device_cpu_use_marginleft_precent"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical|left"
+                    android:text="内存"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/router_device_cpu_speed_text_small_size" />
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/layout_speed"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/router_device_speed_layout_height"
+            android:layout_below="@+id/layout_cpu_memory"
+            android:layout_marginTop="@dimen/router_device_speed_layout_margintop_cpuuse_layout">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_toLeftOf="@+id/speed_center_dividing_line"
+                android:gravity="center_horizontal"
+                android:weightSum="2">
+
+                <TextView
+                    android:id="@+id/textview_upload_speed"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="right|center_vertical"
+                    android:text="999"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/router_device_cpu_speed_text_big_size" />
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="15dp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical|left">
+
+                    <TextView
+                        android:id="@+id/textview_upload_unit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:text="kb/s"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/router_device_cpu_speed_text_small_size" />
+
+                    <TextView
+                        android:id="@+id/textview_upload"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_below="@+id/textview_upload_unit"
+                        android:text="上传速度"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/router_device_cpu_speed_text_small_size" />
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <View
+                android:id="@+id/speed_center_dividing_line"
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_centerHorizontal="true"
+                android:background="@color/white" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_toRightOf="@+id/speed_center_dividing_line"
+                android:gravity="center_horizontal"
+                android:weightSum="2">
+
+                <TextView
+                    android:id="@+id/textview_download_speend"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical|right"
+                    android:text="999"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/router_device_cpu_speed_text_big_size" />
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="15dp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical|left">
+
+                    <TextView
+                        android:id="@+id/textview_download_unit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:text="kb/s"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/router_device_cpu_speed_text_small_size" />
+
+                    <TextView
+                        android:id="@+id/textview_download"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_below="@+id/textview_download_unit"
+                        android:text="下载速度"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/router_device_cpu_speed_text_small_size" />
+                </RelativeLayout>
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_select_show_current_list"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/layout_item_content_height"
+        android:layout_below="@+id/layout_top_content"
+        android:layout_marginTop="@dimen/layout_room_content_margin_top"
+        android:background="@color/page_background"
+        android:weightSum="2">
+
+        <RelativeLayout
+            android:id="@+id/layout_connected_devices"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+
+            >
+
+            <TextView
+                android:id="@+id/textview_connected_devices"
+                android:layout_width="150dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:gravity="center_horizontal|center_vertical"
+                android:text="已连接设备"
+                android:textSize="@dimen/text_size_small" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/layout_blak_list"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/textview_blak_list"
+                android:layout_width="150dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:gravity="center_horizontal|center_vertical"
+                android:text="黑名单"
+                android:textSize="@dimen/text_size_small" />
+        </RelativeLayout>
+    </LinearLayout>
+    <!--滑动删除的组件（已连接设备列表）-->
+    <com.deplink.homegenius.view.scrollview.ScrollViewLinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/layout_select_show_current_list">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <FrameLayout
+                    android:id="@+id/frame_devicelist_content_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <RelativeLayout
+                        android:id="@+id/layout_no_connected_device"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:visibility="gone">
+
+                        <ImageView
+                            android:id="@+id/iamgeview_no_connected_device"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/connectthedevice"
+                            android:scaleType="centerInside" />
+
+                        <TextView
+                            android:id="@+id/textview_show_query_device_result"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/iamgeview_no_connected_device"
+                            android:layout_gravity="center_vertical"
+                            android:gravity="center_horizontal"
+                            android:textSize="@dimen/text_size_small" />
+
+                    </RelativeLayout>
+
+                    <com.deplink.homegenius.view.listview.swipemenulistview.SwipeMenuListView
+                        android:id="@+id/listview_device_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:divider="@null" />
+                </FrameLayout>
+                <FrameLayout
+                    android:id="@+id/frame_blacklist_content"
+                    android:background="@color/white"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <RelativeLayout
+                        android:id="@+id/layout_no_blacklist"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:visibility="gone">
+
+                        <ImageView
+                            android:id="@+id/iamgeview_no_blacklist"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/blacklist"
+                            android:scaleType="centerInside" />
+
+                        <TextView
+                            android:id="@+id/textview_show_blacklist_device_result"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/iamgeview_no_blacklist"
+                            android:gravity="center_horizontal"
+                            android:textColor="@color/room_type_text"
+                            android:textSize="@dimen/text_size_small" />
+                    </RelativeLayout>
+
+
+                    <com.deplink.homegenius.view.listview.swipemenulistview.SwipeMenuListView
+                        android:id="@+id/listview_black_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:divider="@null" />
+                </FrameLayout>
+
+            </FrameLayout>
+        </ScrollView>
+    </com.deplink.homegenius.view.scrollview.ScrollViewLinearLayout>
+
+</RelativeLayout>

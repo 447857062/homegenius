@@ -1,0 +1,20 @@
+<resources>
+    <!-- Declare custom theme attributes that allow changing which styles are
+         used for button bars depending on the API level.
+         ?android:attr/buttonBarStyle is new as of API 11 so this is
+         necessary to support previous API levels. -->
+    <declare-styleable name="CircleImageView">
+        <attr name="border_width" format="dimension" />
+        <attr name="border_color" format="color" />
+    </declare-styleable>
+    <declare-styleable name="TitleLayout">
+        <attr name="return_image_show" format="boolean" />
+        <attr name="edit_text_show" format="boolean" />
+        <attr name="menu_image_show" format="boolean" />
+        <attr name="background_color" format="color" />
+        <attr name="title_text" format="string" />
+        <attr name="edit_text" format="string" />
+        <attr name="edit_image_src" format="reference" />
+    </declare-styleable>
+
+</resources>

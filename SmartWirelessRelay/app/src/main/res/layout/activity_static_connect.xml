@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:titlelayout="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.deplink.homegenius.activity.device.router.connectType.StaticConnectActivity">
+    <com.deplink.homegenius.view.combinationwidget.TitleLayout
+        android:id="@+id/layout_title"
+        android:layout_width="match_parent"
+        titlelayout:edit_text_show="false"
+        titlelayout:return_image_show="true"
+        titlelayout:menu_image_show="false"
+        titlelayout:title_text="静态IP"
+        titlelayout:edit_text="保存"
+        android:layout_height="@dimen/title_bar_height"
+        />
+    <RelativeLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/layout_title"
+        android:background="@color/page_background">
+        <!--IP地址-->
+        <RelativeLayout
+            android:layout_marginTop="@dimen/layout_room_content_margin_top"
+            android:id="@+id/layout_ip_address"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/layout_item_content_height"
+            android:background="@color/white"
+            android:paddingLeft="@dimen/layout_content_margin_left_right">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true">
+
+                <TextView
+                    android:id="@+id/textview_ip_address_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:minWidth="@dimen/router_connect_setting_left_textview_minwidth"
+                    android:text="IP地址:"
+                    android:textColor="@color/room_type_text"
+                    android:textSize="@dimen/text_size_small" />
+
+                <EditText
+                    android:id="@+id/edittext_ip_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/router_connect_setting_edit_marginleft"
+                    android:layout_toRightOf="@+id/textview_ip_address_title"
+                    android:background="@null"
+                    android:digits="@string/ip_address_digits"
+                    android:inputType="phone"
+                    android:text=""
+                    android:textColor="@color/room_type_text"
+                    android:textColorHint="@color/huise"
+                    android:textSize="@dimen/text_size_small" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_alignParentBottom="true"
+                android:background="@color/line_dirver_color" />
+        </RelativeLayout>
+        <!--子网掩码-->
+        <RelativeLayout
+            android:id="@+id/layout_submask"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/layout_item_content_height"
+            android:layout_below="@+id/layout_ip_address"
+            android:background="@color/white"
+            android:paddingLeft="@dimen/layout_content_margin_left_right">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true">
+
+                <TextView
+                    android:id="@+id/textview_submask_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:minWidth="@dimen/router_connect_setting_left_textview_minwidth"
+                    android:text="子网掩码:"
+                    android:textColor="@color/room_type_text"
+                    android:textSize="@dimen/text_size_small" />
+
+                <EditText
+
+                    android:id="@+id/edittext_submask"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/router_connect_setting_edit_marginleft"
+                    android:layout_toRightOf="@+id/textview_submask_title"
+                    android:background="@null"
+                    android:digits="@string/ip_address_digits"
+                    android:inputType="phone"
+                    android:text=""
+                    android:textColor="@color/room_type_text"
+                    android:textColorHint="@color/huise"
+                    android:textSize="@dimen/text_size_small" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_alignParentBottom="true"
+                android:background="@color/line_dirver_color" />
+        </RelativeLayout>
+        <!--默认网关-->
+        <RelativeLayout
+            android:id="@+id/layout_getway"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/layout_item_content_height"
+            android:layout_below="@+id/layout_submask"
+            android:background="@color/white"
+            android:paddingLeft="@dimen/layout_content_margin_left_right">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true">
+
+                <TextView
+                    android:id="@+id/textview_getway_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:minWidth="@dimen/router_connect_setting_left_textview_minwidth"
+                    android:text="默认网关:"
+                    android:textColor="@color/room_type_text"
+                    android:textSize="@dimen/text_size_small" />
+
+                <EditText
+
+                    android:id="@+id/edittext_getway"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/router_connect_setting_edit_marginleft"
+                    android:layout_toRightOf="@+id/textview_getway_title"
+                    android:background="@null"
+                    android:digits="@string/ip_address_digits"
+                    android:inputType="phone"
+                    android:text=""
+                    android:textColor="@color/room_type_text"
+                    android:textColorHint="@color/huise"
+                    android:textSize="@dimen/text_size_small" />
+            </RelativeLayout>
+
+            <View
+                android:visibility="invisible"
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_alignParentBottom="true"
+                android:background="@color/line_dirver_color" />
+        </RelativeLayout>
+        <!--mtu-->
+        <RelativeLayout
+            android:id="@+id/layout_mtu"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/layout_item_content_height"
+            android:layout_below="@+id/layout_getway"
+            android:layout_marginTop="@dimen/layout_room_content_margin_top"
+            android:background="@color/white"
+            android:paddingLeft="@dimen/layout_content_margin_left_right">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true">
+
+                <TextView
+                    android:id="@+id/textview_mtu_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:minWidth="@dimen/router_connect_setting_left_textview_minwidth"
+                    android:text="MTU:"
+                    android:textColor="@color/room_type_text"
+                    android:textSize="@dimen/text_size_small" />
+
+                <EditText
+                    android:id="@+id/edittext_mtu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+
+                    android:layout_marginLeft="@dimen/router_connect_setting_edit_marginleft"
+                    android:layout_toRightOf="@+id/textview_mtu_title"
+                    android:background="@null"
+                    android:hint="(非必须选项，可不填写)"
+                    android:inputType="number"
+                    android:text=""
+                    android:textColor="@color/room_type_text"
+                    android:textColorHint="@color/huise"
+                    android:textSize="@dimen/text_size_small" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_alignParentBottom="true"
+                android:background="@color/line_dirver_color" />
+        </RelativeLayout>
+        <!--dns1-->
+        <RelativeLayout
+            android:id="@+id/layout_dns1"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/layout_item_content_height"
+            android:layout_below="@+id/layout_mtu"
+            android:background="@color/white"
+            android:paddingLeft="@dimen/layout_content_margin_left_right">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true">
+
+                <TextView
+                    android:id="@+id/textview_dns1_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:minWidth="@dimen/router_connect_setting_left_textview_minwidth"
+                    android:text="DNS1:"
+                    android:textColor="@color/room_type_text"
+                    android:textSize="@dimen/text_size_small" />
+
+                <EditText
+                    android:id="@+id/edittext_dns1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/router_connect_setting_edit_marginleft"
+                    android:layout_toRightOf="@+id/textview_dns1_title"
+                    android:background="@null"
+                    android:text=""
+                    android:digits="@string/ip_address_digits"
+                    android:hint="(非必须选项，可不填写)"
+                    android:inputType="phone"
+                    android:textColor="@color/room_type_text"
+                    android:textColorHint="@color/huise"
+                    android:textSize="@dimen/text_size_small" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_alignParentBottom="true"
+                android:background="@color/line_dirver_color" />
+        </RelativeLayout>
+        <!--dns2-->
+        <RelativeLayout
+            android:id="@+id/layout_dns2"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/layout_item_content_height"
+            android:layout_below="@+id/layout_dns1"
+            android:background="@color/white"
+            android:paddingLeft="@dimen/layout_content_margin_left_right">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true">
+
+                <TextView
+                    android:id="@+id/textview_dns2_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:minWidth="@dimen/router_connect_setting_left_textview_minwidth"
+                    android:text="DNS2:"
+                    android:textColor="@color/room_type_text"
+                    android:textSize="@dimen/text_size_small" />
+
+                <EditText
+                    android:id="@+id/edittext_dns2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/router_connect_setting_edit_marginleft"
+                    android:layout_toRightOf="@+id/textview_dns2_title"
+                    android:background="@null"
+                    android:digits="@string/ip_address_digits"
+                    android:hint="(非必须选项，可不填写)"
+                    android:inputType="phone"
+                    android:text=""
+                    android:textColor="@color/room_type_text"
+                    android:textColorHint="@color/huise"
+                    android:textSize="@dimen/text_size_small" />
+            </RelativeLayout>
+
+            <View
+                android:visibility="invisible"
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_alignParentBottom="true"
+                android:background="@color/line_dirver_color" />
+        </RelativeLayout>
+    </RelativeLayout>
+</RelativeLayout>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/title_bar_height"
+    android:background="@color/white"
+    android:id="@+id/layout_root"
+    android:paddingLeft="@dimen/title_layout_margin_left"
+    android:paddingRight="@dimen/title_layout_margin_right">
+    <FrameLayout
+        android:id="@+id/framelayout_back"
+        android:layout_width="48dp"
+        android:layout_height="match_parent"
+        android:layout_centerVertical="true">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="left|center_vertical"
+            android:scaleType="centerInside"
+            android:src="@drawable/returnicon" />
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/textview_title"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:gravity="center_horizontal|center_vertical"
+        android:text="设备数量"
+        android:textColor="@color/room_type_text"
+        android:textSize="@dimen/layout_top_bar_item_text_size" />
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:minWidth="48dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/textview_edit"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="right|center_vertical"
+            android:minWidth="48dp"
+            android:text="编辑"
+            android:textColor="@color/room_type_text"
+            android:textSize="@dimen/text_size_small" />
+        <ImageView
+            android:id="@+id/image_setting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|center_vertical"
+            android:scaleType="centerInside"
+            android:src="@drawable/menuicon" />
+    </FrameLayout>
+</RelativeLayout>
+
+

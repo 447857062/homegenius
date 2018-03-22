@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:titlelayout="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/page_background"
+    tools:context="com.deplink.homegenius.activity.personal.PersonalCenterActivity">
+    <com.deplink.homegenius.view.combinationwidget.TitleLayout
+        android:id="@+id/layout_title"
+        android:layout_width="match_parent"
+        titlelayout:edit_text_show="false"
+        titlelayout:return_image_show="true"
+        titlelayout:menu_image_show="false"
+        titlelayout:title_text="我的"
+        android:layout_height="@dimen/title_bar_height"
+        />
+    <com.deplink.homegenius.view.scrollview.ScrollViewLinearLayout
+        android:layout_width="match_parent"
+        android:layout_below="@+id/layout_title"
+        android:layout_above="@+id/layout_buttom_bar"
+        android:layout_height="match_parent">
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <RelativeLayout
+
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <RelativeLayout
+                    android:background="@color/white"
+                    android:id="@+id/layout_user_info"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="90dp">
+                    <com.deplink.homegenius.view.imageview.CircleImageView
+                        android:id="@+id/user_head_portrait"
+                        android:layout_width="@dimen/mine_page_user_image_ridus"
+                        android:layout_height="@dimen/mine_page_user_image_ridus"
+                        android:scaleType="centerCrop"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentLeft="true"
+                        android:src="@drawable/defaultavatar"
+                        app:border_color="@color/white_alpha60"
+                        app:border_width="2dp" />
+
+                    <TextView
+                        android:layout_marginLeft="15dp"
+                        android:layout_toRightOf="@+id/user_head_portrait"
+                        android:id="@+id/user_nickname"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:textSize="@dimen/text_size_small"
+                        android:gravity="center_horizontal"
+                        android:text=""
+                        android:textColor="@color/room_type_text" />
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/gotoicon" />
+                </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/layout_device_share"
+                    android:layout_marginTop="@dimen/layout_room_content_margin_top"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/layout_item_content_height"
+                    android:layout_below="@+id/layout_user_info"
+
+                    android:background="@drawable/button_press_normal"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp">
+                    <ImageView
+                        android:id="@+id/imageview_device_share_icon"
+                        android:src="@drawable/equipmentsharingicon"
+                        android:layout_width="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:layout_toRightOf="@+id/imageview_device_share_icon"
+                        android:layout_marginLeft="15dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_centerVertical="true"
+                        android:text="已设备分享"
+                        android:gravity="center_vertical"
+                        android:textColor="@color/room_type_text"
+                        android:textSize="@dimen/text_size_small" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/gotoicon" />
+                </RelativeLayout>
+                <RelativeLayout
+                    android:background="@drawable/button_press_normal"
+                    android:layout_below="@+id/layout_device_share"
+                    android:id="@+id/layout_getway_check"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/layout_item_content_height"
+                    android:layout_marginTop="@dimen/room_list_item_margin_top"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp">
+                    <ImageView
+                        android:id="@+id/imageview_homenetwork_icon"
+                        android:src="@drawable/homenetworkicon"
+                        android:layout_centerVertical="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:layout_marginLeft="15dp"
+                        android:layout_toRightOf="@+id/imageview_homenetwork_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:layout_centerVertical="true"
+                        android:text="我的家庭网络"
+                        android:textColor="@color/room_type_text"
+                        android:textSize="@dimen/text_size_small" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/gotoicon" />
+                </RelativeLayout>
+
+
+                <RelativeLayout
+                    android:id="@+id/layout_experience_center"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/layout_item_content_height"
+                    android:layout_below="@+id/layout_getway_check"
+                    android:layout_marginTop="@dimen/room_list_item_margin_top"
+                    android:background="@drawable/button_press_normal"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp">
+                    <ImageView
+                        android:id="@+id/imageview_experience_center_icon"
+                        android:src="@drawable/experiencecentericon"
+                        android:layout_width="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:layout_toRightOf="@+id/imageview_experience_center_icon"
+                        android:layout_marginLeft="15dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_centerVertical="true"
+                        android:text="体验中心"
+                        android:gravity="center_vertical"
+                        android:textColor="@color/room_type_text"
+                        android:textSize="@dimen/text_size_small" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/gotoicon" />
+                </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/layout_about"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/layout_item_content_height"
+                    android:layout_below="@+id/layout_experience_center"
+                    android:layout_marginTop="@dimen/room_list_item_margin_top"
+                    android:background="@drawable/button_press_normal"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp">
+                    <ImageView
+                        android:id="@+id/imageview_about_icon"
+                        android:src="@drawable/aboutusicon"
+                        android:layout_width="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:layout_toRightOf="@+id/imageview_about_icon"
+                        android:layout_marginLeft="15dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_centerVertical="true"
+                        android:text="关于我们"
+                        android:gravity="center_vertical"
+                        android:textColor="@color/room_type_text"
+                        android:textSize="@dimen/text_size_small" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/gotoicon" />
+                </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/layout_update_soft"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/layout_item_content_height"
+                    android:layout_below="@+id/layout_about"
+                    android:layout_marginTop="@dimen/room_list_item_margin_top"
+                    android:background="@drawable/button_press_normal"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp">
+                    <ImageView
+                        android:layout_alignParentLeft="true"
+                        android:id="@+id/imageview_updateapp_icon"
+                        android:src="@drawable/softwareupgradeicon"
+                        android:layout_width="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:id="@+id/textview_update_now"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                       android:layout_toRightOf="@+id/imageview_updateapp_icon"
+                        android:layout_centerVertical="true"
+                        android:text="立即更新"
+                        android:textColor="@color/room_type_text"
+                        android:textSize="@dimen/text_size_small" />
+                    <TextView
+                        android:layout_toRightOf="@+id/textview_update_now"
+                        android:layout_toLeftOf="@+id/imageview_arror"
+                        android:id="@+id/textview_current_version"
+                        android:textColor="@color/huise"
+                        android:gravity="center_vertical|right"
+                        android:layout_marginRight="10dp"
+                        android:textSize="@dimen/text_size_small"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+                    <ImageView
+                        android:id="@+id/imageview_arror"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/gotoicon" />
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+        </ScrollView>
+    </com.deplink.homegenius.view.scrollview.ScrollViewLinearLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/layout_buttom_bar"
+        android:layout_alignParentBottom="true"
+        android:gravity="center_vertical"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/layout_buton_bar_height">
+        <View
+            android:layout_alignParentTop="true"
+            android:id="@+id/view_line"
+            android:background="@color/line_dirver_color"
+            android:layout_width="match_parent"
+            android:layout_height="1px"/>
+        <include
+            android:layout_below="@+id/view_line"
+            android:id="@+id/layout_buttonbar"
+            layout="@layout/layout_buttom_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true" />
+    </RelativeLayout>
+</RelativeLayout>

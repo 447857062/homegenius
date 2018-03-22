@@ -1,0 +1,254 @@
+<resources>
+
+    <dimen name="main_bottom_four_testview_size">18sp</dimen>
+    <dimen name="main_bottom_four_testview_padding">15dp</dimen>
+    <dimen name="child_dev_firstitem_testview_size">20sp</dimen>
+    <dimen name="child_dev_firstitem_paddingLeft">20dp</dimen>
+    <dimen name="child_dev_firstitem_testview_paddingTop">15dp</dimen>
+    <dimen name="child_dev_firstitem_testview_paddingBottom">15dp</dimen>
+    <dimen name="rippleStrokeWidth">2dp</dimen>
+    <dimen name="rippleRadius">64dp</dimen>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="title_text_size">18dp</dimen>
+    <dimen name="button_sure_width">131dp</dimen>
+    <dimen name="button_register_height">36dp</dimen>
+    <dimen name="connect_setting_item_height">48dp</dimen>
+    <dimen name="connect_setting_layout_padding_left_right">25dp</dimen>
+    <dimen name="wifi_checkbox_width">33dp</dimen>
+    <dimen name="wifi_checkbox_height">17dp</dimen>
+    <dimen name="last_next_step_layout_width">208dp</dimen>
+    <dimen name="last_next_step_layout_height">35dp</dimen>
+    <dimen name="connect_setting_arrorright_image_width">11dp</dimen>
+    <dimen name="connect_setting_arrorright_image_height">20dp</dimen>
+    <dimen name="static_ip_left_text_title_minwidth">130dp</dimen>
+    <dimen name="mian_interface_topbar_text_size">18dp</dimen>
+    <dimen name="firmware_upgrade_text_margin_image">27dp</dimen>
+    <dimen name="last_next_step_text_size">15dp</dimen>
+    <dimen name="last_next_step_margin">20dp</dimen>
+    <dimen name="makesure_dialog_text_margin">34dp</dimen>
+    <dimen name="dialog_unbind_device_button_marginbuttom">25dp</dimen>
+    <dimen name="makesure_dialog_button_margin">28dp</dimen>
+    <dimen name="dialog_button_unbind_device_width">75dp</dimen>
+    <dimen name="dialog_button_unbind_device_height">30dp</dimen>
+    <dimen name="wireless_relay_item_margin_left_right">20dp</dimen>
+    <dimen name="wireless_relay_item_height">48dp</dimen>
+
+
+    <!--新app ui尺寸-->
+    <!--字体大小-->
+    <dimen name="text_size_aircontrol_temp">48dp</dimen>
+    <dimen name="text_size_home_tempature">34sp</dimen>
+    <dimen name="text_size_tempature_c">25dp</dimen>
+    <dimen name="layout_top_bar_item_text_size">18sp</dimen>
+    <dimen name="delete_textview_size">16dp</dimen>
+    <dimen name="text_size_small">14sp</dimen>
+    <dimen name="text_size_smallest">12sp</dimen>
+    <dimen name="layout_buton_bar_item_text_size">10dp</dimen>
+
+    <!--路由器设备，字体-->
+    <dimen name="router_device_cpu_speed_text_big_size">25dp</dimen>
+    <dimen name="router_device_cpu_speed_text_small_size">12dp</dimen>
+    <!--登录按钮字体大小-->
+    <dimen name="login_button_text_size">16dp</dimen>
+    <!--底部导航栏尺寸-->
+    <dimen name="layout_buton_bar_height">50dp</dimen>
+    <!--顶部导航栏尺寸-->
+    <dimen name="title_bar_height">44dp</dimen>
+    <dimen name="layout_item_content_height">44dp</dimen>
+    <!--主页房间界面尺寸-->
+    <dimen name="homepage_room_type_item_text_margin_button">17dp</dimen>
+    <dimen name="homepage_room_type_margin_button">13dp</dimen>
+    <dimen name="homepage_room_type_margin_top">13dp</dimen>
+    <dimen name="homepage_room_title_marginleft_room_smallimage">10dp</dimen>
+    <dimen name="home_page_roomselect_height">145dp</dimen>
+    <dimen name="home_page_roomselect_top_height">35dp</dimen>
+    <dimen name="home_page_roomselect_normal_height">110dp</dimen>
+    <dimen name="home_page_roomselect_top_change_show_type_textview_marginright">15dp</dimen>
+    <dimen name="home_page_layout_experience_center_height">185dp</dimen>
+
+    <!--主页房间图片默认排列，图片宽高-->
+    <dimen name="home_room_image_width_height">77dp</dimen>
+    <dimen name="home_room_switch_image_width_height">57dp</dimen>
+    <dimen name="home_room_switch_layout_minheight">86dp</dimen>
+    <dimen name="home_room_switch_device_numbers_layout_width_height">18dp</dimen>
+
+    <!--所有界面距离左右边界的距离-->
+    <dimen name="layout_content_margin_left_right">15dp</dimen>
+    <dimen name="title_layout_margin_left">8dp</dimen>
+    <dimen name="title_layout_margin_right">12dp</dimen>
+
+    <!--表格布局，表格水平，垂直间距-->
+    <dimen name="layout_addroom_horizontalSpacing">15dp</dimen>
+    <dimen name="layout_addroom_Vertical_Spacing">15dp</dimen>
+
+    <!--包含设置列表的一项距离上一项的间距。如果是第一项距离上一项间距就是15-->
+    <dimen name="list_item_textview_margin_top">5dp</dimen>
+    <!--包含设置列表的第一项距离上一项的间距-->
+    <dimen name="layout_room_content_margin_top">15dp</dimen>
+    <!--右边箭头，如果左边有文字显示，左边文字距离右边箭头的距离-->
+    <dimen name="arror_right_left_textview_margin_right">10dp</dimen>
+    <!--删除图标的大小尺寸-->
+    <dimen name="delete_icon_width_height">19dp</dimen>
+    <!--删除设备操作，删除的布局距离上方布局的距离-->
+    <dimen name="button_delete_button_margin_top">57dp</dimen>
+
+
+    <!--个人中心界面尺寸-->
+    <dimen name="mine_page_user_image_margintop">112dp</dimen>
+    <dimen name="mine_page_top_background_height">234dp</dimen>
+    <dimen name="mine_page_user_image_ridus">62dp</dimen>
+    <dimen name="mine_page_logout_margitop">60dp</dimen>
+    <dimen name="experience_center_listitem_height">75dp</dimen>
+    <dimen name="experience_center_listitem_devicetype_marginleft">10dp</dimen>
+
+    <!--房间界面尺寸-->
+    <dimen name="room_item_text_margin_button">26dp</dimen>
+    <dimen name="room_type_addroom_item_text_margin_button">23dp</dimen>
+    <dimen name="room_list_item_margin_top">5dp</dimen>
+    <dimen name="room_item_room_image_width_height">98dp</dimen>
+
+    <!--图片圆弧角度-->
+    <dimen name="device_item_background_ridus">8dp</dimen>
+    <dimen name="adddevice_device_item_background_ridus">4dp</dimen>
+    <dimen name="ridus30">30dp</dimen>
+    <dimen name="ridus15">15dp</dimen>
+    <dimen name="ridus22">22dp</dimen>
+    <dimen name="ridus2">2dp</dimen>
+    <dimen name="ridus4">4dp</dimen>
+    <dimen name="ridus_8">8dp</dimen>
+    <dimen name="ridus_10">10dp</dimen>
+    <dimen name="addrouter_button_ridus">16dp</dimen>
+    <dimen name="router_wifirelay_connect_button_ridus">15dp</dimen>
+    <dimen name="room_name_margin_right_arror">15dp</dimen>
+
+    <!--设备界面尺寸-->
+    <!--size-->
+    <dimen name="devices_list_device_icon_width_height">39dp</dimen>
+    <dimen name="devices_grid_device_icon_width_height">91dp</dimen>
+    <dimen name="device_item_divider_height">5dp</dimen>
+    <dimen name="adddevice_qrcode_scan_width_height">52dp</dimen>
+    <!---->
+    <dimen name="list_item_imageview_onlinestatu_margin_right">10dp</dimen>
+    <dimen name="device_page_arror_down_marginleft">5dp</dimen>
+    <dimen name="device_page_devicelist_margintop">15dp</dimen>
+    <dimen name="devices_grid_device_icon_margin_top">17dp</dimen>
+    <dimen name="adddevice_qrcode_background">205dp</dimen>
+    <dimen name="adddevice_qrcode_scan_margintop">77dp</dimen>
+    <dimen name="adddevice_qrcode_scan_textview1_margin_top">8dp</dimen>
+    <dimen name="adddevice_qrcode_scan_textview2_margin_top">4dp</dimen>
+    <dimen name="adddevice_surebutton_margintop">48dp</dimen>
+    <dimen name="adddevice_surebutton_width">284dp</dimen>
+    <dimen name="delete_device_button_margintop">58dp</dimen>
+    <dimen name="remotecontrol_learn_byhand_info2_margintop">30dp</dimen>
+    <dimen name="remotecontrol_learn_byhand_cancelbutton_width">197dp</dimen>
+
+    <!--门锁设备界面尺寸-->
+    <!--size-->
+    <dimen name="doorlock_unlock_image_width_height">96dp</dimen>
+    <dimen name="doorlock_option_item_width_height">57dp</dimen>
+    <dimen name="doorlock_clear_record_dialog_makesure_button_height">55dp</dimen>
+    <dimen name="doorlock_top_framelayout_height">358dp</dimen>
+    <dimen name="doorlock_top_framelayout_inner_bg_height">310dp</dimen>
+    <dimen name="doorlock_auth_dialog_input_password_layout_width">260dp</dimen>
+    <dimen name="point_black_width_height">15dp</dimen>
+    <dimen name="keybord_icon_size">72dp</dimen>
+    <!---->
+    <dimen name="keybord_layout_margin_left_right">30dp</dimen>
+    <dimen name="doorlock_operation_layout_margin_left_right">26dp</dimen>
+    <dimen name="doorlock_operation_one_padding_hor_other">22dp</dimen>
+    <dimen name="doorlock_operation_one_padding_ver_other">26dp</dimen>
+    <dimen name="doorlock_operation_textview_margin_imageview_top">8dp</dimen>
+    <dimen name="doorlock_top_margintop_framelayout">15dp</dimen>
+    <dimen name="doorlock_clear_record_dialog_title_margintop">15dp</dimen>
+    <dimen name="doorlock_alerthistory_itemheight">53dp</dimen>
+
+    <!--智能开关，选择开关类型。开关类型名字距离左边开关图标距离-->
+    <dimen name="smart_switch_name_marginleft_typeImage">15dp</dimen>
+    <dimen name="smart_switch_mainpage_center_image_margintop">60dp</dimen>
+    <dimen name="smart_switch_mainpage_center_image_width_height">240dp</dimen>
+    <!--智能门铃设备-->
+    <!--size-->
+    <dimen name="doorbell_mainview_imageview_height">187dp</dimen>
+    <!---->
+    <dimen name="add_doorbell_buttom_button_marginbuttom">58dp</dimen>
+    <dimen name="doorbell_mainview_button_margintop">58dp</dimen>
+    <dimen name="add_doorbell_buttom_button_height">44dp</dimen>
+    <dimen name="add_doorbell_tips_textview_padding_left">60dp</dimen>
+    <dimen name="doorbell_novistor_image_margintop">53dp</dimen>
+    <!--空调界面尺寸-->
+    <!--size-->
+    <dimen name="startthetestbutton_size">96dp</dimen>
+    <dimen name="aircondition_control_reduce_plus_width_height">38dp</dimen>
+    <dimen name="aircondition_control_buttom_control_icon_width_height">58dp</dimen>
+    <dimen name="aircondition_popwindow_width">120dp</dimen>
+    <!---->
+    <dimen name="aircondition_inner_temp_margin_top">10dp</dimen>
+    <dimen name="aircondition_control_layout_margin_left_right">30dp</dimen>
+    <dimen name="aircondition_control_layout_margin_top">20dp</dimen>
+    <dimen name="aircondition_control_progress_margin_left_righ">15dp</dimen>
+    <dimen name="aircondition_control_buttom_layout_icon_marginleft">25dp</dimen>
+    <dimen name="search_band_icon_marginleft">5dp</dimen>
+    <dimen name="search_band_icon_marginright">10dp</dimen>
+    <dimen name="search_band_layout_margintop">7dp</dimen>
+    <dimen name="band_select_layout_height">30dp</dimen>
+    <dimen name="aircondition_test_explan_info1_margintop">66dp</dimen>
+    <dimen name="aircondition_test_explan_info2_margintop">48dp</dimen>
+    <dimen name="test_response_layout">94dp</dimen>
+    <dimen name="test_response_button_height">40dp</dimen>
+    <dimen name="test_response_button_width">158dp</dimen>
+    <!--路由器界面尺寸-->
+    <dimen name="add_router_button_sure_margintop">48dp</dimen>
+    <dimen name="router_connect_setting_edit_marginleft">10dp</dimen>
+    <dimen name="router_connect_setting_left_textview_minwidth">60dp</dimen>
+    <dimen name="router_wifirelay_connectdialogs_button_height">30dp</dimen>
+    <dimen name="router_wifirelay_connectdialogs_button_width">120dp</dimen>
+    <!--路由器cpu使用距离顶部-->
+    <dimen name="router_device_cpu_use_layout_margin_top">88dp</dimen>
+    <dimen name="router_device_cpu_use_marginleft_precent">15dp</dimen>
+    <dimen name="router_device_cpu_speed_layout_height">28dp</dimen>
+    <dimen name="router_device_speed_layout_height">31dp</dimen>
+    <dimen name="router_device_speed_layout_margintop_cpuuse_layout">42dp</dimen>
+    <dimen name="router_device_connect_devices_list_item_height">53dp</dimen>
+    <dimen name="router_connectdevice_list_item_textview_margin_top">5dp</dimen>
+    <dimen name="router_connectdevice_list_item_textview_margin_right">5dp</dimen>
+    <dimen name="router_connectdevice_list_item_name_width">160dp</dimen>
+    <dimen name="router_connectdevice_list_item_speedvalue_width">60dp</dimen>
+    <dimen name="wifirelay_reload_wifilist_background_height">171dp</dimen>
+    <dimen name="wifirelay_reload_wifilist_button_margintop">60dp</dimen>
+    <dimen name="wifirelay_connect_button_margintop">30dp</dimen>
+    <dimen name="lansetting_left_textview_minwidth">100dp</dimen>
+
+    <!--TV 电视机顶盒界面-->
+    <dimen name="first_frame_content_margintop">28dp</dimen>
+    <dimen name="first_frame_content_margin_left_right">48dp</dimen>
+    <dimen name="basecontrol_frame_content_margin_top">28dp</dimen>
+    <dimen name="alllearn_button_width_height">222dp</dimen>
+    <dimen name="learn_button_updown_width">157dp</dimen>
+    <dimen name="learn_button_updown_height">76dp</dimen>
+    <dimen name="learn_button_leftright_width">76dp</dimen>
+    <dimen name="learn_button_leftright_height">157dp</dimen>
+    <dimen name="learn_ok_button_width_height">99dp</dimen>
+    <dimen name="learn_ch_volum_button_width_height">43dp</dimen>
+    <dimen name="learn_ch_volum_button_marginleft_to_other">30dp</dimen>
+    <dimen name="learn_mute_menu_return_button_width_height">57dp</dimen>
+    <dimen name="number_control_layout_except_first_line_margintop">25dp</dimen>
+    <!--智能灯泡-->
+    <dimen name="light_reduce_plus_width_height">18dp</dimen>
+
+    <!--登录界面-->
+    <dimen name="input_phonenumber_margintop">38dp</dimen>
+    <dimen name="input_layout_marginleft_right">15dp</dimen>
+    <dimen name="input_layout_input_margin_left_image">14dp</dimen>
+    <dimen name="password_layout_margin_account_top">30dp</dimen>
+    <dimen name="line_margintop_input">5dp</dimen>
+    <dimen name="forget_password_margintop">15dp</dimen>
+    <dimen name="otherway_login_text_marginbuttom">160dp</dimen>
+    <dimen name="text_user_protocal_margin_buttom">30dp</dimen>
+    <dimen name="vercode_buttom_height">30dp</dimen>
+
+    <!--二维码扫码界面-->
+    <dimen name="scan_view_textview_margintop">140dp</dimen>
+    <dimen name="adddevice_qrcode_capture_buttom_cancel_marginbuttom">90dp</dimen>
+</resources>
