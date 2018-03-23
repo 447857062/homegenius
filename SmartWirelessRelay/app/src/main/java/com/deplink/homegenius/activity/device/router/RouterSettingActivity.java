@@ -114,7 +114,11 @@ public class RouterSettingActivity extends Activity implements View.OnClickListe
             manager.addEventCallback(ec);
             mDeviceManager.addDeviceListener(mDeviceListener);
             isUserLogin = Perfence.getBooleanPerfence(AppConstant.USER_LOGIN);
-            channels = mRouterManager.getCurrentSelectedRouter().getRouter().getChannels();
+            try {
+                channels = mRouterManager.getCurrentSelectedRouter().getRouter().getChannels();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             deviceUid=mRouterManager.getCurrentSelectedRouter().getUid();
         } else {
             if(textview_route_name_2.getText().toString().equalsIgnoreCase("")){
@@ -274,7 +278,6 @@ public class RouterSettingActivity extends Activity implements View.OnClickListe
                         startActivity(inentShareDevice);
                     }
                 }
-
                 break;
             case R.id.layout_router_name_out:
                 startActivity(new Intent(this, RouterNameUpdateActivity.class));

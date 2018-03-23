@@ -172,7 +172,6 @@ public class RoomActivity extends Activity implements View.OnClickListener {
     protected void onResume() {
         super.onResume();
         initButtomBar();
-        Perfence.setContext(this);
         isUserLogin = Perfence.getBooleanPerfence(AppConstant.USER_LOGIN);
         manager.addEventCallback(ec);
         mRoomManager.addRoomListener(mRoomListener);

@@ -72,7 +72,7 @@ public class DeviceManager implements LocalConnecteListener {
     private boolean isExperCenterStartFromHomePage;
     private RemoteConnectManager mRemoteConnectManager;
     private HomeGenius mHomeGenius;
-
+    private static String uuid;
     public boolean isExperCenterStartFromHomePage() {
         return isExperCenterStartFromHomePage;
     }
@@ -101,6 +101,7 @@ public class DeviceManager implements LocalConnecteListener {
         if (instance == null) {
             instance = new DeviceManager();
         }
+        uuid = Perfence.getPerfence(AppConstant.PERFENCE_BIND_APP_UUID);
         return instance;
     }
 
@@ -143,7 +144,6 @@ public class DeviceManager implements LocalConnecteListener {
                 }
             });
         } else {
-            String uuid = Perfence.getPerfence(AppConstant.PERFENCE_BIND_APP_UUID);
             GatwayDevice device = DataSupport.where("Status = ?", "在线").findFirst(GatwayDevice.class);
             if(device==null){
                 device=DataSupport.where("Status = ?", "On").findFirst(GatwayDevice.class);
@@ -260,13 +260,6 @@ public class DeviceManager implements LocalConnecteListener {
             @Override
             public void onResponse(Call<DeviceOperationResponse> call, Response<DeviceOperationResponse> response) {
                 Log.i(TAG, "" + response.message());
-                if (response.errorBody() != null) {
-                    try {
-                        Log.i(TAG, "" + response.errorBody().string());
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
                 if (response.code() == 200) {
                     Log.i(TAG, "" + response.body().toString());
                     for (int i = 0; i < mDeviceListenerList.size(); i++) {
@@ -274,8 +267,6 @@ public class DeviceManager implements LocalConnecteListener {
                                 response.body()
                         );
                     }
-                } else if (response.code() == 403) {
-
                 }
             }
 
@@ -513,7 +504,6 @@ public class DeviceManager implements LocalConnecteListener {
                 }
             });
         } else {
-            String uuid = Perfence.getPerfence(AppConstant.PERFENCE_BIND_APP_UUID);
             GatwayDevice device = DataSupport.where("Status = ?", "在线").findFirst(GatwayDevice.class);
             if(device==null){
                 device=DataSupport.where("Status = ?", "On").findFirst(GatwayDevice.class);
@@ -563,7 +553,6 @@ public class DeviceManager implements LocalConnecteListener {
                 }
             });
         } else {
-            String uuid = Perfence.getPerfence(AppConstant.PERFENCE_BIND_APP_UUID);
             GatwayDevice device = DataSupport.where("Status = ?", "在线").findFirst(GatwayDevice.class);
             if(device==null){
                 device=DataSupport.where("Status = ?", "On").findFirst(GatwayDevice.class);
@@ -572,7 +561,7 @@ public class DeviceManager implements LocalConnecteListener {
                 device=DataSupport.findFirst(GatwayDevice.class);
             }
             Log.i(TAG, "device.getTopic()=" + device.getTopic());
-            if (device != null && device.getTopic() != null && !device.getTopic().equals("")) {
+            if (device.getTopic() != null && !device.getTopic().equals("")) {
                 mHomeGenius.bindSmartDevList(device.getTopic(), uuid, smartDevice);
             }
         }
@@ -707,14 +696,12 @@ public class DeviceManager implements LocalConnecteListener {
     public void OnGetSetresult(String setResult) {
 
     }
-
     @Override
     public void OnGetBindresult(String result) {
         for (int i = 0; i < mDeviceListenerList.size(); i++) {
             mDeviceListenerList.get(i).responseBindDeviceResult(result);
         }
     }
-
     @Override
     public void getWifiList(String result) {
         Gson gson = new Gson();

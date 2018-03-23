@@ -73,4 +73,17 @@ public class OneDev {
         return ver;
     }
 
+    @Override
+    public String toString() {
+        return "OneDev{" +
+                "mac=" + mac +
+                ", type=" + type +
+                ", ver=" + ver +
+                ", status=" + status +
+                ", remoteIP=" + remoteIP +
+                ", remotePort=" + remotePort +
+                ", remoteTime=" + remoteTime +
+                ", localTime=" + localTime +
+                '}';
+    }
 }

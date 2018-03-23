@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.RelativeLayout;
 
-import com.deplink.homegenius.activity.device.remoteControl.topBox.AddTopBoxActivity;
 import com.deplink.homegenius.activity.personal.login.LoginActivity;
 import com.deplink.homegenius.constant.AppConstant;
 import com.deplink.homegenius.manager.connect.remote.HomeGenius;
@@ -101,7 +100,6 @@ public class WiFiSettingActivity extends Activity implements View.OnClickListene
         if( !DeviceManager.getInstance().isStartFromExperience()){
             mHomeGenius = new HomeGenius();
             channels = mRouterManager.getCurrentSelectedRouter().getRouter().getChannels();
-            Perfence.setContext(getApplicationContext());
             isUserLogin = Perfence.getBooleanPerfence(AppConstant.USER_LOGIN);
 
             //登录了，并且绑定了设备

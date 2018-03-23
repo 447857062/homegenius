@@ -155,7 +155,6 @@ public class RouterMainActivity extends Activity implements View.OnClickListener
             }).show();
         }
     };
-    private String receiverChannels;
     private String channels;
     private HomeGenius mHomeGenius;
 
@@ -171,8 +170,13 @@ public class RouterMainActivity extends Activity implements View.OnClickListener
             showQueryingDialog();
         } else {
             manager.addEventCallback(ec);
-            channels = mRouterManager.getCurrentSelectedRouter().getRouter().getChannels();
-            receiverChannels = mRouterManager.getCurrentSelectedRouter().getRouter().getReceveChannels();
+            String receiverChannels = null;
+            try {
+                channels = mRouterManager.getCurrentSelectedRouter().getRouter().getChannels();
+                receiverChannels = mRouterManager.getCurrentSelectedRouter().getRouter().getReceveChannels();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             if (!isUserLogin) {
                 textview_cpu_use.setText("--");
                 textview_memory_use.setText("--");

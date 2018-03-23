@@ -2,6 +2,7 @@ package com.deplink.homegenius.view.combinationwidget;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +21,7 @@ public class TitleLayout extends LinearLayout implements View.OnClickListener {
     private TextView textview_title;
     private TextView textview_edit;
     private ImageView image_setting;
+    private ImageView imageview_back;
     private FrameLayout framelayout_back;
     private RelativeLayout layout_root;
     private ReturnImageClickListener returnClickListener;
@@ -46,6 +48,7 @@ public class TitleLayout extends LinearLayout implements View.OnClickListener {
         image_setting=findViewById(R.id.image_setting);
         framelayout_back=findViewById(R.id.framelayout_back);
         layout_root=findViewById(R.id.layout_root);
+        imageview_back=findViewById(R.id.imageview_back);
         int backgroundColor = typedArray.getColor(R.styleable.TitleLayout_background_color,R.color.white);
          return_image_show = typedArray.getBoolean(R.styleable.TitleLayout_return_image_show, false);
          edit_text_show = typedArray.getBoolean(R.styleable.TitleLayout_edit_text_show, false);
@@ -101,6 +104,18 @@ public class TitleLayout extends LinearLayout implements View.OnClickListener {
     public void setEditText(String editText){
         if(textview_edit!=null){
             textview_edit.setText(editText);
+        }
+
+    }
+    public void setTitleTextWhiteColor(){
+        if(textview_title!=null){
+            textview_title.setTextColor(ContextCompat.getColor(getContext(),R.color.white));
+        }
+
+    }
+    public void setBackImageResource(int  res){
+        if(imageview_back!=null){
+            imageview_back.setImageResource(res);
         }
 
     }

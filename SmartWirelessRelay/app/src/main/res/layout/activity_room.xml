@@ -13,7 +13,7 @@
         titlelayout:return_image_show="false"
         titlelayout:menu_image_show="true"
         titlelayout:title_text="房间"
-        titlelayout:edit_image_src="@drawable/addequipmenticon"
+        titlelayout:edit_image_src="@drawable/add_button"
         android:layout_height="@dimen/title_bar_height"
        />
     <RelativeLayout

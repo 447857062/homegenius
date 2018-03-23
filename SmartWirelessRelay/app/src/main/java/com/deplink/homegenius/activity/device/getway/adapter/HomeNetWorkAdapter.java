@@ -9,13 +9,13 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.deplink.homegenius.Protocol.json.device.SmartDev;
 import com.deplink.homegenius.Protocol.json.device.getway.GatwayDevice;
 import com.deplink.homegenius.constant.DeviceTypeConstant;
 
 import java.util.List;
 
 import deplink.com.smartwirelessrelay.homegenius.EllESDK.R;
-import com.deplink.homegenius.Protocol.json.device.SmartDev;
 
 /**
  * @author frankLi
@@ -48,13 +48,6 @@ public class HomeNetWorkAdapter extends BaseAdapter {
         this.listTop = list;
         TopCount = listTop.size();
     }
-
-    @Override
-    public void notifyDataSetChanged() {
-        super.notifyDataSetChanged();
-        Log.i(TAG, "头部列表=" + listTop.size());
-    }
-
     /**
      * 设置Item显示的数据集合
      *
@@ -152,6 +145,11 @@ public class HomeNetWorkAdapter extends BaseAdapter {
             } else {
                 statu = "离线";
             }
+            if(statu.equalsIgnoreCase("在线")){
+                viewHolder.textview_device_status.setBackgroundResource(R.drawable.blue);
+            }else{
+                viewHolder.textview_device_status.setBackgroundResource(R.drawable.gray);
+            }
             viewHolder.textview_device_status.setText(statu);
             viewHolder.imageview_device_type.setImageResource(R.drawable.gatewayicon);
             String deviceName = listTop.get(position).getName();
@@ -172,6 +170,11 @@ public class HomeNetWorkAdapter extends BaseAdapter {
                 }
             } else {
                 deviceStatu = "离线";
+            }
+            if(deviceStatu.equalsIgnoreCase("在线")){
+                viewHolder.textview_device_status.setBackgroundResource(R.drawable.blue);
+            }else{
+                viewHolder.textview_device_status.setBackgroundResource(R.drawable.gray);
             }
             viewHolder.textview_device_name.setText(deviceName);
             viewHolder.textview_device_status.setText(deviceStatu);

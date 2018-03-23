@@ -20,7 +20,6 @@ import com.deplink.homegenius.Protocol.json.device.SmartDev;
 import com.deplink.homegenius.Protocol.json.device.getway.GatwayDevice;
 import com.deplink.homegenius.Protocol.json.device.lock.Record;
 import com.deplink.homegenius.Protocol.json.device.router.Router;
-import com.deplink.homegenius.activity.device.remoteControl.topBox.AddTopBoxActivity;
 import com.deplink.homegenius.activity.homepage.SmartHomeMainActivity;
 import com.deplink.homegenius.constant.AppConstant;
 import com.deplink.homegenius.util.NetUtil;
@@ -129,8 +128,6 @@ public class LoginActivity extends Activity implements View.OnClickListener, Vie
                         Perfence.setPerfence(AppConstant.USER_LOGIN, true);
                         startActivity(new Intent(LoginActivity.this, SmartHomeMainActivity.class));
                         LoginActivity.this.finish();
-
-                        Perfence.setContext(getApplicationContext());
                         String uuid = manager.getUserInfo().getUuid();
                         Log.i(TAG, "点击登录 onSuccess login uuid=" + uuid);
                         if (!uuid.equalsIgnoreCase("")) {
@@ -196,6 +193,7 @@ public class LoginActivity extends Activity implements View.OnClickListener, Vie
         view_password_dirverline = findViewById(R.id.view_password_dirverline);
         imageview_eye = findViewById(R.id.imageview_eye);
         layout_title= findViewById(R.id.layout_title);
+        layout_title.setBackImageResource(R.drawable.notloggedinicon);
     }
 
     /**

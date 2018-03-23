@@ -23,6 +23,7 @@
             titlelayout:edit_text_show="true"
             titlelayout:return_image_show="true"
             titlelayout:menu_image_show="false"
+            titlelayout:background_color="@color/transparent"
             titlelayout:title_text="智能灯泡"
             titlelayout:edit_text="编辑"
             android:layout_height="@dimen/title_bar_height"

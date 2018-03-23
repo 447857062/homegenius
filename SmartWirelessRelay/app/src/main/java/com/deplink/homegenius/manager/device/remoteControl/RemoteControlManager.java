@@ -141,7 +141,6 @@ public class RemoteControlManager implements LocalConnecteListener {
         this.mContext = context;
         if (mLocalConnectmanager == null) {
             mLocalConnectmanager = LocalConnectmanager.getInstance();
-            Perfence.setContext(mContext);
             String uuid = Perfence.getPerfence(AppConstant.PERFENCE_BIND_APP_UUID);
             mLocalConnectmanager.InitLocalConnectManager(context, uuid);
 

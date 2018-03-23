@@ -111,6 +111,8 @@ public class PersonalCenterActivity extends Activity implements View.OnClickList
             String userName=Perfence.getPerfence(Perfence.PERFENCE_PHONE);
             manager.getUserInfo(userName);
 
+        }else{
+            user_nickname.setText("未登录,点击登录");
         }
         manager.queryAppUpdateInfo(Perfence.SDK_APP_KEY, APKVersionCodeUtils.getVerName(this));
         if( manager.getAppUpdateInfo()!=null){

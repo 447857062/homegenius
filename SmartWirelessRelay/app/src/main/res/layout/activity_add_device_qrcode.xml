@@ -5,7 +5,6 @@
     android:layout_height="match_parent"
     android:background="@color/page_background"
     tools:context="com.deplink.homegenius.activity.device.AddDeviceQRcodeActivity">
-
     <RelativeLayout
         android:id="@+id/layout_top_area"
         android:layout_width="match_parent"
@@ -27,7 +26,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="left|center_vertical"
                         android:scaleType="centerInside"
-                        android:src="@drawable/whitereturn" />
+                        android:src="@drawable/white_return_button" />
                 </FrameLayout>
                 <TextView
                     android:id="@+id/textview_add_device"

@@ -104,7 +104,6 @@ public class SmartLockManager implements LocalConnecteListener {
      */
     public void InitSmartLockManager(Context context) {
         this.mContext = context;
-        Perfence.setContext(context);
         this.mSmartLockListenerList = new ArrayList<>();
         if (mLocalConnectmanager == null) {
             mLocalConnectmanager = LocalConnectmanager.getInstance();
@@ -140,7 +139,6 @@ public class SmartLockManager implements LocalConnecteListener {
         if (listener != null && mSmartLockListenerList.contains(listener)) {
             this.mSmartLockListenerList.remove(listener);
         }
-
     }
     //设置数据返回的接口------------------------------------------------------------end
 
@@ -159,14 +157,12 @@ public class SmartLockManager implements LocalConnecteListener {
                 Log.i(TAG, "修改智能门锁设备名字=" + effectColumn);
             }
         });
-
     }
 
     /**
      * 更新设备所在房间
      */
     public void updateSmartDeviceInWhatRoom(Room room, String deviceUid) {
-        Log.i(TAG, "更新智能设备所在的房间=start");
         //保存所在的房间
         //查询设备
         SmartDev smartDev = DataSupport.where("Uid=?", deviceUid).findFirst(SmartDev.class, true);
@@ -184,13 +180,11 @@ public class SmartLockManager implements LocalConnecteListener {
     }
 
     public boolean updateSmartDeviceGetway(GatwayDevice getwayDevice) {
-        Log.i(TAG, "更新智能设备所在的网关=start");
         currentSelectLock.setGetwayDevice(getwayDevice);
         boolean saveResult = currentSelectLock.save();
         Log.i(TAG, "更新智能设备所在的网关=" + saveResult);
         return saveResult;
     }
-
     public List<SmartDev> getAllLock() {
         List<SmartDev> locklist = DataSupport.where("Type = ?", DeviceTypeConstant.TYPE.TYPE_LOCK).find(SmartDev.class);
         Log.i(TAG, "门锁设备列表大小=" + locklist.size());

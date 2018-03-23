@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
+import android.support.v4.content.ContextCompat;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
@@ -135,6 +136,7 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
         @Override
         public void onServiceDisconnected(ComponentName name) {
         }
+
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             Log.i(TAG, "onServiceConnected");
@@ -161,7 +163,7 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
                     if (province.substring(province.length() - 1, province.length()).equals("省")) {
                         province = province.substring(0, province.length() - 1);
                     }
-                    textview_city.setText(city + "/" + district);
+                    textview_city.setText(/*city + "/" +*/ district);
                     initWaetherData();
                     sendRequestWithHttpClient(city);
                     break;
@@ -170,11 +172,9 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
                     break;
                 case MSG_SHOW_WEATHER_TEXT:
                     String temp = (String) msg.obj;
-                    try {
+                    if(temp!=null){
                         temp = temp.split("℃")[0];
                         textview_tempature.setText(temp);
-                    } catch (Exception e) {
-                        e.printStackTrace();
                     }
                     break;
                 case MSG_INIT_LOCATIONSERVICE:
@@ -216,6 +216,7 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
         }
     };
     private Handler mHandler = new WeakRefHandler(mCallback);
+
     public class MyLocationListener extends BDAbstractLocationListener {
         @Override
         public void onReceiveLocation(BDLocation location) {
@@ -229,8 +230,8 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
             district = location.getDistrict();    //获取区县
             // String street = location.getStreet();    //获取街道信息
             if (city != null && province != null) {
-                if(!(city + "/" + district).equalsIgnoreCase(locationStr)){
-                    Perfence.setPerfence(AppConstant.LOCATION_RECEIVED,city + "/" + district);
+                if (!(city + "/" + district).equalsIgnoreCase(locationStr)) {
+                    Perfence.setPerfence(AppConstant.LOCATION_RECEIVED,/* city + "/" +*/ district);
                     Message msg = Message.obtain();
                     msg.what = MSG_QUERY_WEATHER_PM25;
                     mHandler.sendMessage(msg);
@@ -239,6 +240,7 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
             }
         }
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -247,6 +249,7 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
         initDatas();
         initEvents();
     }
+
     /**
      * 获取pm2.5
      *
@@ -262,14 +265,14 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
                         if (response.code() == 200) {
                             JsonObject jsonObjectGson = response.body();
                             Gson gson = new Gson();
-                            Log.i(TAG,"weatherObject="+jsonObjectGson.toString());
+                            Log.i(TAG, "weatherObject=" + jsonObjectGson.toString());
                             HeWeather6 weatherObject = gson.fromJson(jsonObjectGson.toString(), HeWeather6.class);
 
                             try {
                                 //{"HeWeather6":[{"status":"no more requests"}]}
-                                if(!weatherObject.getInfoList().get(0).getStatus().equalsIgnoreCase("no more requests")){
-                                    if(!weatherObject.getInfoList().get(0).getAir_now_city().getPm25().equalsIgnoreCase(pm25)){
-                                        Perfence.setPerfence(AppConstant.PM25_VALUE,weatherObject.getInfoList().get(0).getAir_now_city().getPm25());
+                                if (!weatherObject.getInfoList().get(0).getStatus().equalsIgnoreCase("no more requests")) {
+                                    if (!weatherObject.getInfoList().get(0).getAir_now_city().getPm25().equalsIgnoreCase(pm25)) {
+                                        Perfence.setPerfence(AppConstant.PM25_VALUE, weatherObject.getInfoList().get(0).getAir_now_city().getPm25());
                                         Message message = new Message();
                                         message.what = MSG_SHOW_PM25_TEXT;
                                         message.obj = weatherObject.getInfoList().get(0).getAir_now_city().getPm25();
@@ -281,6 +284,7 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
                             }
                         }
                     }
+
                     @Override
                     public void onFailure(Call<JsonObject> call, Throwable t) {
 
@@ -303,9 +307,9 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
                             Gson gson = new Gson();
                             HeWeather6 weatherObject = gson.fromJson(jsonObjectGson.toString(), HeWeather6.class);
 
-                            if(! weatherObject.getInfoList().get(0).getStatus().equalsIgnoreCase("no more requests")){
-                                if(! weatherObject.getInfoList().get(0).getNow().getTmp().equalsIgnoreCase(tempature)){
-                                    Perfence.setPerfence(AppConstant.TEMPATURE_VALUE,weatherObject.getInfoList().get(0).getNow().getTmp());
+                            if (!weatherObject.getInfoList().get(0).getStatus().equalsIgnoreCase("no more requests")) {
+                                if (!weatherObject.getInfoList().get(0).getNow().getTmp().equalsIgnoreCase(tempature)) {
+                                    Perfence.setPerfence(AppConstant.TEMPATURE_VALUE, weatherObject.getInfoList().get(0).getNow().getTmp());
                                     Message message = new Message();
                                     message.what = MSG_SHOW_WEATHER_TEXT;
                                     message.obj = weatherObject.getInfoList().get(0).getNow().getTmp();
@@ -314,6 +318,7 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
                             }
                         }
                     }
+
                     @Override
                     public void onFailure(Call<JsonObject> call, Throwable t) {
 
@@ -323,16 +328,18 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
             }
         }).start();
     }
+
     private RoomListener mRoomListener;
+
     @Override
     protected void onResume() {
         super.onResume();
         isLogin = Perfence.getBooleanPerfence(AppConstant.USER_LOGIN);
         manager.addEventCallback(ec);
-        textview_home.setTextColor(getResources().getColor(R.color.room_type_text));
-        textview_device.setTextColor(getResources().getColor(R.color.line_clolor));
-        textview_room.setTextColor(getResources().getColor(R.color.line_clolor));
-        textview_mine.setTextColor(getResources().getColor(R.color.line_clolor));
+        textview_home.setTextColor(ContextCompat.getColor(this, R.color.room_type_text));
+        textview_device.setTextColor(ContextCompat.getColor(this, R.color.line_clolor));
+        textview_room.setTextColor(ContextCompat.getColor(this, R.color.line_clolor));
+        textview_mine.setTextColor(ContextCompat.getColor(this, R.color.line_clolor));
         imageview_home_page.setImageResource(R.drawable.checkthehome);
         imageview_devices.setImageResource(R.drawable.nocheckthedevice);
         imageview_rooms.setImageResource(R.drawable.nochecktheroom);
@@ -359,16 +366,16 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
         mDeviceManager.addDeviceListener(mDeviceListener);
         mRemoteControlManager.addRemoteControlListener(mRemoteControlListener);
         mRoomManager.addRoomListener(mRoomListener);
-        locationStr=Perfence.getPerfence(AppConstant.LOCATION_RECEIVED);
-        tempature=Perfence.getPerfence(AppConstant.TEMPATURE_VALUE);
-        pm25=Perfence.getPerfence(AppConstant.PM25_VALUE);
-        if(locationStr!=null){
+        locationStr = Perfence.getPerfence(AppConstant.LOCATION_RECEIVED);
+        tempature = Perfence.getPerfence(AppConstant.TEMPATURE_VALUE);
+        pm25 = Perfence.getPerfence(AppConstant.PM25_VALUE);
+        if (locationStr != null) {
             textview_city.setText(locationStr);
         }
-        if(tempature!=null){
+        if (tempature != null) {
             textview_tempature.setText(tempature);
         }
-        if(pm25!=null){
+        if (pm25 != null) {
             textview_pm25.setText(pm25);
         }
     }
@@ -383,7 +390,7 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
         int itemWidth = (int) (length * density);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                 gridviewWidth, LinearLayout.LayoutParams.MATCH_PARENT);
-        params.gravity = Gravity.CENTER_VERTICAL | Gravity.LEFT;
+        params.gravity = Gravity.CENTER_VERTICAL | Gravity.START;
         roomGridView.setLayoutParams(params); // 设置GirdView布局参数,横向布局的关键
         roomGridView.setColumnWidth(itemWidth); // 设置列表项宽
         roomGridView.setStretchMode(GridView.NO_STRETCH);
@@ -397,6 +404,7 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
         manager.removeEventCallback(ec);
         manager.onDestroy();
     }
+
     private void initDatas() {
         Intent bindIntent = new Intent(SmartHomeMainActivity.this, LocalConnectService.class);
         startService(bindIntent);
@@ -417,7 +425,7 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
         oneDevice.setDeviceName("智能网关");
         oneDevice.setOnline(true);
         mExperienceCenterDeviceList.add(oneDevice);
-        mExperienceCenterListAdapter = new ExperienceCenterListAdapter(this, mExperienceCenterDeviceList,true);
+        mExperienceCenterListAdapter = new ExperienceCenterListAdapter(this, mExperienceCenterDeviceList, true);
         listview_experience_center.setOnItemClickListener(mExperienceCenterListClickListener);
         DeplinkSDK.initSDK(getApplicationContext(), Perfence.SDK_APP_KEY);
         manager = DeplinkSDK.getSDKManager();
@@ -434,9 +442,6 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
                         Perfence.setPerfence(Perfence.PERFENCE_PHONE, user.getName());
                         Perfence.setPerfence(AppConstant.USER_LOGIN, true);
                         mRoomManager.updateRooms();
-                        Perfence.setContext(getApplicationContext());
-                        break;
-                    case CONNECTED:
                         break;
                 }
             }
@@ -476,7 +481,6 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
                 }).show();
             }
         };
-        Perfence.setContext(getApplicationContext());
         String phoneNumber = Perfence.getPerfence(Perfence.PERFENCE_PHONE);
         String password = Perfence.getPerfence(Perfence.USER_PASSWORD);
         Log.i(TAG, "phoneNumber=" + phoneNumber + "password=" + password);
@@ -488,9 +492,9 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
         layout_roomselect_changed_ype.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-                switch (motionEvent.getAction()){
+                switch (motionEvent.getAction()) {
                     case MotionEvent.ACTION_MOVE:
-                      return true;
+                        return true;
                     default:
                         break;
                 }
@@ -553,7 +557,7 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
                 mHandler.sendEmptyMessage(MSG_GET_VIRTUAL_DEVS_HTTPS);
             }
         };
-        mRoomListener=new RoomListener() {
+        mRoomListener = new RoomListener() {
             @Override
             public void responseQueryResultHttps(List<Room> result) {
                 super.responseQueryResultHttps(result);
@@ -592,10 +596,10 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
         dev.setTopic("device/" + devices.get(i).getUid() + "/sub");
         List<Room> rooms = new ArrayList<>();
         Room room = DataSupport.where("Uid=?", devices.get(i).getRoom_uid()).findFirst(Room.class);
-        if(room!=null){
+        if (room != null) {
             Log.i(TAG, "添加中继器房间是:" + room.toString());
             rooms.add(room);
-        }else{
+        } else {
             rooms.addAll(DataSupport.findAll(Room.class));
         }
         dev.setRoomList(rooms);

@@ -91,30 +91,29 @@ public class DevStatus {
             }
         }
     }
-
     public static void dealDataBackPacket(final BasicPacket packet) {
-            boolean find = false;
-            for (int i = 0; i < newDevs.size(); i++) {
-                OneDev xdev = newDevs.get(i);
-                if (xdev.mac == packet.mac) {
-                    find = true;
-                    break;
+        boolean find = false;
+        for (int i = 0; i < newDevs.size(); i++) {
+            OneDev xdev = newDevs.get(i);
+            Log.i(TAG, "device=" + xdev.toString());
+            if (xdev.mac == packet.mac) {
+                find = true;
+                break;
+            }
+        }
+        Log.i(TAG, "find=" + find);
+        if (!find) {
+            OneDev xdev = new OneDev(packet.mac, packet.type, packet.ver);
+            newDevs.add(xdev);
+            devs.addDevWithMac(packet.mac, packet.type, packet.ver);
+            Handler_Background.execute(new Runnable() {
+                @Override
+                public void run() {
+                    //获取设备列表
+                    EllESDK.findDeviceWithMac(packet.mac, packet.type, packet.ver);
                 }
-            }
-            Log.i(TAG,"find="+find);
-            if (!find) {
-                OneDev xdev = new OneDev(packet.mac, packet.type, packet.ver);
-                newDevs.add(xdev);
-                devs.addDevWithMac(packet.mac, packet.type, packet.ver);
-                Handler_Background.execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        //获取设备列表
-                        EllESDK.findDeviceWithMac(packet.mac, packet.type, packet.ver);
-                    }
-                }, 150);
-            }
-
+            }, 150);
+        }
         OneDev dev = devs.getOneDev(packet.mac);
         if (dev != null) {
             if (packet.isLocal) {
@@ -124,19 +123,21 @@ public class DevStatus {
             }
         }
     }
+
     public int delDevFromCommWithMac(long mac) {
         return devs.delDevFromCommWithMac(mac);
     }
+
     public void wifiCheckHandler() {
         long curtiem = PublicMethod.getTimeMs();
-            for (int i = 0; i < devs.devs.size(); i++) {
-                OneDev dev = devs.devs.get(i);
-                if (dev != null && (dev.getDevStatus(curtiem) != OneDev.ConnTypeLocal) && dev.remoteIP != null) {   //连接方式不等于本地的时候，就需要去远端查询
-                    GeneralPacket packet = new GeneralPacket(dev.remoteIP, dev.remotePort, mContext);
-                    packet.packCheckPacketWithDev(dev, false, null);
-                    udp.writeNet(packet);
-                }
+        for (int i = 0; i < devs.devs.size(); i++) {
+            OneDev dev = devs.devs.get(i);
+            if (dev != null && (dev.getDevStatus(curtiem) != OneDev.ConnTypeLocal) && dev.remoteIP != null) {   //连接方式不等于本地的时候，就需要去远端查询
+                GeneralPacket packet = new GeneralPacket(dev.remoteIP, dev.remotePort, mContext);
+                packet.packCheckPacketWithDev(dev, false, null);
+                udp.writeNet(packet);
             }
+        }
 
         GeneralPacket packet;
         try {
@@ -231,7 +232,7 @@ public class DevStatus {
 
     //得到设备的WiFi参数 -- 阻塞方式 -- 外部调用建议使用线程
     public WIFIData getDevWiFiConfigWithMac(long mac, byte type, byte ver) {
-        Log.i(TAG,"得到设备的WiFi参数");
+        Log.i(TAG, "得到设备的WiFi参数");
         WIFIData wifiData = null;
         OneDev dev = DevStatus.getOneDev(mac);
         int netStatus = dev.getDevStatus(PublicMethod.getTimeMs());

@@ -46,7 +46,6 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback,
     private MediaPlayer mediaPlayer;
     private boolean playBeep;
     private static final float BEEP_VOLUME = 0.10f;
-    private boolean vibrate = true;
     private int type = 0;
 
     @Override
@@ -150,15 +149,13 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback,
     };
 
     private void playBeepSoundAndVibrate() {
-        Log.i(TAG, "playBeepSoundAndVibrate playBeep=" + playBeep + "mediaPlayer!=null" + (mediaPlayer != null) + "vibrate" + vibrate);
+        Log.i(TAG, "playBeepSoundAndVibrate playBeep=" + playBeep + "mediaPlayer!=null" + (mediaPlayer != null));
         if (playBeep && mediaPlayer != null) {
             Log.i(TAG, "播放声音");
             mediaPlayer.start();
         }
-        if (vibrate) {
-            Vibrator vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
-            vibrator.vibrate(200L);
-        }
+        Vibrator vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
+        vibrator.vibrate(200L);
     }
 
     @Override
