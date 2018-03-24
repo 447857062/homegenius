@@ -394,20 +394,6 @@ public class DevicesActivity extends Activity implements View.OnClickListener, G
             mRoomManager.queryRooms();
             //查询门邻设备状态
             ellESDK.startSearchDevs();
-        }else{
-            new AlertDialog(DevicesActivity.this).builder().setTitle("账号登录")
-                    .setMsg("未登录,是否立即登录")
-                    .setPositiveButton("确认", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            startActivity(new Intent(DevicesActivity.this, LoginActivity.class));
-                        }
-                    }).setNegativeButton("取消", new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                }
-            }).show();
         }
         if (lastGetwayStatu == null) {
             lastGetwayStatu = "离线";
