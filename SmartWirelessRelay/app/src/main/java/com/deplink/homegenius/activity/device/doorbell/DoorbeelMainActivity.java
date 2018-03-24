@@ -268,7 +268,6 @@ public class DoorbeelMainActivity extends Activity implements View.OnClickListen
             Gson gson = new Gson();
             pushMessage = gson.fromJson(customContent, PushMessage.class);
             if (pushMessage != null) {
-
                 if (pushMessage.getFile() != null && !pushMessage.getFile().equalsIgnoreCase("")) {
                     SmartDev dbSmartDev = DataSupport.where("Uid = ?", pushMessage.getBell_uid()).findFirst(SmartDev.class, true);
                     if (dbSmartDev != null) {
@@ -299,9 +298,7 @@ public class DoorbeelMainActivity extends Activity implements View.OnClickListen
         } else {
             button_opendoor.setBackgroundResource(R.drawable.login_button_enable_background);
         }
-
     }
-
     private PushMessage pushMessage;
     private DeviceManager mDeviceManager;
 

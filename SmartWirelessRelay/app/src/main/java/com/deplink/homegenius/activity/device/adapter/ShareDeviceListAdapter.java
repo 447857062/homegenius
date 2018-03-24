@@ -2,6 +2,12 @@ package com.deplink.homegenius.activity.device.adapter;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -76,6 +82,7 @@ public class ShareDeviceListAdapter extends BaseAdapter {
         if(userimage.get(listTop.get(position).getUsername())==null){
             viewHolder.user_portrait.setImageDrawable(mContext.getResources().getDrawable(R.drawable.defaultavatar));
         }else{
+
             viewHolder.user_portrait.setImageBitmap(userimage.get(listTop.get(position).getUsername()));
         }
        String selfusername= Perfence.getPerfence(Perfence.PERFENCE_PHONE);

@@ -3,82 +3,117 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/transparent">
-
     <View
         android:id="@+id/view_mode_menu"
         android:layout_width="match_parent"
         android:layout_height="@dimen/layout_item_content_height" />
-
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="136dp"
         android:layout_below="@+id/view_mode_menu"
         android:layout_marginRight="@dimen/layout_content_margin_left_right">
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/nextmenu" />
-
+        <ImageView
+            android:id="@+id/imageview_angle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|right"
+            android:layout_marginRight="10dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/smalltriangle" />
         <RelativeLayout
+            android:layout_marginTop="4dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+            <RelativeLayout
+                android:id="@+id/layout_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/layout_item_content_height"
+                android:background="@drawable/menudialog_halfrectangle_button_top"
+                android:minHeight="@dimen/layout_item_content_height"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/textview_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="@dimen/layout_room_content_margin_top"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:text="编辑"
+                    android:textColor="@color/room_type_text"
+                    android:textSize="@dimen/text_size_small" />
 
-            <TextView
-                android:id="@+id/textview_edit"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/layout_room_content_margin_top"
-                android:gravity="center_horizontal|center_vertical"
-                android:text="编辑" />
+                <View
+                    android:id="@+id/view_line_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="@dimen/layout_room_content_margin_top"
+                    android:background="@color/seekbar_horiz" />
+            </RelativeLayout>
 
-            <View
-                android:layout_marginRight="5dp"
-                android:layout_marginLeft="5dp"
-                android:id="@+id/view_line_edit"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_below="@+id/textview_edit"
-                android:layout_marginTop="@dimen/layout_room_content_margin_top"
-                android:background="@color/huise"
-                 />
+            <RelativeLayout
+                android:id="@+id/layout_quicklearn"
+                android:layout_width="wrap_content"
+                android:layout_below="@+id/layout_edit"
+                android:layout_height="@dimen/layout_item_content_height"
+                android:background="@drawable/button_delete_background"
+                android:minHeight="@dimen/layout_item_content_height"
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/textview_quick_learn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/view_line_edit"
-                android:layout_marginTop="@dimen/layout_room_content_margin_top"
-                android:gravity="center_horizontal|center_vertical"
-                android:text="快速学习" />
+                <TextView
+                    android:id="@+id/textview_quick_learn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="@dimen/layout_room_content_margin_top"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:text="快速学习"
+                    android:textColor="@color/room_type_text"
+                    android:textSize="@dimen/text_size_small" />
 
-            <View
-                android:layout_marginRight="5dp"
-                android:layout_marginLeft="5dp"
-                android:id="@+id/view_line_quick_learn"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_below="@+id/textview_quick_learn"
-                android:layout_marginTop="@dimen/layout_room_content_margin_top"
-                android:background="@color/huise" />
+                <View
+                    android:id="@+id/view_line_quick_learn"
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="@dimen/layout_room_content_margin_top"
+                    android:background="@color/seekbar_horiz" />
+            </RelativeLayout>
 
-            <TextView
-                android:id="@+id/textview_hand_learn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/view_line_quick_learn"
-                android:layout_marginTop="@dimen/layout_room_content_margin_top"
-                android:gravity="center_horizontal|center_vertical"
-                android:text="手动学习" />
-            <View
-                android:id="@+id/view_line_hand_learn"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_below="@+id/textview_hand_learn"
-                android:layout_marginTop="@dimen/layout_room_content_margin_top"
-                android:background="@color/white" />
+            <RelativeLayout
+                android:id="@+id/layout_hand_learn"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/layout_item_content_height"
+                android:layout_below="@+id/layout_quicklearn"
+                android:background="@drawable/menudialog_halfrectangle_button_buttom"
+                android:minHeight="@dimen/layout_item_content_height"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textview_hand_learn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="@dimen/layout_room_content_margin_top"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:text="手动学习"
+                    android:textColor="@color/room_type_text"
+                    android:textSize="@dimen/text_size_small" />
+
+                <View
+                    android:id="@+id/view_line_hand_learn"
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="@dimen/layout_room_content_margin_top"
+                    android:background="@color/seekbar_horiz" />
+            </RelativeLayout>
         </RelativeLayout>
     </FrameLayout>
-
-
 </RelativeLayout>

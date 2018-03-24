@@ -84,8 +84,6 @@ import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import org.litepal.crud.DataSupport;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -197,23 +195,6 @@ public class DevicesActivity extends Activity implements View.OnClickListener, G
                     mHandler.post(new Runnable() {
                         @Override
                         public void run() {
-                            //排序,先处理网关设备
-                            Collections.sort(devices, new Comparator<Deviceprops>() {
-                                @Override
-                                public int compare(Deviceprops o1, Deviceprops o2) {
-                                    //compareTo就是比较两个值，如果前者大于后者，返回1，等于返回0，小于返回-1
-                                    if (o1.getDevice_type().equalsIgnoreCase(o2.getDevice_type())) {
-                                        return 0;
-                                    }
-                                    if (o1.getDevice_type().equalsIgnoreCase("LKSGW") && !o2.getDevice_type().equalsIgnoreCase("LKSGW")) {
-                                        return -1;
-                                    }
-                                    if (!o1.getDevice_type().equalsIgnoreCase("LKSGW") && o2.getDevice_type().equalsIgnoreCase("LKSGW")) {
-                                        return 1;
-                                    }
-                                    return 0;
-                                }
-                            });
                             updateDeviceOnlineStatu(devices);
                             notifyDeviceListView();
                         }

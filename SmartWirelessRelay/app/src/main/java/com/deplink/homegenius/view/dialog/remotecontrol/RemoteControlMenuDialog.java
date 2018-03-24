@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.deplink.homegenius.activity.device.remoteControl.EditRemoteDevicesActivity;
@@ -39,6 +40,9 @@ public class RemoteControlMenuDialog extends Dialog implements View.OnClickListe
     private TextView textview_edit;
     private TextView textview_quick_learn;
     private TextView textview_hand_learn;
+    private RelativeLayout layout_edit;
+    private RelativeLayout layout_quicklearn;
+    private RelativeLayout layout_hand_learn;
     private int currentType;
 
     public RemoteControlMenuDialog(Context context, int type) {
@@ -68,15 +72,18 @@ public class RemoteControlMenuDialog extends Dialog implements View.OnClickListe
         textview_edit = findViewById(R.id.textview_edit);
         textview_quick_learn = findViewById(R.id.textview_quick_learn);
         textview_hand_learn = findViewById(R.id.textview_hand_learn);
+        layout_edit = findViewById(R.id.layout_edit);
+        layout_quicklearn = findViewById(R.id.layout_quicklearn);
+        layout_hand_learn = findViewById(R.id.layout_hand_learn);
 
     }
 
 
     private void initEvent() {
         view_mode_menu.setOnClickListener(this);
-        textview_edit.setOnClickListener(this);
-        textview_quick_learn.setOnClickListener(this);
-        textview_hand_learn.setOnClickListener(this);
+        layout_edit.setOnClickListener(this);
+        layout_quicklearn.setOnClickListener(this);
+        layout_hand_learn.setOnClickListener(this);
     }
 
     private onLearnHandClickListener mLearnHandClickListener;
@@ -95,11 +102,11 @@ public class RemoteControlMenuDialog extends Dialog implements View.OnClickListe
             case R.id.view_mode_menu:
                 this.dismiss();
                 break;
-            case R.id.textview_hand_learn:
+            case R.id.layout_hand_learn:
                 mLearnHandClickListener.onLearnHandBtnClicked();
                 this.dismiss();
                 break;
-            case R.id.textview_quick_learn:
+            case R.id.layout_quicklearn:
                 this.dismiss();
                 Intent intent;
                 RemoteControlManager.getInstance().setCurrentActionIsAddDevice(false);
@@ -122,7 +129,7 @@ public class RemoteControlMenuDialog extends Dialog implements View.OnClickListe
                 }
 
                 break;
-            case R.id.textview_edit:
+            case R.id.layout_edit:
                 this.dismiss();
                 intent = new Intent(mContext, EditRemoteDevicesActivity.class);
                 switch (currentType){

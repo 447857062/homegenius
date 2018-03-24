@@ -163,7 +163,7 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
                     if (province.substring(province.length() - 1, province.length()).equals("省")) {
                         province = province.substring(0, province.length() - 1);
                     }
-                    textview_city.setText(/*city + "/" +*/ district);
+                    textview_city.setText(city /*+ "/" + district*/);
                     initWaetherData();
                     sendRequestWithHttpClient(city);
                     break;
@@ -230,8 +230,8 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
             district = location.getDistrict();    //获取区县
             // String street = location.getStreet();    //获取街道信息
             if (city != null && province != null) {
-                if (!(city + "/" + district).equalsIgnoreCase(locationStr)) {
-                    Perfence.setPerfence(AppConstant.LOCATION_RECEIVED,/* city + "/" +*/ district);
+                if (!(city /*+ "/" + district*/).equalsIgnoreCase(locationStr)) {
+                    Perfence.setPerfence(AppConstant.LOCATION_RECEIVED, city /*+ "/" + district*/);
                     Message msg = Message.obtain();
                     msg.what = MSG_QUERY_WEATHER_PM25;
                     mHandler.sendMessage(msg);

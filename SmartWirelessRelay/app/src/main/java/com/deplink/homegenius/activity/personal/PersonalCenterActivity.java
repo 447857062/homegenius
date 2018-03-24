@@ -23,7 +23,6 @@ import com.deplink.homegenius.activity.homepage.SmartHomeMainActivity;
 import com.deplink.homegenius.activity.personal.experienceCenter.ExperienceDevicesActivity;
 import com.deplink.homegenius.activity.personal.login.LoginActivity;
 import com.deplink.homegenius.activity.personal.softupdate.UpdateImmediateActivity;
-import com.deplink.homegenius.activity.personal.usrinfo.UserinfoActivity;
 import com.deplink.homegenius.activity.room.RoomActivity;
 import com.deplink.homegenius.application.AppManager;
 import com.deplink.homegenius.constant.AppConstant;
@@ -345,7 +344,7 @@ public class PersonalCenterActivity extends Activity implements View.OnClickList
                 startActivity(new Intent(this, RoomActivity.class));
                 break;
             case R.id.layout_user_info:
-                startActivity(new Intent(this, UserinfoActivity.class));
+                startActivity(new Intent(this, LoginActivity.class));
                 break;
             case R.id.layout_update_soft:
                 manager.queryAppUpdateInfo(Perfence.SDK_APP_KEY, APKVersionCodeUtils.getVerName(this));

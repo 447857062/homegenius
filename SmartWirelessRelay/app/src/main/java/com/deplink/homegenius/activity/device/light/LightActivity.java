@@ -137,6 +137,7 @@ public class LightActivity extends Activity implements View.OnClickListener, Sma
                 startActivity(new Intent(LightActivity.this, LightEditActivity.class));
             }
         });
+        layout_title.setEditTextWhiteColor();
         mSmartLightManager = SmartLightManager.getInstance();
         mSmartLightManager.InitSmartLightManager(this);
         DeplinkSDK.initSDK(getApplicationContext(), Perfence.SDK_APP_KEY);

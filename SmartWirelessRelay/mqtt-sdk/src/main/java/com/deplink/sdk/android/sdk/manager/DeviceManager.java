@@ -38,9 +38,7 @@ import retrofit2.Response;
  */
 public class DeviceManager implements MqttListener {
     private static final String TAG = "DeviceManager";
-    final static private String XML_FMT_NOTIFY_DEVICE = "xmlNotifyDevice";
     final static private String XML_FMT_IMAGE_UPGRADE = "xmlImageUpgrade";
-
     private SDKCoordinator mSDKCoordinator = null;
     LinkedHashMap<String, BaseDevice> mDeviceMap = new LinkedHashMap<>();
     LinkedHashMap<String, BaseDevice> mDeviceTopics = new LinkedHashMap<>();

@@ -199,7 +199,6 @@ public class DoorbeelManager {
                         e.printStackTrace();
                     }
                 }
-                Log.i(TAG,""+response.code());
                 if(response.code()==200){
                     for (int i = 0; i < mDeviceListenerList.size(); i++) {
                         Log.i(TAG,"getDoorBellImage");

@@ -207,7 +207,6 @@ public class DeviceManager implements LocalConnecteListener {
             }
         });
     }
-
     public void addDeviceHttp(DeviceAddBody device) {
         String userName = Perfence.getPerfence(Perfence.PERFENCE_PHONE);
         if (userName.equals("")) {

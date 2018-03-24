@@ -113,6 +113,12 @@ public class TitleLayout extends LinearLayout implements View.OnClickListener {
         }
 
     }
+    public void setEditTextWhiteColor(){
+        if(textview_edit!=null){
+            textview_edit.setTextColor(ContextCompat.getColor(getContext(),R.color.white));
+        }
+
+    }
     public void setBackImageResource(int  res){
         if(imageview_back!=null){
             imageview_back.setImageResource(res);

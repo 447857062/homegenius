@@ -166,7 +166,6 @@ public class ShareDeviceActivity extends Activity  {
             }
         });
     }
-
     @Override
     protected void onResume() {
         super.onResume();
