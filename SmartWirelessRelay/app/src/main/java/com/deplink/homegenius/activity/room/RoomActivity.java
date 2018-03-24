@@ -179,21 +179,6 @@ public class RoomActivity extends Activity implements View.OnClickListener {
         super.onResume();
         initButtomBar();
         isUserLogin = Perfence.getBooleanPerfence(AppConstant.USER_LOGIN);
-        if(!isUserLogin){
-            new AlertDialog(RoomActivity.this).builder().setTitle("账号登录")
-                    .setMsg("未登录,是否立即登录")
-                    .setPositiveButton("确认", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            startActivity(new Intent(RoomActivity.this, LoginActivity.class));
-                        }
-                    }).setNegativeButton("取消", new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                }
-            }).show();
-        }
         manager.addEventCallback(ec);
         mRoomManager.addRoomListener(mRoomListener);
         imageview_personal_center.setImageResource(R.drawable.nocheckthemine);
