@@ -161,7 +161,7 @@ public class DevicesActivity extends Activity implements View.OnClickListener, G
     private SmartDev currentLockDev;
     private SmartDev currentRemotecontrolDev;
     private String lastSwitchState;
-    private String lastremoteControlState;
+    private String lastremoteControlState="离线";
     private String lastRouterStatu;
     private String lastGetwayStatu;
     private SmartSwitchListener mSmartSwitchListener;
@@ -321,9 +321,6 @@ public class DevicesActivity extends Activity implements View.OnClickListener, G
                     if (currentRemotecontrolDev != null) {
                         mRemoteControlManager.setmSelectRemoteControlDevice(currentRemotecontrolDev);
                         mRemoteControlManager.queryStatu();
-                        if (lastremoteControlState == null) {
-                            lastremoteControlState = "离线";
-                        }
                         if (lastremoteControlState.equalsIgnoreCase("在线")) {
                             if (!gatwayAvailable()) {
                                 lastremoteControlState = "离线";
@@ -397,6 +394,20 @@ public class DevicesActivity extends Activity implements View.OnClickListener, G
             mRoomManager.queryRooms();
             //查询门邻设备状态
             ellESDK.startSearchDevs();
+        }else{
+            new AlertDialog(DevicesActivity.this).builder().setTitle("账号登录")
+                    .setMsg("未登录,是否立即登录")
+                    .setPositiveButton("确认", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            startActivity(new Intent(DevicesActivity.this, LoginActivity.class));
+                        }
+                    }).setNegativeButton("取消", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            }).show();
         }
         if (lastGetwayStatu == null) {
             lastGetwayStatu = "离线";

@@ -15,6 +15,7 @@ import com.deplink.homegenius.activity.device.adapter.AddDeviceTypeSelectAdapter
 import com.deplink.homegenius.activity.device.doorbell.add.WifipasswordInputActivity;
 import com.deplink.homegenius.activity.device.smartSwitch.add.SelectSwitchTypeActivity;
 import com.deplink.homegenius.activity.personal.login.LoginActivity;
+import com.deplink.homegenius.activity.room.RoomActivity;
 import com.deplink.homegenius.constant.AppConstant;
 import com.deplink.homegenius.constant.DeviceTypeConstant;
 import com.deplink.homegenius.manager.device.doorbeel.DoorbeelManager;
@@ -205,7 +206,19 @@ public class AddDeviceQRcodeActivity extends Activity implements AdapterView.OnI
                     break;
             }
         }else{
-            ToastSingleShow.showText(AddDeviceQRcodeActivity.this,"未登录,登录后操作");
+            new AlertDialog(AddDeviceQRcodeActivity.this).builder().setTitle("账号登录")
+                    .setMsg("未登录,是否立即登录")
+                    .setPositiveButton("确认", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            startActivity(new Intent(AddDeviceQRcodeActivity.this, LoginActivity.class));
+                        }
+                    }).setNegativeButton("取消", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            }).show();
         }
     }
 
@@ -227,7 +240,19 @@ public class AddDeviceQRcodeActivity extends Activity implements AdapterView.OnI
                     intentQrcodeSn.putExtra("requestType", REQUEST_CODE_DEVICE_QRCODE);
                     startActivityForResult(intentQrcodeSn, REQUEST_CODE_DEVICE_QRCODE);
                 }else{
-                    ToastSingleShow.showText(AddDeviceQRcodeActivity.this,"未登录,登录后操作");
+                    new AlertDialog(AddDeviceQRcodeActivity.this).builder().setTitle("账号登录")
+                            .setMsg("未登录,是否立即登录")
+                            .setPositiveButton("确认", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    startActivity(new Intent(AddDeviceQRcodeActivity.this, LoginActivity.class));
+                                }
+                            }).setNegativeButton("取消", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                        }
+                    }).show();
                 }
 
                 break;

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -151,7 +152,24 @@ public class RoomActivity extends Activity implements View.OnClickListener {
         layout_title.setEditImageClickListener(new TitleLayout.EditImageClickListener() {
             @Override
             public void onEditImagePressed() {
-                startActivity(new Intent(RoomActivity.this, AddRommActivity.class));
+                if(isUserLogin){
+                    startActivity(new Intent(RoomActivity.this, AddRommActivity.class));
+                }else{
+                    new AlertDialog(RoomActivity.this).builder().setTitle("账号登录")
+                            .setMsg("未登录,是否立即登录")
+                            .setPositiveButton("确认", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    startActivity(new Intent(RoomActivity.this, LoginActivity.class));
+                                }
+                            }).setNegativeButton("取消", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                        }
+                    }).show();
+                }
+
             }
         });
         mRoomManager = RoomManager.getInstance();
@@ -173,6 +191,21 @@ public class RoomActivity extends Activity implements View.OnClickListener {
         super.onResume();
         initButtomBar();
         isUserLogin = Perfence.getBooleanPerfence(AppConstant.USER_LOGIN);
+        if(!isUserLogin){
+            new AlertDialog(RoomActivity.this).builder().setTitle("账号登录")
+                    .setMsg("未登录,是否立即登录")
+                    .setPositiveButton("确认", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            startActivity(new Intent(RoomActivity.this, LoginActivity.class));
+                        }
+                    }).setNegativeButton("取消", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            }).show();
+        }
         manager.addEventCallback(ec);
         mRoomManager.addRoomListener(mRoomListener);
         imageview_personal_center.setImageResource(R.drawable.nocheckthemine);
@@ -187,10 +220,10 @@ public class RoomActivity extends Activity implements View.OnClickListener {
      * 初始化底部的导航栏
      */
     private void initButtomBar() {
-        textview_home.setTextColor(getResources().getColor(R.color.line_clolor));
-        textview_device.setTextColor(getResources().getColor(R.color.line_clolor));
-        textview_room.setTextColor(getResources().getColor(R.color.room_type_text));
-        textview_mine.setTextColor(getResources().getColor(R.color.line_clolor));
+        textview_home.setTextColor(ContextCompat.getColor(this,R.color.line_clolor));
+        textview_device.setTextColor(ContextCompat.getColor(this,R.color.line_clolor));
+        textview_room.setTextColor(ContextCompat.getColor(this,R.color.room_type_text));
+        textview_mine.setTextColor(ContextCompat.getColor(this,R.color.line_clolor));
         imageview_home_page.setImageResource(R.drawable.nocheckthehome);
         imageview_devices.setImageResource(R.drawable.nocheckthedevice);
         imageview_rooms.setImageResource(R.drawable.checktheroom);

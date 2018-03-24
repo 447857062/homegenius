@@ -123,7 +123,6 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
     private boolean isLogin;
     private String province;
     private String city;
-    private String district;
     private DeviceListener mDeviceListener;
     private RemoteControlListener mRemoteControlListener;
     private DeviceManager mDeviceManager;
@@ -227,16 +226,13 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
             // String country = location.getCountry();    //获取国家
             province = location.getProvince();    //获取省份
             city = location.getCity();    //获取城市
-            district = location.getDistrict();    //获取区县
-            // String street = location.getStreet();    //获取街道信息
             if (city != null && province != null) {
-                if (!(city /*+ "/" + district*/).equalsIgnoreCase(locationStr)) {
-                    Perfence.setPerfence(AppConstant.LOCATION_RECEIVED, city /*+ "/" + district*/);
+                if (!(city).equalsIgnoreCase(locationStr)) {
+                    Perfence.setPerfence(AppConstant.LOCATION_RECEIVED, city );
                     Message msg = Message.obtain();
                     msg.what = MSG_QUERY_WEATHER_PM25;
                     mHandler.sendMessage(msg);
                 }
-
             }
         }
     }
@@ -487,6 +483,22 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
         if (!password.equals("")) {
             Perfence.setPerfence(AppConstant.USER_LOGIN, false);
             manager.login(phoneNumber, password);
+        }else{
+            if(phoneNumber.equalsIgnoreCase("")){
+                new AlertDialog(SmartHomeMainActivity.this).builder().setTitle("账号登录")
+                        .setMsg("未登录,是否立即登录")
+                        .setPositiveButton("确认", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                startActivity(new Intent(SmartHomeMainActivity.this, LoginActivity.class));
+                            }
+                        }).setNegativeButton("取消", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                }).show();
+            }
         }
         initListener();
         layout_roomselect_changed_ype.setOnTouchListener(new View.OnTouchListener() {
