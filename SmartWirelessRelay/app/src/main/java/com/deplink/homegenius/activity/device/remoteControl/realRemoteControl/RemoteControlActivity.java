@@ -57,7 +57,6 @@ import deplink.com.smartwirelessrelay.homegenius.EllESDK.R;
 public class RemoteControlActivity extends Activity implements View.OnClickListener {
     private static final String TAG = "RemoteControlActivity";
     private RemoteControlManager mRemoteControlManager;
-    private GetwaySelectListAdapter selectGetwayAdapter;
     private List<GatwayDevice> mGetways;
     private ListView listview_select_getway;
     private RelativeLayout layout_getway_list;
@@ -131,7 +130,7 @@ public class RemoteControlActivity extends Activity implements View.OnClickListe
         mRemoteControlManager.InitRemoteControlManager(this);
         mGetways = new ArrayList<>();
         mGetways.addAll(GetwayManager.getInstance().getAllGetwayDevice());
-        selectGetwayAdapter = new GetwaySelectListAdapter(this, mGetways);
+        GetwaySelectListAdapter selectGetwayAdapter = new GetwaySelectListAdapter(this, mGetways);
         listview_select_getway.setAdapter(selectGetwayAdapter);
         listview_select_getway.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -281,13 +280,13 @@ public class RemoteControlActivity extends Activity implements View.OnClickListe
     protected void onPause() {
         super.onPause();
         manager.removeEventCallback(ec);
-        mDeviceManager.removeDeviceListener(mDeviceListener);
+        mDeviceManager.onPause(mDeviceListener);
     }
     @Override
     protected void onResume() {
         super.onResume();
         manager.addEventCallback(ec);
-        mDeviceManager.addDeviceListener(mDeviceListener);
+        mDeviceManager.onResume(mDeviceListener);
         isLogin = Perfence.getBooleanPerfence(AppConstant.USER_LOGIN);
         deviceName = edittext_input_devie_name.getText().toString();
         if (!isStartFromExperience) {
@@ -295,12 +294,12 @@ public class RemoteControlActivity extends Activity implements View.OnClickListe
                 deviceUid=mRemoteControlManager.getmSelectRemoteControlDevice().getUid();
                 SmartDev smartDev = DataSupport.where("Uid=?", deviceUid).findFirst(SmartDev.class, true);
                 if (smartDev.getRooms() == null) {
-                    textview_select_room_name.setText("全部");
+                    textview_select_room_name.setText("未选择");
                 } else {
                     if (smartDev.getRooms().size() == 1) {
                         textview_select_room_name.setText(smartDev.getRooms().get(0).getRoomName());
                     } else {
-                        textview_select_room_name.setText("全部");
+                        textview_select_room_name.setText("未选择");
                     }
                 }
                 GatwayDevice temp = smartDev.getGetwayDevice();
@@ -324,7 +323,7 @@ public class RemoteControlActivity extends Activity implements View.OnClickListe
             mRemoteControlManager.queryStatu();
         } else {
             if (!isOnActivityResult) {
-                textview_select_room_name.setText("全部");
+                textview_select_room_name.setText("未选择");
             }
             textview_select_getway_name.setText("未设置网关");
             edittext_input_devie_name.setText("我家的遥控器");

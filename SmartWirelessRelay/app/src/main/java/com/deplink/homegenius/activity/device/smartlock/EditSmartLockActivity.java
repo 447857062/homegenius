@@ -375,7 +375,7 @@ public class EditSmartLockActivity extends Activity implements View.OnClickListe
                 if (mSmartLockManager.getCurrentSelectLock().getRooms().size() == 1) {
                     textview_select_room_name.setText(mSmartLockManager.getCurrentSelectLock().getRooms().get(0).getRoomName());
                 } else {
-                    textview_select_room_name.setText("全部");
+                    textview_select_room_name.setText("未选择");
                 }
                 SmartDev smartDev = DataSupport.where("Uid=?", mSmartLockManager.getCurrentSelectLock().getUid()).findFirst(SmartDev.class, true);
                 GatwayDevice temp = smartDev.getGetwayDevice();
@@ -391,14 +391,14 @@ public class EditSmartLockActivity extends Activity implements View.OnClickListe
                 }
             }
         }
-        mDeviceManager.addDeviceListener(mDeviceListener);
+        mDeviceManager.onResume(mDeviceListener);
         manager.addEventCallback(ec);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        mDeviceManager.removeDeviceListener(mDeviceListener);
+        mDeviceManager.onPause(mDeviceListener);
         manager.removeEventCallback(ec);
     }
 

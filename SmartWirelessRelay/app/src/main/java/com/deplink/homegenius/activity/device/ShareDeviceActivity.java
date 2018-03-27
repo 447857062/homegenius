@@ -171,7 +171,7 @@ public class ShareDeviceActivity extends Activity  {
         super.onResume();
         isStartFromExperience = mDeviceManager.isStartFromExperience();
         isUserLogin = Perfence.getBooleanPerfence(AppConstant.USER_LOGIN);
-        mDeviceManager.addDeviceListener(mDeviceListener);
+        mDeviceManager.onResume(mDeviceListener);
         manager.addEventCallback(ec);
         if (!isStartFromExperience) {
             if (isUserLogin) {
@@ -183,7 +183,7 @@ public class ShareDeviceActivity extends Activity  {
     @Override
     protected void onPause() {
         super.onPause();
-        mDeviceManager.removeDeviceListener(mDeviceListener);
+        mDeviceManager.onPause(mDeviceListener);
         manager.removeEventCallback(ec);
         userInfos.clear();
     }

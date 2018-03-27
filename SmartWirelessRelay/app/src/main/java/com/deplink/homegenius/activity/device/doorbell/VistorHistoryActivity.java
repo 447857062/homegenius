@@ -49,7 +49,6 @@ import java.util.List;
 import deplink.com.smartwirelessrelay.homegenius.EllESDK.R;
 
     public class VistorHistoryActivity extends Activity {
-        private static final String TAG = "VistorHistoryActivity";
         private DoorbeelManager mDoorbeelManager;
         private SwipeMenuListView listview_vistor_list;
         private boolean isStartFromExperience;

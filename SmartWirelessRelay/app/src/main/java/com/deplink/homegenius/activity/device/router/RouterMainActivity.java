@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.Settings;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -202,8 +203,8 @@ public class RouterMainActivity extends Activity implements View.OnClickListener
         }
         frame_blacklist_content.setVisibility(View.GONE);
         frame_devicelist_content_content.setVisibility(View.VISIBLE);
-        textview_connected_devices.setTextColor(getResources().getColor(R.color.white));
-        textview_blak_list.setTextColor(getResources().getColor(R.color.huise));
+        textview_connected_devices.setTextColor(ContextCompat.getColor(this,R.color.white));
+        textview_blak_list.setTextColor(ContextCompat.getColor(this,R.color.huise));
         layout_connected_devices.setBackgroundResource(R.color.huise);
         layout_blak_list.setBackgroundResource(R.color.white);
     }

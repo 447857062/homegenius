@@ -95,7 +95,7 @@ public class UdpPacket implements OnRecvLocalConnectIpListener {
                 try {
                     for (int i = 0; i < sendNetPakcetList.size(); i++) {
                         BasicPacket tmp = sendNetPakcetList.get(i);
-                        if (tmp.ip != null) {
+                        if (tmp.ip != null && tmp.data!=null) {
                             netUdp.sendData(tmp.getUdpData());
                             delOneSendPacket(sendNetPakcetList, tmp);
                         }

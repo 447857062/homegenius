@@ -14,7 +14,6 @@ import android.widget.TextView;
 
 import com.deplink.homegenius.Protocol.json.http.QueryBandResponse;
 import com.deplink.homegenius.activity.device.remoteControl.RemoteControlQuickLearnActivity;
-import com.deplink.homegenius.activity.device.remoteControl.topBox.AddTopBoxActivity;
 import com.deplink.homegenius.manager.connect.remote.https.RestfulTools;
 import com.deplink.homegenius.view.combinationwidget.TitleLayout;
 import com.deplink.homegenius.view.edittext.ClearEditText;
@@ -39,7 +38,6 @@ public class AddTvDeviceActivity extends Activity implements AdapterView.OnItemC
     private SideBar sideBar;
     private TextView dialog;
     private SortAdapter adapter;
-    private ClearEditText edittext_band_name;
     private CharacterParser characterParser;
     private List<SortModel> SourceDateList = new ArrayList<>();
     private PinyinComparator pinyinComparator;
@@ -74,7 +72,7 @@ public class AddTvDeviceActivity extends Activity implements AdapterView.OnItemC
 
     private void initEvents() {
         listview_band.setOnItemClickListener(this);
-        edittext_band_name = findViewById(R.id.edittext_band_name);
+        ClearEditText edittext_band_name = findViewById(R.id.edittext_band_name);
         sideBar.setOnTouchingLetterChangedListener(new SideBar.OnTouchingLetterChangedListener() {
 
             @Override
@@ -136,7 +134,7 @@ public class AddTvDeviceActivity extends Activity implements AdapterView.OnItemC
         startActivity(intent);
     }
     private List<SortModel> filledData(List<String> date) {
-        List<SortModel> mSortList = new ArrayList<SortModel>();
+        List<SortModel> mSortList = new ArrayList<>();
 
         for (int i = 0; i < date.size(); i++) {
             SortModel sortModel = new SortModel();
@@ -157,7 +155,7 @@ public class AddTvDeviceActivity extends Activity implements AdapterView.OnItemC
 
 
     private void filterData(String filterStr) {
-        List<SortModel> filterDateList = new ArrayList<SortModel>();
+        List<SortModel> filterDateList = new ArrayList<>();
 
         if (TextUtils.isEmpty(filterStr)) {
             filterDateList = SourceDateList;

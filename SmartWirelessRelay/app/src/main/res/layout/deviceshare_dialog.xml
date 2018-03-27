@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:alpha="1"
-    android:background="@drawable/radius8_bg_white_layout_background">
+    android:background="@drawable/radius4_bg_white_layout_background">
 
     <TextView
         android:id="@+id/textview_unbind_device_type"

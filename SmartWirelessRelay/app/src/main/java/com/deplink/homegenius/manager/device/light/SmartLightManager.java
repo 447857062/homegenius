@@ -139,20 +139,15 @@ public class SmartLightManager implements LocalConnecteListener {
         } else {
 
             String uuid = Perfence.getPerfence(AppConstant.PERFENCE_BIND_APP_UUID);
-            GatwayDevice device = currentSelectLight.getGetwayDevice();
-            if (device == null) {
-                device = DataSupport.where("Status = ?", "在线").findFirst(GatwayDevice.class);
-            }
-            if(device==null){
-                device= DataSupport.findFirst(GatwayDevice.class);
-            }
-            if (device != null && device.getTopic() != null && !device.getTopic().equals("")) {
-                Log.i(TAG, "device.getTopic()=" + device.getTopic());
-                mHomeGenius.setSmartLightSwitch(currentSelectLight, device.getTopic(), uuid, cmd);
+            List<GatwayDevice> devices = DataSupport.findAll(GatwayDevice.class);
+            for(int i=0;i<devices.size();i++){
+                if(devices.get(i).getTopic()!=null && !devices.get(i).getTopic().equals("")){
+
+                    Log.i(TAG, "device.getTopic()=" + devices.get(i).getTopic());
+                    mHomeGenius.setSmartLightSwitch(currentSelectLight, devices.get(i).getTopic(), uuid, cmd);
+                }
             }
         }
-
-
     }
 
     public void setSmartLightParamas(String cmd, int yellow, int white) {
@@ -176,18 +171,14 @@ public class SmartLightManager implements LocalConnecteListener {
         } else {
 
             String uuid = Perfence.getPerfence(AppConstant.PERFENCE_BIND_APP_UUID);
-            GatwayDevice device = currentSelectLight.getGetwayDevice();
-            if (device == null) {
-                device = DataSupport.where("Status = ?", "在线").findFirst(GatwayDevice.class);
-            }
-            if(device==null){
-                device= DataSupport.findFirst(GatwayDevice.class);
-            }
-            if (device != null && device.getTopic() != null && !device.getTopic().equals("")) {
-                Log.i(TAG, "device.getTopic()=" + device.getTopic());
-                mHomeGenius.setSmartLightParamas(currentSelectLight, device.getTopic(), uuid, cmd, yellow, white);
-            }
+            List<GatwayDevice> devices = DataSupport.findAll(GatwayDevice.class);
+            for(int i=0;i<devices.size();i++){
+                if(devices.get(i).getTopic()!=null && !devices.get(i).getTopic().equals("")){
 
+                    Log.i(TAG, "device.getTopic()=" + devices.get(i).getTopic());
+                    mHomeGenius.setSmartLightParamas(currentSelectLight, devices.get(i).getTopic(), uuid, cmd, yellow, white);
+                }
+            }
         }
     }
 
@@ -209,22 +200,14 @@ public class SmartLightManager implements LocalConnecteListener {
                 }
             });
         } else {
-
             String uuid = Perfence.getPerfence(AppConstant.PERFENCE_BIND_APP_UUID);
-            GatwayDevice device = currentSelectLight.getGetwayDevice();
-            if (device == null) {
-                device = DataSupport.where("Status = ?", "在线").findFirst(GatwayDevice.class);
-            }
-            if(device==null){
-                device= DataSupport.findFirst(GatwayDevice.class);
-            }
-            if (device != null) {
-                if (device.getTopic() != null && !device.getTopic().equals("")) {
-                    Log.i(TAG, "device.getTopic()=" + device.getTopic());
-                    mHomeGenius.queryLightStatus(currentSelectLight, device.getTopic(), uuid);
+            List<GatwayDevice> devices = DataSupport.findAll(GatwayDevice.class);
+            for(int i=0;i<devices.size();i++){
+                if(devices.get(i).getTopic()!=null && !devices.get(i).getTopic().equals("")){
+                    Log.i(TAG, "device.getTopic()=" + devices.get(i).getTopic());
+                    mHomeGenius.queryLightStatus(currentSelectLight, devices.get(i).getTopic(), uuid);
                 }
             }
-
         }
 
     }

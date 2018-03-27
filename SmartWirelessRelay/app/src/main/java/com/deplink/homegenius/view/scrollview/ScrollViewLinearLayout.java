@@ -20,22 +20,21 @@ public class ScrollViewLinearLayout extends LinearLayout implements View.OnTouch
 
     public ScrollViewLinearLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
-
         setClickable(true);
         setLongClickable(true);
         mScroller = new Scroller(context);
 
     }
 
-    protected void smoothScrollBy(int dx, int dy) {
+    protected void smoothScrollBy( int dy) {
 //设置mScroller的滚动偏移量
         mScroller.startScroll(0, mScroller.getFinalY(), 0, dy);
         invalidate();//这里必须调用invalidate()才能保证computeScroll()会被调用，否则不一定会刷新界面，看不到滚动效果
     }
 
-    protected void smoothScrollTo(int fx, int fy) {
+    protected void smoothScrollTo(int fy) {
         int dy = fy - mScroller.getFinalY();
-        smoothScrollBy(0, dy);
+        smoothScrollBy( dy);
     }
 
 
@@ -74,17 +73,17 @@ public class ScrollViewLinearLayout extends LinearLayout implements View.OnTouch
                 int height = v.getHeight();
                 int scrollViewMeasuredHeight = sv.getChildAt(0).getMeasuredHeight();
                 if (y2 - y1 > 0 && v.getScrollY() <= 0) {//头部回弹效果
-                    smoothScrollTo(0, -(int) ((y2 - y1) / 2));
+                    smoothScrollTo( -(int) ((y2 - y1) / 2));
                     return false;
                 }
 
                 if (y2 - y1 < 0 && (scrollY + height) == scrollViewMeasuredHeight) {//底部回弹效果
-                    smoothScrollTo(0, -(int) ((y2 - y1) / 2));
+                    smoothScrollTo( -(int) ((y2 - y1) / 2));
                     return false;
                 }
                 break;
             case MotionEvent.ACTION_UP:
-                smoothScrollTo(0, 0);//松开手指，自动回滚
+                smoothScrollTo( 0);//松开手指，自动回滚
                 if(mOnRefreshListener!=null){
                     mOnRefreshListener.onRefresh();
                 }

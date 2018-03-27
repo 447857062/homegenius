@@ -48,6 +48,7 @@ public class SDKManager {
     public void addEventCallback(EventCallback callback) {
         //用户添加的回调对象不能为空并且不能重复添加
         if (callback != null && !eventCallbackList.contains(callback)) {
+            Log.i(TAG,"addEventCallback:"+callback.toString());
             eventCallbackList.add(callback);
         }
     }
@@ -83,15 +84,6 @@ public class SDKManager {
     public void login(String username, String password) {
         mUserManager.login(username, password);
     }
-    /**
-     * 用户登录后修改密码
-     *
-     * @param password
-     * @param passwordNew
-     */
-    public void loginedAlertPassword(String password, String passwordNew) {
-        mUserManager.loginedAlertPassword(password, passwordNew);
-    }
 
     /**
      * 上传头像
@@ -107,13 +99,6 @@ public class SDKManager {
      */
     public void getImage(String username) {
         mUserManager.getImage(username);
-    }
-
-    public String getBindedDeviceName() {
-        if (mUserManager != null) {
-            return mUserManager.getBindedDeviceName();
-        }
-        return "";
     }
 
     /**
@@ -148,26 +133,6 @@ public class SDKManager {
      */
     public void resetPassword(String username, String password, String verifyCode) {
         mUserManager.userResetPassword(username, password, verifyCode);
-    }
-
-
-
-    /**
-     * 绑定设备
-     *
-     * @param deviceSn
-     */
-    public void bindDevice(String deviceSn) {
-        mUserManager.bindDevice(deviceSn);
-    }
-
-    /**
-     * 解除设备绑定
-     *
-     * @param device
-     */
-    public void unbindDevice(BaseDevice device) {
-        mUserManager.unbindDevice(device);
     }
 
     /**
@@ -262,7 +227,6 @@ public class SDKManager {
     private class Coordinator implements SDKCoordinator {
         @Override
         public void afterLogin() {
-          //  mDeviceManager.getDeviceBinding();
         }
 
         @Override
@@ -270,17 +234,6 @@ public class SDKManager {
             MQTTController.getSingleton().onDestroy();
             mDeviceManager.cleanup();
         }
-
-        @Override
-        public void afterDeviceBinding() {
-          //  mDeviceManager.getDeviceBinding();
-        }
-
-        @Override
-        public void afterDeviceUnbinding() {
-          //  mDeviceManager.getDeviceBinding();
-        }
-
         @Override
         public UserSession getUserSession() {
             if (mUserManager != null) {

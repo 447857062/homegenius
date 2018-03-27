@@ -44,8 +44,8 @@
                         android:layout_centerVertical="true"
                         android:layout_alignParentLeft="true"
                         android:src="@drawable/defaultavatar"
-                        app:border_color="@color/white_alpha60"
-                        app:border_width="2dp" />
+                        app:border_color="@color/line_dirver_color"
+                        app:border_width="1px" />
 
                     <TextView
                         android:layout_marginLeft="15dp"

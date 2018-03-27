@@ -55,12 +55,12 @@ public class WifipasswordInputActivity extends Activity implements View.OnClickL
         layout_title= findViewById(R.id.layout_title);
         edittext_wifi_password= findViewById(R.id.edittext_wifi_password);
     }
-    private  String wifiPassword;
+
     @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.button_next_step:
-                wifiPassword=edittext_wifi_password.getText().toString();
+                String wifiPassword = edittext_wifi_password.getText().toString();
                 if(wifiPassword.length()<8){
                     ToastSingleShow.showText(this,"请输入正确的wifi密码");
                     return;

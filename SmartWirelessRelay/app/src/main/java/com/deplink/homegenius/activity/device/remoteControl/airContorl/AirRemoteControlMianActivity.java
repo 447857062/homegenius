@@ -76,7 +76,6 @@ public class AirRemoteControlMianActivity extends Activity implements View.OnCli
     private int tempature;
     private int power;
     private TitleLayout layout_title;
-    private TextView textview_tempature_unit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -501,7 +500,6 @@ public class AirRemoteControlMianActivity extends Activity implements View.OnCli
         imageview_temperature_plus = findViewById(R.id.imageview_temperature_plus);
         layout_top_content = findViewById(R.id.layout_top_content);
         layout_title = findViewById(R.id.layout_title);
-        textview_tempature_unit = findViewById(R.id.textview_tempature_unit);
     }
 
     private byte[] data;

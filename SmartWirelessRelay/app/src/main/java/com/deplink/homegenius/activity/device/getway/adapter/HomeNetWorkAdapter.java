@@ -17,15 +17,11 @@ import java.util.List;
 
 import deplink.com.smartwirelessrelay.homegenius.EllESDK.R;
 
-/**
- * @author frankLi
- */
 public class HomeNetWorkAdapter extends BaseAdapter {
     private static final String TAG = "HomeNetWorkAdapter";
     private List<GatwayDevice> listTop = null;
     private List<SmartDev> listBottom = null;
     private Context mContext;
-    private final int TOP_ITEM = 0, BOTTOM_ITEM = 1, TYPE_COUNT = 2;
     /**
      * 头部列表数据的大小
      */
@@ -98,6 +94,7 @@ public class HomeNetWorkAdapter extends BaseAdapter {
      */
     @Override
     public int getViewTypeCount() {
+        int TYPE_COUNT = 2;
         return TYPE_COUNT;
     }
 
@@ -108,6 +105,8 @@ public class HomeNetWorkAdapter extends BaseAdapter {
      **/
     @Override
     public int getItemViewType(int position) {
+        int TOP_ITEM = 0;
+        int BOTTOM_ITEM = 1;
         if (position < TopCount)
             return TOP_ITEM;
         else

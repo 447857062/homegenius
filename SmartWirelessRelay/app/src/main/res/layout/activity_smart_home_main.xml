@@ -46,13 +46,14 @@
 
     </RelativeLayout>
 
-    <com.deplink.homegenius.view.scrollview.ScrollViewLinearLayout
+  <!--  <com.deplink.homegenius.view.scrollview.MyLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/buttom_layout"
-        android:layout_below="@+id/layout_title">
+        >-->
 
-        <ScrollView
+        <com.deplink.homegenius.view.scrollview.MyScrollView
+            android:layout_above="@+id/buttom_layout"
+            android:layout_below="@+id/layout_title"
             android:id="@+id/scroll_inner_wrap"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -60,7 +61,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <RelativeLayout
@@ -154,7 +155,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="15dp"
-                    android:layout_marginTop="25dp">
+                    android:layout_marginTop="15dp">
                     <!--水平滚动的房间-->
                     <RelativeLayout
                         android:id="@+id/layout_room_top"
@@ -222,7 +223,7 @@
                             android:scrollbars="none">
 
                             <LinearLayout
-                                android:layout_width="match_parent"
+                                android:layout_width="wrap_content"
                                 android:layout_height="110dp"
                                 android:layout_marginBottom="@dimen/homepage_room_type_margin_button"
                                 android:layout_marginTop="@dimen/homepage_room_type_margin_top"
@@ -231,7 +232,6 @@
                                 android:fadingEdge="none"
                                 android:focusable="false"
                                 android:gravity="center_vertical">
-
                                 <GridView
                                     android:id="@+id/grid"
                                     android:layout_width="match_parent"
@@ -304,8 +304,8 @@
                     </RelativeLayout>
                 </RelativeLayout>
             </LinearLayout>
-        </ScrollView>
-    </com.deplink.homegenius.view.scrollview.ScrollViewLinearLayout>
+        </com.deplink.homegenius.view.scrollview.MyScrollView>
+    <!--</com.deplink.homegenius.view.scrollview.MyLayout>-->
     <RelativeLayout
         android:id="@+id/buttom_layout"
         android:layout_width="match_parent"

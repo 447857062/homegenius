@@ -50,7 +50,6 @@ public class EditRemoteDevicesActivity extends Activity implements View.OnClickL
     private RelativeLayout layout_remotecontrol_select;
     private RelativeLayout layout_remotecontrol_list;
     private ImageView imageview_remotecontrol_arror_right;
-    private RemoteControlSelectListAdapter selectRemotecontrolAdapter;
     private List<SmartDev> mRemoteControls;
     private ListView listview_select_remotecontrol;
     private TextView textview_select_remotecontrol_name;
@@ -117,11 +116,11 @@ public class EditRemoteDevicesActivity extends Activity implements View.OnClickL
             deviceName = RemoteControlManager.getInstance().getmSelectRemoteControlDevice().getName();
             String realRcUid= RemoteControlManager.getInstance().getmSelectRemoteControlDevice().getRemotecontrolUid();
             SmartDev realRc=DataSupport.where("Uid=?", realRcUid).findFirst(SmartDev.class,true);
-            List<Room> rooms = realRc.getRooms();;
+            List<Room> rooms = realRc.getRooms();
             if (rooms.size() > 0) {
                 textview_select_room_name.setText(rooms.get(0).getRoomName());
             } else {
-                textview_select_room_name.setText("全部");
+                textview_select_room_name.setText("未选择");
 
             }
             List<SmartDev> remoteControls = RemoteControlManager.getInstance().findRemotecontrolDevice();
@@ -137,7 +136,7 @@ public class EditRemoteDevicesActivity extends Activity implements View.OnClickL
         layout_title.setTitleText(deviceType);
         mRemoteControls = new ArrayList<>();
         mRemoteControls.addAll(RemoteControlManager.getInstance().findAllRemotecontrolDevice());
-        selectRemotecontrolAdapter = new RemoteControlSelectListAdapter(this, mRemoteControls);
+        RemoteControlSelectListAdapter selectRemotecontrolAdapter = new RemoteControlSelectListAdapter(this, mRemoteControls);
         listview_select_remotecontrol.setAdapter(selectRemotecontrolAdapter);
         listview_select_remotecontrol.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

@@ -42,7 +42,7 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content">
                 <!--网关名称-->
                 <RelativeLayout
                     android:id="@+id/layout_getway_name"
@@ -62,7 +62,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
                         android:layout_centerVertical="true"
-                        android:text="名称:"
+                        android:text="名称："
                         android:textColor="@color/room_type_text"
                         android:textSize="@dimen/text_size_small" />
 
@@ -141,7 +141,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
                         android:layout_centerVertical="true"
-                        android:text="配置wif网关"
+                        android:text="配置WiFi网关"
                         android:textColor="@color/room_type_text"
                         android:textSize="@dimen/text_size_small" />
 

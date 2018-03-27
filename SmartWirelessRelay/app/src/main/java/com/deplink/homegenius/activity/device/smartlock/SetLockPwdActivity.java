@@ -17,7 +17,6 @@ import android.widget.Toast;
 
 import com.deplink.homegenius.Protocol.json.OpResult;
 import com.deplink.homegenius.Protocol.json.device.lock.UserIdInfo;
-import com.deplink.homegenius.activity.device.AddDeviceNameActivity;
 import com.deplink.homegenius.activity.personal.login.LoginActivity;
 import com.deplink.homegenius.constant.AppConstant;
 import com.deplink.homegenius.constant.SmartLockConstant;
@@ -117,7 +116,7 @@ public class SetLockPwdActivity extends Activity implements  View.OnClickListene
         }
 
         kbUtil = new KeyboardUtil(this);
-        ArrayList<EditText> list = new ArrayList<EditText>();
+        ArrayList<EditText> list = new ArrayList<>();
         list.add(etPwdOne);
         list.add(etPwdTwo);
         list.add(etPwdThree);
@@ -214,12 +213,6 @@ public class SetLockPwdActivity extends Activity implements  View.OnClickListene
             }
         };
     }
-
-    void backToActivity() {
-        Intent mIntent = new Intent(SetLockPwdActivity.this, SmartLockActivity.class);
-        startActivity(mIntent);
-    }
-
     private SmartLockManager mSmartLockManager;
     private static final int MSG_TOAST = 1;
     private static final int MSG_SHOW_TOAST = 2;
@@ -257,7 +250,9 @@ public class SetLockPwdActivity extends Activity implements  View.OnClickListene
                     }
                     break;
                 case MSG_SHOW_TOAST:
-                    Toast.makeText(SetLockPwdActivity.this, msg.obj.toString(), Toast.LENGTH_SHORT).show();
+                    if (msg.obj != null) {
+                        Toast.makeText(SetLockPwdActivity.this, msg.obj.toString(), Toast.LENGTH_SHORT).show();
+                    }
                     SetLockPwdActivity.this.finish();
                     break;
                 default:

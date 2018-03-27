@@ -13,8 +13,6 @@ import com.deplink.sdk.android.sdk.homegenius.DeviceOperationResponse;
 public interface SDKCoordinator {
     void afterLogin();
     void afterLogout();
-    void afterDeviceBinding();
-    void afterDeviceUnbinding();
     UserSession getUserSession();
     User getUserInfo();
     void MQTTConnectionLost(Throwable cause);

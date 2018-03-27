@@ -4,8 +4,8 @@ import android.content.Context;
 import android.util.Log;
 
 import com.deplink.homegenius.Protocol.packet.GeneralPacket;
-import com.deplink.homegenius.manager.connect.local.udp.packet.UdpPacket;
 import com.deplink.homegenius.constant.AppConstant;
+import com.deplink.homegenius.manager.connect.local.udp.packet.UdpPacket;
 import com.deplink.homegenius.util.NetStatusUtil;
 import com.deplink.homegenius.util.Perfence;
 import com.deplink.homegenius.util.PublicMethod;
@@ -57,7 +57,13 @@ public class UdpThread {
             GeneralPacket packet;
             packet = new GeneralPacket(InetAddress.getByName("255.255.255.255"), AppConstant.UDP_CONNECT_PORT, mContext);
             //查询设备，探测设备区别(这里探测设备就不需要发送查询的gson数据了)
-            packet.packCheckPacketWithUID();
+            // 设备uid，必填
+            String uid;
+            //连接发送默认的uid
+            uid = Perfence.getPerfence(AppConstant.PERFENCE_BIND_APP_UUID);
+            if(!uid.equalsIgnoreCase("")){
+                packet.packCheckPacketWithUID( uid);
+            }
             Log.i(TAG, "wifiCheckHandler send udp packet");
             udp.writeNet(packet);
         } catch (UnknownHostException e) {
@@ -74,10 +80,7 @@ public class UdpThread {
             mTimerTimeoutTask=new TimerTask() {
                 @Override
                 public void run() {
-                    boolean isUserLogin= Perfence.getBooleanPerfence(AppConstant.USER_LOGIN);
-                    if(isUserLogin){
                         timerTimeout();
-                    }
 
                 }
             };

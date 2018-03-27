@@ -261,8 +261,6 @@ public class SmartLockManager implements LocalConnecteListener {
             }
         });
     }
-
-
     /**
      * 报警记录设备上报，没有查询接口，所以保存在数据库中，需要去数据库获取
      */
@@ -275,7 +273,6 @@ public class SmartLockManager implements LocalConnecteListener {
         DataSupport.deleteAll(Record.class);
         return currentSelectLock.save();
     }
-
     /**
      * 查询开锁记录
      */
@@ -302,16 +299,12 @@ public class SmartLockManager implements LocalConnecteListener {
             });
         } else {
             String uuid = Perfence.getPerfence(AppConstant.PERFENCE_BIND_APP_UUID);
-            GatwayDevice device = currentSelectLock.getGetwayDevice();
-            if (device == null) {
-                device = DataSupport.where("Status = ?", "在线").findFirst(GatwayDevice.class);
-            }
-            if(device==null){
-                device= DataSupport.findFirst(GatwayDevice.class);
-            }
-            if (device!=null && device.getTopic() != null && !device.getTopic().equals("")) {
-                Log.i(TAG, "device.getTopic()=" + device.getTopic());
-                mHomeGenius.queryLockHistory(currentSelectLock, device.getTopic(), uuid, queryNumber, userId);
+            List<GatwayDevice> devices = DataSupport.findAll(GatwayDevice.class);
+            for(int i=0;i<devices.size();i++){
+                if(devices.get(i).getTopic()!=null && !devices.get(i).getTopic().equals("")){
+                    Log.i(TAG, "device.getTopic()=" + devices.get(i).getTopic());
+                    mHomeGenius.queryLockHistory(currentSelectLock, devices.get(i).getTopic(), uuid, queryNumber, userId);
+                }
             }
         }
     }
@@ -336,20 +329,14 @@ public class SmartLockManager implements LocalConnecteListener {
             });
         } else {
             String uuid = Perfence.getPerfence(AppConstant.PERFENCE_BIND_APP_UUID);
-            GatwayDevice device = currentSelectLock.getGetwayDevice();
-            if (device == null) {
-                device = DataSupport.where("Status = ?", "在线").findFirst(GatwayDevice.class);
-            }
-            if(device==null){
-                device= DataSupport.findFirst(GatwayDevice.class);
-            }
-            if (device != null) {
-                Log.i(TAG, "device.getTopic()=" + device.getTopic());
-                if (device.getTopic() != null && !device.getTopic().equals("")) {
-                    mHomeGenius.queryLockStatu(currentSelectLock, device.getTopic(), uuid);
+            List<GatwayDevice> devices = DataSupport.findAll(GatwayDevice.class);
+            for(int i=0;i<devices.size();i++){
+                if(devices.get(i).getTopic()!=null && !devices.get(i).getTopic().equals("")){
+                    Log.i(TAG, "device.getTopic()=" + devices.get(i).getTopic());
+                    mHomeGenius.queryDeviceList(devices.get(i).getTopic(), uuid);
+                    mHomeGenius.queryLockStatu(currentSelectLock, devices.get(i).getTopic(), uuid);
                 }
             }
-
         }
     }
 
@@ -400,19 +387,14 @@ public class SmartLockManager implements LocalConnecteListener {
         } else {
 
             String uuid = Perfence.getPerfence(AppConstant.PERFENCE_BIND_APP_UUID);
-            GatwayDevice device = currentSelectLock.getGetwayDevice();
-            if (device == null) {
-                device= DataSupport.where("Status = ?", "在线").findFirst(GatwayDevice.class);
-            }
-            if(device==null){
-                device= DataSupport.findFirst(GatwayDevice.class);
-            }
-            if (device.getTopic() != null && !device.getTopic().equals("")) {
-                Log.i(TAG, "device.getTopic()=" + device.getTopic());
-                Log.i(TAG, "远程锁操作命令=" + cmd);
-                mHomeGenius.setSmartLockParmars(currentSelectLock, device.getTopic(), uuid, cmd, userId, managePasswd, authPwd, limitedTime);
-            }
+            List<GatwayDevice> devices = DataSupport.findAll(GatwayDevice.class);
+            for(int i=0;i<devices.size();i++){
+                if(devices.get(i).getTopic()!=null && !devices.get(i).getTopic().equals("")){
 
+                    Log.i(TAG, "device.getTopic()=" + devices.get(i).getTopic());
+                    mHomeGenius.setSmartLockParmars(currentSelectLock, devices.get(i).getTopic(), uuid, cmd, userId, managePasswd, authPwd, limitedTime);
+                }
+            }
         }
     }
 

@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -23,6 +24,7 @@ import com.deplink.homegenius.activity.homepage.SmartHomeMainActivity;
 import com.deplink.homegenius.activity.personal.experienceCenter.ExperienceDevicesActivity;
 import com.deplink.homegenius.activity.personal.login.LoginActivity;
 import com.deplink.homegenius.activity.personal.softupdate.UpdateImmediateActivity;
+import com.deplink.homegenius.activity.personal.usrinfo.UserinfoActivity;
 import com.deplink.homegenius.activity.room.RoomActivity;
 import com.deplink.homegenius.application.AppManager;
 import com.deplink.homegenius.constant.AppConstant;
@@ -67,7 +69,6 @@ public class PersonalCenterActivity extends Activity implements View.OnClickList
     private SDKManager manager;
     private EventCallback ec;
     private boolean isUserLogin;
-    private boolean hasGetUserImage;
     private TextView user_nickname;
     private TextView textview_update_now;
     private boolean isAppUpdate = false;
@@ -90,17 +91,17 @@ public class PersonalCenterActivity extends Activity implements View.OnClickList
     protected void onResume() {
         super.onResume();
         manager.addEventCallback(ec);
-        textview_home.setTextColor(getResources().getColor(R.color.line_clolor));
-        textview_device.setTextColor(getResources().getColor(R.color.line_clolor));
-        textview_room.setTextColor(getResources().getColor(R.color.line_clolor));
-        textview_mine.setTextColor(getResources().getColor(R.color.room_type_text));
+        textview_home.setTextColor(ContextCompat.getColor(this,R.color.line_clolor));
+        textview_device.setTextColor(ContextCompat.getColor(this,R.color.line_clolor));
+        textview_room.setTextColor(ContextCompat.getColor(this,R.color.line_clolor));
+        textview_mine.setTextColor(ContextCompat.getColor(this,R.color.room_type_text));
         imageview_home_page.setImageResource(R.drawable.nocheckthehome);
         imageview_devices.setImageResource(R.drawable.nocheckthedevice);
         imageview_rooms.setImageResource(R.drawable.nochecktheroom);
         imageview_personal_center.setImageResource(R.drawable.checkthemine);
         isUserLogin = Perfence.getBooleanPerfence(AppConstant.USER_LOGIN);
         if (isUserLogin) {
-             hasGetUserImage = Perfence.getBooleanPerfence(AppConstant.USER.USER_GETIMAGE_FROM_SERVICE);
+            boolean hasGetUserImage = Perfence.getBooleanPerfence(AppConstant.USER.USER_GETIMAGE_FROM_SERVICE);
             if (!hasGetUserImage) {
                 Perfence.setPerfence(AppConstant.USER.USER_GETIMAGE_FROM_SERVICE, true);
                 manager.getImage(Perfence.getPerfence(Perfence.PERFENCE_PHONE));
@@ -111,7 +112,7 @@ public class PersonalCenterActivity extends Activity implements View.OnClickList
             manager.getUserInfo(userName);
 
         }else{
-            user_nickname.setText("未登录,点击登录");
+            user_nickname.setText("请登录");
         }
         manager.queryAppUpdateInfo(Perfence.SDK_APP_KEY, APKVersionCodeUtils.getVerName(this));
         if( manager.getAppUpdateInfo()!=null){
@@ -137,7 +138,7 @@ public class PersonalCenterActivity extends Activity implements View.OnClickList
                 // 将图片显示到ImageView中
                 user_head_portrait.setImageBitmap(bm);
             } else {
-                user_head_portrait.setImageDrawable(getResources().getDrawable(R.drawable.defaultavatar));
+                user_head_portrait.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.defaultavatar));
             }
         } else {
             ToastSingleShow.showText(this, "sd卡不存在！");
@@ -344,7 +345,12 @@ public class PersonalCenterActivity extends Activity implements View.OnClickList
                 startActivity(new Intent(this, RoomActivity.class));
                 break;
             case R.id.layout_user_info:
-                startActivity(new Intent(this, LoginActivity.class));
+                if(isUserLogin){
+                    startActivity(new Intent(this, UserinfoActivity.class));
+                }else{
+                    startActivity(new Intent(this, LoginActivity.class));
+                }
+
                 break;
             case R.id.layout_update_soft:
                 manager.queryAppUpdateInfo(Perfence.SDK_APP_KEY, APKVersionCodeUtils.getVerName(this));

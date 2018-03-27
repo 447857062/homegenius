@@ -16,10 +16,8 @@ import deplink.com.smartwirelessrelay.homegenius.EllESDK.R;
 /**
  */
 public class GetwaySelectListAdapter extends BaseAdapter {
-    private static final String TAG = "GetwaySelectListAdapter";
     private List<GatwayDevice> listTop = null;
     private Context mContext;
-
     public GetwaySelectListAdapter(Context mContext, List<GatwayDevice> list) {
         this.mContext = mContext;
         this.listTop = list;

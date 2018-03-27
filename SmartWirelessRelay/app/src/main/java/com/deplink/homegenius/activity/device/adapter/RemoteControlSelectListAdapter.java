@@ -7,16 +7,16 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.deplink.homegenius.Protocol.json.device.SmartDev;
+
 import java.util.List;
 
 import deplink.com.smartwirelessrelay.homegenius.EllESDK.R;
-import com.deplink.homegenius.Protocol.json.device.SmartDev;
 
 /**
  * @author frankLi
  */
 public class RemoteControlSelectListAdapter extends BaseAdapter {
-    private static final String TAG = "RemoteControlAdapter";
     private List<SmartDev> listTop = null;
     private Context mContext;
 

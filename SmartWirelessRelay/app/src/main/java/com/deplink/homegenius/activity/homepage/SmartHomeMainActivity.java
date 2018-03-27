@@ -23,7 +23,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -127,7 +126,7 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
     private RemoteControlListener mRemoteControlListener;
     private DeviceManager mDeviceManager;
     private RemoteControlManager mRemoteControlManager;
-    private ScrollView scroll_inner_wrap;
+   // private ScrollView scroll_inner_wrap;
     private String locationStr;
     private String tempature;
     private String pm25;
@@ -162,7 +161,7 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
                     if (province.substring(province.length() - 1, province.length()).equals("省")) {
                         province = province.substring(0, province.length() - 1);
                     }
-                    textview_city.setText(city /*+ "/" + district*/);
+                    textview_city.setText(city );
                     initWaetherData();
                     sendRequestWithHttpClient(city);
                     break;
@@ -290,7 +289,6 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
             }
         }).start();
     }
-
     public void initWaetherData() {
         new Thread(new Runnable() {
             @Override
@@ -302,7 +300,6 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
                             JsonObject jsonObjectGson = response.body();
                             Gson gson = new Gson();
                             HeWeather6 weatherObject = gson.fromJson(jsonObjectGson.toString(), HeWeather6.class);
-
                             if (!weatherObject.getInfoList().get(0).getStatus().equalsIgnoreCase("no more requests")) {
                                 if (!weatherObject.getInfoList().get(0).getNow().getTmp().equalsIgnoreCase(tempature)) {
                                     Perfence.setPerfence(AppConstant.TEMPATURE_VALUE, weatherObject.getInfoList().get(0).getNow().getTmp());
@@ -314,7 +311,6 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
                             }
                         }
                     }
-
                     @Override
                     public void onFailure(Call<JsonObject> call, Throwable t) {
 
@@ -324,7 +320,6 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
             }
         }).start();
     }
-
     private RoomListener mRoomListener;
 
     @Override
@@ -359,7 +354,7 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
         if (isLogin) {
             mRoomManager.updateRooms();
         }
-        mDeviceManager.addDeviceListener(mDeviceListener);
+        mDeviceManager.onResume(mDeviceListener);
         mRemoteControlManager.addRemoteControlListener(mRemoteControlListener);
         mRoomManager.addRoomListener(mRoomListener);
         locationStr = Perfence.getPerfence(AppConstant.LOCATION_RECEIVED);
@@ -604,6 +599,7 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
     }
 
     private void saveSmartDeviceToSqlite(List<Deviceprops> devices, int i) {
+        Log.i(TAG,"saveSmartDeviceToSqlite");
         SmartDev dev = new SmartDev();
         String deviceType = devices.get(i).getDevice_type();
         dev.setType(deviceType);
@@ -681,12 +677,13 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
         List<Room> rooms = new ArrayList<>();
         Room room = DataSupport.where("Uid=?", devices.get(i).getRoom_uid()).findFirst(Room.class);
         if (room != null) {
+            Log.i(TAG,"saveSmartDeviceToSqlite:"+(room.toString()));
             rooms.add(room);
             dev.setRooms(rooms);
         } else {
             dev.setRooms(mRoomManager.queryRooms());
         }
-        dev.saveFast();
+        dev.save();
     }
 
     private void saveVirtualDeviceToSqlite(List<DeviceOperationResponse> devices, int i) {
@@ -772,7 +769,7 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
     }
 
     private void initViews() {
-        scroll_inner_wrap = findViewById(R.id.scroll_inner_wrap);
+       // scroll_inner_wrap = findViewById(R.id.scroll_inner_wrap);
         layout_devices = findViewById(R.id.layout_devices);
         layout_rooms = findViewById(R.id.layout_rooms);
         layout_personal_center = findViewById(R.id.layout_personal_center);
@@ -799,7 +796,7 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
     protected void onPause() {
         super.onPause();
         mRoomManager.removeRoomListener(mRoomListener);
-        mDeviceManager.removeDeviceListener(mDeviceListener);
+        mDeviceManager.onPause(mDeviceListener);
         mRemoteControlManager.removeRemoteControlListener(mRemoteControlListener);
         manager.removeEventCallback(ec);
     }
@@ -844,7 +841,7 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
                 if (layout_roomselect_normal.getVisibility() == View.VISIBLE) {
                     layout_roomselect_normal.setVisibility(View.GONE);
                     layout_roomselect_changed_ype.setVisibility(View.VISIBLE);
-                    scroll_inner_wrap.smoothScrollTo(0, 0);
+                 //   scroll_inner_wrap.smoothScrollTo(0, 0);
                 } else {
                     layout_roomselect_normal.setVisibility(View.VISIBLE);
                     layout_roomselect_normal.smoothScrollTo(0, 0);

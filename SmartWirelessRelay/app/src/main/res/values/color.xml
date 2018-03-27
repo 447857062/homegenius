@@ -35,7 +35,6 @@
     <color name="room_type_text">#333333</color>
     <color name="line_dirver_color">#DDDDDD</color>
     <color name="white">#ffffff</color>
-    <color name="white_alpha60">#99ffffff</color>
     <color name="huise">#999999</color>
     <color name="pressed_button_background">#5692dd</color>
     <color name="delete_button_background">#e5e5e5</color>

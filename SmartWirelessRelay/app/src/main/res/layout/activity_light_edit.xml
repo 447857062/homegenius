@@ -86,7 +86,7 @@
                 android:layout_marginRight="@dimen/arror_right_left_textview_margin_right"
                 android:layout_toLeftOf="@+id/imageview_roomname_arror_right"
                 android:gravity="center_vertical"
-                android:text="全部"
+                android:text="未选择"
                 android:textColor="@color/huise" />
 
             <ImageView
@@ -140,7 +140,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
-                android:text="网关:"
+                android:text="网关："
                 android:textColor="@color/room_type_text"
                 android:textSize="@dimen/text_size_small" />
 

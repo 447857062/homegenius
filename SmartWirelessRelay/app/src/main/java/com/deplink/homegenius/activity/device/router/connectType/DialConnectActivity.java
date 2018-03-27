@@ -231,7 +231,7 @@ public class DialConnectActivity extends Activity  {
         });
     }
     private void parseDeviceReport(String xmlStr) {
-        String op = "";
+        String op;
         String method;
         Gson gson = new Gson();
         PERFORMANCE content = gson.fromJson(xmlStr, PERFORMANCE.class);
@@ -239,14 +239,14 @@ public class DialConnectActivity extends Activity  {
         method = content.getMethod();
         Log.i(TAG, "op=" + op + "method=" + method + "result=" + content.getResult() + "xmlStr=" + xmlStr);
 
-        if (op == null) {
-
-        } else if (op.equalsIgnoreCase("WAN")) {
-            if (method.equalsIgnoreCase("REPORT")) {
-                PERFORMANCE wan = gson.fromJson(xmlStr, PERFORMANCE.class);
-                Proto proto = wan.getProto();
-                if (proto.getPPPOE() != null) {
-                    ToastSingleShow.showText(DialConnectActivity.this, "拨号上网设置成功");
+        if (op!= null) {
+            if (op.equalsIgnoreCase("WAN")){
+                if (method.equalsIgnoreCase("REPORT")) {
+                    PERFORMANCE wan = gson.fromJson(xmlStr, PERFORMANCE.class);
+                    Proto proto = wan.getProto();
+                    if (proto.getPPPOE() != null) {
+                        ToastSingleShow.showText(DialConnectActivity.this, "拨号上网设置成功");
+                    }
                 }
             }
         }
@@ -262,11 +262,11 @@ public class DialConnectActivity extends Activity  {
         edittext_mtu = findViewById(R.id.edittext_mtu);
         edittext_mac = findViewById(R.id.edittext_mac);
     }
-    private boolean isStartFromExperience;
+
     @Override
     protected void onResume() {
         super.onResume();
-        isStartFromExperience= DeviceManager.getInstance().isStartFromExperience();
+        boolean isStartFromExperience = DeviceManager.getInstance().isStartFromExperience();
         manager.addEventCallback(ec);
         mHomeGenius = new HomeGenius();
         if(!isStartFromExperience){

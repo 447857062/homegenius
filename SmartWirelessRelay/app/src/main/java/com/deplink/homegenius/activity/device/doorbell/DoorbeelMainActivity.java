@@ -122,9 +122,6 @@ public class DoorbeelMainActivity extends Activity implements View.OnClickListen
         };
         initMqttCallback();
     }
-
-    private boolean isUserLogin;
-
     /**
      * 获取圆角位图的方法
      *
@@ -180,7 +177,6 @@ public class DoorbeelMainActivity extends Activity implements View.OnClickListen
             @Override
             public void connectionLost(Throwable throwable) {
                 super.connectionLost(throwable);
-                isUserLogin = false;
                 Perfence.setPerfence(AppConstant.USER_LOGIN, false);
                 new AlertDialog(DoorbeelMainActivity.this).builder().setTitle("账号异地登录")
                         .setMsg("当前账号已在其它设备上登录,是否重新登录")
@@ -245,15 +241,16 @@ public class DoorbeelMainActivity extends Activity implements View.OnClickListen
     @Override
     protected void onResume() {
         super.onResume();
-        isUserLogin = Perfence.getBooleanPerfence(AppConstant.USER_LOGIN);
         manager.addEventCallback(ec);
-        mDeviceManager.addDeviceListener(mDeviceListener);
+        mDeviceManager.onResume(mDeviceListener);
         if (mDoorbeelManager != null) {
             mDoorbeelManager = DoorbeelManager.getInstance();
             mDoorbeelManager.InitDoorbeelManager(this);
         }
         if (mDoorBellListener != null) {
-            mDoorbeelManager.addDeviceListener(mDoorBellListener);
+            if (mDoorbeelManager != null) {
+                mDoorbeelManager.addDeviceListener(mDoorBellListener);
+            }
         }
         if (mSmartLockManager != null) {
             mSmartLockManager.addSmartLockListener(this);
@@ -306,7 +303,7 @@ public class DoorbeelMainActivity extends Activity implements View.OnClickListen
     protected void onPause() {
         super.onPause();
         manager.removeEventCallback(ec);
-        mDeviceManager.removeDeviceListener(mDeviceListener);
+        mDeviceManager.onPause(mDeviceListener);
         imageview_visitor.setVisibility(View.GONE);
         layout_no_vistor.setVisibility(View.VISIBLE);
         mDoorbeelManager.removeDeviceListener(mDoorBellListener);

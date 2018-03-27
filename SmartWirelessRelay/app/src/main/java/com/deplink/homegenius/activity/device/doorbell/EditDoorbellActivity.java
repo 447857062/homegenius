@@ -80,9 +80,7 @@ public class EditDoorbellActivity extends Activity implements View.OnClickListen
     private ImageView imageview_lock_arror_right;
     private LockSelectListAdapter lockSelectListAdapter;
     private List<SmartDev> mLockList;
-    private SmartLockManager mSmartLockManager;
     private String selectLockName;
-    private SmartDev bindlock;
     private RelativeLayout layout_device_share;
     private TitleLayout layout_title;
     @Override
@@ -101,7 +99,7 @@ public class EditDoorbellActivity extends Activity implements View.OnClickListen
         super.onResume();
         isStartFromExperience = DeviceManager.getInstance().isStartFromExperience();
         isUserLogin = Perfence.getBooleanPerfence(AppConstant.USER_LOGIN);
-        mDeviceManager.addDeviceListener(mDeviceListener);
+        mDeviceManager.onResume(mDeviceListener);
         if (isStartFromExperience) {
             edittext_add_device_input_name.setText("智能门铃");
             edittext_add_device_input_name.setSelection(4);
@@ -114,7 +112,7 @@ public class EditDoorbellActivity extends Activity implements View.OnClickListen
             }
             deviceUid = mDoorbeelManager.getCurrentSelectedDoorbeel().getUid();
             if (mDoorbeelManager.getCurrentSelectedDoorbeel().getBindLockUid() != null) {
-                bindlock = DataSupport.where("Uid=?", mDoorbeelManager.getCurrentSelectedDoorbeel().getBindLockUid()).findFirst(SmartDev.class, true);
+                SmartDev bindlock = DataSupport.where("Uid=?", mDoorbeelManager.getCurrentSelectedDoorbeel().getBindLockUid()).findFirst(SmartDev.class, true);
                 textview_select_lock_name.setText(bindlock.getName());
             }else{
                 Log.i(TAG,"绑定的门锁uid是:"+mDoorbeelManager.getCurrentSelectedDoorbeel().getBindLockUid());
@@ -131,8 +129,6 @@ public class EditDoorbellActivity extends Activity implements View.OnClickListen
                         public void run() {
                             if (wifiData != null) {
                                 textview_select_getway_name.setText("当前配置的WIFI:" + wifiData.ssid);
-                            } else {
-                                // textview_select_getway_name.setText("当前设备未配置WIFI");
                             }
                         }
                     }, 0);
@@ -158,7 +154,7 @@ public class EditDoorbellActivity extends Activity implements View.OnClickListen
     protected void onPause() {
         super.onPause();
         isOnActivityResult = false;
-        mDeviceManager.removeDeviceListener(mDeviceListener);
+        mDeviceManager.onPause(mDeviceListener);
         manager.removeEventCallback(ec);
     }
 
@@ -236,7 +232,7 @@ public class EditDoorbellActivity extends Activity implements View.OnClickListen
         isStartFromExperience = DeviceManager.getInstance().isStartFromExperience();
         mDoorbeelManager = DoorbeelManager.getInstance();
         mDeviceManager.InitDeviceManager(this);
-        mSmartLockManager = SmartLockManager.getInstance();
+        SmartLockManager mSmartLockManager = SmartLockManager.getInstance();
         mSmartLockManager.InitSmartLockManager(this);
         mDeviceListener = new DeviceListener() {
             @Override

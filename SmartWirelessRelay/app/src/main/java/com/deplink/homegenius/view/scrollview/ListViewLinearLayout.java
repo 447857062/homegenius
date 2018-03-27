@@ -32,7 +32,6 @@ public class ListViewLinearLayout extends LinearLayout implements View.OnTouchLi
     }
 
     protected void smoothScrollTo(int fx, int fy) {
-        int dx = fx - mScroller.getFinalX();
         int dy = fy - mScroller.getFinalY();
         smoothScrollBy(0, dy);
     }

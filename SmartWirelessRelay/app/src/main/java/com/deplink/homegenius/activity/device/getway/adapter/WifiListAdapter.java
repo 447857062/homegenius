@@ -15,14 +15,9 @@ import java.util.List;
 
 import deplink.com.smartwirelessrelay.homegenius.EllESDK.R;
 
-/**
- * Created by Administrator on 2017/8/29.
- */
 public class WifiListAdapter extends BaseAdapter {
-    private static final String TAG = "WifiListAdapter";
     private Context mContext;
     private List<SSIDList> mData;
-    private String encryption = "";
 
     private int quality = 0;
 
@@ -68,7 +63,7 @@ public class WifiListAdapter extends BaseAdapter {
         } else {
             vh = (ViewHolder) convertView.getTag();
         }
-        encryption=mData.get(position).getEncryption();
+        String encryption = mData.get(position).getEncryption();
         if(mData.get(position).getQuality().contains("/")){
             quality=Integer.parseInt(mData.get(position).getQuality().substring(0,mData.get(position).getQuality().indexOf("/")));
         }

@@ -258,12 +258,12 @@ public class EditActivity extends Activity implements View.OnClickListener {
         if (!isOnActivityResult) {
             isOnActivityResult = false;
             if (isStartFromExperience) {
-                textview_select_room_name.setText("全部");
+                textview_select_room_name.setText("未选择");
             } else {
                 if (mSmartSwitchManager.getCurrentSelectSmartDevice().getRooms().size() == 1) {
                     textview_select_room_name.setText(mSmartSwitchManager.getCurrentSelectSmartDevice().getRooms().get(0).getRoomName());
                 } else {
-                    textview_select_room_name.setText("全部");
+                    textview_select_room_name.setText("未选择");
                 }
             }
             if( mSmartSwitchManager.getCurrentSelectSmartDevice()!=null){
@@ -282,14 +282,14 @@ public class EditActivity extends Activity implements View.OnClickListener {
                 }
             }
         }
-        mDeviceManager.addDeviceListener(mDeviceListener);
+        mDeviceManager.onResume(mDeviceListener);
         manager.addEventCallback(ec);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        mDeviceManager.removeDeviceListener(mDeviceListener);
+        mDeviceManager.onPause(mDeviceListener);
         manager.removeEventCallback(ec);
     }
 

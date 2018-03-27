@@ -69,9 +69,7 @@ public class SignalStrengthSetting extends Activity implements View.OnClickListe
     @Override
     protected void onResume() {
         super.onResume();
-        if( DeviceManager.getInstance().isStartFromExperience()){
-
-        }else{
+        if( !DeviceManager.getInstance().isStartFromExperience()){
             getRouterDevice();
             manager.addEventCallback(ec);
             if (NetUtil.isNetAvailable(this)) {
@@ -84,8 +82,6 @@ public class SignalStrengthSetting extends Activity implements View.OnClickListe
                 ToastSingleShow.showText(this, "网络连接已断开");
             }
         }
-
-
     }
 
 

@@ -121,7 +121,7 @@ public class BasicPacket {
     /**
      * udp探测包
      **/
-    public int packUdpDetectData() {
+    public int packUdpDetectData(String uid) {
         int len = 0;
         data = new byte[AppConstant.BASICLEGTH];
         //head
@@ -135,10 +135,7 @@ public class BasicPacket {
         data[len++] = 0x0;
         // 命令id
         data[len++] = ComandID.DETEC_DEV;
-        // 设备uid，必填
-        String uid;
-        //连接发送默认的uid
-        uid = Perfence.getPerfence(AppConstant.PERFENCE_BIND_APP_UUID);
+
         System.arraycopy(uid.getBytes(), 0, data, len, 32);
         //uid32位，最后一个结束标志0
         len += 32;

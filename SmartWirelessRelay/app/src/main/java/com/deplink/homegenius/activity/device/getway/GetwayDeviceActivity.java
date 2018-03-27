@@ -135,7 +135,7 @@ public class GetwayDeviceActivity extends Activity implements View.OnClickListen
             edittext_input_devie_name.setText("家里的网关");
             edittext_input_devie_name.setSelection(5);
             edittext_input_devie_name.clearFocus();
-            textview_select_room_name.setText("全部");
+            textview_select_room_name.setText("未选择");
         } else {
             currentSelectDeviceName = mGetwayManager.getCurrentSelectGetwayDevice().getName();
             edittext_input_devie_name.setText(currentSelectDeviceName);
@@ -145,7 +145,7 @@ public class GetwayDeviceActivity extends Activity implements View.OnClickListen
             if (rooms.size() == 1) {
                 textview_select_room_name.setText(rooms.get(0).getRoomName());
             } else {
-                textview_select_room_name.setText("全部");
+                textview_select_room_name.setText("未选择");
             }
         }
     }
@@ -219,7 +219,7 @@ public class GetwayDeviceActivity extends Activity implements View.OnClickListen
         isUserLogin = Perfence.getBooleanPerfence(AppConstant.USER_LOGIN);
         isStartFromExperience = mDeviceManager.isStartFromExperience();
         manager.addEventCallback(ec);
-        mDeviceManager.addDeviceListener(mDeviceListener);
+        mDeviceManager.onResume(mDeviceListener);
         if (!isStartFromExperience) {
             deviceUid = mGetwayManager.getCurrentSelectGetwayDevice().getUid();
 
@@ -229,7 +229,7 @@ public class GetwayDeviceActivity extends Activity implements View.OnClickListen
     @Override
     protected void onPause() {
         super.onPause();
-        mDeviceManager.removeDeviceListener(mDeviceListener);
+        mDeviceManager.onPause(mDeviceListener);
         manager.removeEventCallback(ec);
     }
 

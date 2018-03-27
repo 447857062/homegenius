@@ -135,8 +135,10 @@ public class AddDoorbellTipsActivity extends Activity implements View.OnClickLis
     public void searchDevCBS(long mac, byte type, byte ver) {
         Log.e(TAG, "mac:" + mac + "type:" + type + "ver:" + ver);
         String macS=DataExchange.byteArrayToHexString( DataExchange.longToEightByte(mac));
-        macS=macS.replaceAll("0x","").trim();
-        macS=macS.replaceAll(" ","-");
+        if (macS != null) {
+            macS=macS.replaceAll("0x","").trim();
+            macS=macS.replaceAll(" ","-");
+        }
         Log.i(TAG,"savemac="+macS);
         mDoorbeelManager.setMac(macS);
         onDoneClick(mac, type, ver);

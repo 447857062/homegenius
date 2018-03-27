@@ -39,8 +39,8 @@ public class GeneralPacket extends BasicPacket {
      * ip 255.255.255.255
      * @return
      */
-    public int packCheckPacketWithUID() {
-        return packUdpDetectData();
+    public int packCheckPacketWithUID(String uid) {
+        return packUdpDetectData( uid);
     }
     /**
      * 查询设备列表

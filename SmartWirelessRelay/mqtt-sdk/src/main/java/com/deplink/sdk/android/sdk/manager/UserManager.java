@@ -213,7 +213,7 @@ public class UserManager implements MqttListener {
         RestfulTools.getSingleton().loginedAlertPassword(username, password, new Callback<UserSession>() {
             @Override
             public void onResponse(Call<UserSession> call, Response<UserSession> response) {
-                int code = 0;
+                int code;
                 code = response.code();
                 String error = "";
                 Log.i(TAG, "code=" + code);
@@ -527,7 +527,6 @@ public class UserManager implements MqttListener {
                             }
                         }
                         if (deviceList.size() > 0) {
-                            mSDKCoordinator.afterDeviceBinding();
                             mSDKCoordinator.notifyBindSuccess(SDKAction.BIND, deviceList.get(0).getDevice_key());
                         } else {//绑定失败，设备序列号不存在
                             error = "设备不存在，或者您尚未被添加为可绑定该设备的成员";
@@ -569,7 +568,6 @@ public class UserManager implements MqttListener {
                 switch (response.code()) {
                     case 200:
                         mSDKCoordinator.notifySuccess(SDKAction.UNBIND);
-                        mSDKCoordinator.afterDeviceUnbinding();
                         break;
 
                     default:

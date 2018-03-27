@@ -155,6 +155,7 @@ public class Deviceprops {
                 ", room_name='" + room_name + '\'' +
                 ", sign_seed='" + sign_seed + '\'' +
                 ", signature='" + signature + '\'' +
+                ", channels=" + channels +
                 '}';
     }
 }

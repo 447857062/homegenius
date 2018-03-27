@@ -687,13 +687,13 @@ public class AddDeviceNameActivity extends Activity implements View.OnClickListe
         super.onResume();
         manager.addEventCallback(ec);
         isUserLogin = Perfence.getBooleanPerfence(AppConstant.USER_LOGIN);
-        mDeviceManager.addDeviceListener(mDeviceListener);
+        mDeviceManager.onResume(mDeviceListener);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        mDeviceManager.removeDeviceListener(mDeviceListener);
+        mDeviceManager.onPause(mDeviceListener);
         manager.removeEventCallback(ec);
     }
 

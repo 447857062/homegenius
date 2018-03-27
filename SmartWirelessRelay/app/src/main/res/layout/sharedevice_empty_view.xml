@@ -14,7 +14,6 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/imageview_empty"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="25dp"
         android:gravity="center_horizontal"
         android:text="暂时还没有设备分享"
         android:textColor="@color/room_type_text"

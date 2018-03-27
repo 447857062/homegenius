@@ -87,11 +87,6 @@ public class LocalConnectmanager extends Binder implements UdpManagerGetIPLinten
      * sslsocket握手成功
      */
     private boolean handshakeCompleted;
-
-    public boolean isHandshakeCompleted() {
-        return handshakeCompleted;
-    }
-
     public SSLSocket getSslSocket() {
         return sslSocket;
     }

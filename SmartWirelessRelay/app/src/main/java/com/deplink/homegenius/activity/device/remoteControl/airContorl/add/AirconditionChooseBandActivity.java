@@ -14,7 +14,6 @@ import android.widget.TextView;
 
 import com.deplink.homegenius.Protocol.json.http.QueryBandResponse;
 import com.deplink.homegenius.activity.device.remoteControl.RemoteControlQuickLearnActivity;
-import com.deplink.homegenius.activity.device.remoteControl.topBox.AddTopBoxActivity;
 import com.deplink.homegenius.manager.connect.remote.https.RestfulTools;
 import com.deplink.homegenius.view.combinationwidget.TitleLayout;
 import com.deplink.homegenius.view.edittext.ClearEditText;
@@ -142,7 +141,7 @@ public class AirconditionChooseBandActivity extends Activity implements AdapterV
 
 
     private List<SortModel> filledData(List<String> date) {
-        List<SortModel> mSortList = new ArrayList<SortModel>();
+        List<SortModel> mSortList = new ArrayList<>();
 
         for (int i = 0; i < date.size(); i++) {
             SortModel sortModel = new SortModel();
@@ -163,7 +162,7 @@ public class AirconditionChooseBandActivity extends Activity implements AdapterV
 
 
     private void filterData(String filterStr) {
-        List<SortModel> filterDateList = new ArrayList<SortModel>();
+        List<SortModel> filterDateList = new ArrayList<>();
 
         if (TextUtils.isEmpty(filterStr)) {
             filterDateList = SourceDateList;

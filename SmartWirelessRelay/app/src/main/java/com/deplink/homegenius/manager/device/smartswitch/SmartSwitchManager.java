@@ -43,12 +43,7 @@ public class SmartSwitchManager implements LocalConnecteListener {
     private LocalConnectmanager mLocalConnectmanager;
     private GeneralPacket packet;
     private Context mContext;
-    /**
-     * 所有的开关设备
-     */
-    private List<SmartDev> mSmartSwitchDevList;
     private SmartDev currentSelectSmartDevice;
-
     public SmartDev getCurrentSelectSmartDevice() {
         return currentSelectSmartDevice;
     }
@@ -104,17 +99,6 @@ public class SmartSwitchManager implements LocalConnecteListener {
         if (cachedThreadPool == null) {
             cachedThreadPool = Executors.newCachedThreadPool();
         }
-        //数据库查询操作
-        if (mSmartSwitchDevList == null) {
-            cachedThreadPool.execute(new Runnable() {
-                @Override
-                public void run() {
-                    mSmartSwitchDevList = new ArrayList<>();
-                    mSmartSwitchDevList.clear();
-                    mSmartSwitchDevList.addAll(DataSupport.where("Type = ?", DeviceTypeConstant.TYPE.TYPE_SWITCH).find(SmartDev.class));
-                }
-            });
-        }
     }
 
     /**
@@ -140,18 +124,14 @@ public class SmartSwitchManager implements LocalConnecteListener {
             });
         } else {
             String uuid = Perfence.getPerfence(AppConstant.PERFENCE_BIND_APP_UUID);
-            GatwayDevice device = currentSelectSmartDevice.getGetwayDevice();
-            if (device == null) {
-                device= DataSupport.where("Status = ?", "在线").findFirst(GatwayDevice.class);
+            List<GatwayDevice> devices = DataSupport.findAll(GatwayDevice.class);
+            for(int i=0;i<devices.size();i++){
+                if(devices.get(i).getTopic()!=null && !devices.get(i).getTopic().equals("")){
+                    Log.i(TAG, "远程接口查询设备列表" + "topic" + devices.get(i).getTopic());
+                    Log.i(TAG, "device.getTopic()=" + devices.get(i).getTopic());
+                    mHomeGenius.setSwitchCommand(currentSelectSmartDevice, devices.get(i).getTopic(), uuid, cmd);
+                }
             }
-            if(device==null){
-                device= DataSupport.findFirst(GatwayDevice.class);
-            }
-            Log.i(TAG, "device.getTopic()=" + device.getTopic());
-            if (device.getTopic() != null && !device.getTopic().equals("")) {
-                mHomeGenius.setSwitchCommand(currentSelectSmartDevice, device.getTopic(), uuid, cmd);
-            }
-
         }
     }
 
@@ -174,21 +154,13 @@ public class SmartSwitchManager implements LocalConnecteListener {
             });
         } else {
             String uuid = Perfence.getPerfence(AppConstant.PERFENCE_BIND_APP_UUID);
-            GatwayDevice device = currentSelectSmartDevice.getGetwayDevice();
-            if (device == null) {
-                device= DataSupport.where("Status = ?", "在线").findFirst(GatwayDevice.class);
-            }
-            if(device==null){
-                device= DataSupport.findFirst(GatwayDevice.class);
-            }
-            if (device != null) {
-                Log.i(TAG, "device.getTopic()=" + device.getTopic());
-                if (device.getTopic() != null && !device.getTopic().equals("")) {
-                    mHomeGenius.querySwitchStatus(currentSelectSmartDevice, device.getTopic(), uuid, cmd);
+            List<GatwayDevice> devices = DataSupport.findAll(GatwayDevice.class);
+            for(int i=0;i<devices.size();i++){
+                if(devices.get(i).getTopic()!=null && !devices.get(i).getTopic().equals("")){
+                    Log.i(TAG, "device.getTopic()=" + devices.get(i).getTopic());
+                    mHomeGenius.querySwitchStatus(currentSelectSmartDevice, devices.get(i).getTopic(), uuid, cmd);
                 }
             }
-
-
         }
 
     }
@@ -206,23 +178,6 @@ public class SmartSwitchManager implements LocalConnecteListener {
      * 添加开关时指定当前添加开关的类型
      */
     private String currentAddSwitchSubType;
-    /**
-     * 设备列表界面中，当前选中的开关设备
-     */
-    private String currentSelectSwitchSubType;
-
-    public String getCurrentSelectSwitchSubType() {
-        return currentSelectSwitchSubType;
-    }
-
-    public void setCurrentSelectSwitchSubType(String currentSelectSwitchSubType) {
-        this.currentSelectSwitchSubType = currentSelectSwitchSubType;
-    }
-
-    public String getCurrentAddSwitchSubType() {
-        return currentAddSwitchSubType;
-    }
-
     public void setCurrentAddSwitchSubType(String currentAddSwitchSubType) {
         this.currentAddSwitchSubType = currentAddSwitchSubType;
     }

@@ -138,6 +138,7 @@ public class LightActivity extends Activity implements View.OnClickListener, Sma
             }
         });
         layout_title.setEditTextWhiteColor();
+        layout_title.setLineDirverVisiable(false);
         mSmartLightManager = SmartLightManager.getInstance();
         mSmartLightManager.InitSmartLightManager(this);
         DeplinkSDK.initSDK(getApplicationContext(), Perfence.SDK_APP_KEY);
@@ -157,6 +158,7 @@ public class LightActivity extends Activity implements View.OnClickListener, Sma
                 super.notifyHomeGeniusResponse(result);
                 Gson gson = new Gson();
                 QueryOptions resultObj = gson.fromJson(result, QueryOptions.class);
+                Log.i(TAG,TAG+"notifyHomeGeniusResponse");
                 if (resultObj.getOP().equalsIgnoreCase("REPORT") && resultObj.getMethod().equalsIgnoreCase("YWLIGHTCONTROL")) {
                     Message msg = Message.obtain();
                     msg.obj = resultObj;
@@ -244,14 +246,12 @@ public class LightActivity extends Activity implements View.OnClickListener, Sma
                     layout_lightcolor_control.setVisibility(View.VISIBLE);
                     layout_brightness_control.setVisibility(View.VISIBLE);
                     float alpha = (float) (currentSelectLight.getWhiteValue() / 200.0);
-                    Log.i(TAG, "alpha=" + alpha);
                     imageview_switch_bg.setAlpha(alpha);
                     progressBarLightWhite.setProgress(currentSelectLight.getWhiteValue() / 2);
                     button_switch_light.setBackgroundResource(R.drawable.lightyellowlight);
                     float alpha2 = (float) (currentSelectLight.getYellowValue() / 200.0);
                     button_switch_light.setAlpha(alpha2);
                     progressBarLightYellow.setProgress(currentSelectLight.getYellowValue() / 2);
-
                 } else {
                     iamgeview_switch.setBackgroundResource(R.drawable.ovel_110_bg);
                     imageview_switch_bg.setBackgroundResource(R.color.room_type_text);
@@ -271,7 +271,6 @@ public class LightActivity extends Activity implements View.OnClickListener, Sma
         manager.removeEventCallback(ec);
         mSmartLightManager.removeSmartLightListener(this);
     }
-
     @Override
     public void onClick(View view) {
         switch (view.getId()) {

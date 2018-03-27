@@ -58,7 +58,6 @@ public class LightEditActivity extends Activity implements View.OnClickListener 
     private TextView textview_select_room_name;
     private RelativeLayout layout_select_room;
     private ClearEditText edittext_input_devie_name;
-    private GetwaySelectListAdapter selectGetwayAdapter;
     private List<GatwayDevice> mGetways;
     private ListView listview_select_getway;
     private RelativeLayout layout_getway_list;
@@ -96,12 +95,12 @@ public class LightEditActivity extends Activity implements View.OnClickListener 
     @Override
     protected void onResume() {
         super.onResume();
-        mDeviceManager.addDeviceListener(mDeviceListener);
+        mDeviceManager.onResume(mDeviceListener);
         manager.addEventCallback(ec);
         isLogin = Perfence.getBooleanPerfence(AppConstant.USER_LOGIN);
         isStartFromExperience = DeviceManager.getInstance().isStartFromExperience();
         if (isStartFromExperience) {
-            textview_select_room_name.setText("全部");
+            textview_select_room_name.setText("未选择");
             textview_select_getway_name.setText("未设置网关");
         } else {
             lightName = mSmartLightManager.getCurrentSelectLight().getName();
@@ -115,7 +114,7 @@ public class LightEditActivity extends Activity implements View.OnClickListener 
                 if (mSmartLightManager.getCurrentSelectLight().getRooms().size() == 1) {
                     textview_select_room_name.setText(smartDev.getRooms().get(0).getRoomName());
                 } else {
-                    textview_select_room_name.setText("全部");
+                    textview_select_room_name.setText("未选择");
                 }
             }
             GatwayDevice temp = smartDev.getGetwayDevice();
@@ -139,7 +138,7 @@ public class LightEditActivity extends Activity implements View.OnClickListener 
     protected void onPause() {
         super.onPause();
         isOnActivityResult=false;
-        mDeviceManager.removeDeviceListener(mDeviceListener);
+        mDeviceManager.onPause(mDeviceListener);
         manager.removeEventCallback(ec);
     }
     private void initEvents() {
@@ -197,7 +196,7 @@ public class LightEditActivity extends Activity implements View.OnClickListener 
         mSmartLightManager.InitSmartLightManager(this);
         mGetways = new ArrayList<>();
         mGetways.addAll(GetwayManager.getInstance().getAllGetwayDevice());
-        selectGetwayAdapter = new GetwaySelectListAdapter(this, mGetways);
+        GetwaySelectListAdapter selectGetwayAdapter = new GetwaySelectListAdapter(this, mGetways);
         listview_select_getway.setAdapter(selectGetwayAdapter);
         listview_select_getway.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

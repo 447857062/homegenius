@@ -13,15 +13,11 @@ import android.widget.Toast;
 import com.deplink.homegenius.Protocol.json.device.getway.GatwayDevice;
 import com.deplink.homegenius.activity.device.DevicesActivity;
 import com.deplink.homegenius.activity.device.getway.wifi.ScanWifiListActivity;
-import com.deplink.homegenius.activity.device.remoteControl.topBox.AddTopBoxActivity;
 import com.deplink.homegenius.manager.connect.local.udp.UdpManager;
 import com.deplink.homegenius.manager.connect.local.udp.interfaces.UdpManagerGetIPLintener;
 import com.deplink.homegenius.manager.device.getway.GetwayManager;
 import com.deplink.homegenius.util.WeakRefHandler;
 import com.deplink.homegenius.view.combinationwidget.TitleLayout;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import deplink.com.smartwirelessrelay.homegenius.EllESDK.R;
 
@@ -32,7 +28,6 @@ import deplink.com.smartwirelessrelay.homegenius.EllESDK.R;
 public class QueryGetwaysActivity extends Activity implements View.OnClickListener, UdpManagerGetIPLintener {
     private static final String TAG = "QueryGetwaysActivity";
     private static final int MSG_CHECK_GETWAY_OK = 100;
-    private String currentAddDevice;
     private Button textview_cancel;
     private UdpManager mUdpmanager;
     private TitleLayout layout_title;
@@ -61,12 +56,10 @@ public class QueryGetwaysActivity extends Activity implements View.OnClickListen
                 QueryGetwaysActivity.this.onBackPressed();
             }
         });
-        currentAddDevice = getIntent().getStringExtra("currentAddDevice");
+        String currentAddDevice = getIntent().getStringExtra("currentAddDevice");
         GetwayManager.getInstance().setCurrentAddDevice(currentAddDevice);
         mUdpmanager = UdpManager.getInstance();
         mUdpmanager.InitUdpConnect(this, this);
-        mDevices = new ArrayList<>();
-
     }
 
     @Override
@@ -90,7 +83,6 @@ public class QueryGetwaysActivity extends Activity implements View.OnClickListen
         }
     }
 
-    private List<GatwayDevice> mDevices;
     private Handler.Callback mCallback = new Handler.Callback() {
         @Override
         public boolean handleMessage(Message msg) {
@@ -98,7 +90,6 @@ public class QueryGetwaysActivity extends Activity implements View.OnClickListen
                 case MSG_CHECK_GETWAY_OK:
                     GatwayDevice device = new GatwayDevice();
                     device.setIpAddress((String) msg.obj);
-                    mDevices.add(device);
                     Toast.makeText(QueryGetwaysActivity.this, "检查到IP为:" + msg.obj + "的网关", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(QueryGetwaysActivity.this, ScanWifiListActivity.class);
                     startActivity(intent);

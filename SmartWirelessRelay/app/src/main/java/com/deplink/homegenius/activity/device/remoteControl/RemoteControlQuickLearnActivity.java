@@ -85,18 +85,24 @@ public class RemoteControlQuickLearnActivity extends Activity implements View.On
             switch (msg.what) {
                 case MSG_SHOW_GET_KT_CODE:
                     code = (QueryTestCodeResponse) msg.obj;
-                    testCodeNumber = code.getValue().size();
+                    if (code != null) {
+                        testCodeNumber = code.getValue().size();
+                    }
                     textview_test_press_4.setText("" + testCodeNumber);
                     textview_key_name.setText("开关");
                     break;
                 case MSG_SHOW_GET_TV_CODE:
                     code = (QueryTestCodeResponse) msg.obj;
-                    testCodeNumber = code.getValue().size();
+                    if (code != null) {
+                        testCodeNumber = code.getValue().size();
+                    }
                     textview_test_press_4.setText("" + testCodeNumber);
                     break;
                 case MSG_SHOW_GET_IPTV_CODE:
                     code = (QueryTestCodeResponse) msg.obj;
-                    testCodeNumber = code.getValue().size();
+                    if (code != null) {
+                        testCodeNumber = code.getValue().size();
+                    }
                     textview_test_press_4.setText("" + testCodeNumber);
 
                     break;
@@ -254,7 +260,6 @@ public class RemoteControlQuickLearnActivity extends Activity implements View.On
         }
     };
     private Handler mHandler = new WeakRefHandler(mCallback);
-    private int controlId;
     private String brandId;
     private List<TestCode> testCodes;
 
@@ -465,7 +470,7 @@ public class RemoteControlQuickLearnActivity extends Activity implements View.On
                 iscanceled = true;
                 TestCode selectedCode = testCodes.get(currentTestCodeIndex);
                 brandId = selectedCode.getBrandID();
-                controlId = selectedCode.getCodeID();
+                int controlId = selectedCode.getCodeID();
                 Log.i(TAG, "下载码表 type=" + type + "brandId=" + brandId + "controlId=" + controlId);
                 switch (type) {
                     case "TV":
@@ -609,8 +614,6 @@ public class RemoteControlQuickLearnActivity extends Activity implements View.On
     private String data_tvboxkey_number_5;
     private String data_tvboxkey_number_6;
     private String data_tvboxkey_number_7;
-    private String data_tvboxkey_number_8;
-    private String data_tvboxkey_number_9;
     /**
      * 按键对应的byte数据
      */
@@ -830,12 +833,12 @@ public class RemoteControlQuickLearnActivity extends Activity implements View.On
         Log.i(TAG, "data_tvboxkey_number_7=" + data_tvboxkey_number_7);
 
         data = packTvBoxData(data_bytes_tvbox_key_number_8);
-        data_tvboxkey_number_8 = DataExchange.dbBytesToString(data);
+        String data_tvboxkey_number_8 = DataExchange.dbBytesToString(data);
         mTvboxKeyCode.setKey_number_8(data_tvboxkey_number_8);
         Log.i(TAG, "data_tvboxkey_number_8=" + data_tvboxkey_number_8);
 
         data = packTvBoxData(data_bytes_tvbox_key_number_9);
-        data_tvboxkey_number_9 = DataExchange.dbBytesToString(data);
+        String data_tvboxkey_number_9 = DataExchange.dbBytesToString(data);
         mTvboxKeyCode.setKey_number_9(data_tvboxkey_number_9);
         Log.i(TAG, "data_tvboxkey_number_9=" + data_tvboxkey_number_9);
         mTvboxKeyCode.save();

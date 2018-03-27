@@ -24,6 +24,7 @@ public class TitleLayout extends LinearLayout implements View.OnClickListener {
     private ImageView imageview_back;
     private FrameLayout framelayout_back;
     private RelativeLayout layout_root;
+    private View view_line_dirver;
     private ReturnImageClickListener returnClickListener;
     private EditTextClickListener editTextClickListener;
     private EditImageClickListener editImageClickListener;
@@ -49,6 +50,7 @@ public class TitleLayout extends LinearLayout implements View.OnClickListener {
         framelayout_back=findViewById(R.id.framelayout_back);
         layout_root=findViewById(R.id.layout_root);
         imageview_back=findViewById(R.id.imageview_back);
+        view_line_dirver=findViewById(R.id.view_line_dirver);
         int backgroundColor = typedArray.getColor(R.styleable.TitleLayout_background_color,R.color.white);
          return_image_show = typedArray.getBoolean(R.styleable.TitleLayout_return_image_show, false);
          edit_text_show = typedArray.getBoolean(R.styleable.TitleLayout_edit_text_show, false);
@@ -134,7 +136,15 @@ public class TitleLayout extends LinearLayout implements View.OnClickListener {
             }
 
         }
-
+    }
+    public void setLineDirverVisiable(boolean show){
+        if(view_line_dirver!=null){
+            if(show){
+                view_line_dirver.setVisibility(View.VISIBLE);
+            }else{
+                view_line_dirver.setVisibility(View.GONE);
+            }
+        }
     }
     public void setEditImageVisiable(boolean show){
         if(image_setting!=null){

@@ -32,7 +32,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class AddTopBoxActivity extends Activity implements AdapterView.OnItemClickListener{
-    private static final String TAG="AddTopBoxActivity";
     private ListView listview_band;
     private SideBar sideBar;
     private TextView dialog;
@@ -134,7 +133,7 @@ public class AddTopBoxActivity extends Activity implements AdapterView.OnItemCli
         startActivity(intent);
     }
     private List<SortModel> filledData(List<String> date) {
-        List<SortModel> mSortList = new ArrayList<SortModel>();
+        List<SortModel> mSortList = new ArrayList<>();
 
         for (int i = 0; i < date.size(); i++) {
             SortModel sortModel = new SortModel();
@@ -155,7 +154,7 @@ public class AddTopBoxActivity extends Activity implements AdapterView.OnItemCli
 
 
     private void filterData(String filterStr) {
-        List<SortModel> filterDateList = new ArrayList<SortModel>();
+        List<SortModel> filterDateList = new ArrayList<>();
 
         if (TextUtils.isEmpty(filterStr)) {
             filterDateList = SourceDateList;

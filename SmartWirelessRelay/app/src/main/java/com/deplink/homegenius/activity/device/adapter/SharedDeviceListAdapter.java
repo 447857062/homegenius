@@ -19,7 +19,6 @@ import deplink.com.smartwirelessrelay.homegenius.EllESDK.R;
 /**
  */
 public class SharedDeviceListAdapter extends BaseAdapter {
-    private static final String TAG = "SharedDeviceListAdapter";
     private List<GatwayDevice> listTop = null;
     private List<SmartDev> listBottom = null;
     private Context mContext;
@@ -34,20 +33,11 @@ public class SharedDeviceListAdapter extends BaseAdapter {
             TopCount = listTop.size();
         }
     }
-    public void setTopList(List<GatwayDevice> list) {
-        this.listTop = list;
-        TopCount = listTop.size();
-    }
 
     @Override
     public void notifyDataSetChanged() {
         super.notifyDataSetChanged();
     }
-
-    public void setBottomList(List<SmartDev> list) {
-        this.listBottom = list;
-    }
-
     @Override
     public int getCount() {
         int count = 0;

@@ -2,12 +2,6 @@ package com.deplink.homegenius.activity.device.adapter;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
-import android.graphics.Rect;
-import android.graphics.RectF;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +21,6 @@ import deplink.com.smartwirelessrelay.homegenius.EllESDK.R;
 /**
  */
 public class ShareDeviceListAdapter extends BaseAdapter {
-    private static final String TAG = "ShareDeviceListAdapter";
     private List<UserShareInfo> listTop = null;
     private Context mContext;
     private HashMap<String,Bitmap> userimage;

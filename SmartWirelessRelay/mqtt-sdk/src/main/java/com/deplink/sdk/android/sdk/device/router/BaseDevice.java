@@ -15,9 +15,6 @@ import java.util.List;
  */
 public abstract class BaseDevice {
     public static final String UPGRADE_STATE_READY = "ready";
-    public static final String UPGRADE_STATE_RUNNING = "running";
-    public static final String UPGRADE_STATE_FINISHED = "finished";
-    public static final String UPGRADE_STATE_FAILED = "failed";
     /**
      * 产品编码
      */
