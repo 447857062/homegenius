@@ -103,8 +103,13 @@ public class DeviceListAdapter extends BaseAdapter {
         if (convertView == null) {
             viewHolder = new ViewHolder();
             if (getItemViewType(position) == TOP_ITEM) {
-                convertView = LayoutInflater.from(mContext).inflate(
-                        R.layout.devicelist_device_item, null);
+                if(position==0){
+                    convertView = LayoutInflater.from(mContext).inflate(
+                            R.layout.devicelist_device_item_first, null);
+                }else{
+                    convertView = LayoutInflater.from(mContext).inflate(
+                            R.layout.devicelist_device_item, null);
+                }
                 viewHolder.textview_device_status = convertView
                         .findViewById(R.id.textview_device_status);
                 viewHolder.imageview_device_type = convertView
@@ -112,8 +117,14 @@ public class DeviceListAdapter extends BaseAdapter {
                 viewHolder.textview_device_name = convertView
                         .findViewById(R.id.textview_device_name);
             } else {
-                convertView = LayoutInflater.from(mContext).inflate(
-                        R.layout.devicelist_smartdevice_item, null);
+                if(position==0){
+                    convertView = LayoutInflater.from(mContext).inflate(
+                            R.layout.devicelist_smartdevice_item, null);
+                }else{
+                    convertView = LayoutInflater.from(mContext).inflate(
+                            R.layout.devicelist_smartdevice_item, null);
+                }
+
                 viewHolder.textview_device_status = convertView
                         .findViewById(R.id.textview_device_status);
                 viewHolder.textview_device_name = convertView
@@ -145,9 +156,11 @@ public class DeviceListAdapter extends BaseAdapter {
             viewHolder.textview_device_status.setText(statu);
             viewHolder.imageview_device_type.setImageResource(R.drawable.gatewayicon);
             if(statu.equalsIgnoreCase("在线")){
-                viewHolder.textview_device_status.setBackgroundResource(R.drawable.blue);
+                // viewHolder.textview_device_status.setBackgroundResource(R.drawable.blue);
+                viewHolder.textview_device_status.setTextColor(0xFF60a3f6);
             }else{
-                viewHolder.textview_device_status.setBackgroundResource(R.drawable.gray);
+                viewHolder.textview_device_status.setTextColor(0xFF999999);
+                // viewHolder.textview_device_status.setBackgroundResource(R.drawable.gray);
             }
             String deviceName = listTop.get(position).getName();
             viewHolder.textview_device_name.setText(deviceName);
@@ -175,10 +188,12 @@ public class DeviceListAdapter extends BaseAdapter {
                 deviceType = DeviceTypeConstant.TYPE.TYPE_REMOTECONTROL;
             }
             viewHolder.textview_device_name.setText(deviceName);
-            if(deviceStatu.equalsIgnoreCase("在线")){
-                viewHolder.textview_device_status.setBackgroundResource(R.drawable.blue);
+           if(deviceStatu.equalsIgnoreCase("在线")){
+               // viewHolder.textview_device_status.setBackgroundResource(R.drawable.blue);
+                viewHolder.textview_device_status.setTextColor(0xFF60a3f6);
             }else{
-                viewHolder.textview_device_status.setBackgroundResource(R.drawable.gray);
+               viewHolder.textview_device_status.setTextColor(0xFF999999);
+               // viewHolder.textview_device_status.setBackgroundResource(R.drawable.gray);
             }
             viewHolder.textview_device_status.setText(deviceStatu);
             getDeviceTypeImage(viewHolder, deviceType, position);

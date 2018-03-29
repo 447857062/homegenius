@@ -148,6 +148,17 @@ public class GetwayDeviceActivity extends Activity implements View.OnClickListen
                 textview_select_room_name.setText("未选择");
             }
         }
+        if(getIntent().getBooleanExtra("isupdateroom",false)){
+            isOnActivityResult = true;
+            String roomName = getIntent().getStringExtra("roomName");
+            if (!isStartFromExperience) {
+                room = RoomManager.getInstance().findRoom(roomName, true);
+                deviceUid = mGetwayManager.getCurrentSelectGetwayDevice().getUid();
+                mDeviceManager.alertDeviceHttp(deviceUid, room.getUid(), null, null);
+                action = "alertroom";
+            }
+            textview_select_room_name.setText(roomName);
+        }
     }
 
     private void initMqtt() {
@@ -212,24 +223,35 @@ public class GetwayDeviceActivity extends Activity implements View.OnClickListen
         layout_device_share = findViewById(R.id.layout_device_share);
         layout_title= findViewById(R.id.layout_title);
     }
-
+    private boolean isOnActivityResult;
     @Override
     protected void onResume() {
         super.onResume();
         isUserLogin = Perfence.getBooleanPerfence(AppConstant.USER_LOGIN);
         isStartFromExperience = mDeviceManager.isStartFromExperience();
         manager.addEventCallback(ec);
-        mDeviceManager.onResume(mDeviceListener);
+        mDeviceManager.addDeviceListener(mDeviceListener);
         if (!isStartFromExperience) {
             deviceUid = mGetwayManager.getCurrentSelectGetwayDevice().getUid();
-
+        }
+        if (!isOnActivityResult) {
+            isOnActivityResult = false;
+            if (isStartFromExperience) {
+                textview_select_room_name.setText("未选择");
+            } else {
+                if (mGetwayManager.getCurrentSelectGetwayDevice().getRoomList().size() == 1) {
+                    textview_select_room_name.setText((mGetwayManager.getCurrentSelectGetwayDevice().getRoomList().get(0).getRoomName()));
+                } else {
+                    textview_select_room_name.setText("未选择");
+                }
+            }
         }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        mDeviceManager.onPause(mDeviceListener);
+        mDeviceManager.removeDeviceListener(mDeviceListener);
         manager.removeEventCallback(ec);
     }
 
@@ -294,9 +316,10 @@ public class GetwayDeviceActivity extends Activity implements View.OnClickListen
                     startActivityForResult(intent, REQUEST_CODE_SELECT_DEVICE_IN_WHAT_ROOM);
                 } else {
                     if (isUserLogin) {
+                        mDeviceManager.setEditDevice(true);
+                        mDeviceManager.setCurrentEditDeviceType(DeviceTypeConstant.TYPE.TYPE_SMART_GETWAY);
                         Intent intent = new Intent(this, AddDeviceActivity.class);
-                        intent.putExtra("addDeviceSelectRoom", true);
-                        startActivityForResult(intent, REQUEST_CODE_SELECT_DEVICE_IN_WHAT_ROOM);
+                        startActivity(intent);
                     }
                 }
                 break;

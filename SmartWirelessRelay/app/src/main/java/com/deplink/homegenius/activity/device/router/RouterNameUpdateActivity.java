@@ -51,14 +51,14 @@ public class RouterNameUpdateActivity extends Activity {
     protected void onResume() {
         super.onResume();
         manager.addEventCallback(ec);
-        mDeviceManager.onResume(mDeviceListener);
+        mDeviceManager.addDeviceListener(mDeviceListener);
         isUserLogin = Perfence.getBooleanPerfence(AppConstant.USER_LOGIN);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        mDeviceManager.onPause(mDeviceListener);
+        mDeviceManager.removeDeviceListener(mDeviceListener);
         manager.removeEventCallback(ec);
     }
 

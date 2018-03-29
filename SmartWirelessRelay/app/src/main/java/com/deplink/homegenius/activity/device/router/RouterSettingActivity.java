@@ -112,7 +112,7 @@ public class RouterSettingActivity extends Activity implements View.OnClickListe
                 textview_room_select_2.setText("全部");
             }
             manager.addEventCallback(ec);
-            mDeviceManager.onResume(mDeviceListener);
+            mDeviceManager.addDeviceListener(mDeviceListener);
             isUserLogin = Perfence.getBooleanPerfence(AppConstant.USER_LOGIN);
             try {
                 channels = mRouterManager.getCurrentSelectedRouter().getRouter().getChannels();
@@ -284,7 +284,8 @@ public class RouterSettingActivity extends Activity implements View.OnClickListe
                 break;
             case R.id.layout_room_select_out:
                 Intent intent = new Intent(this, AddDeviceActivity.class);
-                RouterManager.getInstance().setEditRouter(true);
+                DeviceManager.getInstance().setEditDevice(true);
+                DeviceManager.getInstance().setCurrentEditDeviceType(DeviceTypeConstant.TYPE.TYPE_ROUTER);
                 startActivity(intent);
                 break;
             case R.id.layout_connect_type_select_out:
@@ -567,7 +568,7 @@ public class RouterSettingActivity extends Activity implements View.OnClickListe
     protected void onPause() {
         super.onPause();
         if (!isStartFromExperience) {
-            mDeviceManager.onPause(mDeviceListener);
+            mDeviceManager.removeDeviceListener(mDeviceListener);
             manager.removeEventCallback(ec);
         }
 

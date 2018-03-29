@@ -18,7 +18,6 @@ import android.os.IBinder;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
-import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -230,9 +229,7 @@ public class UpdateService extends Service {
         } catch (PackageManager.NameNotFoundException e) {
             applicationInfo = null;
         }
-        String applicationName =
-                (String) packageManager.getApplicationLabel(applicationInfo);
-        return applicationName;
+        return (String) packageManager.getApplicationLabel(applicationInfo);
     }
 
     private void buildBroadcast() {

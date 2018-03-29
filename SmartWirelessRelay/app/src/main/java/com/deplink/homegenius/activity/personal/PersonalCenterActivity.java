@@ -112,6 +112,7 @@ public class PersonalCenterActivity extends Activity implements View.OnClickList
             manager.getUserInfo(userName);
 
         }else{
+            user_head_portrait.setImageDrawable(ContextCompat.getDrawable(PersonalCenterActivity.this,R.drawable.defaultavatar));
             user_nickname.setText("请登录");
         }
         manager.queryAppUpdateInfo(Perfence.SDK_APP_KEY, APKVersionCodeUtils.getVerName(this));
@@ -231,6 +232,7 @@ public class PersonalCenterActivity extends Activity implements View.OnClickList
                 case MSG_SHOW_CONNECT_LOST:
                     Perfence.setPerfence(AppConstant.USER_LOGIN, false);
                     isUserLogin=false;
+                    user_head_portrait.setImageDrawable(ContextCompat.getDrawable(PersonalCenterActivity.this,R.drawable.defaultavatar));
                     new AlertDialog(PersonalCenterActivity.this).builder().setTitle("账号异地登录")
                             .setMsg("当前账号已在其它设备上登录,是否重新登录")
                             .setPositiveButton("确认", new View.OnClickListener() {

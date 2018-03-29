@@ -269,7 +269,6 @@ public class RemoteControlQuickLearnActivity extends Activity implements View.On
         isStartFromExperience = DeviceManager.getInstance().isStartFromExperience();
         mRemoteControlManager.addRemoteControlListener(mRemoteControlListener);
         isSendFirst = true;
-        Log.i(TAG, "onResume type=" + type);
         switch (type) {
             case "KT":
                 RestfulTools.getSingleton(this).queryTestCode("KT", bandName, "cn", new Callback<QueryTestCodeResponse>() {

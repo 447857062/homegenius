@@ -15,7 +15,6 @@ import com.deplink.homegenius.constant.DeviceTypeConstant;
 import com.deplink.homegenius.manager.connect.local.tcp.LocalConnecteListener;
 import com.deplink.homegenius.manager.connect.local.tcp.LocalConnectmanager;
 import com.deplink.homegenius.manager.connect.remote.HomeGenius;
-import com.deplink.homegenius.manager.connect.remote.RemoteConnectManager;
 import com.deplink.homegenius.manager.room.RoomManager;
 import com.deplink.homegenius.util.Perfence;
 import com.google.gson.Gson;
@@ -43,26 +42,15 @@ public class SmartLightManager implements LocalConnecteListener {
      */
     private static SmartLightManager instance;
     private SmartDev currentSelectLight;
-    private RemoteConnectManager mRemoteConnectManager;
     private HomeGenius mHomeGenius;
-    public boolean isEditSmartLight;
 
     private SmartLightManager() {
 
     }
-
-    public boolean isEditSmartLight() {
-        return isEditSmartLight;
-    }
-
-    public void setEditSmartLight(boolean editSmartLight) {
-        isEditSmartLight = editSmartLight;
-    }
-
     public SmartDev getCurrentSelectLight() {
         return currentSelectLight;
     }
-
+    private static String uuid ;
     public void setCurrentSelectLight(SmartDev currentSelectLight) {
         this.currentSelectLight = currentSelectLight;
     }
@@ -71,7 +59,7 @@ public class SmartLightManager implements LocalConnecteListener {
         if (instance == null) {
             instance = new SmartLightManager();
         }
-
+        uuid = Perfence.getPerfence(AppConstant.PERFENCE_BIND_APP_UUID);
         return instance;
     }
 
@@ -87,10 +75,6 @@ public class SmartLightManager implements LocalConnecteListener {
             mLocalConnectmanager = LocalConnectmanager.getInstance();
             String uuid = Perfence.getPerfence(AppConstant.PERFENCE_BIND_APP_UUID);
             mLocalConnectmanager.InitLocalConnectManager(context, uuid);
-        }
-        if (mRemoteConnectManager == null) {
-            mRemoteConnectManager = RemoteConnectManager.getInstance();
-            mRemoteConnectManager.InitRemoteConnectManager(mContext);
         }
         if (mHomeGenius == null) {
             mHomeGenius = new HomeGenius();
@@ -137,14 +121,14 @@ public class SmartLightManager implements LocalConnecteListener {
                 }
             });
         } else {
-
-            String uuid = Perfence.getPerfence(AppConstant.PERFENCE_BIND_APP_UUID);
             List<GatwayDevice> devices = DataSupport.findAll(GatwayDevice.class);
             for(int i=0;i<devices.size();i++){
                 if(devices.get(i).getTopic()!=null && !devices.get(i).getTopic().equals("")){
-
                     Log.i(TAG, "device.getTopic()=" + devices.get(i).getTopic());
-                    mHomeGenius.setSmartLightSwitch(currentSelectLight, devices.get(i).getTopic(), uuid, cmd);
+                    if(devices.get(i).getStatus().equalsIgnoreCase("on")||devices.get(i).getStatus().equalsIgnoreCase("在线")){
+                        mHomeGenius.setSmartLightSwitch(currentSelectLight, devices.get(i).getTopic(), uuid, cmd);
+                    }
+
                 }
             }
         }
@@ -169,14 +153,14 @@ public class SmartLightManager implements LocalConnecteListener {
                 }
             });
         } else {
-
-            String uuid = Perfence.getPerfence(AppConstant.PERFENCE_BIND_APP_UUID);
             List<GatwayDevice> devices = DataSupport.findAll(GatwayDevice.class);
             for(int i=0;i<devices.size();i++){
                 if(devices.get(i).getTopic()!=null && !devices.get(i).getTopic().equals("")){
-
                     Log.i(TAG, "device.getTopic()=" + devices.get(i).getTopic());
-                    mHomeGenius.setSmartLightParamas(currentSelectLight, devices.get(i).getTopic(), uuid, cmd, yellow, white);
+                    if(devices.get(i).getStatus().equalsIgnoreCase("on")||devices.get(i).getStatus().equalsIgnoreCase("在线")){
+                        mHomeGenius.setSmartLightParamas(currentSelectLight, devices.get(i).getTopic(), uuid, cmd, yellow, white);
+                    }
+
                 }
             }
         }
@@ -200,7 +184,6 @@ public class SmartLightManager implements LocalConnecteListener {
                 }
             });
         } else {
-            String uuid = Perfence.getPerfence(AppConstant.PERFENCE_BIND_APP_UUID);
             List<GatwayDevice> devices = DataSupport.findAll(GatwayDevice.class);
             for(int i=0;i<devices.size();i++){
                 if(devices.get(i).getTopic()!=null && !devices.get(i).getTopic().equals("")){
@@ -223,9 +206,7 @@ public class SmartLightManager implements LocalConnecteListener {
             smartDev.setMac(device.getAd().toLowerCase());
             smartDev.setType(DeviceTypeConstant.TYPE.TYPE_LIGHT);
             smartDev.setName(device.getName());
-            boolean addResult = smartDev.save();
-            Log.i(TAG, "向数据库中添加一条智能设备数据=" + addResult);
-            return addResult;
+            return smartDev.save();
         }
         Log.i(TAG, "数据库中已存在相同设备，不必要添加");
         return false;

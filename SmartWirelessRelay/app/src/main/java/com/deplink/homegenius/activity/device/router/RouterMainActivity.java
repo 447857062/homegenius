@@ -25,7 +25,6 @@ import com.deplink.homegenius.activity.personal.login.LoginActivity;
 import com.deplink.homegenius.constant.AppConstant;
 import com.deplink.homegenius.manager.connect.remote.HomeGenius;
 import com.deplink.homegenius.manager.device.DeviceManager;
-import com.deplink.homegenius.manager.device.light.SmartLightManager;
 import com.deplink.homegenius.manager.device.router.RouterManager;
 import com.deplink.homegenius.util.NetUtil;
 import com.deplink.homegenius.util.Perfence;
@@ -69,10 +68,6 @@ public class RouterMainActivity extends Activity implements View.OnClickListener
      * 设备上线下线监控，2次发送没有回数据就认为设备下线,所以是大于1
      */
     private static final int TIME_OUT_WATCHDOG_MAXCOUNT = 1;
-    /**
-     * 竖向滑动这么多距离就开始刷新
-     */
-    public static final int HEIGHT_MARK_TO_REFRESH = 250;
     /**
      * 已连接设备
      */
@@ -163,7 +158,6 @@ public class RouterMainActivity extends Activity implements View.OnClickListener
     protected void onResume() {
         super.onResume();
         mHomeGenius = new HomeGenius();
-        SmartLightManager.getInstance().setEditSmartLight(false);
         isStartFromExperience = DeviceManager.getInstance().isStartFromExperience();
         isUserLogin = Perfence.getBooleanPerfence(AppConstant.USER_LOGIN);
         frame_blacklist_content.setVisibility(View.GONE);

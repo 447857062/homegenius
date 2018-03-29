@@ -4,5 +4,5 @@
     <!--填充颜色-->
     <solid android:color="@color/huise" />
     <!--圆角弧度-->
-    <corners android:radius="@dimen/ridus15"/>
+    <corners android:radius="@dimen/ridus4"/>
 </shape>

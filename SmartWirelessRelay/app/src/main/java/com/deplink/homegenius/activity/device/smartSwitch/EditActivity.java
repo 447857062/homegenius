@@ -236,6 +236,18 @@ public class EditActivity extends Activity implements View.OnClickListener {
                 action = "";
             }
         };
+        if (getIntent().getBooleanExtra("isupdateroom", false)) {
+            String roomName = getIntent().getStringExtra("roomName");
+            isOnActivityResult = true;
+            if (!isStartFromExperience) {
+                action = "alertroom";
+                room = RoomManager.getInstance().findRoom(roomName, true);
+                deviceUid = mSmartSwitchManager.getCurrentSelectSmartDevice().getUid();
+                deviceName = edittext_add_device_input_name.getText().toString();
+                mDeviceManager.alertDeviceHttp(deviceUid, room.getUid(), null, null);
+            }
+            textview_select_room_name.setText(roomName);
+        }
     }
 
     @Override
@@ -282,14 +294,14 @@ public class EditActivity extends Activity implements View.OnClickListener {
                 }
             }
         }
-        mDeviceManager.onResume(mDeviceListener);
+        mDeviceManager.addDeviceListener(mDeviceListener);
         manager.addEventCallback(ec);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        mDeviceManager.onPause(mDeviceListener);
+        mDeviceManager.removeDeviceListener(mDeviceListener);
         manager.removeEventCallback(ec);
     }
 
@@ -352,8 +364,10 @@ public class EditActivity extends Activity implements View.OnClickListener {
                 }
                 break;
             case R.id.layout_room_select:
+                mDeviceManager.setEditDevice(true);
+                mDeviceManager.setCurrentEditDeviceType(DeviceTypeConstant.TYPE.TYPE_SWITCH);
                 Intent intent = new Intent(this, AddDeviceActivity.class);
-                startActivityForResult(intent, REQUEST_CODE_SELECT_DEVICE_IN_WHAT_ROOM);
+                startActivity(intent);
                 break;
             case R.id.button_delete_device:
                 new AlertDialog(EditActivity.this).builder().setTitle("删除设备")

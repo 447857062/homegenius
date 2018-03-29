@@ -687,13 +687,13 @@ public class AddDeviceNameActivity extends Activity implements View.OnClickListe
         super.onResume();
         manager.addEventCallback(ec);
         isUserLogin = Perfence.getBooleanPerfence(AppConstant.USER_LOGIN);
-        mDeviceManager.onResume(mDeviceListener);
+        mDeviceManager.addDeviceListener(mDeviceListener);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        mDeviceManager.onPause(mDeviceListener);
+        mDeviceManager.removeDeviceListener(mDeviceListener);
         manager.removeEventCallback(ec);
     }
 
@@ -879,6 +879,32 @@ public class AddDeviceNameActivity extends Activity implements View.OnClickListe
     private void addSmartDevice(DeviceAddBody deviceAddBody, Gson gson) {
         device = gson.fromJson(currentAddDevice, QrcodeSmartDevice.class);
         Log.i(TAG, "deviceType=" + deviceType + "device=" + (device != null));
+     switch (deviceType){
+         case DeviceTypeConstant.TYPE.TYPE_LIGHT:
+             if(!device.getTp().equalsIgnoreCase("YWLIGHTCONTROL")){
+                 ToastSingleShow.showText(AddDeviceNameActivity.this,"请选择正确的设备类型然后添加");
+                 return;
+             }
+             break;
+         case DeviceTypeConstant.TYPE.TYPE_LOCK:
+             if(!device.getTp().equalsIgnoreCase("SMART_LOCK")){
+                 ToastSingleShow.showText(AddDeviceNameActivity.this,"请选择正确的设备类型然后添加");
+                 return;
+             }
+             break;
+         case DeviceTypeConstant.TYPE.TYPE_SWITCH:
+             if(!device.getTp().equalsIgnoreCase("SmartWallSwitch4")){
+                 ToastSingleShow.showText(AddDeviceNameActivity.this,"请选择正确的设备类型然后添加");
+                 return;
+             }
+             break;
+         case DeviceTypeConstant.TYPE.TYPE_REMOTECONTROL:
+             if(!device.getTp().equalsIgnoreCase("IRMOTE_V2")){
+                 ToastSingleShow.showText(AddDeviceNameActivity.this,"请选择正确的设备类型然后添加");
+                 return;
+             }
+             break;
+     }
         device.setName(deviceName);
         deviceAddBody.setDevice_name(deviceName);
         if (mRoomManager.getCurrentSelectedRoom() != null) {

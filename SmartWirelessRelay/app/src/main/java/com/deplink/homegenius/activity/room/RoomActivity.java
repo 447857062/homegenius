@@ -108,7 +108,6 @@ public class RoomActivity extends Activity implements View.OnClickListener {
             public void onFailure(SDKAction action, Throwable throwable) {
 
             }
-
             @Override
             public void connectionLost(Throwable throwable) {
                 super.connectionLost(throwable);
@@ -188,7 +187,6 @@ public class RoomActivity extends Activity implements View.OnClickListener {
         mDragGridView.setAdapter(mRoomsAdapter);
         mRoomManager.updateRooms();
     }
-
     /**
      * 初始化底部的导航栏
      */
@@ -201,9 +199,7 @@ public class RoomActivity extends Activity implements View.OnClickListener {
         imageview_devices.setImageResource(R.drawable.nocheckthedevice);
         imageview_rooms.setImageResource(R.drawable.checktheroom);
     }
-
     private boolean isRoomOrdinalNumberChanged;
-
     private void initEvents() {
         AppManager.getAppManager().addActivity(this);
         layout_home_page.setOnClickListener(this);
@@ -214,19 +210,22 @@ public class RoomActivity extends Activity implements View.OnClickListener {
             @Override
             public void onChange(int from, int to) {
                 isRoomOrdinalNumberChanged = true;
-                Room temp = mRooms.get(from);
-                //这里的处理需要注意下
-                if (from < to) {
-                    for (int i = from; i < to; i++) {
-                        Collections.swap(mRooms, i, i + 1);
+                if(from!=-1){
+                    Room temp = mRooms.get(from);
+                    //这里的处理需要注意下
+                    if (from < to) {
+                        for (int i = from; i < to; i++) {
+                            Collections.swap(mRooms, i, i + 1);
+                        }
+                    } else if (from > to) {
+                        for (int i = from; i > to; i--) {
+                            Collections.swap(mRooms, i, i - 1);
+                        }
                     }
-                } else if (from > to) {
-                    for (int i = from; i > to; i--) {
-                        Collections.swap(mRooms, i, i - 1);
-                    }
+                    mRooms.set(to, temp);
+                    mRoomsAdapter.notifyDataSetChanged();
                 }
-                mRooms.set(to, temp);
-                mRoomsAdapter.notifyDataSetChanged();
+
             }
         });
         mDragGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -255,7 +254,6 @@ public class RoomActivity extends Activity implements View.OnClickListener {
         imageview_rooms = findViewById(R.id.imageview_rooms);
         imageview_personal_center = findViewById(R.id.imageview_personal_center);
     }
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {

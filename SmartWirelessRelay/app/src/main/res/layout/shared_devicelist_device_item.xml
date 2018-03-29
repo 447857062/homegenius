@@ -7,10 +7,10 @@
     >
 
     <RelativeLayout
+        android:layout_centerVertical="true"
         android:layout_width="match_parent"
         android:layout_height="@dimen/experience_center_listitem_height"
         android:minHeight="@dimen/experience_center_listitem_height"
-        android:layout_centerVertical="true"
         android:paddingLeft="15dp"
         android:paddingRight="15dp"
         android:background="@drawable/button_device_background">
@@ -32,10 +32,6 @@
             android:layout_toRightOf="@+id/imageview_device_type"
             android:text="中继器"
             android:textColor="@color/room_type_text" />
-
-
-
-
         <ImageView
             android:id="@+id/imageview_arror_right"
             android:layout_width="wrap_content"

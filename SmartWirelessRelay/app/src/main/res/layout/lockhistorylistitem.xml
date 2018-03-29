@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     android:paddingLeft="@dimen/layout_content_margin_left_right"
     android:minHeight="@dimen/doorlock_alerthistory_itemheight"
+    android:background="@drawable/button_press_normal"
     android:paddingRight="@dimen/layout_content_margin_left_right"
     android:orientation="vertical">
 

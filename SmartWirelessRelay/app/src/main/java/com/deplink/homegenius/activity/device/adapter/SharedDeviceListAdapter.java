@@ -130,6 +130,13 @@ public class SharedDeviceListAdapter extends BaseAdapter {
         }
         return convertView;
     }
+    public void setTopList(List<GatwayDevice> list) {
+        this.listTop = list;
+        TopCount = listTop.size();
+    }
+    public void setBottomList(List<SmartDev> list) {
+        this.listBottom = list;
+    }
     private void getDeviceTypeImage(ViewHolder viewHolder, String deviceType, int position) {
         switch (deviceType) {
             case DeviceTypeConstant.TYPE.TYPE_ROUTER:

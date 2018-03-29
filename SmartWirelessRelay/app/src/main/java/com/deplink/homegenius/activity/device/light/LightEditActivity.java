@@ -95,7 +95,7 @@ public class LightEditActivity extends Activity implements View.OnClickListener 
     @Override
     protected void onResume() {
         super.onResume();
-        mDeviceManager.onResume(mDeviceListener);
+        mDeviceManager.addDeviceListener(mDeviceListener);
         manager.addEventCallback(ec);
         isLogin = Perfence.getBooleanPerfence(AppConstant.USER_LOGIN);
         isStartFromExperience = DeviceManager.getInstance().isStartFromExperience();
@@ -138,7 +138,7 @@ public class LightEditActivity extends Activity implements View.OnClickListener 
     protected void onPause() {
         super.onPause();
         isOnActivityResult=false;
-        mDeviceManager.onPause(mDeviceListener);
+        mDeviceManager.removeDeviceListener(mDeviceListener);
         manager.removeEventCallback(ec);
     }
     private void initEvents() {
@@ -363,7 +363,8 @@ public class LightEditActivity extends Activity implements View.OnClickListener 
 
                 break;
             case R.id.layout_select_room:
-                mSmartLightManager.setEditSmartLight(true);
+               mDeviceManager.setEditDevice(true);
+                mDeviceManager.setCurrentEditDeviceType(DeviceTypeConstant.TYPE.TYPE_LIGHT);
                 Intent intent = new Intent(this, AddDeviceActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);

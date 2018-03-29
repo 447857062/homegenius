@@ -84,7 +84,7 @@ public class ScanWifiListActivity extends Activity implements AdapterView.OnItem
         super.onResume();
         isStartFromExperience = DeviceManager.getInstance().isStartFromExperience();
         manager.addEventCallback(ec);
-        mDeviceManager.onResume(mDeviceListener);
+        mDeviceManager.addDeviceListener(mDeviceListener);
         queryWifiRelayList();
     }
 
@@ -92,7 +92,7 @@ public class ScanWifiListActivity extends Activity implements AdapterView.OnItem
     protected void onPause() {
         super.onPause();
         manager.removeEventCallback(ec);
-        mDeviceManager.onPause(mDeviceListener);
+        mDeviceManager.removeDeviceListener(mDeviceListener);
     }
 
     private void queryWifiRelayList() {

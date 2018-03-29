@@ -108,9 +108,6 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.deplink.homegenius.activity.room.ModifyRoomNameActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name="com.deplink.homegenius.activity.room.DeviceNumberActivity"
             android:screenOrientation="portrait" />
         <activity

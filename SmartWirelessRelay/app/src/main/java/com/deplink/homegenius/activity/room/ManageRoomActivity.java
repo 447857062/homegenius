@@ -6,10 +6,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.deplink.homegenius.Protocol.json.Room;
 import com.deplink.homegenius.constant.AppConstant;
 import com.deplink.homegenius.manager.room.RoomListener;
 import com.deplink.homegenius.manager.room.RoomManager;
@@ -17,7 +17,10 @@ import com.deplink.homegenius.util.NetUtil;
 import com.deplink.homegenius.util.Perfence;
 import com.deplink.homegenius.view.combinationwidget.TitleLayout;
 import com.deplink.homegenius.view.dialog.AlertDialog;
+import com.deplink.homegenius.view.edittext.ClearEditText;
 import com.deplink.homegenius.view.toast.ToastSingleShow;
+
+import org.litepal.crud.DataSupport;
 
 import deplink.com.smartwirelessrelay.homegenius.EllESDK.R;
 
@@ -26,9 +29,12 @@ public class ManageRoomActivity extends Activity implements View.OnClickListener
     private Button button_delete_room;
     private TextView textview_room_name;
     private String mRoomName;
-    private RelativeLayout layout_room_name;
     private RoomManager mRoomManager;
     private TitleLayout layout_title;
+    private ClearEditText edittext_input_devie_name;
+    private String roomName;
+    private String orgRoomName;
+    private boolean isLogin;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +53,36 @@ public class ManageRoomActivity extends Activity implements View.OnClickListener
                 startActivity(intent);
             }
         });
+        layout_title.setEditTextClickListener(new TitleLayout.EditTextClickListener() {
+            @Override
+            public void onEditTextPressed() {
+                roomName = edittext_input_devie_name.getText().toString();
+                if (isLogin) {
+                    if (!roomName.equalsIgnoreCase("")  ) {
+                        if(!roomName.equals(orgRoomName)){
+                            //查询看看有没有重名的
+                            Room room = DataSupport.where("roomName = ?", roomName).findFirst(Room.class);
+                            if(room!=null){
+                                ToastSingleShow.showText(ManageRoomActivity.this,"已存在同名的房间,修改房间名称失败");
+                                return;
+                            }else{
+                                String roomUid = mRoomManager.getCurrentSelectedRoom().getUid();
+                                int roomOrdinalNumber=mRoomManager.getCurrentSelectedRoom().getRoomOrdinalNumber();
+                                Log.i(TAG, "roomUid=" + roomUid);
+                                mRoomManager.updateRoomNameHttp(roomUid, roomName,roomOrdinalNumber);
+                            }
+                        }else{
+                            ManageRoomActivity.this.finish();
+                        }
+                    } else {
+                        Toast.makeText(ManageRoomActivity.this, "请输入房间名称", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    ToastSingleShow.showText(ManageRoomActivity.this, "未登陆，请先登陆");
+                }
+
+            }
+        });
         mRoomManager = RoomManager.getInstance();
         mRoomManager.initRoomManager(this);
         mRoomListener=new RoomListener() {
@@ -62,20 +98,30 @@ public class ManageRoomActivity extends Activity implements View.OnClickListener
                     Toast.makeText(ManageRoomActivity.this, "删除房间失败", Toast.LENGTH_SHORT).show();
                 }
             }
+            @Override
+            public void responseUpdateRoomNameResult() {
+                super.responseUpdateRoomNameResult();
+                int result = RoomManager.getInstance().updateRoomName(orgRoomName, roomName);
+                if (result != 1) {
+                    Toast.makeText(ManageRoomActivity.this, "修改房间名称失败", Toast.LENGTH_SHORT).show();
+                } else {
+                    mRoomManager.getCurrentSelectedRoom().setRoomName(roomName);
+                    Intent intent = new Intent(ManageRoomActivity.this, DeviceNumberActivity.class);
+                    startActivity(intent);
+                }
+            }
         };
     }
 
     private void initEvents() {
         button_delete_room.setOnClickListener(this);
-        layout_room_name.setOnClickListener(this);
-
     }
 
     private void initViews() {
         layout_title= findViewById(R.id.layout_title);
         button_delete_room = findViewById(R.id.button_delete_room);
         textview_room_name = findViewById(R.id.textview_room_name);
-        layout_room_name = findViewById(R.id.layout_room_name);
+        edittext_input_devie_name = findViewById(R.id.edittext_input_devie_name);
     }
     private RoomListener mRoomListener;
     @Override
@@ -89,8 +135,11 @@ public class ManageRoomActivity extends Activity implements View.OnClickListener
         super.onResume();
         isUserLogin = Perfence.getBooleanPerfence(AppConstant.USER_LOGIN);
         mRoomName = mRoomManager.getCurrentSelectedRoom().getRoomName();
+        isLogin = Perfence.getBooleanPerfence(AppConstant.USER_LOGIN);
+        orgRoomName = RoomManager.getInstance().getCurrentSelectedRoom().getRoomName();
+        edittext_input_devie_name.setText(orgRoomName);
+        edittext_input_devie_name.setSelection(orgRoomName.length());
         Log.i(TAG, "当前编辑的房间名称= " + mRoomName);
-        textview_room_name.setText(mRoomName);
         mRoomManager.addRoomListener(mRoomListener);
     }
 
@@ -98,7 +147,6 @@ public class ManageRoomActivity extends Activity implements View.OnClickListener
     public void onClick(View v) {
         Intent intent;
         switch (v.getId()) {
-
             case R.id.button_delete_room:
                 if (!NetUtil.isNetAvailable(this)) {
                     ToastSingleShow.showText(this, "无可用网络连接,请检查网络");
@@ -128,10 +176,6 @@ public class ManageRoomActivity extends Activity implements View.OnClickListener
                         }
                     }).show();
                 }
-                break;
-            case R.id.layout_room_name:
-                intent = new Intent(this, ModifyRoomNameActivity.class);
-                startActivity(intent);
                 break;
         }
     }

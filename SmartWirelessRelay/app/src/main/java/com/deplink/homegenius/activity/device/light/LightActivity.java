@@ -113,7 +113,6 @@ public class LightActivity extends Activity implements View.OnClickListener, Sma
             public void onStartTrackingTouch(SeekBar seekBar) {
 
             }
-
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 if (!isStartFromExperience) {
@@ -147,10 +146,8 @@ public class LightActivity extends Activity implements View.OnClickListener, Sma
             @Override
             public void onSuccess(SDKAction action) {
             }
-
             @Override
             public void onBindSuccess(SDKAction action, String devicekey) {
-
             }
 
             @Override
@@ -166,7 +163,6 @@ public class LightActivity extends Activity implements View.OnClickListener, Sma
                     mHandler.sendMessage(msg);
                 }
             }
-
             @Override
             public void deviceOpSuccess(String op, String deviceKey) {
                 super.deviceOpSuccess(op, deviceKey);

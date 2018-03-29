@@ -26,7 +26,7 @@
             android:id="@+id/listview_devies"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/device_page_devicelist_margintop"
+            android:layout_marginTop="5dp"
             android:divider="@null"
             android:dividerHeight="@dimen/device_item_divider_height"
             android:listSelector="@color/transparent"

@@ -80,7 +80,6 @@ public class DeviceNumberActivity extends Activity implements EllE_Listener {
     private RoomManager mRoomManager;
     private Room currentRoom;
     private DeviceManager mDeviceManager;
-    private GetwayManager mGetwayManager;
     private SDKManager manager;
     private EventCallback ec;
     private SmartDev currentSmartDoorBell;
@@ -247,7 +246,8 @@ public class DeviceNumberActivity extends Activity implements EllE_Listener {
     protected void onResume() {
         super.onResume();
         isStartFromExperience = mDeviceManager.isStartFromExperience();
-        mDeviceManager.onResume(mDeviceListener);
+        mDeviceManager.addDeviceListener(mDeviceListener);
+        mDeviceManager.startQueryStatu();
         initListener();
         queryDeviceStatu();
         updateListview();
@@ -314,6 +314,8 @@ public class DeviceNumberActivity extends Activity implements EllE_Listener {
     protected void onPause() {
         super.onPause();
         manager.removeEventCallback(ec);
+        mDeviceManager.removeDeviceListener(mDeviceListener);
+        mDeviceManager.stopQueryStatu();
         ellESDK.stopSearchDevs();
         stopTimer();
     }

@@ -72,15 +72,7 @@ public class SmartLockManager implements LocalConnecteListener {
 
     }
 
-    public boolean isEditSmartLock;
-
-    public boolean isEditSmartLock() {
-        return isEditSmartLock;
-    }
-
-    public void setEditSmartLock(boolean editSmartLock) {
-        isEditSmartLock = editSmartLock;
-    }
+    private static String uuid;
 
     public SmartDev getCurrentSelectLock() {
         Log.i(TAG, "当前选中的门锁所在房间列表大小=" + currentSelectLock.getRooms().size());
@@ -96,6 +88,7 @@ public class SmartLockManager implements LocalConnecteListener {
         if (instance == null) {
             instance = new SmartLockManager();
         }
+        uuid = Perfence.getPerfence(AppConstant.PERFENCE_BIND_APP_UUID);
         return instance;
     }
 
@@ -185,6 +178,7 @@ public class SmartLockManager implements LocalConnecteListener {
         Log.i(TAG, "更新智能设备所在的网关=" + saveResult);
         return saveResult;
     }
+
     public List<SmartDev> getAllLock() {
         List<SmartDev> locklist = DataSupport.where("Type = ?", DeviceTypeConstant.TYPE.TYPE_LOCK).find(SmartDev.class);
         Log.i(TAG, "门锁设备列表大小=" + locklist.size());
@@ -261,6 +255,7 @@ public class SmartLockManager implements LocalConnecteListener {
             }
         });
     }
+
     /**
      * 报警记录设备上报，没有查询接口，所以保存在数据库中，需要去数据库获取
      */
@@ -273,10 +268,11 @@ public class SmartLockManager implements LocalConnecteListener {
         DataSupport.deleteAll(Record.class);
         return currentSelectLock.save();
     }
+
     /**
      * 查询开锁记录
      */
-    public void queryLockHistory(boolean isLocal, int queryNumber,int total, String userId) {
+    public void queryLockHistory(boolean isLocal, int queryNumber, int total, String userId) {
         if (isLocal) {
             QueryOptions queryCmd = new QueryOptions();
             queryCmd.setOP("QUERY");
@@ -298,10 +294,9 @@ public class SmartLockManager implements LocalConnecteListener {
                 }
             });
         } else {
-            String uuid = Perfence.getPerfence(AppConstant.PERFENCE_BIND_APP_UUID);
             List<GatwayDevice> devices = DataSupport.findAll(GatwayDevice.class);
-            for(int i=0;i<devices.size();i++){
-                if(devices.get(i).getTopic()!=null && !devices.get(i).getTopic().equals("")){
+            for (int i = 0; i < devices.size(); i++) {
+                if (devices.get(i).getTopic() != null && !devices.get(i).getTopic().equals("")) {
                     Log.i(TAG, "device.getTopic()=" + devices.get(i).getTopic());
                     mHomeGenius.queryLockHistory(currentSelectLock, devices.get(i).getTopic(), uuid, queryNumber, userId);
                 }
@@ -310,7 +305,7 @@ public class SmartLockManager implements LocalConnecteListener {
     }
 
     public void queryLockStatu() {
-        Log.i(TAG, "查询锁设备状态"+mLocalConnectmanager.isLocalconnectAvailable());
+        Log.i(TAG, "查询锁设备状态" + mLocalConnectmanager.isLocalconnectAvailable());
         if (mLocalConnectmanager.isLocalconnectAvailable()) {
             QueryOptions queryCmd = new QueryOptions();
             queryCmd.setOP("SET");
@@ -328,10 +323,9 @@ public class SmartLockManager implements LocalConnecteListener {
                 }
             });
         } else {
-            String uuid = Perfence.getPerfence(AppConstant.PERFENCE_BIND_APP_UUID);
             List<GatwayDevice> devices = DataSupport.findAll(GatwayDevice.class);
-            for(int i=0;i<devices.size();i++){
-                if(devices.get(i).getTopic()!=null && !devices.get(i).getTopic().equals("")){
+            for (int i = 0; i < devices.size(); i++) {
+                if (devices.get(i).getTopic() != null && !devices.get(i).getTopic().equals("")) {
                     Log.i(TAG, "device.getTopic()=" + devices.get(i).getTopic());
                     mHomeGenius.queryDeviceList(devices.get(i).getTopic(), uuid);
                     mHomeGenius.queryLockStatu(currentSelectLock, devices.get(i).getTopic(), uuid);
@@ -377,7 +371,6 @@ public class SmartLockManager implements LocalConnecteListener {
             Gson gson = new Gson();
             String text = gson.toJson(queryCmd);
             packet.packSetCmdData(text.getBytes(), currentSelectLock.getUid());
-
             cachedThreadPool.execute(new Runnable() {
                 @Override
                 public void run() {
@@ -385,12 +378,9 @@ public class SmartLockManager implements LocalConnecteListener {
                 }
             });
         } else {
-
-            String uuid = Perfence.getPerfence(AppConstant.PERFENCE_BIND_APP_UUID);
             List<GatwayDevice> devices = DataSupport.findAll(GatwayDevice.class);
-            for(int i=0;i<devices.size();i++){
-                if(devices.get(i).getTopic()!=null && !devices.get(i).getTopic().equals("")){
-
+            for (int i = 0; i < devices.size(); i++) {
+                if (devices.get(i).getTopic() != null && !devices.get(i).getTopic().equals("")) {
                     Log.i(TAG, "device.getTopic()=" + devices.get(i).getTopic());
                     mHomeGenius.setSmartLockParmars(currentSelectLock, devices.get(i).getTopic(), uuid, cmd, userId, managePasswd, authPwd, limitedTime);
                 }

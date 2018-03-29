@@ -103,6 +103,7 @@ public class RegistActivity extends Activity implements View.OnClickListener, Vi
         manager.addEventCallback(ec);
         edittext_input_password.setTransformationMethod(PasswordTransformationMethod.getInstance());
         showInputmothed();
+        button_regist.setEnabled(false);
     }
     private String username;
     @Override
@@ -239,6 +240,26 @@ public class RegistActivity extends Activity implements View.OnClickListener, Vi
 
         };
         edittext_input_phone_number.addTextChangedListener(mPhoneNumberInputWatcher);
+        edittext_input_password.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if(editable.toString().length()>=6){
+                    button_regist.setEnabled(true);
+                }else{
+                    button_regist.setEnabled(false);
+                }
+            }
+        });
     }
     private TextWatcher mPhoneNumberInputWatcher=new TextWatcher() {
         @Override

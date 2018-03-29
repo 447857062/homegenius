@@ -69,9 +69,7 @@ import deplink.com.smartwirelessrelay.homegenius.EllESDK.R;
             initViews();
             initDatas();
             initEvents();
-
         }
-
         @Override
         protected void onResume() {
             super.onResume();
@@ -224,24 +222,19 @@ import deplink.com.smartwirelessrelay.homegenius.EllESDK.R;
                             textview_visitor_loading.setVisibility(View.GONE);
                         } else {
                             layout_no_visitor.setVisibility(View.VISIBLE);
-
                         }
-
                     }
                 }
 
                 @Override
                 public void responseVisitorImage(Bitmap bitmap, int count) {
                     super.responseVisitorImage(bitmap, count);
-
                     if (count <= visitorList.size() ) {
                         if(visitorListImage.get(count)==null){
                             visitorListImage.put(count,toRoundCorner(bitmap,30));
                         }
                     }
-
                     mAdapter.notifyDataSetChanged();
-
                 }
 
                 @Override

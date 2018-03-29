@@ -4,7 +4,7 @@
     android:shape="rectangle"
     android:useLevel="false">
     <!--圆角弧度-->
-    <corners android:radius="@dimen/ridus22"/>
+    <corners android:radius="@dimen/ridus4"/>
     <!-- 实心 -->
     <solid android:color="@color/white"/>
     <!-- 描边 -->

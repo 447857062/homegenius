@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
@@ -87,6 +89,7 @@ public class LoginActivity extends Activity implements View.OnClickListener, Vie
             edittext_input_phone_number.setSelection(userName.length());
         }
         showInputmothed();
+        button_login.setEnabled(false);
     }
 
     @Override
@@ -94,7 +97,6 @@ public class LoginActivity extends Activity implements View.OnClickListener, Vie
         super.onPause();
         manager.removeEventCallback(ec);
     }
-
     private void initDatas() {
         layout_title.setReturnClickListener(new TitleLayout.ReturnImageClickListener() {
             @Override
@@ -171,6 +173,25 @@ public class LoginActivity extends Activity implements View.OnClickListener, Vie
                 ToastSingleShow.showText(LoginActivity.this, "当前账号已在其它设备上登录");
             }
         };
+        edittext_input_password.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                   if(editable.toString().length()>=6){
+                       button_login.setEnabled(true);
+                   }else{
+                       button_login.setEnabled(false);
+                   }
+            }
+        });
     }
 
 

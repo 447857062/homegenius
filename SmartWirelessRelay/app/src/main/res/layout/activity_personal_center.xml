@@ -25,11 +25,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <RelativeLayout
-
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <RelativeLayout
-                    android:background="@color/white"
+                    android:background="@drawable/button_press_normal"
                     android:id="@+id/layout_user_info"
                     android:paddingLeft="15dp"
                     android:paddingRight="15dp"
@@ -71,7 +70,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/layout_item_content_height"
                     android:layout_below="@+id/layout_user_info"
-
                     android:background="@drawable/button_press_normal"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"

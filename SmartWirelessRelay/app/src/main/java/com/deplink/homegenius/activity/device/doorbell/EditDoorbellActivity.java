@@ -99,7 +99,7 @@ public class EditDoorbellActivity extends Activity implements View.OnClickListen
         super.onResume();
         isStartFromExperience = DeviceManager.getInstance().isStartFromExperience();
         isUserLogin = Perfence.getBooleanPerfence(AppConstant.USER_LOGIN);
-        mDeviceManager.onResume(mDeviceListener);
+        mDeviceManager.addDeviceListener(mDeviceListener);
         if (isStartFromExperience) {
             edittext_add_device_input_name.setText("智能门铃");
             edittext_add_device_input_name.setSelection(4);
@@ -139,7 +139,7 @@ public class EditDoorbellActivity extends Activity implements View.OnClickListen
                 if (rooms.size() == 1) {
                     textview_select_room_name.setText(rooms.get(0).getRoomName());
                 } else {
-                    textview_select_room_name.setText("全部");
+                    textview_select_room_name.setText("未选择");
                 }
             }
 
@@ -154,7 +154,7 @@ public class EditDoorbellActivity extends Activity implements View.OnClickListen
     protected void onPause() {
         super.onPause();
         isOnActivityResult = false;
-        mDeviceManager.onPause(mDeviceListener);
+        mDeviceManager.removeDeviceListener(mDeviceListener);
         manager.removeEventCallback(ec);
     }
 
@@ -225,15 +225,15 @@ public class EditDoorbellActivity extends Activity implements View.OnClickListen
     }
 
     private void initDatas() {
+        isStartFromExperience = DeviceManager.getInstance().isStartFromExperience();
         ellESDK = EllESDK.getInstance();
         ellESDK.InitEllESDK(this, this);
         mDeviceManager = DeviceManager.getInstance();
         mDeviceManager.InitDeviceManager(this);
-        isStartFromExperience = DeviceManager.getInstance().isStartFromExperience();
         mDoorbeelManager = DoorbeelManager.getInstance();
-        mDeviceManager.InitDeviceManager(this);
         SmartLockManager mSmartLockManager = SmartLockManager.getInstance();
         mSmartLockManager.InitSmartLockManager(this);
+        deviceUid = mDoorbeelManager.getCurrentSelectedDoorbeel().getUid();
         mDeviceListener = new DeviceListener() {
             @Override
             public void responseDeleteDeviceHttpResult(DeviceOperationResponse result) {
@@ -241,10 +241,10 @@ public class EditDoorbellActivity extends Activity implements View.OnClickListen
                 DialogThreeBounce.hideLoading();
                 mHandler.sendEmptyMessage(MSG_HANDLE_DELETE_DEVICE_RESULT);
             }
-
             @Override
             public void responseAlertDeviceHttpResult(DeviceOperationResponse result) {
                 super.responseAlertDeviceHttpResult(result);
+                Log.i(TAG,"responseAlertDeviceHttpResult:"+action);
                 switch (action) {
                     case "alertname":
                         mHandler.sendEmptyMessage(MSG_ALERT_DEVICENAME_RESULT);
@@ -282,6 +282,16 @@ public class EditDoorbellActivity extends Activity implements View.OnClickListen
                 }
             }
         });
+        if (getIntent().getBooleanExtra("isupdateroom", false)) {
+            String roomName = getIntent().getStringExtra("roomName");
+            isOnActivityResult = true;
+            if (!isStartFromExperience) {
+                room = RoomManager.getInstance().findRoom(roomName, true);
+                mDeviceManager.alertDeviceHttp(deviceUid, room.getUid(), null, null);
+                action = "alertroom";
+            }
+            textview_select_room_name.setText(roomName);
+        }
     }
 
     private static final int REQUEST_CODE_SELECT_DEVICE_IN_WHAT_ROOM = 100;
@@ -379,9 +389,10 @@ public class EditDoorbellActivity extends Activity implements View.OnClickListen
                     startActivityForResult(intent, REQUEST_CODE_SELECT_DEVICE_IN_WHAT_ROOM);
                 } else {
                     if (isUserLogin) {
+                        mDeviceManager.setEditDevice(true);
+                        mDeviceManager.setCurrentEditDeviceType(DeviceTypeConstant.TYPE.TYPE_MENLING);
                         Intent intent = new Intent(this, AddDeviceActivity.class);
-                        intent.putExtra("addDeviceSelectRoom", true);
-                        startActivityForResult(intent, REQUEST_CODE_SELECT_DEVICE_IN_WHAT_ROOM);
+                        startActivity(intent);
                     }
                 }
                 break;

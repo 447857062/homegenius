@@ -66,7 +66,7 @@ public class DoorbeelMainActivity extends Activity implements View.OnClickListen
     private EventCallback ec;
     private DeviceListener mDeviceListener;
     private TitleLayout layout_title;
-
+    private boolean isUserLogin;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -122,6 +122,7 @@ public class DoorbeelMainActivity extends Activity implements View.OnClickListen
         };
         initMqttCallback();
     }
+
     /**
      * 获取圆角位图的方法
      *
@@ -177,6 +178,7 @@ public class DoorbeelMainActivity extends Activity implements View.OnClickListen
             @Override
             public void connectionLost(Throwable throwable) {
                 super.connectionLost(throwable);
+                isUserLogin=false;
                 Perfence.setPerfence(AppConstant.USER_LOGIN, false);
                 new AlertDialog(DoorbeelMainActivity.this).builder().setTitle("账号异地登录")
                         .setMsg("当前账号已在其它设备上登录,是否重新登录")
@@ -241,8 +243,9 @@ public class DoorbeelMainActivity extends Activity implements View.OnClickListen
     @Override
     protected void onResume() {
         super.onResume();
+        isUserLogin = Perfence.getBooleanPerfence(AppConstant.USER_LOGIN);
         manager.addEventCallback(ec);
-        mDeviceManager.onResume(mDeviceListener);
+        mDeviceManager.addDeviceListener(mDeviceListener);
         if (mDoorbeelManager != null) {
             mDoorbeelManager = DoorbeelManager.getInstance();
             mDoorbeelManager.InitDoorbeelManager(this);
@@ -282,7 +285,9 @@ public class DoorbeelMainActivity extends Activity implements View.OnClickListen
         }
         if (!isStartFromExperience) {
             if (mDoorbeelManager.getCurrentSelectedDoorbeel().getBindLockUid() != null) {
-                mSmartLockManager.queryLockUidHttp(mDoorbeelManager.getCurrentSelectedDoorbeel().getBindLockUid());
+                if(isUserLogin){
+                    mSmartLockManager.queryLockUidHttp(mDoorbeelManager.getCurrentSelectedDoorbeel().getBindLockUid());
+                }
                 String lockuid = mDoorbeelManager.getCurrentSelectedDoorbeel().getBindLockUid();
                 lockDevice = DataSupport.where("Uid=?", lockuid).findFirst(SmartDev.class, true);
             }
@@ -296,6 +301,7 @@ public class DoorbeelMainActivity extends Activity implements View.OnClickListen
             button_opendoor.setBackgroundResource(R.drawable.login_button_enable_background);
         }
     }
+
     private PushMessage pushMessage;
     private DeviceManager mDeviceManager;
 
@@ -303,7 +309,7 @@ public class DoorbeelMainActivity extends Activity implements View.OnClickListen
     protected void onPause() {
         super.onPause();
         manager.removeEventCallback(ec);
-        mDeviceManager.onPause(mDeviceListener);
+        mDeviceManager.removeDeviceListener(mDeviceListener);
         imageview_visitor.setVisibility(View.GONE);
         layout_no_vistor.setVisibility(View.VISIBLE);
         mDoorbeelManager.removeDeviceListener(mDoorBellListener);
@@ -330,14 +336,23 @@ public class DoorbeelMainActivity extends Activity implements View.OnClickListen
                 if (isStartFromExperience) {
                     ToastSingleShow.showText(this, "门锁已开");
                 } else {
-                    if (lockDevice != null && selfUserId != null) {
-                        Log.i(TAG, "lockDevice=" + lockDevice.toString() + "selfUserId=" + selfUserId);
-                        savedManagePassword = lockDevice.getLockPassword();
-                        mSmartLockManager.setCurrentSelectLock(lockDevice);
-                        mSmartLockManager.setSmartLockParmars(SmartLockConstant.OPEN_LOCK, selfUserId, savedManagePassword, null, null);
-                    } else {
-                        ToastSingleShow.showText(this, "未绑定门锁,无法开门");
+                    if(!isUserLogin){
+                        ToastSingleShow.showText(this, "未登录,登陆后才能开锁");
+                        return;
                     }
+                    if (lockDevice == null) {
+                        ToastSingleShow.showText(this, "未绑定门锁,无法开门");
+                        return;
+                    }
+                    if (selfUserId == null) {
+                        ToastSingleShow.showText(this, "未获取到门锁id,无法开锁");
+                        return;
+                    }
+                    Log.i(TAG, "lockDevice=" + lockDevice.toString() + "selfUserId=" + selfUserId);
+                    savedManagePassword = lockDevice.getLockPassword();
+                    mSmartLockManager.setCurrentSelectLock(lockDevice);
+                    mSmartLockManager.setSmartLockParmars(SmartLockConstant.OPEN_LOCK, selfUserId, savedManagePassword, null, null);
+
                 }
                 break;
 

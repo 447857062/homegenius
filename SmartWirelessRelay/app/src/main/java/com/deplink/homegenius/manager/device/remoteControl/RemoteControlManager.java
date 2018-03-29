@@ -66,7 +66,7 @@ public class RemoteControlManager implements LocalConnecteListener {
     private String currentLearnByHandTypeName;
     private RemoteConnectManager mRemoteConnectManager;
     private HomeGenius mHomeGenius;
-
+    private static String uuid ;
     public String getCurrentLearnByHandTypeName() {
         return currentLearnByHandTypeName;
     }
@@ -133,6 +133,7 @@ public class RemoteControlManager implements LocalConnecteListener {
         if (instance == null) {
             instance = new RemoteControlManager();
         }
+        uuid= Perfence.getPerfence(AppConstant.PERFENCE_BIND_APP_UUID);
         return instance;
     }
 
@@ -140,7 +141,6 @@ public class RemoteControlManager implements LocalConnecteListener {
         this.mContext = context;
         if (mLocalConnectmanager == null) {
             mLocalConnectmanager = LocalConnectmanager.getInstance();
-            String uuid = Perfence.getPerfence(AppConstant.PERFENCE_BIND_APP_UUID);
             mLocalConnectmanager.InitLocalConnectManager(context, uuid);
 
         }
@@ -161,6 +161,7 @@ public class RemoteControlManager implements LocalConnecteListener {
         if (cachedThreadPool == null) {
             cachedThreadPool = Executors.newCachedThreadPool();
         }
+
     }
 
     /**
@@ -198,12 +199,14 @@ public class RemoteControlManager implements LocalConnecteListener {
                 }
             });
         } else {
-            String uuid = Perfence.getPerfence(AppConstant.PERFENCE_BIND_APP_UUID);
             List<GatwayDevice> devices = DataSupport.findAll(GatwayDevice.class);
             for(int i=0;i<devices.size();i++){
                 if(devices.get(i).getTopic()!=null && !devices.get(i).getTopic().equals("")){
                     Log.i(TAG, "device.getTopic()=" + devices.get(i).getTopic());
-                    mHomeGenius.study(mSelectRemoteControlDevice, devices.get(i).getTopic(), uuid);
+                    if(devices.get(i).getStatus().equalsIgnoreCase("on")||devices.get(i).getStatus().equalsIgnoreCase("在线")){
+                        mHomeGenius.study(mSelectRemoteControlDevice, devices.get(i).getTopic(), uuid);
+                    }
+
                 }
             }
         }
@@ -226,13 +229,13 @@ public class RemoteControlManager implements LocalConnecteListener {
                 }
             });
         } else {
-            String uuid = Perfence.getPerfence(AppConstant.PERFENCE_BIND_APP_UUID);
             List<GatwayDevice> devices = DataSupport.findAll(GatwayDevice.class);
             for(int i=0;i<devices.size();i++){
                 if(devices.get(i).getTopic()!=null && !devices.get(i).getTopic().equals("")){
-
-                    Log.i(TAG, "device.getTopic()=" + devices.get(i).getTopic());
-                    mHomeGenius.stopStudy(mSelectRemoteControlDevice, devices.get(i).getTopic(), uuid);
+                    if(devices.get(i).getStatus().equalsIgnoreCase("on")||devices.get(i).getStatus().equalsIgnoreCase("在线")){
+                        Log.i(TAG, "device.getTopic()=" + devices.get(i).getTopic());
+                        mHomeGenius.stopStudy(mSelectRemoteControlDevice, devices.get(i).getTopic(), uuid);
+                    }
                 }
             }
         }
@@ -258,7 +261,6 @@ public class RemoteControlManager implements LocalConnecteListener {
                 }
             });
         } else {
-            String uuid = Perfence.getPerfence(AppConstant.PERFENCE_BIND_APP_UUID);
             GatwayDevice device = mSelectRemoteControlDevice.getGetwayDevice();
             if (device == null) {
                 device = DataSupport.where("Status = ?", "在线").findFirst(GatwayDevice.class);
@@ -299,12 +301,13 @@ public class RemoteControlManager implements LocalConnecteListener {
                 }
             });
         } else {
-            String uuid = Perfence.getPerfence(AppConstant.PERFENCE_BIND_APP_UUID);
             List<GatwayDevice> devices = DataSupport.findAll(GatwayDevice.class);
             for(int i=0;i<devices.size();i++){
                 if(devices.get(i).getTopic()!=null && !devices.get(i).getTopic().equals("")){
                     Log.i(TAG, "device.getTopic()=" + devices.get(i).getTopic());
-                    mHomeGenius.sendData(mSelectRemoteControlDevice, devices.get(i).getTopic(), uuid, data);
+                    if(devices.get(i).getStatus().equalsIgnoreCase("on")||devices.get(i).getStatus().equalsIgnoreCase("在线")){
+                        mHomeGenius.sendData(mSelectRemoteControlDevice, devices.get(i).getTopic(), uuid, data);
+                    }
                 }
             }
         }

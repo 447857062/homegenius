@@ -93,6 +93,7 @@ public class ForgetPasswordActivity extends Activity implements View.OnClickList
         buton_get_verification_code.setBackgroundResource(R.drawable.get_vercode_button_disable_background);
         manager.addEventCallback(ec);
         showInputmothed();
+        button_login.setEnabled(false);
     }
 
     @Override
@@ -206,6 +207,26 @@ public class ForgetPasswordActivity extends Activity implements View.OnClickList
             }
         };
         edittext_input_phone_number.addTextChangedListener(mPhoneNumberInputWatcher);
+        edittext_input_password.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if(editable.toString().length()>=6){
+                    button_login.setEnabled(true);
+                }else{
+                    button_login.setEnabled(false);
+                }
+            }
+        });
     }
     private TextWatcher mPhoneNumberInputWatcher=new TextWatcher() {
         @Override
@@ -226,6 +247,7 @@ public class ForgetPasswordActivity extends Activity implements View.OnClickList
         @Override
         public void afterTextChanged(Editable editable) {
             Log.i(TAG,"afterTextChanged"+editable.toString());
+
         }
     };
     private void initEvents() {

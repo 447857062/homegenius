@@ -15,16 +15,8 @@ import com.deplink.homegenius.Protocol.json.device.share.UserShareInfo;
 import com.deplink.homegenius.activity.device.adapter.ShareDeviceListAdapter;
 import com.deplink.homegenius.activity.personal.login.LoginActivity;
 import com.deplink.homegenius.constant.AppConstant;
-import com.deplink.homegenius.constant.DeviceTypeConstant;
 import com.deplink.homegenius.manager.device.DeviceListener;
 import com.deplink.homegenius.manager.device.DeviceManager;
-import com.deplink.homegenius.manager.device.doorbeel.DoorbeelManager;
-import com.deplink.homegenius.manager.device.getway.GetwayManager;
-import com.deplink.homegenius.manager.device.light.SmartLightManager;
-import com.deplink.homegenius.manager.device.remoteControl.RemoteControlManager;
-import com.deplink.homegenius.manager.device.router.RouterManager;
-import com.deplink.homegenius.manager.device.smartlock.SmartLockManager;
-import com.deplink.homegenius.manager.device.smartswitch.SmartSwitchManager;
 import com.deplink.homegenius.util.JsonArrayParseUtil;
 import com.deplink.homegenius.util.Perfence;
 import com.deplink.homegenius.util.StringValidatorUtil;
@@ -171,7 +163,7 @@ public class ShareDeviceActivity extends Activity  {
         super.onResume();
         isStartFromExperience = mDeviceManager.isStartFromExperience();
         isUserLogin = Perfence.getBooleanPerfence(AppConstant.USER_LOGIN);
-        mDeviceManager.onResume(mDeviceListener);
+        mDeviceManager.addDeviceListener(mDeviceListener);
         manager.addEventCallback(ec);
         if (!isStartFromExperience) {
             if (isUserLogin) {
@@ -183,7 +175,7 @@ public class ShareDeviceActivity extends Activity  {
     @Override
     protected void onPause() {
         super.onPause();
-        mDeviceManager.onPause(mDeviceListener);
+        mDeviceManager.removeDeviceListener(mDeviceListener);
         manager.removeEventCallback(ec);
         userInfos.clear();
     }
@@ -257,70 +249,6 @@ public class ShareDeviceActivity extends Activity  {
                     if (response != null) {
                         userInfos.clear();
                         Log.i(TAG, "分享的用户列表长度:" + response.size());
-                        if(response.size()>=2){
-                            //有分享过设备
-                            switch (devicetype){
-                                case DeviceTypeConstant.TYPE.TYPE_MENLING:
-                                    DoorbeelManager.getInstance().getCurrentSelectedDoorbeel().setShared(true);
-                                    DoorbeelManager.getInstance().getCurrentSelectedDoorbeel().saveFast();
-                                    break;
-                                case DeviceTypeConstant.TYPE.TYPE_SMART_GETWAY:
-                                    GetwayManager.getInstance().getCurrentSelectGetwayDevice().setShared(true);
-                                    GetwayManager.getInstance().getCurrentSelectGetwayDevice().saveFast();
-                                    break;
-                                case DeviceTypeConstant.TYPE.TYPE_SWITCH:
-                                    SmartSwitchManager.getInstance().getCurrentSelectSmartDevice().setShared(true);
-                                    SmartSwitchManager.getInstance().getCurrentSelectSmartDevice().saveFast();
-                                    break;
-                                case DeviceTypeConstant.TYPE.TYPE_LIGHT:
-                                    SmartLightManager.getInstance().getCurrentSelectLight().setShared(true);
-                                    SmartLightManager.getInstance().getCurrentSelectLight().saveFast();
-                                    break;
-                                case DeviceTypeConstant.TYPE.TYPE_LOCK:
-                                    SmartLockManager.getInstance().getCurrentSelectLock().setShared(true);
-                                    SmartLockManager.getInstance().getCurrentSelectLock().saveFast();
-                                    break;
-                                case DeviceTypeConstant.TYPE.TYPE_REMOTECONTROL:
-                                    RemoteControlManager.getInstance().getmSelectRemoteControlDevice().setShared(true);
-                                    RemoteControlManager.getInstance().getmSelectRemoteControlDevice().saveFast();
-                                    break;
-                                case DeviceTypeConstant.TYPE.TYPE_ROUTER:
-                                    RouterManager.getInstance().getCurrentSelectedRouter().setShared(true);
-                                    RouterManager.getInstance().getCurrentSelectedRouter().saveFast();
-                                    break;
-                            }
-                        }else{
-                            switch (devicetype){
-                                case DeviceTypeConstant.TYPE.TYPE_MENLING:
-                                    DoorbeelManager.getInstance().getCurrentSelectedDoorbeel().setShared(false);
-                                    DoorbeelManager.getInstance().getCurrentSelectedDoorbeel().saveFast();
-                                    break;
-                                case DeviceTypeConstant.TYPE.TYPE_SMART_GETWAY:
-                                    GetwayManager.getInstance().getCurrentSelectGetwayDevice().setShared(false);
-                                    GetwayManager.getInstance().getCurrentSelectGetwayDevice().saveFast();
-                                    break;
-                                case DeviceTypeConstant.TYPE.TYPE_SWITCH:
-                                    SmartSwitchManager.getInstance().getCurrentSelectSmartDevice().setShared(false);
-                                    SmartSwitchManager.getInstance().getCurrentSelectSmartDevice().saveFast();
-                                    break;
-                                case DeviceTypeConstant.TYPE.TYPE_LIGHT:
-                                    SmartLightManager.getInstance().getCurrentSelectLight().setShared(false);
-                                    SmartLightManager.getInstance().getCurrentSelectLight().saveFast();
-                                    break;
-                                case DeviceTypeConstant.TYPE.TYPE_LOCK:
-                                    SmartLockManager.getInstance().getCurrentSelectLock().setShared(false);
-                                    SmartLockManager.getInstance().getCurrentSelectLock().saveFast();
-                                    break;
-                                case DeviceTypeConstant.TYPE.TYPE_REMOTECONTROL:
-                                    RemoteControlManager.getInstance().getmSelectRemoteControlDevice().setShared(false);
-                                    RemoteControlManager.getInstance().getmSelectRemoteControlDevice().saveFast();
-                                    break;
-                                case DeviceTypeConstant.TYPE.TYPE_ROUTER:
-                                    RouterManager.getInstance().getCurrentSelectedRouter().setShared(false);
-                                    RouterManager.getInstance().getCurrentSelectedRouter().saveFast();
-                                    break;
-                            }
-                        }
                         for (int i = 0; i < response.size(); i++) {
                             String username = response.get(i).getUsername();
                             manager.getImage(username);

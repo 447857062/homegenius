@@ -2,7 +2,6 @@ package com.deplink.homegenius.activity.device.doorbell;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,15 +60,13 @@ public class VisitorListAdapter extends BaseSwipListAdapter {
         } else {
             vh = (ViewHolder) convertView.getTag();
         }
-            Log.i(TAG,"mListDataImage.size="+mListDataImage.size());
-            if ((position+1) <= mListDataImage.size()) {
-                vh.image_snap.setImageBitmap((mListDataImage.get(position )));
-            }
+        if ((position + 1) <= mListDataImage.size()) {
+            vh.image_snap.setImageBitmap((mListDataImage.get(position)));
+        }
         //这里是秒
         vh.textview_timestamp.setText("" + DateUtil.format(mListData.get(position).getTimestamp() * 1000));
         return convertView;
     }
-
 
 
     private static class ViewHolder {

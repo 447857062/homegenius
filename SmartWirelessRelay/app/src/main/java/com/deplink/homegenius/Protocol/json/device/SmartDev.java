@@ -38,7 +38,6 @@ public class SmartDev extends DataSupport implements Serializable {
     private boolean switch_three_open;
     private boolean switch_four_open;
     private String key_codes;
-    private boolean  isShared;
 
     private Router router;
     /**
@@ -103,13 +102,6 @@ public class SmartDev extends DataSupport implements Serializable {
         this.getwayDeviceUid = getwayDeviceUid;
     }
 
-    public boolean isShared() {
-        return isShared;
-    }
-
-    public void setShared(boolean shared) {
-        isShared = shared;
-    }
 
     public String getSmartUid() {
         return SmartUid;

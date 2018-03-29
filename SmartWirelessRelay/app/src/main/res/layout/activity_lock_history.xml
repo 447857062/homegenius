@@ -27,7 +27,6 @@
             android:id="@+id/imageview_no_lockhostory"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
             android:background="@drawable/lockrecord"
             android:visibility="gone"/>
 
@@ -36,7 +35,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/imageview_no_lockhostory"
-            android:layout_centerVertical="true"
             android:gravity="center_horizontal|center_vertical"
             android:text="未查询到开锁记录"
             android:visibility="gone" />

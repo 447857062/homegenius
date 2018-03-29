@@ -294,9 +294,11 @@ public class EditSmartLockActivity extends Activity implements View.OnClickListe
         switch (v.getId()) {
 
             case R.id.layout_select_room:
+                mDeviceManager.setEditDevice(true);
+                mDeviceManager.setCurrentEditDeviceType(DeviceTypeConstant.TYPE.TYPE_LOCK);
                 Intent intent = new Intent(this, AddDeviceActivity.class);
                 startActivity(intent);
-                mSmartLockManager.setEditSmartLock(true);
+
                 break;
             case R.id.layout_device_share:
                 Intent inentShareDevice = new Intent(this, ShareDeviceActivity.class);
@@ -371,9 +373,9 @@ public class EditSmartLockActivity extends Activity implements View.OnClickListe
             if (roomname != null) {
                 textview_select_room_name.setText(roomname);
             } else if (!isOnActivityResult) {
-                isOnActivityResult = false;
-                if (mSmartLockManager.getCurrentSelectLock().getRooms().size() == 1) {
-                    textview_select_room_name.setText(mSmartLockManager.getCurrentSelectLock().getRooms().get(0).getRoomName());
+                List<Room> rooms = mSmartLockManager.getCurrentSelectLock().getRooms();
+                if (rooms.size() == 1) {
+                    textview_select_room_name.setText(rooms.get(0).getRoomName());
                 } else {
                     textview_select_room_name.setText("未选择");
                 }
@@ -391,14 +393,15 @@ public class EditSmartLockActivity extends Activity implements View.OnClickListe
                 }
             }
         }
-        mDeviceManager.onResume(mDeviceListener);
+        mDeviceManager.addDeviceListener(mDeviceListener);
         manager.addEventCallback(ec);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        mDeviceManager.onPause(mDeviceListener);
+        isOnActivityResult=false;
+        mDeviceManager.removeDeviceListener(mDeviceListener);
         manager.removeEventCallback(ec);
     }
 

@@ -45,12 +45,6 @@
             android:textSize="@dimen/layout_top_bar_item_text_size" />
 
     </RelativeLayout>
-
-  <!--  <com.deplink.homegenius.view.scrollview.MyLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >-->
-
         <com.deplink.homegenius.view.scrollview.MyScrollView
             android:layout_above="@+id/buttom_layout"
             android:layout_below="@+id/layout_title"
@@ -208,7 +202,6 @@
                         android:layout_below="@+id/layout_room_top"
                         android:alpha="0.9"
                         android:background="@drawable/homepage_halfrectangle_buttom_background">
-
                         <HorizontalScrollView
                             android:id="@+id/layout_roomselect_normal"
                             android:layout_width="match_parent"
@@ -305,7 +298,6 @@
                 </RelativeLayout>
             </LinearLayout>
         </com.deplink.homegenius.view.scrollview.MyScrollView>
-    <!--</com.deplink.homegenius.view.scrollview.MyLayout>-->
     <RelativeLayout
         android:id="@+id/buttom_layout"
         android:layout_width="match_parent"

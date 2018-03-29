@@ -55,7 +55,7 @@ public class GetwayManager implements LocalConnecteListener {
     private GatwayDevice currentSelectGetwayDevice;
     private ExecutorService cachedThreadPool;
     private HomeGenius mHomeGenius;
-
+    private static String uuid ;
     public String getCurrentAddDevice() {
         Log.i(TAG, "获取当前添加设备：" + currentAddDevice);
         return currentAddDevice;
@@ -101,6 +101,7 @@ public class GetwayManager implements LocalConnecteListener {
         if (instance == null) {
             instance = new GetwayManager();
         }
+        uuid = Perfence.getPerfence(AppConstant.PERFENCE_BIND_APP_UUID);
         return instance;
     }
 
@@ -123,6 +124,7 @@ public class GetwayManager implements LocalConnecteListener {
             cachedThreadPool = Executors.newCachedThreadPool();
         }
         addGetwayListener(listener);
+
     }
 
     private List<GetwayListener> mGetwayListenerList;
@@ -162,8 +164,9 @@ public class GetwayManager implements LocalConnecteListener {
                 }
             });
         } else {
-            String uuid = Perfence.getPerfence(AppConstant.PERFENCE_BIND_APP_UUID);
-            if (currentSelectGetwayDevice != null && currentSelectGetwayDevice.getTopic() != null && !currentSelectGetwayDevice.getTopic().equals("")) {
+
+            if (currentSelectGetwayDevice != null && currentSelectGetwayDevice.getTopic() != null
+                    && !currentSelectGetwayDevice.getTopic().equals("")) {
                 Log.i(TAG, "device.getTopic()=" + currentSelectGetwayDevice.getTopic());
                 mHomeGenius.setWifiRelay(currentSelectGetwayDevice.getTopic(), uuid, paramas);
             }
@@ -196,8 +199,6 @@ public class GetwayManager implements LocalConnecteListener {
                 }
             });
         } else {
-
-            String uuid = Perfence.getPerfence(AppConstant.PERFENCE_BIND_APP_UUID);
             if (currentSelectGetwayDevice != null && currentSelectGetwayDevice.getTopic() != null && !currentSelectGetwayDevice.getTopic().equals("")) {
                 Log.i(TAG, "device.getTopic()=" + currentSelectGetwayDevice.getTopic());
                 mHomeGenius.bindGetwayDevice(currentSelectGetwayDevice.getTopic(), uuid, deviceUid);
@@ -236,9 +237,8 @@ public class GetwayManager implements LocalConnecteListener {
                 }
             });
         } else {
-
-            String uuid = Perfence.getPerfence(AppConstant.PERFENCE_BIND_APP_UUID);
-            if (currentSelectGetwayDevice != null && currentSelectGetwayDevice.getTopic() != null && !currentSelectGetwayDevice.getTopic().equals("")) {
+            if (currentSelectGetwayDevice != null && currentSelectGetwayDevice.getTopic() != null
+                    && !currentSelectGetwayDevice.getTopic().equals("")) {
                 Log.i(TAG, "device.getTopic()=" + currentSelectGetwayDevice.getTopic());
                 mHomeGenius.deleteGetwayDevice(currentSelectGetwayDevice, currentSelectGetwayDevice.getTopic(), uuid);
             }

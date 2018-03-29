@@ -3,7 +3,6 @@ package com.deplink.homegenius.activity.device;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
@@ -11,14 +10,16 @@ import android.widget.TextView;
 
 import com.deplink.homegenius.Protocol.json.Room;
 import com.deplink.homegenius.activity.device.adapter.AddDeviceGridViewAdapter;
+import com.deplink.homegenius.activity.device.doorbell.EditDoorbellActivity;
+import com.deplink.homegenius.activity.device.getway.GetwayDeviceActivity;
 import com.deplink.homegenius.activity.device.light.LightEditActivity;
+import com.deplink.homegenius.activity.device.remoteControl.realRemoteControl.RemoteControlActivity;
 import com.deplink.homegenius.activity.device.router.RouterSettingActivity;
+import com.deplink.homegenius.activity.device.smartSwitch.EditActivity;
 import com.deplink.homegenius.activity.device.smartlock.EditSmartLockActivity;
 import com.deplink.homegenius.activity.room.AddRommActivity;
+import com.deplink.homegenius.constant.DeviceTypeConstant;
 import com.deplink.homegenius.manager.device.DeviceManager;
-import com.deplink.homegenius.manager.device.light.SmartLightManager;
-import com.deplink.homegenius.manager.device.router.RouterManager;
-import com.deplink.homegenius.manager.device.smartlock.SmartLockManager;
 import com.deplink.homegenius.manager.room.RoomManager;
 import com.deplink.homegenius.view.combinationwidget.TitleLayout;
 
@@ -33,6 +34,7 @@ public class AddDeviceActivity extends Activity {
     private RoomManager mRoomManager;
     private TextView textview_show_select_room;
     private String deviceType;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +47,7 @@ public class AddDeviceActivity extends Activity {
     private boolean isStartFromExperience;
     private TitleLayout layout_title;
     private String currentAddDevice;
+
     private void initDatas() {
         mRoomManager = RoomManager.getInstance();
         mRoomManager.initRoomManager(this);
@@ -76,8 +79,8 @@ public class AddDeviceActivity extends Activity {
                     String currentAddRomm = currentSelectedRoom.getRoomName();
                     RoomManager.getInstance().setCurrentSelectedRoom(currentSelectedRoom);
                     if (isStartFromExperience) {
-                        if (RouterManager.getInstance().isEditRouter()) {
-                            RouterManager.getInstance().setEditRouter(false);
+                        if (DeviceManager.getInstance().isEditDevice()
+                                && DeviceManager.getInstance().getCurrentEditDeviceType().equals(DeviceTypeConstant.TYPE.TYPE_ROUTER) ) {
                             Intent intentSeleteedRoom = new Intent(AddDeviceActivity.this, RouterSettingActivity.class);
                             intentSeleteedRoom.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             intentSeleteedRoom.putExtra("roomName", currentAddRomm);
@@ -91,39 +94,68 @@ public class AddDeviceActivity extends Activity {
                             finish();
                         }
                     } else {
-                        if (SmartLockManager.getInstance().isEditSmartLock()) {
-                            SmartLockManager.getInstance().setEditSmartLock(false);
-                            Intent intentSeleteedRoom = new Intent();
-                            intentSeleteedRoom.setClass(AddDeviceActivity.this, EditSmartLockActivity.class);
-                            intentSeleteedRoom.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            intentSeleteedRoom.putExtra("roomName", currentAddRomm);
-                            intentSeleteedRoom.putExtra("isupdateroom", true);
-                            startActivity(intentSeleteedRoom);
-                        } else {
-                            if (SmartLightManager.getInstance().isEditSmartLight()) {
-                                SmartLockManager.getInstance().setEditSmartLock(false);
-                                Intent intentSeleteedRoom = new Intent(AddDeviceActivity.this, LightEditActivity.class);
-                                intentSeleteedRoom.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                intentSeleteedRoom.putExtra("roomName", currentAddRomm);
-                                intentSeleteedRoom.putExtra("isupdateroom", true);
-                                startActivity(intentSeleteedRoom);
-                            } else {
-                                Log.i(TAG, "修改路由器房间" + RouterManager.getInstance().isEditRouter());
-                                if (RouterManager.getInstance().isEditRouter()) {
-                                    RouterManager.getInstance().setEditRouter(false);
-                                    Intent intentSeleteedRoom = new Intent(AddDeviceActivity.this, RouterSettingActivity.class);
+                        if(DeviceManager.getInstance().isEditDevice()){
+                            DeviceManager.getInstance().setEditDevice(false);
+                            Intent intentSeleteedRoom;
+                            switch (DeviceManager.getInstance().getCurrentEditDeviceType()){
+                                case DeviceTypeConstant.TYPE.TYPE_LIGHT:
+                                     intentSeleteedRoom = new Intent(AddDeviceActivity.this, LightEditActivity.class);
                                     intentSeleteedRoom.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                     intentSeleteedRoom.putExtra("roomName", currentAddRomm);
                                     intentSeleteedRoom.putExtra("isupdateroom", true);
                                     startActivity(intentSeleteedRoom);
-                                } else {
-                                    Intent intent = new Intent(AddDeviceActivity.this, AddDeviceNameActivity.class);
-                                    intent.putExtra("DeviceType",deviceType);
-                                    intent.putExtra("currentAddDevice",currentAddDevice);
-                                    startActivity(intent);
-                                }
+                                    break;
+                                case DeviceTypeConstant.TYPE.TYPE_LOCK:
+                                     intentSeleteedRoom = new Intent();
+                                    intentSeleteedRoom.setClass(AddDeviceActivity.this, EditSmartLockActivity.class);
+                                    intentSeleteedRoom.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    intentSeleteedRoom.putExtra("roomName", currentAddRomm);
+                                    intentSeleteedRoom.putExtra("isupdateroom", true);
+                                    startActivity(intentSeleteedRoom);
+                                    break;
+                                case DeviceTypeConstant.TYPE.TYPE_REMOTECONTROL:
+                                    intentSeleteedRoom = new Intent(AddDeviceActivity.this, RemoteControlActivity.class);
+                                    intentSeleteedRoom.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    intentSeleteedRoom.putExtra("roomName", currentAddRomm);
+                                    intentSeleteedRoom.putExtra("isupdateroom", true);
+                                    startActivity(intentSeleteedRoom);
+                                    break;
+                                case DeviceTypeConstant.TYPE.TYPE_SWITCH:
+                                    intentSeleteedRoom = new Intent(AddDeviceActivity.this, EditActivity.class);
+                                    intentSeleteedRoom.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    intentSeleteedRoom.putExtra("roomName", currentAddRomm);
+                                    intentSeleteedRoom.putExtra("isupdateroom", true);
+                                    startActivity(intentSeleteedRoom);
+                                    break;
+                                case DeviceTypeConstant.TYPE.TYPE_SMART_GETWAY:
+                                    intentSeleteedRoom = new Intent(AddDeviceActivity.this, GetwayDeviceActivity.class);
+                                    intentSeleteedRoom.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    intentSeleteedRoom.putExtra("roomName", currentAddRomm);
+                                    intentSeleteedRoom.putExtra("isupdateroom", true);
+                                    startActivity(intentSeleteedRoom);
+                                    break;
+                                case DeviceTypeConstant.TYPE.TYPE_MENLING:
+                                    intentSeleteedRoom = new Intent(AddDeviceActivity.this, EditDoorbellActivity.class);
+                                    intentSeleteedRoom.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    intentSeleteedRoom.putExtra("roomName", currentAddRomm);
+                                    intentSeleteedRoom.putExtra("isupdateroom", true);
+                                    startActivity(intentSeleteedRoom);
+                                    break;
+                                case DeviceTypeConstant.TYPE.TYPE_ROUTER:
+                                    intentSeleteedRoom = new Intent(AddDeviceActivity.this, RouterSettingActivity.class);
+                                    intentSeleteedRoom.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    intentSeleteedRoom.putExtra("roomName", currentAddRomm);
+                                    intentSeleteedRoom.putExtra("isupdateroom", true);
+                                    startActivity(intentSeleteedRoom);
+                                    break;
                             }
+                        }else{
+                            Intent intent = new Intent(AddDeviceActivity.this, AddDeviceNameActivity.class);
+                            intent.putExtra("DeviceType", deviceType);
+                            intent.putExtra("currentAddDevice", currentAddDevice);
+                            startActivity(intent);
                         }
+
                     }
                 }
             }

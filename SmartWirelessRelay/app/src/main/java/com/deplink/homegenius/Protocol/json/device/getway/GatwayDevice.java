@@ -25,15 +25,7 @@ public class GatwayDevice extends DataSupport implements Serializable{
     private String topic;
     private String sign_seed;
     private String signature;
-    private boolean isShared;
 
-    public boolean isShared() {
-        return isShared;
-    }
-
-    public void setShared(boolean shared) {
-        isShared = shared;
-    }
 
     public String getSign_seed() {
         return sign_seed;

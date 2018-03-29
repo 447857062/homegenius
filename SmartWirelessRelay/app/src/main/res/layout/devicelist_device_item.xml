@@ -41,10 +41,9 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/list_item_imageview_onlinestatu_margin_right"
             android:layout_toLeftOf="@+id/imageview_arror_right"
-            android:background="@drawable/blue"
             android:gravity="center_horizontal|center_vertical"
             android:text="在线"
-            android:textColor="@color/white" />
+           />
 
         <ImageView
             android:id="@+id/imageview_arror_right"

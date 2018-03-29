@@ -13,7 +13,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.daimajia.numberprogressbar.NumberProgressBar;
-import com.deplink.homegenius.activity.device.remoteControl.topBox.AddTopBoxActivity;
 import com.deplink.homegenius.activity.personal.login.LoginActivity;
 import com.deplink.homegenius.activity.personal.softupdate.download.UpdateService;
 import com.deplink.homegenius.constant.AppConstant;
@@ -98,7 +97,6 @@ public class UpdateProgressActivity extends Activity implements View.OnClickList
             public void onReceive(Context arg0, Intent arg1) {
                 int status = arg1.getIntExtra(UpdateService.STATUS, UpdateService.UPDATE_PROGRESS_STATUS);
                 int progress = arg1.getIntExtra(UpdateService.PROGRESS, UpdateService.UPDATE_PROGRESS_STATUS);
-                Log.i(TAG, "status=" + status + "progress=" + progress);
                 switch (status) {
                     case 0:
                         numberProgressBar.setProgress(progress);
