@@ -78,7 +78,7 @@ public class LockHistoryActivity extends Activity implements SmartLockListener {
         super.onPause();
         mSmartLockManager.removeSmartLockListener(this);
         //handler.removeMessage(0)会把所有可执行任务都移除掉。
-        mRecordList.clear();
+
         mHandler.removeMessages(0);
     }
 
@@ -157,6 +157,7 @@ public class LockHistoryActivity extends Activity implements SmartLockListener {
                     switch (type.getCommand()) {
                         case SmartLockConstant.CMD.QUERY:
                             int recondNum = type.getRecordNum();
+                            recordNumTotal = recondNum;
                             msg.what = MSG_GET_HISRECORD;
                             if (LocalConnectmanager.getInstance().isLocalconnectAvailable()) {
                                 msg.arg1 = 1;
@@ -212,6 +213,7 @@ public class LockHistoryActivity extends Activity implements SmartLockListener {
     @Override
     protected void onResume() {
         super.onResume();
+        mRecordList.clear();
         userId = Perfence.getPerfence(AppConstant.PERFENCE_LOCK_SELF_USERID);
         mSmartLockManager = SmartLockManager.getInstance();
         mSmartLockManager.InitSmartLockManager(this);
@@ -315,6 +317,9 @@ public class LockHistoryActivity extends Activity implements SmartLockListener {
                         textview_get_record_ing.setVisibility(View.GONE);
                     }
                     int localConnectAvailable = msg.arg1;
+                    Log.i(TAG,"recordIndex="+recordIndex+"recordNumTotal="+recordNumTotal
+                    +"localConnectAvailable="+localConnectAvailable
+                    );
                     if (recordIndex != recordNumTotal) {
                         if (localConnectAvailable == 1) {
                             if (recordNumTotal <= 5) {

@@ -72,20 +72,20 @@ public class DeviceManager implements LocalConnecteListener {
     /**
      * 创建一个可缓存线程池，如果线程池长度超过处理需要，可灵活回收空闲线程，若无可回收，则新建线程。
      */
-    private ExecutorService cachedThreadPool;
+    protected ExecutorService cachedThreadPool;
     /**
      * 这个类设计成单例
      */
     private static DeviceManager instance;
-    private LocalConnectmanager mLocalConnectmanager;
-    private GeneralPacket packet;
+    protected LocalConnectmanager mLocalConnectmanager;
+    protected GeneralPacket packet;
     private Context mContext;
     private SmartDev currentSelectSmartDevice;
     private boolean isStartFromExperience;
     private boolean isStartFromHomePage;
     private boolean isExperCenterStartFromHomePage;
-    private RemoteConnectManager mRemoteConnectManager;
-    private HomeGenius mHomeGenius;
+    protected RemoteConnectManager mRemoteConnectManager;
+    protected HomeGenius mHomeGenius;
     private static String uuid;
     private SDKManager manager;
     private EventCallback ec;
@@ -100,7 +100,7 @@ public class DeviceManager implements LocalConnecteListener {
     private RemoteControlManager mRemoteControlManager;
     private boolean editDevice;
     private String currentEditDeviceType;
-
+    private static   String userName;
     public boolean isEditDevice() {
         return editDevice;
     }
@@ -285,7 +285,6 @@ public class DeviceManager implements LocalConnecteListener {
      * 查询设备列表
      */
     public void queryDeviceListHttp() {
-        String userName = Perfence.getPerfence(Perfence.PERFENCE_PHONE);
         if (userName.equals("")) {
             return;
         }
@@ -331,7 +330,6 @@ public class DeviceManager implements LocalConnecteListener {
     }
 
     public void addDeviceHttp(DeviceAddBody device) {
-        String userName = Perfence.getPerfence(Perfence.PERFENCE_PHONE);
         if (userName.equals("")) {
             return;
         }
@@ -373,7 +371,6 @@ public class DeviceManager implements LocalConnecteListener {
     }
 
     public void addVirtualDeviceHttp(VirtualDeviceAddBody device) {
-        String userName = Perfence.getPerfence(Perfence.PERFENCE_PHONE);
         if (userName.equals("")) {
             return;
         }
@@ -401,7 +398,6 @@ public class DeviceManager implements LocalConnecteListener {
 
     public void deleteDeviceHttp() {
         String uid = currentSelectSmartDevice.getUid();
-        String userName = Perfence.getPerfence(Perfence.PERFENCE_PHONE);
         if (userName.equals("")) {
             return;
         }
@@ -432,7 +428,6 @@ public class DeviceManager implements LocalConnecteListener {
      * 修改设备属性
      */
     public void alertDeviceHttp(String uid, String room_uid, String device_name, String gw_uid) {
-        String userName = Perfence.getPerfence(Perfence.PERFENCE_PHONE);
         if (userName.equals("")) {
             return;
         }
@@ -479,7 +474,6 @@ public class DeviceManager implements LocalConnecteListener {
      * 读设备属性
      */
     public void readDeviceInfoHttp(String uid) {
-        String userName = Perfence.getPerfence(Perfence.PERFENCE_PHONE);
         if (userName.equals("")) {
             return;
         }
@@ -506,7 +500,6 @@ public class DeviceManager implements LocalConnecteListener {
      * 读设备分享信息
      */
     public void readDeviceShareInfo(String uid) {
-        String userName = Perfence.getPerfence(Perfence.PERFENCE_PHONE);
         if (userName.equals("")) {
             return;
         }
@@ -530,7 +523,6 @@ public class DeviceManager implements LocalConnecteListener {
     }
 
     public void shareDevice(String uid, ShareDeviceBody body) {
-        String userName = Perfence.getPerfence(Perfence.PERFENCE_PHONE);
         if (userName.equals("")) {
             return;
         }
@@ -555,7 +547,6 @@ public class DeviceManager implements LocalConnecteListener {
     }
 
     public void cancelDeviceShare(String uid, int shareid) {
-        String userName = Perfence.getPerfence(Perfence.PERFENCE_PHONE);
         if (userName.equals("")) {
             return;
         }
@@ -614,7 +605,7 @@ public class DeviceManager implements LocalConnecteListener {
         if (manager == null) {
             initMqttCallback();
         }
-
+        userName= Perfence.getPerfence(Perfence.PERFENCE_PHONE);
         mLocalConnectmanager.addLocalConnectListener(this);
         packet = new GeneralPacket(mContext);
         cachedThreadPool = Executors.newCachedThreadPool();

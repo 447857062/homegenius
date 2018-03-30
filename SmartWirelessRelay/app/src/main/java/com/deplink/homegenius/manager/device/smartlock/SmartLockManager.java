@@ -16,10 +16,10 @@ import com.deplink.homegenius.Protocol.packet.GeneralPacket;
 import com.deplink.homegenius.constant.AppConstant;
 import com.deplink.homegenius.constant.DeviceTypeConstant;
 import com.deplink.homegenius.constant.SmartLockConstant;
-import com.deplink.homegenius.manager.connect.local.tcp.LocalConnecteListener;
 import com.deplink.homegenius.manager.connect.local.tcp.LocalConnectmanager;
 import com.deplink.homegenius.manager.connect.remote.HomeGenius;
 import com.deplink.homegenius.manager.connect.remote.RemoteConnectManager;
+import com.deplink.homegenius.manager.device.DeviceManager;
 import com.deplink.homegenius.manager.room.RoomManager;
 import com.deplink.homegenius.util.Perfence;
 import com.deplink.sdk.android.sdk.homegenius.DeviceOperationResponse;
@@ -33,7 +33,6 @@ import org.litepal.crud.DataSupport;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import retrofit2.Call;
@@ -51,17 +50,9 @@ import retrofit2.Response;
  * mSmartLockManager.InitSmartLockManager(this);
  * mSmartLockManager.addSmartLockListener
  */
-public class SmartLockManager implements LocalConnecteListener {
+public class SmartLockManager extends DeviceManager {
     private static final String TAG = "SmartLockManager";
-    private GeneralPacket packet;
     private Context mContext;
-    private LocalConnectmanager mLocalConnectmanager;
-    private RemoteConnectManager mRemoteConnectManager;
-    private HomeGenius mHomeGenius;
-    /**
-     * 创建一个可缓存线程池，如果线程池长度超过处理需要，可灵活回收空闲线程，若无可回收，则新建线程。
-     */
-    private ExecutorService cachedThreadPool;
     /**
      * 这个类设计成单例
      */
@@ -412,6 +403,7 @@ public class SmartLockManager implements LocalConnecteListener {
             switch (type.getCommand()) {
                 case SmartLockConstant.CMD.QUERY:
                     for (int i = 0; i < mSmartLockListenerList.size(); i++) {
+                        Log.i(TAG,"type.getRecordNum()="+type.getRecordNum());
                         mSmartLockListenerList.get(i).responseLockStatu(type.getRecordNum(), type.getResult());
                     }
                     break;
