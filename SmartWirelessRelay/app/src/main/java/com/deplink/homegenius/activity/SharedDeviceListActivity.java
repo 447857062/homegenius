@@ -51,7 +51,6 @@ public class SharedDeviceListActivity extends Activity {
     private boolean isStartFromExperience;
     private DeviceManager mDeviceManager;
     private DeviceListener mDeviceListener;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,7 +59,6 @@ public class SharedDeviceListActivity extends Activity {
         initDatas();
         initEvents();
     }
-
     private void initEvents() {
         layout_title.setReturnClickListener(new TitleLayout.ReturnImageClickListener() {
             @Override
@@ -69,7 +67,6 @@ public class SharedDeviceListActivity extends Activity {
             }
         });
     }
-
     @Override
     protected void onResume() {
         super.onResume();

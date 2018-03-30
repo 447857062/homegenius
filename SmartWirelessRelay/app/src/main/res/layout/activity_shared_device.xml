@@ -15,18 +15,18 @@
         titlelayout:menu_image_show="false"
         titlelayout:return_image_show="true"
         titlelayout:title_text="已分享设备" />
+
     <View
         android:id="@+id/view_line_dirver"
         android:layout_width="match_parent"
         android:layout_height="1px"
         android:layout_below="@+id/layout_title"
         android:background="@color/line_dirver_color" />
-
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
         android:layout_below="@+id/view_line_dirver"
-        android:layout_marginTop="15dp">
+        android:paddingTop="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
         <ListView
             android:id="@+id/shareddevices_list"
             android:layout_width="match_parent"
@@ -36,4 +36,5 @@
             android:overScrollMode="never"
             android:scrollbars="none" />
     </RelativeLayout>
+
 </RelativeLayout>

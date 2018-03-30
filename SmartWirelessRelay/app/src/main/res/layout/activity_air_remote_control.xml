@@ -49,7 +49,7 @@
                 android:id="@+id/imageview_power"
                 android:layout_width="@dimen/aircondition_control_buttom_control_icon_width_height"
                 android:layout_height="@dimen/aircondition_control_buttom_control_icon_width_height"
-                android:background="@drawable/button_power_notlearn" />
+                android:background="@drawable/button_power_learn_normal" />
 
             <TextView
                 android:id="@+id/textview_power"

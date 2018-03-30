@@ -47,7 +47,6 @@ public class ExperienceDevicesActivity extends Activity implements AdapterView.O
         initDatas();
         initEvents();
     }
-
     private void initEvents() {
         listview_experience_center.setAdapter(mAdapter);
         listview_experience_center.setOnItemClickListener(this);

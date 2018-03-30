@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ListView;
 
 import com.deplink.homegenius.Protocol.json.device.SmartDev;
 import com.deplink.homegenius.Protocol.json.device.getway.GatwayDevice;
@@ -18,6 +17,7 @@ import com.deplink.homegenius.manager.device.DeviceManager;
 import com.deplink.homegenius.manager.device.getway.GetwayManager;
 import com.deplink.homegenius.manager.device.router.RouterManager;
 import com.deplink.homegenius.view.combinationwidget.TitleLayout;
+import com.deplink.homegenius.view.scrollview.NonScrollableListView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +29,7 @@ import deplink.com.smartwirelessrelay.homegenius.EllESDK.R;
  */
 public class HomeNetWorkActivity extends Activity implements  AdapterView.OnItemClickListener {
     private static final String TAG = "HomeNetworkActivity";
-    private ListView listviewNetworkDevices;
+    private NonScrollableListView listviewNetworkDevices;
     private List<GatwayDevice> mGatwayDevices;
     private HomeNetWorkAdapter mAdapter;
     private GetwayManager getwayManager;

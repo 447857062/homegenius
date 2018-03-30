@@ -21,15 +21,30 @@ public class NonScrollableListView extends ListView{
         super(context, attrs, defStyleAttr);
     }
 
-    @Override
-    public boolean onTouchEvent(MotionEvent ev) {
-        return ev.getAction() != MotionEvent.ACTION_MOVE && super.onTouchEvent(ev);
-    }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         int expandSpec = MeasureSpec.makeMeasureSpec(Integer.MAX_VALUE >> 2, MeasureSpec.AT_MOST);
         super.onMeasure(widthMeasureSpec, expandSpec);
+    }
+    @Override
+    public boolean onTouchEvent(MotionEvent ev) {
+
+        switch (ev.getAction()) {
+            case MotionEvent.ACTION_MOVE:
+
+                int scrollY = getScrollY();
+                if (scrollY == 0) {
+                    //允许父View进行事件拦截
+                    getParent().requestDisallowInterceptTouchEvent(false);
+                } else {
+                    //禁止父View进行事件拦截
+                    getParent().requestDisallowInterceptTouchEvent(true);
+                }
+                break;
+        }
+        return super.onTouchEvent(ev);
+
     }
 }
 

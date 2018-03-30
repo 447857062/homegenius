@@ -4,7 +4,7 @@
     android:layout_height="@dimen/experience_center_listitem_height"
     android:paddingLeft="@dimen/layout_content_margin_left_right"
     android:id="@+id/layout_root"
-    android:background="@drawable/button_homenetwork_delete_background"
+    android:background="@drawable/button_delete_background"
     android:minHeight="@dimen/experience_center_listitem_height"
    >
 
@@ -31,7 +31,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:background="@drawable/blue"
         android:gravity="center_horizontal|center_vertical"
         android:layout_marginRight="@dimen/arror_right_left_textview_margin_right"
         android:layout_toLeftOf="@+id/iamgeview_setting"

@@ -76,7 +76,8 @@ public class AirRemoteControlMianActivity extends Activity implements View.OnCli
     private int tempature;
     private int power;
     private TitleLayout layout_title;
-
+    private TextView textview_tempature_unit;
+    private TextView textview_power;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,7 +108,7 @@ public class AirRemoteControlMianActivity extends Activity implements View.OnCli
         tempature = mAirconditionInitKeyValue.getTempature();
         power = mAirconditionInitKeyValue.getKeyPower();
         if (key_power) {
-            imageview_power.setBackgroundResource(R.drawable.button_power_learned);
+            imageview_power.setBackgroundResource(R.drawable.button_power_learn_normal);
         } else {
             imageview_power.setBackgroundResource(R.drawable.button_power_notlearn);
         }
@@ -500,6 +501,8 @@ public class AirRemoteControlMianActivity extends Activity implements View.OnCli
         imageview_temperature_plus = findViewById(R.id.imageview_temperature_plus);
         layout_top_content = findViewById(R.id.layout_top_content);
         layout_title = findViewById(R.id.layout_title);
+        textview_tempature_unit = findViewById(R.id.textview_tempature_unit);
+        textview_power = findViewById(R.id.textview_power);
     }
 
     private byte[] data;
@@ -972,6 +975,11 @@ public class AirRemoteControlMianActivity extends Activity implements View.OnCli
                                     }
                                     break;
                             }
+                        }else{
+                            if (tempature > 16) {
+                                tempature--;
+                                textview_temperature.setText("" + tempature);
+                            }
                         }
                     } else {
                         mKeynotlearnDialog.show();
@@ -999,6 +1007,11 @@ public class AirRemoteControlMianActivity extends Activity implements View.OnCli
                             data = packData();
                             mRemoteControlManager.sendData(DataExchange.dbBytesToString(data));
 
+                        }else{
+                            if (tempature < 30) {
+                                tempature++;
+                            }
+                            textview_temperature.setText("" + tempature);
                         }
                     } else {
                         mKeynotlearnDialog.show();
@@ -1568,13 +1581,17 @@ public class AirRemoteControlMianActivity extends Activity implements View.OnCli
             textview_model.setTextColor(getResources().getColor(R.color.room_type_text));
             textview_wind_speed.setTextColor(getResources().getColor(R.color.room_type_text));
             textview_wind_direction.setTextColor(getResources().getColor(R.color.room_type_text));
-
+            textview_temperature.setTextColor(0xFF60a3f6);
+            textview_tempature_unit.setTextColor(0xFF60a3f6);
+            textview_power.setTextColor(getResources().getColor(R.color.room_type_text));
         } else {
             layout_top_content.setBackgroundResource(R.drawable.airconditioningoff);
             textview_model.setTextColor(getResources().getColor(R.color.line_clolor));
             textview_wind_speed.setTextColor(getResources().getColor(R.color.line_clolor));
             textview_wind_direction.setTextColor(getResources().getColor(R.color.line_clolor));
-
+            textview_power.setTextColor(getResources().getColor(R.color.line_clolor));
+            textview_temperature.setTextColor(0xFF999999);
+            textview_tempature_unit.setTextColor(0xFF999999);
         }
         imageview_model.setEnabled(on);
         imageview_wind_speed.setEnabled(on);

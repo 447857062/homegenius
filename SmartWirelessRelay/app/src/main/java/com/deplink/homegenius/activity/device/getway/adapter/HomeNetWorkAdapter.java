@@ -94,8 +94,7 @@ public class HomeNetWorkAdapter extends BaseAdapter {
      */
     @Override
     public int getViewTypeCount() {
-        int TYPE_COUNT = 2;
-        return TYPE_COUNT;
+        return 2;
     }
 
     /**
@@ -145,9 +144,9 @@ public class HomeNetWorkAdapter extends BaseAdapter {
                 statu = "离线";
             }
             if(statu.equalsIgnoreCase("在线")){
-                viewHolder.textview_device_status.setBackgroundResource(R.drawable.blue);
+                viewHolder.textview_device_status.setTextColor(0xFF60a3f6);
             }else{
-                viewHolder.textview_device_status.setBackgroundResource(R.drawable.gray);
+                viewHolder.textview_device_status.setTextColor(0xFF999999);
             }
             viewHolder.textview_device_status.setText(statu);
             viewHolder.imageview_device_type.setImageResource(R.drawable.gatewayicon);
@@ -171,9 +170,9 @@ public class HomeNetWorkAdapter extends BaseAdapter {
                 deviceStatu = "离线";
             }
             if(deviceStatu.equalsIgnoreCase("在线")){
-                viewHolder.textview_device_status.setBackgroundResource(R.drawable.blue);
+                viewHolder.textview_device_status.setTextColor(0xFF60a3f6);
             }else{
-                viewHolder.textview_device_status.setBackgroundResource(R.drawable.gray);
+                viewHolder.textview_device_status.setTextColor(0xFF999999);
             }
             viewHolder.textview_device_name.setText(deviceName);
             viewHolder.textview_device_status.setText(deviceStatu);

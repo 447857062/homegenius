@@ -158,7 +158,6 @@ public class DeviceManager implements LocalConnecteListener {
             Log.i(TAG,"onResume"+listener.toString());
             this.mDeviceListenerList.add(listener);
         }
-
         manager.addEventCallback(ec);
     }
     public void startQueryStatu() {

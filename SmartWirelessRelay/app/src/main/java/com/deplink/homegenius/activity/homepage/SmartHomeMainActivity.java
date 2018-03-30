@@ -13,7 +13,6 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
@@ -484,18 +483,6 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
             manager.login(phoneNumber, password);
         }
         initListener();
-        layout_roomselect_changed_ype.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                switch (motionEvent.getAction()) {
-                    case MotionEvent.ACTION_MOVE:
-                        return true;
-                    default:
-                        break;
-                }
-                return false;
-            }
-        });
     }
 
     private void initListener() {
@@ -770,7 +757,6 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
         Message msg = Message.obtain();
         msg.what = MSG_INIT_LOCATIONSERVICE;
         mHandler.sendMessage(msg);
-
     }
 
     private void initViews() {
