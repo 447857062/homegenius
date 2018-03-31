@@ -25,7 +25,6 @@ public class ReflectUtlis {
                 e.printStackTrace();
             }
         }
-
         return map;
     }
 }

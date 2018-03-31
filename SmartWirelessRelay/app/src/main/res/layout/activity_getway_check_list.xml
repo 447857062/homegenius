@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/page_background"
-    tools:context="com.deplink.homegenius.activity.personal.HomeNetWorkActivity">
-    <com.deplink.homegenius.view.combinationwidget.TitleLayout
+    tools:context="com.deplink.boruSmart.activity.personal.HomeNetWorkActivity">
+    <com.deplink.boruSmart.view.combinationwidget.TitleLayout
         android:id="@+id/layout_title"
         android:layout_width="match_parent"
         titlelayout:edit_text_show="false"
@@ -16,7 +16,7 @@
         android:layout_height="@dimen/title_bar_height"
         />
     <!--网关检查结果是一个网关设备系列表-->
-    <com.deplink.homegenius.view.scrollview.MyScrollView
+    <com.deplink.boruSmart.view.scrollview.MyScrollView
         android:layout_marginTop="15dp"
         android:layout_width="match_parent"
         android:layout_below="@+id/layout_title"
@@ -25,7 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/page_background">
-            <com.deplink.homegenius.view.scrollview.NonScrollableListView
+            <com.deplink.boruSmart.view.scrollview.NonScrollableListView
                 android:id="@+id/listview_getway_devices"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -44,7 +44,7 @@
                 android:visibility="gone" />
 
         </FrameLayout>
-    </com.deplink.homegenius.view.scrollview.MyScrollView>
+    </com.deplink.boruSmart.view.scrollview.MyScrollView>
 
 
 </RelativeLayout>

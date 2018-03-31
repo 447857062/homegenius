@@ -16,21 +16,21 @@
     <version value="2"/>
 
     <list>
-        <mapping class="com.deplink.homegenius.Protocol.json.device.SmartDev"/>
-        <mapping class="com.deplink.homegenius.Protocol.json.device.getway.GatwayDevice"/>
-        <mapping class="com.deplink.homegenius.Protocol.json.Room"/>
-        <mapping class="com.deplink.homegenius.Protocol.json.device.lock.SmartLock"/>
-        <mapping class="com.deplink.homegenius.Protocol.json.device.lock.alertreport.Info"/>
-        <mapping class="com.deplink.homegenius.Protocol.json.device.remotecontrol.AirconditionKeyLearnStatu"/>
-        <mapping class="com.deplink.homegenius.Protocol.json.device.remotecontrol.TvboxLearnStatu"/>
-        <mapping class="com.deplink.homegenius.Protocol.json.device.remotecontrol.TvKeyLearnStatu"/>
-        <mapping class="com.deplink.homegenius.Protocol.json.device.remotecontrol.AirconditionKeyCode"/>
-        <mapping class="com.deplink.homegenius.Protocol.json.device.remotecontrol.TvboxKeyCode"/>
-        <mapping class="com.deplink.homegenius.Protocol.json.device.remotecontrol.TvKeyCode"/>
-        <mapping class="com.deplink.homegenius.Protocol.json.device.remotecontrol.AirconditionInitKeyValue"/>
-        <mapping class="com.deplink.homegenius.Protocol.json.device.router.Router"/>
-        <mapping class="com.deplink.homegenius.Protocol.json.device.lock.Record"/>
-        <mapping class="com.deplink.homegenius.Protocol.json.device.lock.UserIdPairs"/>
+        <mapping class="com.deplink.boruSmart.Protocol.json.device.SmartDev"/>
+        <mapping class="com.deplink.boruSmart.Protocol.json.device.getway.GatwayDevice"/>
+        <mapping class="com.deplink.boruSmart.Protocol.json.Room"/>
+        <mapping class="com.deplink.boruSmart.Protocol.json.device.lock.SmartLock"/>
+        <mapping class="com.deplink.boruSmart.Protocol.json.device.lock.alertreport.Info"/>
+        <mapping class="com.deplink.boruSmart.Protocol.json.device.remotecontrol.AirconditionKeyLearnStatu"/>
+        <mapping class="com.deplink.boruSmart.Protocol.json.device.remotecontrol.TvboxLearnStatu"/>
+        <mapping class="com.deplink.boruSmart.Protocol.json.device.remotecontrol.TvKeyLearnStatu"/>
+        <mapping class="com.deplink.boruSmart.Protocol.json.device.remotecontrol.AirconditionKeyCode"/>
+        <mapping class="com.deplink.boruSmart.Protocol.json.device.remotecontrol.TvboxKeyCode"/>
+        <mapping class="com.deplink.boruSmart.Protocol.json.device.remotecontrol.TvKeyCode"/>
+        <mapping class="com.deplink.boruSmart.Protocol.json.device.remotecontrol.AirconditionInitKeyValue"/>
+        <mapping class="com.deplink.boruSmart.Protocol.json.device.router.Router"/>
+        <mapping class="com.deplink.boruSmart.Protocol.json.device.lock.Record"/>
+        <mapping class="com.deplink.boruSmart.Protocol.json.device.lock.UserIdPairs"/>
     </list>
 
     <!--

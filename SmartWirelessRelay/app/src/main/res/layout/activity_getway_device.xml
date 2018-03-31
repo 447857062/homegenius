@@ -5,9 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/page_background"
-    tools:context="com.deplink.homegenius.activity.device.smartlock.EditSmartLockActivity">
+    tools:context="com.deplink.boruSmart.activity.device.smartlock.EditSmartLockActivity">
 
-    <com.deplink.homegenius.view.combinationwidget.TitleLayout
+    <com.deplink.boruSmart.view.combinationwidget.TitleLayout
         android:id="@+id/layout_title"
         android:layout_width="match_parent"
         android:layout_height="@dimen/title_bar_height"
@@ -31,7 +31,7 @@
 
     </RelativeLayout>
 
-    <com.deplink.homegenius.view.scrollview.ScrollViewLinearLayout
+    <com.deplink.boruSmart.view.scrollview.ScrollViewLinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/layout_topbar">
@@ -66,7 +66,7 @@
                         android:textColor="@color/room_type_text"
                         android:textSize="@dimen/text_size_small" />
 
-                    <com.deplink.homegenius.view.edittext.ClearEditText
+                    <com.deplink.boruSmart.view.edittext.ClearEditText
                         android:id="@+id/edittext_input_devie_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -195,5 +195,5 @@
                     android:textSize="@dimen/text_size_small" />
             </RelativeLayout>
         </ScrollView>
-    </com.deplink.homegenius.view.scrollview.ScrollViewLinearLayout>
+    </com.deplink.boruSmart.view.scrollview.ScrollViewLinearLayout>
 </RelativeLayout>

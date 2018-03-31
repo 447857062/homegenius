@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.deplink.homegenius.activity.device.remoteControl.tv.TvMainActivity">
+    tools:context="com.deplink.boruSmart.activity.device.remoteControl.tv.TvMainActivity">
 
-    <com.deplink.homegenius.view.combinationwidget.TitleLayout
+    <com.deplink.boruSmart.view.combinationwidget.TitleLayout
         android:id="@+id/layout_title"
         android:layout_width="match_parent"
         android:layout_height="@dimen/title_bar_height"

@@ -4,7 +4,7 @@ android {
     compileSdkVersion 26
     buildToolsVersion "26.0.0"
     defaultConfig {
-        applicationId 'deplink.com.boru.smarthome'
+        applicationId 'com.deplink.boruSmart'
         ndk {
             //根据需要 自行选择添加的对应cpu类型的.so库。
             abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a'
@@ -14,6 +14,9 @@ android {
                 XG_ACCESS_ID :"2100268783",
                 XG_ACCESS_KEY:"AX1YG22J85XI",
         ]
+        lintOptions {
+            disable "ResourceType"
+        }
         minSdkVersion 16
         targetSdkVersion 25
         versionCode 100

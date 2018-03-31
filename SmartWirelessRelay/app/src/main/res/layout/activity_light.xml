@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/room_type_text"
-    tools:context="com.deplink.homegenius.activity.device.light.LightActivity">
+    tools:context="com.deplink.boruSmart.activity.device.light.LightActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal|center_vertical">
         </ImageView>
-        <com.deplink.homegenius.view.combinationwidget.TitleLayout
+        <com.deplink.boruSmart.view.combinationwidget.TitleLayout
             android:layout_marginLeft="7dp"
             android:id="@+id/layout_title"
             android:layout_width="match_parent"

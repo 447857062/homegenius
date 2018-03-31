@@ -6,8 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/page_background"
-    tools:context="com.deplink.homegenius.activity.room.DeviceNumberActivity">
-    <com.deplink.homegenius.view.combinationwidget.TitleLayout
+    tools:context="com.deplink.boruSmart.activity.room.DeviceNumberActivity">
+    <com.deplink.boruSmart.view.combinationwidget.TitleLayout
         android:id="@+id/layout_title"
         android:layout_width="match_parent"
         titlelayout:edit_text_show="true"
@@ -18,7 +18,7 @@
         android:layout_height="@dimen/title_bar_height"
         />
 
-    <com.deplink.homegenius.view.scrollview.ListViewLinearLayout
+    <com.deplink.boruSmart.view.scrollview.ListViewLinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/layout_title">
@@ -31,7 +31,7 @@
             android:dividerHeight="@dimen/device_item_divider_height"
             android:listSelector="@color/transparent"
             android:scrollbars="none" />
-    </com.deplink.homegenius.view.scrollview.ListViewLinearLayout>
+    </com.deplink.boruSmart.view.scrollview.ListViewLinearLayout>
     <ScrollView
         android:id="@+id/layout_empty_view_scroll"
         android:layout_width="match_parent"

@@ -4,8 +4,8 @@
     xmlns:titlelayout="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.deplink.homegenius.activity.device.doorbell.EditDoorbellActivity">
-    <com.deplink.homegenius.view.combinationwidget.TitleLayout
+    tools:context="com.deplink.boruSmart.activity.device.doorbell.EditDoorbellActivity">
+    <com.deplink.boruSmart.view.combinationwidget.TitleLayout
         android:id="@+id/layout_title"
         android:layout_width="match_parent"
         titlelayout:edit_text_show="true"
@@ -39,7 +39,7 @@
                 android:id="@+id/textview_device_name_left"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
-            <com.deplink.homegenius.view.edittext.ClearEditText
+            <com.deplink.boruSmart.view.edittext.ClearEditText
                 android:maxLength="10"
                 android:background="@null"
                 android:layout_centerVertical="true"

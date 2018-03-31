@@ -23,7 +23,7 @@
             android:textColor="@color/room_type_text"
             android:textSize="@dimen/text_size_small" />
 
-        <com.deplink.homegenius.view.edittext.ClearEditText
+        <com.deplink.boruSmart.view.edittext.ClearEditText
             android:id="@+id/edittext_input_userid"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

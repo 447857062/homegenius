@@ -53,9 +53,8 @@ public class DeviceManager implements MqttListener {
     public void onMQTTConnection() {
         Log.d(DeplinkSDK.SDK_TAG, "---->MQTT connected");
         //订阅所有设备的sub topic
-        Iterator it = mDeviceTopics.keySet().iterator();
-        while (it.hasNext()) {
-            String key = it.next().toString();
+        for (Object o : mDeviceTopics.keySet()) {
+            String key = o.toString();
             MQTTController.getSingleton().subscribe(key, this);
         }
         String userTopic = mSDKCoordinator.getUserSession().getTopic_sub().get(0);

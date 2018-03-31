@@ -4,9 +4,8 @@
     xmlns:titlelayout="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.deplink.homegenius.activity.device.smartlock.alarmhistory.AlarmHistoryActivity">
-
-    <com.deplink.homegenius.view.combinationwidget.TitleLayout
+    tools:context="com.deplink.boruSmart.activity.device.smartlock.alarmhistory.AlarmHistoryActivity">
+    <com.deplink.boruSmart.view.combinationwidget.TitleLayout
         android:id="@+id/layout_title"
         android:layout_width="match_parent"
         titlelayout:edit_text_show="false"
@@ -15,13 +14,11 @@
         titlelayout:title_text="报警记录"
         android:layout_height="@dimen/title_bar_height"
         />
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/layout_title"
         android:background="@color/page_background">
-
         <ListView
             android:id="@+id/list_alart_histroy"
             android:layout_width="match_parent"
@@ -29,21 +26,18 @@
             android:layout_marginTop="@dimen/layout_room_content_margin_top"
             android:divider="@null"
             android:scrollbars="none" />
-
         <RelativeLayout
             android:visibility="gone"
             android:id="@+id/layout_no_alarm_recoed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true">
-
+            >
             <ImageView
                 android:id="@+id/imageview_no_alarm_hitory"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/noalarmrecord" />
-
             <TextView
                 android:id="@+id/textview_no_alarm_record"
                 android:layout_width="match_parent"
@@ -54,7 +48,5 @@
                 android:textColor="@color/room_type_text"
                 android:textSize="@dimen/text_size_small" />
         </RelativeLayout>
-
     </RelativeLayout>
-
 </RelativeLayout>

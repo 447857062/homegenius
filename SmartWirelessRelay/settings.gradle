@@ -1,1 +1,1 @@
-include ':app', ":mqtt-sdk",":pullToRefresh"
+include ':app', ':lib', ":mqtt-sdk",":pullToRefresh"

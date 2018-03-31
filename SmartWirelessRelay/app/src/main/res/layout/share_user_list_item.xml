@@ -5,7 +5,7 @@
     android:minHeight="75dp"
     android:background="@drawable/button_delete_background"
   >
-    <com.deplink.homegenius.view.imageview.CircleImageView
+    <com.deplink.boruSmart.view.imageview.CircleImageView
         android:layout_marginLeft="@dimen/layout_content_margin_left_right"
         android:id="@+id/user_portrait"
         android:layout_width="45dp"

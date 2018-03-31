@@ -106,7 +106,7 @@
             </RelativeLayout>
 
 
-            <com.deplink.homegenius.view.edittext.SecurityPasswordEditText
+            <com.deplink.boruSmart.view.edittext.SecurityPasswordEditText
                 android:id="@+id/edt_pwd"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

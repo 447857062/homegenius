@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/page_background"
-    tools:context="com.deplink.homegenius.activity.room.RoomActivity">
-    <com.deplink.homegenius.view.combinationwidget.TitleLayout
+    tools:context="com.deplink.boruSmart.activity.room.RoomActivity">
+    <com.deplink.boruSmart.view.combinationwidget.TitleLayout
         android:id="@+id/layout_title"
         android:layout_width="match_parent"
         titlelayout:edit_text_show="false"
@@ -32,7 +32,7 @@
             android:gravity="center_vertical"
             android:text="我的房间(长按可排序，点击编辑房间)" />
 
-        <com.deplink.homegenius.view.gridview.DragGridView
+        <com.deplink.boruSmart.view.gridview.DragGridView
             android:layout_marginLeft="@dimen/layout_content_margin_left_right"
             android:layout_marginRight="@dimen/layout_content_margin_left_right"
             android:layout_marginTop="@dimen/layout_room_content_margin_top"

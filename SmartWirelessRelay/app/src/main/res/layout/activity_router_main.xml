@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.deplink.homegenius.activity.device.router.RouterMainActivity">
+    tools:context="com.deplink.boruSmart.activity.device.router.RouterMainActivity">
 
-    <com.deplink.homegenius.view.combinationwidget.TitleLayout
+    <com.deplink.boruSmart.view.combinationwidget.TitleLayout
         android:id="@+id/layout_title"
         android:layout_width="match_parent"
         android:layout_height="@dimen/title_bar_height"
@@ -283,7 +283,7 @@
         </RelativeLayout>
     </LinearLayout>
     <!--滑动删除的组件（已连接设备列表）-->
-    <com.deplink.homegenius.view.scrollview.ScrollViewLinearLayout
+    <com.deplink.boruSmart.view.scrollview.ScrollViewLinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/layout_select_show_current_list">
@@ -325,7 +325,7 @@
 
                     </RelativeLayout>
 
-                    <com.deplink.homegenius.view.listview.swipemenulistview.SwipeMenuListView
+                    <com.deplink.boruSmart.view.listview.swipemenulistview.SwipeMenuListView
                         android:id="@+id/listview_device_list"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -361,7 +361,7 @@
                     </RelativeLayout>
 
 
-                    <com.deplink.homegenius.view.listview.swipemenulistview.SwipeMenuListView
+                    <com.deplink.boruSmart.view.listview.swipemenulistview.SwipeMenuListView
                         android:id="@+id/listview_black_list"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -370,6 +370,6 @@
 
             </FrameLayout>
         </ScrollView>
-    </com.deplink.homegenius.view.scrollview.ScrollViewLinearLayout>
+    </com.deplink.boruSmart.view.scrollview.ScrollViewLinearLayout>
 
 </RelativeLayout>

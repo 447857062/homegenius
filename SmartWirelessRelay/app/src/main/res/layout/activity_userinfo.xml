@@ -5,9 +5,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.deplink.homegenius.activity.personal.usrinfo.UserinfoActivity">
+    tools:context="com.deplink.boruSmart.activity.personal.usrinfo.UserinfoActivity">
 
-    <com.deplink.homegenius.view.combinationwidget.TitleLayout
+    <com.deplink.boruSmart.view.combinationwidget.TitleLayout
         android:id="@+id/layout_title"
         android:layout_width="match_parent"
         titlelayout:edit_text_show="false"
@@ -41,7 +41,7 @@
                 android:layout_centerVertical="true"
                 android:text="头像" />
 
-            <com.deplink.homegenius.view.imageview.CircleImageView
+            <com.deplink.boruSmart.view.imageview.CircleImageView
                 android:id="@+id/user_head_portrait"
                 android:layout_width="60dp"
                 android:layout_height="60dp"

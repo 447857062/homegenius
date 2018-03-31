@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/homebackground"
-    tools:context="com.deplink.homegenius.activity.homepage.SmartHomeMainActivity">
+    tools:context="com.deplink.boruSmart.activity.homepage.SmartHomeMainActivity">
 
     <RelativeLayout
         android:id="@+id/layout_title"
@@ -45,7 +45,7 @@
             android:textSize="@dimen/layout_top_bar_item_text_size" />
 
     </RelativeLayout>
-        <com.deplink.homegenius.view.scrollview.MyScrollView
+        <com.deplink.boruSmart.view.scrollview.MyScrollView
             android:layout_above="@+id/buttom_layout"
             android:layout_below="@+id/layout_title"
             android:id="@+id/scroll_inner_wrap"
@@ -233,7 +233,7 @@
                             </LinearLayout>
                         </HorizontalScrollView>
 
-                        <com.deplink.homegenius.view.scrollview.NonScrollableListView
+                        <com.deplink.boruSmart.view.scrollview.NonScrollableListView
                             android:id="@+id/layout_roomselect_changed_ype"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
@@ -294,7 +294,7 @@
                     </RelativeLayout>
                 </RelativeLayout>
             </LinearLayout>
-        </com.deplink.homegenius.view.scrollview.MyScrollView>
+        </com.deplink.boruSmart.view.scrollview.MyScrollView>
     <RelativeLayout
         android:id="@+id/buttom_layout"
         android:layout_width="match_parent"
