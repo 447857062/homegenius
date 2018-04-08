@@ -240,14 +240,14 @@ public class QosSettingActivity extends Activity implements View.OnClickListener
     }
 
     private void initViews() {
-        layout_model_A = findViewById(R.id.layout_model_A);
-        layout_model_B = findViewById(R.id.layout_model_B);
-        layout_model_download = findViewById(R.id.layout_model_download);
-        imageview_model_a = findViewById(R.id.imageview_model_a);
-        imageview_model_b = findViewById(R.id.imageview_model_b);
-        imageview_model_download = findViewById(R.id.imageview_model_download);
-        checkbox_qos_switch = findViewById(R.id.checkbox_qos_switch);
-        layout_title= findViewById(R.id.layout_title);
+        layout_model_A = (RelativeLayout) findViewById(R.id.layout_model_A);
+        layout_model_B = (RelativeLayout) findViewById(R.id.layout_model_B);
+        layout_model_download = (RelativeLayout) findViewById(R.id.layout_model_download);
+        imageview_model_a = (ImageView) findViewById(R.id.imageview_model_a);
+        imageview_model_b = (ImageView) findViewById(R.id.imageview_model_b);
+        imageview_model_download = (ImageView) findViewById(R.id.imageview_model_download);
+        checkbox_qos_switch = (CheckBox) findViewById(R.id.checkbox_qos_switch);
+        layout_title= (TitleLayout) findViewById(R.id.layout_title);
     }
 
     @Override

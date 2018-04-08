@@ -35,8 +35,8 @@ public class ApModeActivity extends Activity implements View.OnClickListener{
     }
 
     private void initViews() {
-        button_next_step = findViewById(R.id.button_next_step);
-        layout_title= findViewById(R.id.layout_title);
+        button_next_step = (Button) findViewById(R.id.button_next_step);
+        layout_title= (TitleLayout) findViewById(R.id.layout_title);
     }
 
     @Override

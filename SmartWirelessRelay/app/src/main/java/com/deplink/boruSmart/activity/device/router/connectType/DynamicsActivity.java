@@ -192,10 +192,10 @@ public class DynamicsActivity extends Activity {
     }
 
     private void initViews() {
-        edittext_mtu = findViewById(R.id.edittext_mtu);
-        edittext_dns1 = findViewById(R.id.edittext_dns1);
-        edittext_dns2 = findViewById(R.id.edittext_dns2);
-        layout_title= findViewById(R.id.layout_title);
+        edittext_mtu = (EditText) findViewById(R.id.edittext_mtu);
+        edittext_dns1 = (EditText) findViewById(R.id.edittext_dns1);
+        edittext_dns2 = (EditText) findViewById(R.id.edittext_dns2);
+        layout_title= (TitleLayout) findViewById(R.id.layout_title);
     }
 
     private boolean isUserLogin;

@@ -27,6 +27,9 @@ public class Perfence extends Application {
     //电话
     public static String PERFENCE_PHONE = "PERFENCE_PHONE";
     public static String USER_PASSWORD = "USER_PASSWORD";
+    public static String HOMEPAGE_DEVICE_SHOW_STYLE = "HOMEPAGE_DEVICE_SHOW_STYLE";
+    public static String HOMEPAGE_DEVICE_SHOW_STYLE_NORMAL = "HOMEPAGE_DEVICE_SHOW_STYLE_NORMAL";
+    public static String HOMEPAGE_DEVICE_SHOW_STYLE_CHANGE = "HOMEPAGE_DEVICE_SHOW_STYLE_CHANGE";
     private static SharedPreferences sp;
     private static Context c;
     public static Handler handler;

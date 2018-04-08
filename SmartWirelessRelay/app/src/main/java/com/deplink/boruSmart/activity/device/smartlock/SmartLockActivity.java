@@ -7,26 +7,29 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.deplink.boruSmart.Protocol.json.OpResult;
 import com.deplink.boruSmart.Protocol.json.device.lock.UserIdInfo;
+import com.deplink.boruSmart.Protocol.json.device.lock.UserIdPairs;
+import com.deplink.boruSmart.activity.device.DevicesActivity;
 import com.deplink.boruSmart.activity.device.smartlock.alarmhistory.AlarmHistoryActivity;
 import com.deplink.boruSmart.activity.device.smartlock.lockhistory.LockHistoryActivity;
 import com.deplink.boruSmart.activity.homepage.SmartHomeMainActivity;
 import com.deplink.boruSmart.activity.personal.experienceCenter.ExperienceDevicesActivity;
-import com.deplink.boruSmart.manager.device.smartlock.SmartLockListener;
-import com.deplink.boruSmart.util.Perfence;
-import com.deplink.boruSmart.Protocol.json.device.lock.UserIdPairs;
-import com.deplink.boruSmart.activity.device.DevicesActivity;
 import com.deplink.boruSmart.activity.personal.login.LoginActivity;
 import com.deplink.boruSmart.constant.AppConstant;
 import com.deplink.boruSmart.constant.SmartLockConstant;
 import com.deplink.boruSmart.manager.connect.local.tcp.LocalConnectmanager;
 import com.deplink.boruSmart.manager.device.DeviceManager;
+import com.deplink.boruSmart.manager.device.smartlock.SmartLockListener;
 import com.deplink.boruSmart.manager.device.smartlock.SmartLockManager;
+import com.deplink.boruSmart.util.Perfence;
 import com.deplink.boruSmart.util.WeakRefHandler;
 import com.deplink.boruSmart.view.combinationwidget.TitleLayout;
 import com.deplink.boruSmart.view.dialog.ActionSheetDialog;
@@ -47,12 +50,7 @@ import deplink.com.smartwirelessrelay.homegenius.EllESDK.R;
 
 public class SmartLockActivity extends Activity implements View.OnClickListener, SmartLockListener, AuthoriseDialog.GetDialogAuthtTypeTimeListener {
     private static final String TAG = "SmartLockActivity";
-    private RelativeLayout layout_password_not_save;
-    private RelativeLayout layout_auth;
-    private RelativeLayout layout_clear_record;
-    private RelativeLayout layout_lock_record;
-
-    private ImageView imageview_unlock;
+    private TextView imageview_unlock;
     private SmartLockManager mSmartLockManager;
     private AuthoriseDialog mAuthoriseDialog;
     /**
@@ -68,7 +66,8 @@ public class SmartLockActivity extends Activity implements View.OnClickListener,
     private DeviceManager mDeviceManager;
     private long currentTime;
     private TitleLayout layout_title;
-
+    private RelativeLayout layout_open_door;
+    private ImageView gif_alert;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,6 +104,11 @@ public class SmartLockActivity extends Activity implements View.OnClickListener,
                 startActivity(intent);
             }
         });
+        layout_title.setBackImageResource(R.drawable.whitereturn);
+        layout_title.setEditTextWhiteColor();
+        layout_title.setTitleTextWhiteColor();
+        layout_title.setBackResource(R.color.transparent);
+        layout_title.setLineDirverVisiable(false);
         mSmartLockManager = SmartLockManager.getInstance();
         mDeviceManager = DeviceManager.getInstance();
         mSmartLockManager.InitSmartLockManager(this);
@@ -216,6 +220,58 @@ public class SmartLockActivity extends Activity implements View.OnClickListener,
                 }).show();
             }
         };
+        final Animation animationFadeIn= AnimationUtils.loadAnimation(this, R.anim.fade_in);
+        final Animation animationFadeOut= AnimationUtils.loadAnimation(this, R.anim.fade_out);
+        final Animation animationFadeHold= AnimationUtils.loadAnimation(this, R.anim.fade_hold);
+        animationFadeIn.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                gif_alert.startAnimation(animationFadeOut);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+        animationFadeOut.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                gif_alert.startAnimation(animationFadeHold);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+        animationFadeHold.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                gif_alert.startAnimation(animationFadeIn);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+        gif_alert.startAnimation(animationFadeIn);
     }
 
     private String selfUserId;
@@ -230,6 +286,10 @@ public class SmartLockActivity extends Activity implements View.OnClickListener,
         manager.addEventCallback(ec);
         selfUserId = Perfence.getPerfence(AppConstant.PERFENCE_LOCK_SELF_USERID);
         if (!isStartFromExperience) {
+            int usercount = mSmartLockManager.getCurrentSelectLock().getUserCount();
+            usercount++;
+            mSmartLockManager.getCurrentSelectLock().setUserCount(usercount);
+            mSmartLockManager.getCurrentSelectLock().save();
             mSmartLockManager.queryLockStatu();
             mSmartLockManager.queryLockUidHttp(mSmartLockManager.getCurrentSelectLock().getUid());
             statu = mSmartLockManager.getCurrentSelectLock().getStatus();
@@ -245,30 +305,53 @@ public class SmartLockActivity extends Activity implements View.OnClickListener,
     }
 
     private void initEvents() {
-        layout_lock_record.setOnClickListener(this);
-        layout_password_not_save.setOnClickListener(this);
-        layout_auth.setOnClickListener(this);
-        layout_clear_record.setOnClickListener(this);
         imageview_unlock.setOnClickListener(this);
+        layout_open_door.setOnClickListener(this);
     }
 
     private void initViews() {
-        layout_title = findViewById(R.id.layout_title);
-        layout_lock_record = findViewById(R.id.layout_lock_record);
-        layout_password_not_save = findViewById(R.id.layout_password_not_save);
-        layout_auth = findViewById(R.id.layout_auth);
-        layout_clear_record = findViewById(R.id.layout_clear_record);
-        imageview_unlock = findViewById(R.id.imageview_unlock);
+        layout_title = (TitleLayout) findViewById(R.id.layout_title);
+        imageview_unlock = (TextView) findViewById(R.id.imageview_unlock);
+        layout_open_door = (RelativeLayout) findViewById(R.id.layout_open_door);
+        gif_alert = (ImageView) findViewById(R.id.gif_alert);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.layout_lock_record:
+            case R.id.imageview_unlock:
                 new ActionSheetDialog(SmartLockActivity.this)
                         .builder()
                         .setCancelable(true)
                         .setCanceledOnTouchOutside(true)
+                        .addSheetItem("授权", ActionSheetDialog.SheetItemColor.GRAY,
+                                new ActionSheetDialog.OnSheetItemClickListener() {
+                                    @Override
+                                    public void onClick(int which) {
+                                        if (statu == null) {
+                                            statu = "off";
+                                        }
+                                        if (isStartFromExperience) {
+                                            mAuthoriseDialog = new AuthoriseDialog(SmartLockActivity.this);
+                                            mAuthoriseDialog.setGetDialogAuthtTypeTimeListener(SmartLockActivity.this);
+                                            mAuthoriseDialog.show();
+                                        } else {
+                                            if (statu.equalsIgnoreCase("off")) {
+                                                ToastSingleShow.showText(SmartLockActivity.this, "设备已离线");
+                                            } else {
+                                                saveManagetPassword = (mSmartLockManager.getCurrentSelectLock().isRemerberPassword());
+                                                savedManagePassword = mSmartLockManager.getCurrentSelectLock().getLockPassword();
+                                                if (saveManagetPassword && !savedManagePassword.equals("")) {
+                                                    mAuthoriseDialog = new AuthoriseDialog(SmartLockActivity.this);
+                                                    mAuthoriseDialog.setGetDialogAuthtTypeTimeListener(SmartLockActivity.this);
+                                                    mAuthoriseDialog.show();
+                                                } else {
+                                                    ToastSingleShow.showText(SmartLockActivity.this, "没有记住开锁密码,请在开锁后记住开锁密码,才能授权");
+                                                }
+                                            }
+                                        }
+                                    }
+                                })
                         .addSheetItem("开锁记录", ActionSheetDialog.SheetItemColor.GRAY,
                                 new ActionSheetDialog.OnSheetItemClickListener() {
                                     @Override
@@ -287,60 +370,59 @@ public class SmartLockActivity extends Activity implements View.OnClickListener,
                                         startActivity(intentAlarmHistory);
                                     }
                                 })
+                        .addSheetItem("清除记录", ActionSheetDialog.SheetItemColor.GRAY,
+                                new ActionSheetDialog.OnSheetItemClickListener() {
+                                    @Override
+                                    public void onClick(int which) {
+                                        new AlertDialog(SmartLockActivity.this).builder().setTitle("清除记录")
+                                                .setMsg("确定清除所有报警记录和开锁记录?")
+                                                .setPositiveButton("确认", new View.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(View v) {
+                                                        if (!isStartFromExperience) {
+                                                            mSmartLockManager.clearAlarmRecord();
+                                                        }
+                                                    }
+                                                }).setNegativeButton("取消", new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+
+                                            }
+                                        }).show();
+                                    }
+                                })
+                        .addSheetItem("清除密码缓存", ActionSheetDialog.SheetItemColor.GRAY,
+                                new ActionSheetDialog.OnSheetItemClickListener() {
+                                    @Override
+                                    public void onClick(int which) {
+                                        new AlertDialog(SmartLockActivity.this).builder().setTitle("温馨提示")
+                                                .setMsg("确定清除密码缓存?")
+                                                .setPositiveButton("确认", new View.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(View v) {
+                                                        if (isStartFromExperience) {
+                                                            saveManagetPasswordExperience = false;
+                                                            mHandler.sendEmptyMessage(MSG_SHOW_NOTSAVE_PASSWORD_DIALOG);
+                                                        } else {
+                                                            saveManagetPassword = false;
+                                                            savedManagePassword = "";
+                                                            mSmartLockManager.getCurrentSelectLock().setLockPassword("");
+                                                            boolean saveResult = mSmartLockManager.getCurrentSelectLock().save();
+                                                            Log.i(TAG, "清除密码缓存=" + saveResult);
+                                                        }
+                                                    }
+                                                }).setNegativeButton("取消", new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+
+                                            }
+                                        }).show();
+                                    }
+                                })
                         .show();
-                break;
-            case R.id.layout_password_not_save:
-                new AlertDialog(SmartLockActivity.this).builder().setTitle("温馨提示")
-                        .setMsg("确定密码不保存?")
-                        .setPositiveButton("确认", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                if (isStartFromExperience) {
-                                    saveManagetPasswordExperience = false;
-                                    mHandler.sendEmptyMessage(MSG_SHOW_NOTSAVE_PASSWORD_DIALOG);
-                                } else {
-                                    saveManagetPassword = false;
-                                    savedManagePassword = "";
-                                    mSmartLockManager.getCurrentSelectLock().setLockPassword("");
-                                    boolean saveResult = mSmartLockManager.getCurrentSelectLock().save();
-                                    Log.i(TAG, "密码不保存=" + saveResult);
-                                }
-                            }
-                        }).setNegativeButton("取消", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                    }
-                }).show();
-                break;
-            case R.id.layout_auth:
-                if (statu == null) {
-                    statu = "off";
-                }
-                if (isStartFromExperience) {
-                    mAuthoriseDialog = new AuthoriseDialog(this);
-                    mAuthoriseDialog.setGetDialogAuthtTypeTimeListener(this);
-                    mAuthoriseDialog.show();
-                } else {
-                    if (statu.equalsIgnoreCase("off")) {
-                        ToastSingleShow.showText(this, "设备已离线");
-                        return;
-                    } else {
-                        saveManagetPassword = (mSmartLockManager.getCurrentSelectLock().isRemerberPassword());
-                        savedManagePassword = mSmartLockManager.getCurrentSelectLock().getLockPassword();
-                        if (saveManagetPassword && !savedManagePassword.equals("")) {
-                            mAuthoriseDialog = new AuthoriseDialog(this);
-                            mAuthoriseDialog.setGetDialogAuthtTypeTimeListener(this);
-                            mAuthoriseDialog.show();
-                        } else {
-                            ToastSingleShow.showText(this, "没有记住开锁密码,请在开锁后记住开锁密码,才能授权");
-                        }
-                    }
-                }
 
                 break;
-
-            case R.id.imageview_unlock:
+            case R.id.layout_open_door:
                 if ((System.currentTimeMillis() - currentTime) / 1000 > 10) {
                     currentTime = System.currentTimeMillis();
                     if (isStartFromExperience) {
@@ -385,24 +467,8 @@ public class SmartLockActivity extends Activity implements View.OnClickListener,
                     }
                 }
                 break;
-            case R.id.layout_clear_record:
-                new AlertDialog(SmartLockActivity.this).builder().setTitle("清除记录")
-                        .setMsg("确定清除所有报警记录和开锁记录?")
-                        .setPositiveButton("确认", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                if (!isStartFromExperience) {
-                                    mSmartLockManager.clearAlarmRecord();
-                                }
-                            }
-                        }).setNegativeButton("取消", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                    }
-                }).show();
+            default:
                 break;
-
         }
     }
 
@@ -461,7 +527,7 @@ public class SmartLockActivity extends Activity implements View.OnClickListener,
                     Toast.makeText(SmartLockActivity.this, msg.obj != null ? msg.obj.toString() : null, Toast.LENGTH_SHORT).show();
                     break;
                 case MSG_SHOW_NOTSAVE_PASSWORD_DIALOG:
-                    Toast.makeText(SmartLockActivity.this, "密码不保存", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SmartLockActivity.this, "清除密码缓存", Toast.LENGTH_SHORT).show();
                     break;
                 case MSG_UPDATE_DEVICE_STATU:
                     Log.i(TAG, "MSG_UPDATE_DEVICE_STATU");

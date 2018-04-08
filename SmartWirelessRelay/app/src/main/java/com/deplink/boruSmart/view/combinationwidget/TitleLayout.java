@@ -34,7 +34,6 @@ public class TitleLayout extends LinearLayout implements View.OnClickListener {
     public TitleLayout(Context context) {
         super(context);
     }
-
     public TitleLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
         LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -44,12 +43,12 @@ public class TitleLayout extends LinearLayout implements View.OnClickListener {
     }
 
     private void initTyped(TypedArray typedArray) {
-        textview_title=findViewById(R.id.textview_title);
-        textview_edit=findViewById(R.id.textview_edit);
-        image_setting=findViewById(R.id.image_setting);
-        framelayout_back=findViewById(R.id.framelayout_back);
-        layout_root=findViewById(R.id.layout_root);
-        imageview_back=findViewById(R.id.imageview_back);
+        textview_title= (TextView) findViewById(R.id.textview_title);
+        textview_edit= (TextView) findViewById(R.id.textview_edit);
+        image_setting= (ImageView) findViewById(R.id.image_setting);
+        framelayout_back= (FrameLayout) findViewById(R.id.framelayout_back);
+        layout_root= (RelativeLayout) findViewById(R.id.layout_root);
+        imageview_back= (ImageView) findViewById(R.id.imageview_back);
         view_line_dirver=findViewById(R.id.view_line_dirver);
         int backgroundColor = typedArray.getColor(R.styleable.TitleLayout_background_color,R.color.white);
          return_image_show = typedArray.getBoolean(R.styleable.TitleLayout_return_image_show, false);
@@ -108,6 +107,9 @@ public class TitleLayout extends LinearLayout implements View.OnClickListener {
             textview_edit.setText(editText);
         }
 
+    }
+    public void setBackResource(int res){
+        layout_root.setBackgroundResource(res);
     }
     public void setTitleTextWhiteColor(){
         if(textview_title!=null){

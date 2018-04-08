@@ -12,28 +12,28 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.deplink.boruSmart.Protocol.json.Room;
+import com.deplink.boruSmart.Protocol.json.device.getway.GatwayDevice;
+import com.deplink.boruSmart.activity.device.AddDeviceActivity;
+import com.deplink.boruSmart.activity.device.DevicesActivity;
 import com.deplink.boruSmart.activity.device.ShareDeviceActivity;
 import com.deplink.boruSmart.activity.device.adapter.GetwaySelectListAdapter;
 import com.deplink.boruSmart.activity.personal.experienceCenter.ExperienceDevicesActivity;
 import com.deplink.boruSmart.activity.personal.login.LoginActivity;
 import com.deplink.boruSmart.constant.AppConstant;
 import com.deplink.boruSmart.constant.DeviceTypeConstant;
+import com.deplink.boruSmart.manager.device.DeviceListener;
+import com.deplink.boruSmart.manager.device.DeviceManager;
+import com.deplink.boruSmart.manager.device.getway.GetwayManager;
 import com.deplink.boruSmart.manager.device.smartswitch.SmartSwitchManager;
 import com.deplink.boruSmart.manager.room.RoomManager;
 import com.deplink.boruSmart.util.NetUtil;
 import com.deplink.boruSmart.util.Perfence;
-import com.deplink.boruSmart.view.dialog.loadingdialog.DialogThreeBounce;
-import com.deplink.boruSmart.view.toast.ToastSingleShow;
-import com.deplink.boruSmart.Protocol.json.Room;
-import com.deplink.boruSmart.Protocol.json.device.getway.GatwayDevice;
-import com.deplink.boruSmart.activity.device.AddDeviceActivity;
-import com.deplink.boruSmart.activity.device.DevicesActivity;
-import com.deplink.boruSmart.manager.device.DeviceListener;
-import com.deplink.boruSmart.manager.device.DeviceManager;
-import com.deplink.boruSmart.manager.device.getway.GetwayManager;
 import com.deplink.boruSmart.view.combinationwidget.TitleLayout;
 import com.deplink.boruSmart.view.dialog.AlertDialog;
+import com.deplink.boruSmart.view.dialog.loadingdialog.DialogThreeBounce;
 import com.deplink.boruSmart.view.edittext.ClearEditText;
+import com.deplink.boruSmart.view.toast.ToastSingleShow;
 import com.deplink.sdk.android.sdk.DeplinkSDK;
 import com.deplink.sdk.android.sdk.EventCallback;
 import com.deplink.sdk.android.sdk.SDKAction;
@@ -275,13 +275,18 @@ public class EditActivity extends Activity implements View.OnClickListener {
                 deviceUid=mSmartSwitchManager.getCurrentSelectSmartDevice().getUid();
                 GatwayDevice temp = mSmartSwitchManager.getCurrentSelectSmartDevice().getGetwayDevice();
                 if (temp == null) {
-                    GatwayDevice localDbGatwayDevice =
-                            DataSupport.where("uid=?", mSmartSwitchManager.getCurrentSelectSmartDevice().getGetwayDeviceUid()).findFirst(GatwayDevice.class);
-                    if (localDbGatwayDevice != null) {
-                        textview_select_getway_name.setText(localDbGatwayDevice.getName());
-                    } else {
-                        textview_select_getway_name.setText("未设置网关");
+                    if(mSmartSwitchManager.getCurrentSelectSmartDevice().getGetwayDeviceUid()!=null){
+                        GatwayDevice localDbGatwayDevice =
+                                DataSupport.where("uid=?", mSmartSwitchManager.getCurrentSelectSmartDevice().getGetwayDeviceUid())
+                                        .findFirst(GatwayDevice.class);
+                        if (localDbGatwayDevice != null) {
+                            textview_select_getway_name.setText(localDbGatwayDevice.getName());
+                        } else {
+                            textview_select_getway_name.setText("未设置网关");
+                        }
                     }
+
+
                 } else {
                     textview_select_getway_name.setText(mSmartSwitchManager.getCurrentSelectSmartDevice().getGetwayDevice().getName());
                 }
@@ -299,17 +304,17 @@ public class EditActivity extends Activity implements View.OnClickListener {
     }
 
     private void initViews() {
-        button_delete_device = findViewById(R.id.button_delete_device);
-        layout_select_room = findViewById(R.id.layout_room_select);
-        textview_select_room_name = findViewById(R.id.textview_select_room_name);
-        edittext_add_device_input_name = findViewById(R.id.edittext_add_device_input_name);
-        layout_getway_list = findViewById(R.id.layout_getway_list);
-        layout_getway_select = findViewById(R.id.layout_getway_select);
-        listview_select_getway = findViewById(R.id.listview_select_getway);
-        textview_select_getway_name = findViewById(R.id.textview_select_getway_name);
-        imageview_getway_arror_right = findViewById(R.id.imageview_getway_arror_right);
-        layout_device_share = findViewById(R.id.layout_device_share);
-        layout_title= findViewById(R.id.layout_title);
+        button_delete_device = (TextView) findViewById(R.id.button_delete_device);
+        layout_select_room = (RelativeLayout) findViewById(R.id.layout_room_select);
+        textview_select_room_name = (TextView) findViewById(R.id.textview_select_room_name);
+        edittext_add_device_input_name = (ClearEditText) findViewById(R.id.edittext_add_device_input_name);
+        layout_getway_list = (RelativeLayout) findViewById(R.id.layout_getway_list);
+        layout_getway_select = (RelativeLayout) findViewById(R.id.layout_getway_select);
+        listview_select_getway = (ListView) findViewById(R.id.listview_select_getway);
+        textview_select_getway_name = (TextView) findViewById(R.id.textview_select_getway_name);
+        imageview_getway_arror_right = (ImageView) findViewById(R.id.imageview_getway_arror_right);
+        layout_device_share = (RelativeLayout) findViewById(R.id.layout_device_share);
+        layout_title= (TitleLayout) findViewById(R.id.layout_title);
     }
 
 
@@ -339,10 +344,15 @@ public class EditActivity extends Activity implements View.OnClickListener {
                 if(isStartFromExperience){
                     startActivity(inentShareDevice);
                 }else{
-                    if (deviceUid != null) {
-                        inentShareDevice.putExtra("deviceuid", deviceUid);
-                        startActivity(inentShareDevice);
+                    if(isLogin){
+                        if (deviceUid != null) {
+                            inentShareDevice.putExtra("deviceuid", deviceUid);
+                            startActivity(inentShareDevice);
+                        }
+                    }else{
+                        startActivity(new Intent(EditActivity.this, LoginActivity.class));
                     }
+
                 }
 
                 break;
@@ -357,10 +367,22 @@ public class EditActivity extends Activity implements View.OnClickListener {
                 }
                 break;
             case R.id.layout_room_select:
-                mDeviceManager.setEditDevice(true);
-                mDeviceManager.setCurrentEditDeviceType(DeviceTypeConstant.TYPE.TYPE_SWITCH);
-                Intent intent = new Intent(this, AddDeviceActivity.class);
-                startActivity(intent);
+                if(isStartFromExperience){
+                    mDeviceManager.setEditDevice(true);
+                    mDeviceManager.setCurrentEditDeviceType(DeviceTypeConstant.TYPE.TYPE_SWITCH);
+                    Intent intent = new Intent(this, AddDeviceActivity.class);
+                    startActivity(intent);
+                }else{
+                    if(isLogin){
+                        mDeviceManager.setEditDevice(true);
+                        mDeviceManager.setCurrentEditDeviceType(DeviceTypeConstant.TYPE.TYPE_SWITCH);
+                        Intent intent = new Intent(this, AddDeviceActivity.class);
+                        startActivity(intent);
+                    }else{
+                        startActivity(new Intent(EditActivity.this, LoginActivity.class));
+                    }
+                }
+
                 break;
             case R.id.button_delete_device:
                 new AlertDialog(EditActivity.this).builder().setTitle("删除设备")

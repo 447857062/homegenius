@@ -188,13 +188,13 @@ public class AlertWifiPasswordActivity extends Activity implements View.OnClickL
     }
 
     private void initViews() {
-        image_input_eye_password = findViewById(R.id.image_input_eye_password);
-        framelayout_input_eye_password = findViewById(R.id.framelayout_input_eye_password);
-        image_input_eye_password_again = findViewById(R.id.image_input_eye_password_again);
-        framelayout_nput_eye_password_again = findViewById(R.id.framelayout_nput_eye_password_again);
-        edittext_password = findViewById(R.id.edittext_password);
-        edittext_password_again = findViewById(R.id.edittext_password_again);
-        layout_topbar= findViewById(R.id.layout_topbar);
+        image_input_eye_password = (ImageView) findViewById(R.id.image_input_eye_password);
+        framelayout_input_eye_password = (FrameLayout) findViewById(R.id.framelayout_input_eye_password);
+        image_input_eye_password_again = (ImageView) findViewById(R.id.image_input_eye_password_again);
+        framelayout_nput_eye_password_again = (FrameLayout) findViewById(R.id.framelayout_nput_eye_password_again);
+        edittext_password = (EditText) findViewById(R.id.edittext_password);
+        edittext_password_again = (EditText) findViewById(R.id.edittext_password_again);
+        layout_topbar= (TitleLayout) findViewById(R.id.layout_topbar);
     }
     private boolean isLogin;
     @Override

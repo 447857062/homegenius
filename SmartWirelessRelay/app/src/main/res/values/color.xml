@@ -42,6 +42,7 @@
     <color name="aircondition_mode">#666666</color>
     <color name="input_hint">#99ffffff</color>
     <color name="page_background">#F1F2F3</color>
+    <color name="switch_page_background">#353A43</color>
     <color name="delete_button">#f55555</color>
     <color name="add_device_text_show_explan">#666666</color>
     <color name="line_clolor">#cccccc</color>

@@ -124,6 +124,7 @@ public class RouterMainActivity extends Activity implements View.OnClickListener
         initDatas();
         initEvents();
     }
+
     private AdapterView.OnItemClickListener deviceItemClickListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
@@ -164,6 +165,10 @@ public class RouterMainActivity extends Activity implements View.OnClickListener
         if (isStartFromExperience) {
             showQueryingDialog();
         } else {
+            int usercount = mRouterManager.getCurrentSelectedRouter().getUserCount();
+            usercount++;
+            mRouterManager.getCurrentSelectedRouter().setUserCount(usercount);
+            mRouterManager.getCurrentSelectedRouter().save();
             manager.addEventCallback(ec);
             String receiverChannels = null;
             try {
@@ -197,8 +202,8 @@ public class RouterMainActivity extends Activity implements View.OnClickListener
         }
         frame_blacklist_content.setVisibility(View.GONE);
         frame_devicelist_content_content.setVisibility(View.VISIBLE);
-        textview_connected_devices.setTextColor(ContextCompat.getColor(this,R.color.white));
-        textview_blak_list.setTextColor(ContextCompat.getColor(this,R.color.huise));
+        textview_connected_devices.setTextColor(ContextCompat.getColor(this, R.color.white));
+        textview_blak_list.setTextColor(ContextCompat.getColor(this, R.color.huise));
         layout_connected_devices.setBackgroundResource(R.color.huise);
         layout_blak_list.setBackgroundResource(R.color.white);
     }
@@ -704,26 +709,27 @@ public class RouterMainActivity extends Activity implements View.OnClickListener
             }
         });
     }
+
     private void initViews() {
-        layout_title = findViewById(R.id.layout_title);
-        textview_connected_devices = findViewById(R.id.textview_connected_devices);
-        textview_blak_list = findViewById(R.id.textview_blak_list);
-        listview_device_list = findViewById(R.id.listview_device_list);
-        layout_connected_devices = findViewById(R.id.layout_connected_devices);
-        layout_blak_list = findViewById(R.id.layout_blak_list);
-        listview_black_list = findViewById(R.id.listview_black_list);
-        textview_show_query_device_result = findViewById(R.id.textview_show_query_device_result);
-        textview_show_blacklist_device_result = findViewById(R.id.textview_show_blacklist_device_result);
-        frame_devicelist_content_content = findViewById(R.id.frame_devicelist_content_content);
-        frame_blacklist_content = findViewById(R.id.frame_blacklist_content);
-        textview_cpu_use = findViewById(R.id.textview_cpu_use);
-        textview_memory_use = findViewById(R.id.textview_memory_use);
-        textview_upload_speed = findViewById(R.id.textview_upload_speed);
-        textview_download_speend = findViewById(R.id.textview_download_speend);
-        layout_no_blacklist = findViewById(R.id.layout_no_blacklist);
-        layout_no_connected_device = findViewById(R.id.layout_no_connected_device);
-        iamgeview_no_connected_device = findViewById(R.id.iamgeview_no_connected_device);
-        iamgeview_no_blacklist = findViewById(R.id.iamgeview_no_blacklist);
+        layout_title = (TitleLayout) findViewById(R.id.layout_title);
+        textview_connected_devices = (TextView) findViewById(R.id.textview_connected_devices);
+        textview_blak_list = (TextView) findViewById(R.id.textview_blak_list);
+        listview_device_list = (SwipeMenuListView) findViewById(R.id.listview_device_list);
+        layout_connected_devices = (RelativeLayout) findViewById(R.id.layout_connected_devices);
+        layout_blak_list = (RelativeLayout) findViewById(R.id.layout_blak_list);
+        listview_black_list = (SwipeMenuListView) findViewById(R.id.listview_black_list);
+        textview_show_query_device_result = (TextView) findViewById(R.id.textview_show_query_device_result);
+        textview_show_blacklist_device_result = (TextView) findViewById(R.id.textview_show_blacklist_device_result);
+        frame_devicelist_content_content = (FrameLayout) findViewById(R.id.frame_devicelist_content_content);
+        frame_blacklist_content = (FrameLayout) findViewById(R.id.frame_blacklist_content);
+        textview_cpu_use = (TextView) findViewById(R.id.textview_cpu_use);
+        textview_memory_use = (TextView) findViewById(R.id.textview_memory_use);
+        textview_upload_speed = (TextView) findViewById(R.id.textview_upload_speed);
+        textview_download_speend = (TextView) findViewById(R.id.textview_download_speend);
+        layout_no_blacklist = (RelativeLayout) findViewById(R.id.layout_no_blacklist);
+        layout_no_connected_device = (RelativeLayout) findViewById(R.id.layout_no_connected_device);
+        iamgeview_no_connected_device = (ImageView) findViewById(R.id.iamgeview_no_connected_device);
+        iamgeview_no_blacklist = (ImageView) findViewById(R.id.iamgeview_no_blacklist);
     }
 
     @Override

@@ -16,39 +16,26 @@
         titlelayout:edit_image_src="@drawable/add_button"
         android:layout_height="@dimen/title_bar_height"
        />
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+    <TextView
+        android:textSize="@dimen/text_size_small"
+        android:textColor="@color/aircondition_mode"
         android:layout_below="@+id/layout_title"
-        android:layout_above="@+id/layout_buttom_bar">
-        <TextView
-            android:textSize="@dimen/text_size_small"
-            android:textColor="@color/aircondition_mode"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="@dimen/layout_room_content_margin_top"
-            android:id="@+id/textview_option_explan"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:text="我的房间(长按可排序，点击编辑房间)" />
-
-        <com.deplink.boruSmart.view.gridview.DragGridView
-            android:layout_marginLeft="@dimen/layout_content_margin_left_right"
-            android:layout_marginRight="@dimen/layout_content_margin_left_right"
-            android:layout_marginTop="@dimen/layout_room_content_margin_top"
-            android:id="@+id/dragGridView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/textview_option_explan"
-            android:cacheColorHint="@android:color/transparent"
-            android:gravity="center"
-            android:scrollbars="none"
-            android:horizontalSpacing="10dip"
-            android:listSelector="@android:color/transparent"
-            android:numColumns="3"
-            android:stretchMode="columnWidth"
-            android:verticalSpacing="10dip" />
-    </RelativeLayout>
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="@dimen/layout_room_content_margin_top"
+        android:id="@+id/textview_option_explan"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:text="我的房间(长按可排序)" />
+    <android.support.v7.widget.RecyclerView
+        android:layout_marginLeft="@dimen/layout_content_margin_left_right"
+        android:overScrollMode="never"
+        android:layout_marginRight="@dimen/layout_content_margin_left_right"
+        android:layout_below="@+id/textview_option_explan"
+        android:layout_above="@+id/layout_buttom_bar"
+        android:id="@+id/rv_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
     <RelativeLayout
         android:id="@+id/layout_buttom_bar"
         android:layout_alignParentBottom="true"
@@ -69,7 +56,4 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true" />
     </RelativeLayout>
-
-
-
 </RelativeLayout>

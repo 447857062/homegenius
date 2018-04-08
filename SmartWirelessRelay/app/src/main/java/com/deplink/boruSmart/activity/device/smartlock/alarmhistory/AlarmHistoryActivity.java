@@ -78,9 +78,9 @@ public class AlarmHistoryActivity extends Activity {
     }
 
     private void initViews() {
-        list_alart_histroy = findViewById(R.id.list_alart_histroy);
-        layout_no_alarm_recoed = findViewById(R.id.layout_no_alarm_recoed);
-        layout_title= findViewById(R.id.layout_title);
+        list_alart_histroy = (ListView) findViewById(R.id.list_alart_histroy);
+        layout_no_alarm_recoed = (RelativeLayout) findViewById(R.id.layout_no_alarm_recoed);
+        layout_title= (TitleLayout) findViewById(R.id.layout_title);
     }
 
     private void initDatas() {

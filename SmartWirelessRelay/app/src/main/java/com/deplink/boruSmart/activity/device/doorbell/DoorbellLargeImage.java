@@ -55,7 +55,7 @@ public class DoorbellLargeImage extends Activity implements View.OnClickListener
         mDoorbeelManager.removeDeviceListener(mDoorBellListener);
     }
     private void initViews() {
-        image_snap=findViewById(R.id.image_snap);
+        image_snap= (ImageView) findViewById(R.id.image_snap);
     }
 
     @Override

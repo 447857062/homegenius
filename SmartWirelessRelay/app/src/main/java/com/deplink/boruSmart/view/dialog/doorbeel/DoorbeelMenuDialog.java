@@ -50,8 +50,8 @@ public class DoorbeelMenuDialog extends Dialog implements View.OnClickListener {
     }
     private void initView() {
         view_mode_menu = findViewById(R.id.view_mode_menu);
-        layout_edit = findViewById(R.id.layout_edit);
-        layout_record = findViewById(R.id.layout_record);
+        layout_edit = (RelativeLayout) findViewById(R.id.layout_edit);
+        layout_record = (RelativeLayout) findViewById(R.id.layout_record);
     }
     private void initEvent() {
         view_mode_menu.setOnClickListener(this);

@@ -116,9 +116,9 @@ public class ManageRoomActivity extends Activity implements View.OnClickListener
     }
 
     private void initViews() {
-        layout_title= findViewById(R.id.layout_title);
-        button_delete_room = findViewById(R.id.button_delete_room);
-        edittext_input_devie_name = findViewById(R.id.edittext_input_devie_name);
+        layout_title= (TitleLayout) findViewById(R.id.layout_title);
+        button_delete_room = (Button) findViewById(R.id.button_delete_room);
+        edittext_input_devie_name = (ClearEditText) findViewById(R.id.edittext_input_devie_name);
     }
     private RoomListener mRoomListener;
     @Override
@@ -142,7 +142,6 @@ public class ManageRoomActivity extends Activity implements View.OnClickListener
 
     @Override
     public void onClick(View v) {
-        Intent intent;
         switch (v.getId()) {
             case R.id.button_delete_room:
                 if (!NetUtil.isNetAvailable(this)) {

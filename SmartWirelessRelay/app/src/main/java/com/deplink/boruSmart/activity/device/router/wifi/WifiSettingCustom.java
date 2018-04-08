@@ -283,14 +283,14 @@ public class WifiSettingCustom extends Activity implements View.OnClickListener 
     };
 
     private void initViews() {
-        layout_encryption = findViewById(R.id.layout_encryption);
-        layout_password = findViewById(R.id.layout_password);
-        layout_wifiname_setting = findViewById(R.id.layout_wifiname_setting);
-        textview_encryption = findViewById(R.id.textview_encryption);
-        textview_wifi_name = findViewById(R.id.textview_wifi_name);
-        textview_password = findViewById(R.id.textview_password);
-        checkbox_wifi_switch = findViewById(R.id.checkbox_wifi_switch);
-        layout_title= findViewById(R.id.layout_title);
+        layout_encryption = (RelativeLayout) findViewById(R.id.layout_encryption);
+        layout_password = (RelativeLayout) findViewById(R.id.layout_password);
+        layout_wifiname_setting = (RelativeLayout) findViewById(R.id.layout_wifiname_setting);
+        textview_encryption = (TextView) findViewById(R.id.textview_encryption);
+        textview_wifi_name = (TextView) findViewById(R.id.textview_wifi_name);
+        textview_password = (TextView) findViewById(R.id.textview_password);
+        checkbox_wifi_switch = (CheckBox) findViewById(R.id.checkbox_wifi_switch);
+        layout_title= (TitleLayout) findViewById(R.id.layout_title);
     }
 
     /**

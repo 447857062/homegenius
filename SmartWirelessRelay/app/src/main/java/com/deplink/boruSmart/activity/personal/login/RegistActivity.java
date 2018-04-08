@@ -103,7 +103,14 @@ public class RegistActivity extends Activity implements View.OnClickListener, Vi
         manager.addEventCallback(ec);
         edittext_input_password.setTransformationMethod(PasswordTransformationMethod.getInstance());
         showInputmothed();
-        button_regist.setEnabled(false);
+        if (StringValidatorUtil.isMobileNO(edittext_input_phone_number.getText().toString())
+                && edittext_input_password.getText().toString().length() >= 6
+                && edittext_verification_code.getText().toString().length()>=6
+                ) {
+            button_regist.setEnabled(true);
+        } else {
+            button_regist.setEnabled(false);
+        }
     }
     private String username;
     @Override
@@ -294,17 +301,17 @@ public class RegistActivity extends Activity implements View.OnClickListener, Vi
     }
 
     private void initViews() {
-        layout_title= findViewById(R.id.layout_title);
+        layout_title= (TitleLayout) findViewById(R.id.layout_title);
         view_phonenumber_dirverline = findViewById(R.id.view_phonenumber_dirverline);
         view_password_dirverline = findViewById(R.id.view_password_dirverline);
         view_yanzhen_dirverline = findViewById(R.id.view_yanzhen_dirverline);
-        edittext_input_phone_number = findViewById(R.id.edittext_input_phone_number);
-        edittext_verification_code = findViewById(R.id.edittext_verification_code);
-        edittext_input_password = findViewById(R.id.edittext_input_password);
-        layout_eye = findViewById(R.id.layout_eye);
-        imageview_eye = findViewById(R.id.imageview_eye);
-        button_regist = findViewById(R.id.button_regist);
-        button_SMS_verification_code = findViewById(R.id.buton_get_verification_code);
+        edittext_input_phone_number = (EditText) findViewById(R.id.edittext_input_phone_number);
+        edittext_verification_code = (EditText) findViewById(R.id.edittext_verification_code);
+        edittext_input_password = (EditText) findViewById(R.id.edittext_input_password);
+        layout_eye = (FrameLayout) findViewById(R.id.layout_eye);
+        imageview_eye = (ImageView) findViewById(R.id.imageview_eye);
+        button_regist = (Button) findViewById(R.id.button_regist);
+        button_SMS_verification_code = (TextView) findViewById(R.id.buton_get_verification_code);
     }
 
     @Override

@@ -214,10 +214,10 @@ public class SwitchTwoActivity extends Activity implements View.OnClickListener,
     }
 
     private void initViews() {
-        button_switch_left = findViewById(R.id.button_switch_left);
-        button_switch_right = findViewById(R.id.button_switch_right);
-        button_all_switch = findViewById(R.id.button_all_switch);
-        layout_title= findViewById(R.id.layout_title);
+        button_switch_left = (Button) findViewById(R.id.button_switch_left);
+        button_switch_right = (Button) findViewById(R.id.button_switch_right);
+        button_all_switch = (Button) findViewById(R.id.button_all_switch);
+        layout_title= (TitleLayout) findViewById(R.id.layout_title);
 
     }
 

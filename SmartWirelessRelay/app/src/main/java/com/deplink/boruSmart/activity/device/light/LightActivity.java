@@ -195,19 +195,19 @@ public class LightActivity extends Activity implements View.OnClickListener, Sma
     }
 
     private void initViews() {
-        button_switch_light = findViewById(R.id.button_switch_light);
-        progressBarLightYellow = findViewById(R.id.lightColorProgressBar);
-        progressBarLightWhite = findViewById(R.id.progressBar_brightness);
-        imageview_lightyellow_reduce = findViewById(R.id.imageview_lightyellow_reduce);
-        imageview_lightyellow_plus = findViewById(R.id.imageview_lightyellow_plus);
-        imageview_lightwhite_reduce = findViewById(R.id.imageview_lightwhite_reduce);
-        imageview_lightwhite_plus = findViewById(R.id.imageview_lightwhite_plus);
-        iamgeview_switch = findViewById(R.id.iamgeview_switch);
-        textview_switch_tips = findViewById(R.id.textview_switch_tips);
-        imageview_switch_bg = findViewById(R.id.imageview_switch_bg);
-        layout_brightness_control = findViewById(R.id.layout_brightness_control);
-        layout_lightcolor_control = findViewById(R.id.layout_lightcolor_control);
-        layout_title= findViewById(R.id.layout_title);
+        button_switch_light = (ImageView) findViewById(R.id.button_switch_light);
+        progressBarLightYellow = (SeekBar) findViewById(R.id.lightColorProgressBar);
+        progressBarLightWhite = (SeekBar) findViewById(R.id.progressBar_brightness);
+        imageview_lightyellow_reduce = (ImageView) findViewById(R.id.imageview_lightyellow_reduce);
+        imageview_lightyellow_plus = (ImageView) findViewById(R.id.imageview_lightyellow_plus);
+        imageview_lightwhite_reduce = (ImageView) findViewById(R.id.imageview_lightwhite_reduce);
+        imageview_lightwhite_plus = (ImageView) findViewById(R.id.imageview_lightwhite_plus);
+        iamgeview_switch = (ImageView) findViewById(R.id.iamgeview_switch);
+        textview_switch_tips = (TextView) findViewById(R.id.textview_switch_tips);
+        imageview_switch_bg = (ImageView) findViewById(R.id.imageview_switch_bg);
+        layout_brightness_control = (RelativeLayout) findViewById(R.id.layout_brightness_control);
+        layout_lightcolor_control = (RelativeLayout) findViewById(R.id.layout_lightcolor_control);
+        layout_title= (TitleLayout) findViewById(R.id.layout_title);
     }
 
     @Override
@@ -231,6 +231,12 @@ public class LightActivity extends Activity implements View.OnClickListener, Sma
             layout_brightness_control.setVisibility(View.GONE);
         } else {
             currentSelectLight = mSmartLightManager.getCurrentSelectLight();
+
+                int usercount=currentSelectLight.getUserCount();
+            usercount++;
+                currentSelectLight.setUserCount(usercount);
+                currentSelectLight.save();
+
             mSmartLightManager.queryLightStatus();
             mSmartLightManager.addSmartLightListener(this);
             //读取保存在数据库中的状态

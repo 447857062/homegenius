@@ -45,8 +45,8 @@ public class QueryGetwaysActivity extends Activity implements View.OnClickListen
     }
 
     private void initViews() {
-        textview_cancel = findViewById(R.id.textview_cancel);
-        layout_title= findViewById(R.id.layout_title);
+        textview_cancel = (Button) findViewById(R.id.textview_cancel);
+        layout_title= (TitleLayout) findViewById(R.id.layout_title);
     }
 
     private void initDatas() {

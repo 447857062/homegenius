@@ -420,7 +420,7 @@ public class ShareDeviceActivity extends Activity  {
     }
 
     private void initViews() {
-        listview_share_user = findViewById(R.id.listview_share_user);
-        layout_title= findViewById(R.id.layout_title);
+        listview_share_user = (ListView) findViewById(R.id.listview_share_user);
+        layout_title= (TitleLayout) findViewById(R.id.layout_title);
     }
 }

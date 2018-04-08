@@ -246,7 +246,7 @@ public class DoorbeelMainActivity extends Activity implements View.OnClickListen
         isUserLogin = Perfence.getBooleanPerfence(AppConstant.USER_LOGIN);
         manager.addEventCallback(ec);
         mDeviceManager.addDeviceListener(mDeviceListener);
-        if (mDoorbeelManager != null) {
+        if (mDoorbeelManager == null) {
             mDoorbeelManager = DoorbeelManager.getInstance();
             mDoorbeelManager.InitDoorbeelManager(this);
         }
@@ -259,6 +259,12 @@ public class DoorbeelMainActivity extends Activity implements View.OnClickListen
             mSmartLockManager.addSmartLockListener(this);
         }
         isStartFromExperience = DeviceManager.getInstance().isStartFromExperience();
+        if(!isStartFromExperience){
+            int usercount=mDoorbeelManager.getCurrentSelectedDoorbeel().getUserCount();
+            usercount++;
+            mDoorbeelManager.getCurrentSelectedDoorbeel().setUserCount(usercount);
+            mDoorbeelManager.getCurrentSelectedDoorbeel().save();
+        }
         XGPushClickedResult clickedResult = XGPushManager.onActivityStarted(this);
         Log.i(TAG, "clickedResult=" + (clickedResult != null));
         if (clickedResult != null) { // 判断是否来自信鸽的打开方式
@@ -317,10 +323,10 @@ public class DoorbeelMainActivity extends Activity implements View.OnClickListen
     }
 
     private void initViews() {
-        layout_title = findViewById(R.id.layout_title);
-        button_opendoor = findViewById(R.id.button_opendoor);
-        layout_no_vistor = findViewById(R.id.layout_no_vistor);
-        imageview_visitor = findViewById(R.id.imageview_visitor);
+        layout_title = (TitleLayout) findViewById(R.id.layout_title);
+        button_opendoor = (Button) findViewById(R.id.button_opendoor);
+        layout_no_vistor = (RelativeLayout) findViewById(R.id.layout_no_vistor);
+        imageview_visitor = (ImageView) findViewById(R.id.imageview_visitor);
     }
 
     private DoorbeelMenuDialog doorbeelMenuDialog;

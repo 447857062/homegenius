@@ -83,75 +83,10 @@
             android:textSize="@dimen/text_size_small" />
     </RelativeLayout>
 
-
-    <RelativeLayout
-        android:id="@+id/layout_getway"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/layout_item_content_height"
-        android:layout_below="@+id/layout_room_name"
-        android:layout_marginTop="@dimen/room_list_item_margin_top"
-        android:background="@color/white"
-        android:gravity="center_vertical"
-        android:paddingLeft="@dimen/layout_content_margin_left_right"
-        android:paddingRight="@dimen/layout_content_margin_left_right"
-        android:visibility="gone">
-
-        <TextView
-            android:id="@+id/textview_getway_left"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:gravity="center_vertical"
-            android:text="网关："
-            android:textColor="@color/room_type_text"
-            android:textSize="@dimen/text_size_small" />
-
-        <TextView
-            android:id="@+id/textview_getway_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/textview_getway_left"
-            android:gravity="center_vertical"
-            android:text="未绑定网关"
-            android:textColor="@color/room_type_text"
-            android:textSize="@dimen/text_size_small" />
-
-        <ImageView
-            android:id="@+id/imageview_getway_arror_right"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:src="@drawable/gotoicon" />
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/layout_getway_list"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/layout_getway"
-        android:background="@color/white"
-        android:visibility="gone">
-
-        <ListView
-            android:id="@+id/listview_select_getway"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:divider="@color/transparent"
-            android:dividerHeight="@dimen/list_item_textview_margin_top"
-            android:paddingLeft="@dimen/layout_content_margin_left_right"
-            android:paddingRight="@dimen/layout_content_margin_left_right"
-            android:scrollbars="none">
-
-        </ListView>
-    </RelativeLayout>
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/layout_getway_list"
+        android:layout_below="@+id/layout_room_name"
         android:layout_marginTop="@dimen/list_item_textview_margin_top">
 
         <TextView
@@ -164,23 +99,13 @@
             android:text="请选择以下房间类型"
             android:textColor="@color/aircondition_mode"
             android:textSize="@dimen/text_size_small" />
-
-        <GridView
-            android:id="@+id/gridview_room_type"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+        <android.support.v7.widget.RecyclerView
+            android:layout_marginLeft="@dimen/layout_content_margin_left_right"
+            android:layout_marginRight="@dimen/layout_content_margin_left_right"
             android:layout_below="@+id/textview_select_room_type"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:layout_marginTop="@dimen/list_item_textview_margin_top"
-            android:cacheColorHint="@android:color/transparent"
-            android:gravity="center"
-            android:horizontalSpacing="@dimen/layout_addroom_horizontalSpacing"
-            android:listSelector="@android:color/transparent"
-            android:numColumns="3"
-            android:scrollbars="none"
-            android:stretchMode="columnWidth"
-            android:verticalSpacing="10dip" />
+            android:id="@+id/rv_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
     </RelativeLayout>
 
 </RelativeLayout>

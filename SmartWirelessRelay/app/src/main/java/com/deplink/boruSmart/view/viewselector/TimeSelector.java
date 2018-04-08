@@ -91,12 +91,12 @@ public class TimeSelector {
     }
 
     private void initView() {
-        year_pv = seletorDialog.findViewById(R.id.year_pv);
-        month_pv = seletorDialog.findViewById(R.id.month_pv);
-        day_pv = seletorDialog.findViewById(R.id.day_pv);
+        year_pv = (PickerView) seletorDialog.findViewById(R.id.year_pv);
+        month_pv = (PickerView) seletorDialog.findViewById(R.id.month_pv);
+        day_pv = (PickerView) seletorDialog.findViewById(R.id.day_pv);
 
-        tv_cancle = seletorDialog.findViewById(R.id.tv_cancle);
-        tv_select = seletorDialog.findViewById(R.id.tv_select);
+        tv_cancle = (TextView) seletorDialog.findViewById(R.id.tv_cancle);
+        tv_select = (TextView) seletorDialog.findViewById(R.id.tv_select);
 
         tv_cancle.setOnClickListener(new View.OnClickListener() {
             @Override

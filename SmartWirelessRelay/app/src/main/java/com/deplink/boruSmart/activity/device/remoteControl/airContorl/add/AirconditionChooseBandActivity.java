@@ -121,11 +121,11 @@ public class AirconditionChooseBandActivity extends Activity implements AdapterV
     }
 
     private void initViews() {
-        listview_band = findViewById(R.id.listview_band);
-        edittext_band_name = findViewById(R.id.edittext_band_name);
-        sideBar = findViewById(R.id.sidrbar);
-        dialog = findViewById(R.id.dialog);
-        layout_title= findViewById(R.id.layout_title);
+        listview_band = (ListView) findViewById(R.id.listview_band);
+        edittext_band_name = (ClearEditText) findViewById(R.id.edittext_band_name);
+        sideBar = (SideBar) findViewById(R.id.sidrbar);
+        dialog = (TextView) findViewById(R.id.dialog);
+        layout_title= (TitleLayout) findViewById(R.id.layout_title);
 
 
     }

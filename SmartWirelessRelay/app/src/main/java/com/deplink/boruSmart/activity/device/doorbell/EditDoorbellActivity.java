@@ -14,10 +14,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.deplink.boruSmart.Protocol.packet.ellisdk.BasicPacket;
-import com.deplink.boruSmart.util.Perfence;
 import com.deplink.boruSmart.Protocol.json.Room;
 import com.deplink.boruSmart.Protocol.json.device.SmartDev;
+import com.deplink.boruSmart.Protocol.packet.ellisdk.BasicPacket;
 import com.deplink.boruSmart.Protocol.packet.ellisdk.EllESDK;
 import com.deplink.boruSmart.Protocol.packet.ellisdk.EllE_Listener;
 import com.deplink.boruSmart.Protocol.packet.ellisdk.Handler_Background;
@@ -35,6 +34,7 @@ import com.deplink.boruSmart.manager.device.DeviceManager;
 import com.deplink.boruSmart.manager.device.doorbeel.DoorbeelManager;
 import com.deplink.boruSmart.manager.device.smartlock.SmartLockManager;
 import com.deplink.boruSmart.manager.room.RoomManager;
+import com.deplink.boruSmart.util.Perfence;
 import com.deplink.boruSmart.util.WeakRefHandler;
 import com.deplink.boruSmart.view.combinationwidget.TitleLayout;
 import com.deplink.boruSmart.view.dialog.AlertDialog;
@@ -328,19 +328,19 @@ public class EditDoorbellActivity extends Activity implements View.OnClickListen
     };
     private Handler mHandler = new WeakRefHandler(mCallback);
     private void initViews() {
-        layout_title= findViewById(R.id.layout_title);
-        button_delete_device = findViewById(R.id.button_delete_device);
-        edittext_add_device_input_name = findViewById(R.id.edittext_add_device_input_name);
-        layout_room_select = findViewById(R.id.layout_room_select);
-        textview_select_room_name = findViewById(R.id.textview_select_room_name);
-        layout_getway_select = findViewById(R.id.layout_getway_select);
-        textview_select_getway_name = findViewById(R.id.textview_select_getway_name);
-        textview_select_lock_name = findViewById(R.id.textview_select_lock_name);
-        layout_lock_list = findViewById(R.id.layout_lock_list);
-        listview_select_lock = findViewById(R.id.listview_select_lock);
-        layout_lock_select = findViewById(R.id.layout_lock_select);
-        imageview_lock_arror_right = findViewById(R.id.imageview_lock_arror_right);
-        layout_device_share = findViewById(R.id.layout_device_share);
+        layout_title= (TitleLayout) findViewById(R.id.layout_title);
+        button_delete_device = (TextView) findViewById(R.id.button_delete_device);
+        edittext_add_device_input_name = (ClearEditText) findViewById(R.id.edittext_add_device_input_name);
+        layout_room_select = (RelativeLayout) findViewById(R.id.layout_room_select);
+        textview_select_room_name = (TextView) findViewById(R.id.textview_select_room_name);
+        layout_getway_select = (RelativeLayout) findViewById(R.id.layout_getway_select);
+        textview_select_getway_name = (TextView) findViewById(R.id.textview_select_getway_name);
+        textview_select_lock_name = (TextView) findViewById(R.id.textview_select_lock_name);
+        layout_lock_list = (RelativeLayout) findViewById(R.id.layout_lock_list);
+        listview_select_lock = (ListView) findViewById(R.id.listview_select_lock);
+        layout_lock_select = (RelativeLayout) findViewById(R.id.layout_lock_select);
+        imageview_lock_arror_right = (ImageView) findViewById(R.id.imageview_lock_arror_right);
+        layout_device_share = (RelativeLayout) findViewById(R.id.layout_device_share);
     }
 
     private boolean isOnActivityResult;
@@ -393,6 +393,8 @@ public class EditDoorbellActivity extends Activity implements View.OnClickListen
                         mDeviceManager.setCurrentEditDeviceType(DeviceTypeConstant.TYPE.TYPE_MENLING);
                         Intent intent = new Intent(this, AddDeviceActivity.class);
                         startActivity(intent);
+                    }else{
+                        startActivity(new Intent(EditDoorbellActivity.this, LoginActivity.class));
                     }
                 }
                 break;
@@ -412,10 +414,15 @@ public class EditDoorbellActivity extends Activity implements View.OnClickListen
                 if (isStartFromExperience) {
                     startActivity(inentShareDevice);
                 } else {
-                    if (deviceUid != null) {
-                        inentShareDevice.putExtra("deviceuid", deviceUid);
-                        startActivity(inentShareDevice);
+                    if(isUserLogin){
+                        if (deviceUid != null) {
+                            inentShareDevice.putExtra("deviceuid", deviceUid);
+                            startActivity(inentShareDevice);
+                        }
+                    }else{
+                        startActivity(new Intent(EditDoorbellActivity.this, LoginActivity.class));
                     }
+
                 }
 
                 break;

@@ -128,10 +128,10 @@ public class WiFiSettingActivity extends Activity implements View.OnClickListene
     }
 
     private void initViews() {
-        layout_wifi_24 = findViewById(R.id.layout_wifi_24);
-        layout_wifi_custom = findViewById(R.id.layout_wifi_custom);
-        layout_signal_strength = findViewById(R.id.layout_signal_strength);
-        layout_title= findViewById(R.id.layout_title);
+        layout_wifi_24 = (RelativeLayout) findViewById(R.id.layout_wifi_24);
+        layout_wifi_custom = (RelativeLayout) findViewById(R.id.layout_wifi_custom);
+        layout_signal_strength = (RelativeLayout) findViewById(R.id.layout_signal_strength);
+        layout_title= (TitleLayout) findViewById(R.id.layout_title);
     }
 
     @Override

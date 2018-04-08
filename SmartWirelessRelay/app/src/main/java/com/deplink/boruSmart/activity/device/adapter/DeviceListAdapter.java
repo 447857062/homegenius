@@ -36,11 +36,6 @@ public class DeviceListAdapter extends BaseAdapter {
         TopCount = listTop.size();
     }
 
-    @Override
-    public void notifyDataSetChanged() {
-        super.notifyDataSetChanged();
-    }
-
     public void setBottomList(List<SmartDev> list) {
         this.listBottom = list;
     }
@@ -102,11 +97,11 @@ public class DeviceListAdapter extends BaseAdapter {
                     convertView = LayoutInflater.from(mContext).inflate(
                             R.layout.devicelist_device_item, null);
                 }
-                viewHolder.textview_device_status = convertView
+                viewHolder.textview_device_status = (TextView) convertView
                         .findViewById(R.id.textview_device_status);
-                viewHolder.imageview_device_type = convertView
+                viewHolder.imageview_device_type = (ImageView) convertView
                         .findViewById(R.id.imageview_device_type);
-                viewHolder.textview_device_name = convertView
+                viewHolder.textview_device_name = (TextView) convertView
                         .findViewById(R.id.textview_device_name);
             } else {
                 if(position==0){
@@ -116,11 +111,11 @@ public class DeviceListAdapter extends BaseAdapter {
                     convertView = LayoutInflater.from(mContext).inflate(
                             R.layout.devicelist_smartdevice_item, null);
                 }
-                viewHolder.textview_device_status = convertView
+                viewHolder.textview_device_status = (TextView) convertView
                         .findViewById(R.id.textview_device_status);
-                viewHolder.textview_device_name = convertView
+                viewHolder.textview_device_name = (TextView) convertView
                         .findViewById(R.id.textview_device_name);
-                viewHolder.imageview_device_type = convertView
+                viewHolder.imageview_device_type = (ImageView) convertView
                         .findViewById(R.id.imageview_device_type);
             }
             convertView.setTag(viewHolder);

@@ -44,7 +44,7 @@ public class LockSelectListAdapter extends BaseAdapter {
             viewHolder = new ViewHolder();
             convertView = LayoutInflater.from(mContext).inflate(
                     R.layout.lock_select_list_item, null);
-            viewHolder.textview_device_name = convertView
+            viewHolder.textview_device_name = (TextView) convertView
                     .findViewById(R.id.textview_device_name);
             convertView.setTag(viewHolder);
         } else {

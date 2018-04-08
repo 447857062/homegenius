@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="75dp"
+    android:layout_height="@dimen/experience_center_listitem_height"
+    android:minHeight="@dimen/experience_center_listitem_height"
+    android:gravity="center_vertical|center_horizontal"
+    android:background="@color/transparent"
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/experience_center_listitem_height"
+        android:minHeight="@dimen/experience_center_listitem_height"
+        android:layout_centerVertical="true"
+        android:background="@drawable/button_device_background">
+
+        <ImageView
+            android:id="@+id/imageview_device_type"
+            android:layout_centerHorizontal="true"
+            android:layout_width="@dimen/devices_list_device_icon_width_height"
+            android:layout_height="@dimen/devices_list_device_icon_width_height"
+            android:src="@drawable/gatewayicon" />
+
+        <TextView
+            android:id="@+id/textview_device_name"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/list_item_textview_margin_top"
+            android:maxEms="4"
+            android:singleLine="true"
+            android:textSize="12sp"
+            android:ellipsize="end"
+            android:layout_below="@+id/imageview_device_type"
+            android:text="中继器"
+            android:textColor="@color/room_type_text" />
+    </RelativeLayout>
+
+</RelativeLayout>

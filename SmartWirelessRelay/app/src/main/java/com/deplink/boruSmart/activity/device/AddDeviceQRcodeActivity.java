@@ -1,8 +1,8 @@
 package com.deplink.boruSmart.activity.device;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -10,20 +10,20 @@ import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
 
+import com.deplink.boruSmart.Protocol.json.device.SmartDev;
+import com.deplink.boruSmart.activity.device.adapter.AddDeviceTypeSelectAdapter;
+import com.deplink.boruSmart.activity.device.doorbell.add.WifipasswordInputActivity;
 import com.deplink.boruSmart.activity.device.smartSwitch.add.SelectSwitchTypeActivity;
 import com.deplink.boruSmart.activity.personal.login.LoginActivity;
 import com.deplink.boruSmart.constant.AppConstant;
 import com.deplink.boruSmart.constant.DeviceTypeConstant;
+import com.deplink.boruSmart.manager.device.doorbeel.DoorbeelManager;
+import com.deplink.boruSmart.manager.device.remoteControl.RemoteControlManager;
 import com.deplink.boruSmart.manager.device.smartlock.SmartLockManager;
 import com.deplink.boruSmart.util.Perfence;
 import com.deplink.boruSmart.util.qrcode.qrcodecapture.CaptureActivity;
-import com.deplink.boruSmart.view.toast.ToastSingleShow;
-import com.deplink.boruSmart.Protocol.json.device.SmartDev;
-import com.deplink.boruSmart.activity.device.adapter.AddDeviceTypeSelectAdapter;
-import com.deplink.boruSmart.activity.device.doorbell.add.WifipasswordInputActivity;
-import com.deplink.boruSmart.manager.device.doorbeel.DoorbeelManager;
-import com.deplink.boruSmart.manager.device.remoteControl.RemoteControlManager;
 import com.deplink.boruSmart.view.dialog.AlertDialog;
+import com.deplink.boruSmart.view.toast.ToastSingleShow;
 import com.deplink.sdk.android.sdk.DeplinkSDK;
 import com.deplink.sdk.android.sdk.EventCallback;
 import com.deplink.sdk.android.sdk.SDKAction;
@@ -37,7 +37,7 @@ import deplink.com.smartwirelessrelay.homegenius.EllESDK.R;
 /**
  * 扫码添加设备
  */
-public class AddDeviceQRcodeActivity extends Activity implements AdapterView.OnItemClickListener, View.OnClickListener {
+public class AddDeviceQRcodeActivity extends AppCompatActivity implements AdapterView.OnItemClickListener, View.OnClickListener {
     private static final String TAG = "AddDeviceQRcodeActivity";
     private GridView mGridView;
     private AddDeviceTypeSelectAdapter mAdapter;
@@ -63,9 +63,9 @@ public class AddDeviceQRcodeActivity extends Activity implements AdapterView.OnI
     }
 
     private void initViews() {
-        mGridView = findViewById(R.id.gridview_add_device_type);
-        imageview_scan_device = findViewById(R.id.imageview_scan_device);
-        image_back = findViewById(R.id.image_back);
+        mGridView = (GridView) findViewById(R.id.gridview_add_device_type);
+        imageview_scan_device = (ImageView) findViewById(R.id.imageview_scan_device);
+        image_back = (FrameLayout) findViewById(R.id.image_back);
     }
     private void initDatas() {
         mSmartLockManager = SmartLockManager.getInstance();
@@ -207,19 +207,7 @@ public class AddDeviceQRcodeActivity extends Activity implements AdapterView.OnI
                     break;
             }
         }else{
-            new AlertDialog(AddDeviceQRcodeActivity.this).builder().setTitle("账号登录")
-                    .setMsg("未登录,是否立即登录")
-                    .setPositiveButton("确认", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            startActivity(new Intent(AddDeviceQRcodeActivity.this, LoginActivity.class));
-                        }
-                    }).setNegativeButton("取消", new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                }
-            }).show();
+            startActivity(new Intent(AddDeviceQRcodeActivity.this, LoginActivity.class));
         }
     }
 

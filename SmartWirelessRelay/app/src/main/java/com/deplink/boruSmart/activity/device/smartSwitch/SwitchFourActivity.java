@@ -47,6 +47,7 @@ public class SwitchFourActivity extends Activity implements View.OnClickListener
     private boolean switch_three_open;
     private boolean switch_four_open;
     private TitleLayout layout_title;
+    private Button button_all_switch_open;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,10 +62,13 @@ public class SwitchFourActivity extends Activity implements View.OnClickListener
         button_switch_3.setOnClickListener(this);
         button_switch_right.setOnClickListener(this);
         button_all_switch.setOnClickListener(this);
+        button_all_switch_open.setOnClickListener(this);
     }
+    private boolean isStartFromExperience;
     @Override
     protected void onResume() {
         super.onResume();
+        isStartFromExperience = mDeviceManager.isStartFromExperience();
         isUserLogin= Perfence.getBooleanPerfence(AppConstant.USER_LOGIN);
         switch_one_open = mSmartSwitchManager.getCurrentSelectSmartDevice().isSwitch_one_open();
         switch_two_open = mSmartSwitchManager.getCurrentSelectSmartDevice().isSwitch_two_open();
@@ -74,6 +78,12 @@ public class SwitchFourActivity extends Activity implements View.OnClickListener
         mSmartSwitchManager.querySwitchStatus("query");
         mDeviceManager.readDeviceInfoHttp(mDeviceManager.getCurrentSelectSmartDevice().getUid());
         manager.addEventCallback(ec);
+        if (!isStartFromExperience) {
+            int usercount = mSmartSwitchManager.getCurrentSelectSmartDevice().getUserCount();
+            usercount++;
+            mSmartSwitchManager.getCurrentSelectSmartDevice().setUserCount(usercount);
+            mSmartSwitchManager.getCurrentSelectSmartDevice().save();
+        }
     }
     private void setSwitchImageviewBackground() {
         Log.i(TAG, "switch_one_open=" + switch_one_open);
@@ -83,28 +93,31 @@ public class SwitchFourActivity extends Activity implements View.OnClickListener
         if (switch_one_open) {
             button_switch_left.setBackgroundResource(R.drawable.fourwayswitchlefton);
         } else {
-            button_switch_left.setBackgroundResource(R.color.transparent);
+            button_switch_left.setBackgroundResource(R.drawable.fourwayswitch_leftoff);
         }
         if (switch_two_open) {
             button_switch_2.setBackgroundResource(R.drawable.fourwayswitchrighton);
         } else {
-            button_switch_2.setBackgroundResource(R.color.transparent);
+            button_switch_2.setBackgroundResource(R.drawable.fourwayswitch_rightoff);
         }
         if (switch_three_open) {
             button_switch_3.setBackgroundResource(R.drawable.fourwayswitchleftnext);
         } else {
-            button_switch_3.setBackgroundResource(R.color.transparent);
+            button_switch_3.setBackgroundResource(R.drawable.fourwayswitchleft_nextoff);
         }
         if (switch_four_open) {
             button_switch_right.setBackgroundResource(R.drawable.fourwayswitchrightnext);
         } else {
-            button_switch_right.setBackgroundResource(R.color.transparent);
+            button_switch_right.setBackgroundResource(R.drawable.fourwayswitch_rightnextoff);
         }
-        if (switch_one_open && switch_two_open && switch_three_open && switch_four_open) {
-            button_all_switch.setBackgroundResource(R.drawable.noallswitch);
+      /*  if (switch_one_open && switch_two_open && switch_three_open && switch_four_open) {
+            button_all_switch.setBackgroundResource(R.drawable.fourwayswitch_alloff_default);
+            button_all_switch_open.setBackgroundResource(R.drawable.fourwayswitchallopen);
+
         } else {
-            button_all_switch.setBackgroundResource(R.drawable.allswitch);
-        }
+            button_all_switch.setBackgroundResource(R.drawable.fourwayswitchalloff);
+            button_all_switch_open.setBackgroundResource(R.drawable.fourwayswitch_allopen_default);
+        }*/
     }
     private void initDatas() {
         layout_title.setReturnClickListener(new TitleLayout.ReturnImageClickListener() {
@@ -121,6 +134,12 @@ public class SwitchFourActivity extends Activity implements View.OnClickListener
                 startActivity(intent);
             }
         });
+        layout_title.setBackResource(R.color.switch_page_background);
+        layout_title.setLineDirverVisiable(false);
+        layout_title.setBackImageResource(R.drawable.whitereturn);
+        layout_title.setEditTextWhiteColor();
+        layout_title.setTitleTextWhiteColor();
+
         mSmartSwitchManager = SmartSwitchManager.getInstance();
         mSmartSwitchManager.InitSmartSwitchManager(this);
         mSmartSwitchManager.addSmartSwitchListener(this);
@@ -256,12 +275,13 @@ public class SwitchFourActivity extends Activity implements View.OnClickListener
         };
     }
     private void initViews() {
-        button_switch_left = findViewById(R.id.button_switch_left);
-        button_switch_2 = findViewById(R.id.button_switch_2);
-        button_switch_3 = findViewById(R.id.button_switch_3);
-        button_switch_right = findViewById(R.id.button_switch_right);
-        button_all_switch = findViewById(R.id.button_all_switch);
-        layout_title= findViewById(R.id.layout_title);
+        button_switch_left = (Button) findViewById(R.id.button_switch_left);
+        button_switch_2 = (Button) findViewById(R.id.button_switch_2);
+        button_switch_3 = (Button) findViewById(R.id.button_switch_3);
+        button_switch_right = (Button) findViewById(R.id.button_switch_right);
+        button_all_switch = (Button) findViewById(R.id.button_all_switch);
+        layout_title= (TitleLayout) findViewById(R.id.layout_title);
+        button_all_switch_open= (Button) findViewById(R.id.button_all_switch_open);
     }
     @Override
     protected void onPause() {
@@ -278,11 +298,19 @@ public class SwitchFourActivity extends Activity implements View.OnClickListener
                     if(!isUserLogin && !LocalConnectmanager.getInstance().isLocalconnectAvailable()){
                         ToastSingleShow.showText(this,"本地连接不可用,需要登录后才能操作");
                     }else{
-                        if (switch_one_open || switch_two_open || switch_three_open || switch_four_open) {
-                            mSmartSwitchManager.setSwitchCommand("close_all");
-                        } else {
-                            mSmartSwitchManager.setSwitchCommand("open_all");
-                        }
+                        mSmartSwitchManager.setSwitchCommand("close_all");
+                    }
+                }else{
+                    ToastSingleShow.showText(this,"网络连接不正常");
+                }
+
+                break;
+            case R.id.button_all_switch_open:
+                if(NetUtil.isNetAvailable(this)){
+                    if(!isUserLogin && !LocalConnectmanager.getInstance().isLocalconnectAvailable()){
+                        ToastSingleShow.showText(this,"本地连接不可用,需要登录后才能操作");
+                    }else{
+                        mSmartSwitchManager.setSwitchCommand("open_all");
                     }
                 }else{
                     ToastSingleShow.showText(this,"网络连接不正常");
@@ -372,84 +400,85 @@ public class SwitchFourActivity extends Activity implements View.OnClickListener
     private Handler mHandler = new WeakRefHandler(mCallback);
 
     @Override
-    public void responseResult(String result) {
-        Gson gson = new Gson();
-        OpResult mOpResult = gson.fromJson(result, OpResult.class);
-        String  mSwitchStatus=mOpResult.getSwitchStatus();
-        String[] sourceStrArray = mSwitchStatus.split(" ",4);
-        Log.i(TAG,"sourceStrArray[0]"+sourceStrArray[0]);
-        Log.i(TAG,"sourceStrArray[1]"+sourceStrArray[1]);
-        Log.i(TAG,"sourceStrArray[2]"+sourceStrArray[2]);
-        Log.i(TAG,"sourceStrArray[3]"+sourceStrArray[3]);
-            if(sourceStrArray[0].equals("01")){
-                switch_one_open=true;
-            }else if(sourceStrArray[0].equals("02")){
-                switch_one_open=false;
-            }
-            mSmartSwitchManager.getCurrentSelectSmartDevice().setSwitch_one_open(switch_one_open);
-            if(sourceStrArray[1].equals("01")){
-                switch_two_open=true;
-            }else if(sourceStrArray[1].equals("02")){
-                switch_two_open=false;
-            }
-            mSmartSwitchManager.getCurrentSelectSmartDevice().setSwitch_two_open(switch_two_open);
-            if(sourceStrArray[2].equals("01")){
-                switch_three_open=true;
-            }else if(sourceStrArray[2].equals("02")){
-                switch_three_open=false;
-            }
-            mSmartSwitchManager.getCurrentSelectSmartDevice().setSwitch_three_open(switch_three_open);
-            if(sourceStrArray[3].equals("01")){
-                switch_four_open=true;
-            }else if(sourceStrArray[3].equals("02")){
-                switch_four_open=false;
-            }
-            mSmartSwitchManager.getCurrentSelectSmartDevice().setSwitch_four_open(switch_four_open);
-        switch (mOpResult.getCommand()) {
-            case "close1":
-                ToastSingleShow.showText(SwitchFourActivity.this,"开关一已关闭");
-                switch_one_open = false;
-                mSmartSwitchManager.getCurrentSelectSmartDevice().setSwitch_one_open(switch_one_open);
-                break;
-            case "close2":
-                ToastSingleShow.showText(SwitchFourActivity.this,"开关二已关闭");
-                switch_two_open = false;
-                mSmartSwitchManager.getCurrentSelectSmartDevice().setSwitch_two_open(switch_two_open);
-                break;
-            case "close3":
-                ToastSingleShow.showText(SwitchFourActivity.this,"开关三已关闭");
-                switch_three_open = false;
-                mSmartSwitchManager.getCurrentSelectSmartDevice().setSwitch_three_open(switch_three_open);
-                break;
-            case "close4":
-                ToastSingleShow.showText(SwitchFourActivity.this,"开关四已关闭");
-                switch_four_open = false;
-                mSmartSwitchManager.getCurrentSelectSmartDevice().setSwitch_four_open(switch_four_open);
-                break;
-            case "open1":
-                ToastSingleShow.showText(SwitchFourActivity.this,"开关一已开启");
-                switch_one_open = true;
-                mSmartSwitchManager.getCurrentSelectSmartDevice().setSwitch_one_open(switch_one_open);
-                break;
-            case "open2":
-                ToastSingleShow.showText(SwitchFourActivity.this,"开关二已开启");
-                switch_two_open = true;
-                mSmartSwitchManager.getCurrentSelectSmartDevice().setSwitch_two_open(switch_two_open);
-                break;
-            case "open3":
-                ToastSingleShow.showText(SwitchFourActivity.this,"开关三已开启");
-                switch_three_open = true;
-                mSmartSwitchManager.getCurrentSelectSmartDevice().setSwitch_three_open(switch_three_open);
-                break;
-            case "open4":
-                ToastSingleShow.showText(SwitchFourActivity.this,"开关四已开启");
-                switch_four_open = true;
-                mSmartSwitchManager.getCurrentSelectSmartDevice().setSwitch_four_open(switch_four_open);
-                break;
-        }
+    public void responseResult(final String result) {
+
         mHandler.post(new Runnable() {
             @Override
             public void run() {
+                Gson gson = new Gson();
+                OpResult mOpResult = gson.fromJson(result, OpResult.class);
+                String  mSwitchStatus=mOpResult.getSwitchStatus();
+                String[] sourceStrArray = mSwitchStatus.split(" ",4);
+                Log.i(TAG,"sourceStrArray[0]"+sourceStrArray[0]);
+                Log.i(TAG,"sourceStrArray[1]"+sourceStrArray[1]);
+                Log.i(TAG,"sourceStrArray[2]"+sourceStrArray[2]);
+                Log.i(TAG,"sourceStrArray[3]"+sourceStrArray[3]);
+                if(sourceStrArray[0].equals("01")){
+                    switch_one_open=true;
+                }else if(sourceStrArray[0].equals("02")){
+                    switch_one_open=false;
+                }
+                mSmartSwitchManager.getCurrentSelectSmartDevice().setSwitch_one_open(switch_one_open);
+                if(sourceStrArray[1].equals("01")){
+                    switch_two_open=true;
+                }else if(sourceStrArray[1].equals("02")){
+                    switch_two_open=false;
+                }
+                mSmartSwitchManager.getCurrentSelectSmartDevice().setSwitch_two_open(switch_two_open);
+                if(sourceStrArray[2].equals("01")){
+                    switch_three_open=true;
+                }else if(sourceStrArray[2].equals("02")){
+                    switch_three_open=false;
+                }
+                mSmartSwitchManager.getCurrentSelectSmartDevice().setSwitch_three_open(switch_three_open);
+                if(sourceStrArray[3].equals("01")){
+                    switch_four_open=true;
+                }else if(sourceStrArray[3].equals("02")){
+                    switch_four_open=false;
+                }
+                mSmartSwitchManager.getCurrentSelectSmartDevice().setSwitch_four_open(switch_four_open);
+                switch (mOpResult.getCommand()) {
+                    case "close1":
+                      //  ToastSingleShow.showText(SwitchFourActivity.this,"开关一已关闭");
+                        switch_one_open = false;
+                        mSmartSwitchManager.getCurrentSelectSmartDevice().setSwitch_one_open(switch_one_open);
+                        break;
+                    case "close2":
+                       // ToastSingleShow.showText(SwitchFourActivity.this,"开关二已关闭");
+                        switch_two_open = false;
+                        mSmartSwitchManager.getCurrentSelectSmartDevice().setSwitch_two_open(switch_two_open);
+                        break;
+                    case "close3":
+                      //  ToastSingleShow.showText(SwitchFourActivity.this,"开关三已关闭");
+                        switch_three_open = false;
+                        mSmartSwitchManager.getCurrentSelectSmartDevice().setSwitch_three_open(switch_three_open);
+                        break;
+                    case "close4":
+                     //   ToastSingleShow.showText(SwitchFourActivity.this,"开关四已关闭");
+                        switch_four_open = false;
+                        mSmartSwitchManager.getCurrentSelectSmartDevice().setSwitch_four_open(switch_four_open);
+                        break;
+                    case "open1":
+                      //  ToastSingleShow.showText(SwitchFourActivity.this,"开关一已开启");
+                        switch_one_open = true;
+                        mSmartSwitchManager.getCurrentSelectSmartDevice().setSwitch_one_open(switch_one_open);
+                        break;
+                    case "open2":
+                     //   ToastSingleShow.showText(SwitchFourActivity.this,"开关二已开启");
+                        switch_two_open = true;
+                        mSmartSwitchManager.getCurrentSelectSmartDevice().setSwitch_two_open(switch_two_open);
+                        break;
+                    case "open3":
+                     //   ToastSingleShow.showText(SwitchFourActivity.this,"开关三已开启");
+                        switch_three_open = true;
+                        mSmartSwitchManager.getCurrentSelectSmartDevice().setSwitch_three_open(switch_three_open);
+                        break;
+                    case "open4":
+                      //  ToastSingleShow.showText(SwitchFourActivity.this,"开关四已开启");
+                        switch_four_open = true;
+                        mSmartSwitchManager.getCurrentSelectSmartDevice().setSwitch_four_open(switch_four_open);
+                        break;
+                }
                 setSwitchImageviewBackground();
                 mSmartSwitchManager.getCurrentSelectSmartDevice().setStatus("在线");
                 mSmartSwitchManager.getCurrentSelectSmartDevice().saveFast();

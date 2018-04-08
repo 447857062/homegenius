@@ -263,15 +263,15 @@ public class StaticConnectActivity extends Activity {
     }
 
     private void initViews() {
-        layout_title= findViewById(R.id.layout_title);
+        layout_title= (TitleLayout) findViewById(R.id.layout_title);
         op_type = getIntent().getStringExtra(AppConstant.OPERATION_TYPE);
-        ip_address = findViewById(R.id.edittext_ip_address);
-        edittext_submask = findViewById(R.id.edittext_submask);
-        edittext_getway = findViewById(R.id.edittext_getway);
-        RelativeLayout layout_dns2 = findViewById(R.id.layout_dns2);
-        edittext_mtu = findViewById(R.id.edittext_mtu);
-        edittext_dns1 = findViewById(R.id.edittext_dns1);
-        edittext_dns2 = findViewById(R.id.edittext_dns2);
+        ip_address = (EditText) findViewById(R.id.edittext_ip_address);
+        edittext_submask = (EditText) findViewById(R.id.edittext_submask);
+        edittext_getway = (EditText) findViewById(R.id.edittext_getway);
+        RelativeLayout layout_dns2 = (RelativeLayout) findViewById(R.id.layout_dns2);
+        edittext_mtu = (EditText) findViewById(R.id.edittext_mtu);
+        edittext_dns1 = (EditText) findViewById(R.id.edittext_dns1);
+        edittext_dns2 = (EditText) findViewById(R.id.edittext_dns2);
         if (op_type != null && op_type.equals(AppConstant.OPERATION_TYPE_LOCAL)) {
             layout_dns2.setVisibility(View.GONE);
         } else {

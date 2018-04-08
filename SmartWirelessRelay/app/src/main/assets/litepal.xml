@@ -6,14 +6,13 @@
         <dbname value="userinf" ></dbname>
     -->
     <dbname value="smarthome"></dbname>
-
     <!--
         这里是数据库的版本，就像我们使用SqliteOpenHelper建立数据库一样，第一次建
         立数据库需要给数据库一个版本。如果想更新数据库的设置，只要在此基础上加1就可
         以了。例：
         <version value="1" ></version>
     -->
-    <version value="2"/>
+    <version value="3"/>
 
     <list>
         <mapping class="com.deplink.boruSmart.Protocol.json.device.SmartDev"/>

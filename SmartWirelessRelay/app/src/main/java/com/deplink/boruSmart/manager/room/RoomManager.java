@@ -4,12 +4,11 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.util.Log;
 
-import com.deplink.boruSmart.util.CharSetUtil;
-import com.deplink.boruSmart.util.Perfence;
 import com.deplink.boruSmart.Protocol.json.Room;
-import com.deplink.boruSmart.Protocol.json.device.getway.GatwayDevice;
-import com.deplink.boruSmart.util.NetUtil;
+import com.deplink.boruSmart.util.CharSetUtil;
 import com.deplink.boruSmart.util.JsonArrayParseUtil;
+import com.deplink.boruSmart.util.NetUtil;
+import com.deplink.boruSmart.util.Perfence;
 import com.deplink.boruSmart.view.toast.ToastSingleShow;
 import com.deplink.sdk.android.sdk.homegenius.DeviceOperationResponse;
 import com.deplink.sdk.android.sdk.homegenius.RoomUpdateName;
@@ -485,17 +484,12 @@ public class RoomManager {
      * @param roomName
      * @return
      */
-    public boolean addRoom(String roomType, String roomName, String roomUid, GatwayDevice gewayDevice) {
+    public boolean addRoom(String roomType, String roomName, String roomUid) {
         tempAddRoom = new Room();
         tempAddRoom.setRoomName(roomName);
         tempAddRoom.setRoomType(roomType);
         tempAddRoom.setUid(roomUid);
         tempAddRoom.setRoomOrdinalNumber(mRooms.size() + 1);
-        if (gewayDevice != null) {
-            List<GatwayDevice> devices = new ArrayList<>();
-            devices.add(gewayDevice);
-            tempAddRoom.setmGetwayDevices(devices);
-        }
         final boolean optionResult;
         optionResult = tempAddRoom.save();
         mRooms.add(tempAddRoom);

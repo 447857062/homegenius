@@ -47,8 +47,8 @@ public class AddDeviceTypeSelectAdapter extends BaseAdapter {
         if (convertView == null) {
             vh = new ViewHolder();
             convertView = LayoutInflater.from(mContext).inflate(R.layout.adddevie_type_name_item, null);
-            vh.textview_device_type_name = convertView.findViewById(R.id.textview_device_type_name);
-            vh.device_type = convertView.findViewById(R.id.device_type);
+            vh.textview_device_type_name = (TextView) convertView.findViewById(R.id.textview_device_type_name);
+            vh.device_type = (ImageView) convertView.findViewById(R.id.device_type);
 
             convertView.setTag(vh);
         } else {

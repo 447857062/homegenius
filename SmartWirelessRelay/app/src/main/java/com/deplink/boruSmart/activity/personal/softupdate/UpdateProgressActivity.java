@@ -160,10 +160,10 @@ public class UpdateProgressActivity extends Activity implements View.OnClickList
     }
 
     private void initViews() {
-        numberProgressBar = findViewById(R.id.number_progress_bar);
-        textview_updateing = findViewById(R.id.textview_updateing);
-        button_cancel = findViewById(R.id.button_cancel);
-        layout_title= findViewById(R.id.layout_title);
+        numberProgressBar = (NumberProgressBar) findViewById(R.id.number_progress_bar);
+        textview_updateing = (TextView) findViewById(R.id.textview_updateing);
+        button_cancel = (Button) findViewById(R.id.button_cancel);
+        layout_title= (TitleLayout) findViewById(R.id.layout_title);
     }
 
     @Override

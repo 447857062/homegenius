@@ -69,12 +69,12 @@ public class RemoteControlMenuDialog extends Dialog implements View.OnClickListe
 
     private void initView() {
         view_mode_menu = findViewById(R.id.view_mode_menu);
-        textview_edit = findViewById(R.id.textview_edit);
-        textview_quick_learn = findViewById(R.id.textview_quick_learn);
-        textview_hand_learn = findViewById(R.id.textview_hand_learn);
-        layout_edit = findViewById(R.id.layout_edit);
-        layout_quicklearn = findViewById(R.id.layout_quicklearn);
-        layout_hand_learn = findViewById(R.id.layout_hand_learn);
+        textview_edit = (TextView) findViewById(R.id.textview_edit);
+        textview_quick_learn = (TextView) findViewById(R.id.textview_quick_learn);
+        textview_hand_learn = (TextView) findViewById(R.id.textview_hand_learn);
+        layout_edit = (RelativeLayout) findViewById(R.id.layout_edit);
+        layout_quicklearn = (RelativeLayout) findViewById(R.id.layout_quicklearn);
+        layout_hand_learn = (RelativeLayout) findViewById(R.id.layout_hand_learn);
 
     }
 

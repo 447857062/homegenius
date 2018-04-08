@@ -25,7 +25,7 @@ public class KeyboardUtil {
     public KeyboardUtil(Activity activity) {
         this.myActivity = activity;
         kb_num_only = new Keyboard(activity, R.xml.number_only);
-        keyboardView = myActivity
+        keyboardView = (KeyboardView) myActivity
                 .findViewById(R.id.keyboard_view);
         keyboardView.setKeyboard(kb_num_only);
         keyboardView.setEnabled(true);

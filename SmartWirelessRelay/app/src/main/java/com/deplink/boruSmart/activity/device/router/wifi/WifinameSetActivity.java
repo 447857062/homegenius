@@ -170,8 +170,8 @@ public class WifinameSetActivity extends Activity {
     }
 
     private void initViews() {
-        layout_title= findViewById(R.id.layout_title);
-        edittext_wifi_name = findViewById(R.id.edittext_wifi_name);
+        layout_title= (TitleLayout) findViewById(R.id.layout_title);
+        edittext_wifi_name = (EditText) findViewById(R.id.edittext_wifi_name);
 
     }
 

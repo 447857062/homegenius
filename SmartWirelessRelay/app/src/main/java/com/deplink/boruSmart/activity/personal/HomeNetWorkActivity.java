@@ -79,8 +79,8 @@ public class HomeNetWorkActivity extends Activity implements  AdapterView.OnItem
 
 
     private void initViews() {
-        listviewNetworkDevices = findViewById(R.id.listview_getway_devices);
-        layout_title= findViewById(R.id.layout_title);
+        listviewNetworkDevices = (NonScrollableListView) findViewById(R.id.listview_getway_devices);
+        layout_title= (TitleLayout) findViewById(R.id.layout_title);
     }
 
     @Override

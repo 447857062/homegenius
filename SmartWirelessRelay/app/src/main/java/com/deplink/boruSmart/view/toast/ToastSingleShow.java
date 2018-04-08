@@ -32,6 +32,6 @@ public class ToastSingleShow {
             toast.setView(v);
         }
         textView.setText(text);
-        toast.makeText(context,text,Toast.LENGTH_SHORT).show();
+        Toast.makeText(context,text,Toast.LENGTH_SHORT).show();
     }
 }

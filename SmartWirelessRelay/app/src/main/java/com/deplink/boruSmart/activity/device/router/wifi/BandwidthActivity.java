@@ -152,11 +152,11 @@ public class BandwidthActivity extends Activity implements View.OnClickListener 
     }
 
     private void initViews() {
-        layout_title= findViewById(R.id.layout_title);
-        layout_bandwidth_20 = findViewById(R.id.layout_bandwidth_20);
-        layout_bandwidth_40 = findViewById(R.id.layout_bandwidth_40);
-        imageview_bandwidth_20 = findViewById(R.id.imageview_bandwidth_20);
-        imageview_bandwidth_40 = findViewById(R.id.imageview_bandwidth_40);
+        layout_title= (TitleLayout) findViewById(R.id.layout_title);
+        layout_bandwidth_20 = (RelativeLayout) findViewById(R.id.layout_bandwidth_20);
+        layout_bandwidth_40 = (RelativeLayout) findViewById(R.id.layout_bandwidth_40);
+        imageview_bandwidth_20 = (ImageView) findViewById(R.id.imageview_bandwidth_20);
+        imageview_bandwidth_40 = (ImageView) findViewById(R.id.imageview_bandwidth_40);
     }
 
     @Override

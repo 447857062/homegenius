@@ -11,16 +11,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.deplink.boruSmart.activity.device.router.firmwareupdate.FirmwareUpdateActivity;
-import com.deplink.boruSmart.activity.device.router.lan.LanSettingActivity;
-import com.deplink.boruSmart.activity.device.router.wifi.WiFiSettingActivity;
-import com.deplink.boruSmart.activity.personal.experienceCenter.ExperienceDevicesActivity;
-import com.deplink.boruSmart.activity.personal.login.LoginActivity;
-import com.deplink.boruSmart.constant.DeviceTypeConstant;
-import com.deplink.boruSmart.util.Perfence;
-import com.deplink.boruSmart.util.WeakRefHandler;
-import com.deplink.boruSmart.view.dialog.ActionSheetDialog;
-import com.deplink.boruSmart.view.dialog.loadingdialog.DialogThreeBounce;
 import com.deplink.boruSmart.Protocol.json.Room;
 import com.deplink.boruSmart.Protocol.json.device.SmartDev;
 import com.deplink.boruSmart.activity.device.AddDeviceActivity;
@@ -29,17 +19,27 @@ import com.deplink.boruSmart.activity.device.ShareDeviceActivity;
 import com.deplink.boruSmart.activity.device.router.connectType.DialConnectActivity;
 import com.deplink.boruSmart.activity.device.router.connectType.StaticConnectActivity;
 import com.deplink.boruSmart.activity.device.router.connectType.WirelessRelayActivity;
+import com.deplink.boruSmart.activity.device.router.firmwareupdate.FirmwareUpdateActivity;
+import com.deplink.boruSmart.activity.device.router.lan.LanSettingActivity;
 import com.deplink.boruSmart.activity.device.router.qos.QosSettingActivity;
+import com.deplink.boruSmart.activity.device.router.wifi.WiFiSettingActivity;
 import com.deplink.boruSmart.activity.device.router.wifi.WifiSetting24;
+import com.deplink.boruSmart.activity.personal.experienceCenter.ExperienceDevicesActivity;
+import com.deplink.boruSmart.activity.personal.login.LoginActivity;
 import com.deplink.boruSmart.constant.AppConstant;
+import com.deplink.boruSmart.constant.DeviceTypeConstant;
 import com.deplink.boruSmart.manager.connect.remote.HomeGenius;
 import com.deplink.boruSmart.manager.device.DeviceListener;
 import com.deplink.boruSmart.manager.device.DeviceManager;
 import com.deplink.boruSmart.manager.device.router.RouterManager;
 import com.deplink.boruSmart.manager.room.RoomManager;
 import com.deplink.boruSmart.util.NetUtil;
+import com.deplink.boruSmart.util.Perfence;
+import com.deplink.boruSmart.util.WeakRefHandler;
 import com.deplink.boruSmart.view.combinationwidget.TitleLayout;
+import com.deplink.boruSmart.view.dialog.ActionSheetDialog;
 import com.deplink.boruSmart.view.dialog.AlertDialog;
+import com.deplink.boruSmart.view.dialog.loadingdialog.DialogThreeBounce;
 import com.deplink.boruSmart.view.toast.ToastSingleShow;
 import com.deplink.sdk.android.sdk.DeplinkSDK;
 import com.deplink.sdk.android.sdk.EventCallback;
@@ -241,19 +241,19 @@ public class RouterSettingActivity extends Activity implements View.OnClickListe
     }
 
     private void initViews() {
-        layout_device_share = findViewById(R.id.layout_device_share);
-        buttton_delete_router = findViewById(R.id.buttton_delete_router);
-        layout_router_name_out = findViewById(R.id.layout_router_name_out);
-        layout_room_select_out = findViewById(R.id.layout_room_select_out);
-        layout_connect_type_select_out = findViewById(R.id.layout_connect_type_select_out);
-        layout_wifi_setting_out = findViewById(R.id.layout_wifi_setting_out);
-        layout_lan_setting_out = findViewById(R.id.layout_lan_setting_out);
-        layout_QOS_setting_out = findViewById(R.id.layout_QOS_setting_out);
-        layout_update_out = findViewById(R.id.layout_update_out);
-        layout_reboot_out = findViewById(R.id.layout_reboot_out);
-        textview_room_select_2 = findViewById(R.id.textview_room_select_2);
-        textview_route_name_2 = findViewById(R.id.textview_route_name_2);
-        layout_title= findViewById(R.id.layout_title);
+        layout_device_share = (RelativeLayout) findViewById(R.id.layout_device_share);
+        buttton_delete_router = (TextView) findViewById(R.id.buttton_delete_router);
+        layout_router_name_out = (RelativeLayout) findViewById(R.id.layout_router_name_out);
+        layout_room_select_out = (RelativeLayout) findViewById(R.id.layout_room_select_out);
+        layout_connect_type_select_out = (RelativeLayout) findViewById(R.id.layout_connect_type_select_out);
+        layout_wifi_setting_out = (RelativeLayout) findViewById(R.id.layout_wifi_setting_out);
+        layout_lan_setting_out = (RelativeLayout) findViewById(R.id.layout_lan_setting_out);
+        layout_QOS_setting_out = (RelativeLayout) findViewById(R.id.layout_QOS_setting_out);
+        layout_update_out = (RelativeLayout) findViewById(R.id.layout_update_out);
+        layout_reboot_out = (RelativeLayout) findViewById(R.id.layout_reboot_out);
+        textview_room_select_2 = (TextView) findViewById(R.id.textview_room_select_2);
+        textview_route_name_2 = (TextView) findViewById(R.id.textview_route_name_2);
+        layout_title= (TitleLayout) findViewById(R.id.layout_title);
     }
 
     private String action;
@@ -268,20 +268,38 @@ public class RouterSettingActivity extends Activity implements View.OnClickListe
                 if(isStartFromExperience){
                     startActivity(inentShareDevice);
                 }else{
-                    if (deviceUid != null) {
-                        inentShareDevice.putExtra("deviceuid", deviceUid);
-                        startActivity(inentShareDevice);
+                    if(isUserLogin){
+                        if (deviceUid != null) {
+                            inentShareDevice.putExtra("deviceuid", deviceUid);
+                            startActivity(inentShareDevice);
+                        }
+                    }else{
+                        startActivity(new Intent(RouterSettingActivity.this, LoginActivity.class));
                     }
+
                 }
                 break;
             case R.id.layout_router_name_out:
+
                 startActivity(new Intent(this, RouterNameUpdateActivity.class));
                 break;
             case R.id.layout_room_select_out:
-                Intent intent = new Intent(this, AddDeviceActivity.class);
-                DeviceManager.getInstance().setEditDevice(true);
-                DeviceManager.getInstance().setCurrentEditDeviceType(DeviceTypeConstant.TYPE.TYPE_ROUTER);
-                startActivity(intent);
+                if(isStartFromExperience){
+                    Intent intent = new Intent(this, AddDeviceActivity.class);
+                    DeviceManager.getInstance().setEditDevice(true);
+                    DeviceManager.getInstance().setCurrentEditDeviceType(DeviceTypeConstant.TYPE.TYPE_ROUTER);
+                    startActivity(intent);
+                }else{
+                    if(isUserLogin){
+                        Intent intent = new Intent(this, AddDeviceActivity.class);
+                        DeviceManager.getInstance().setEditDevice(true);
+                        DeviceManager.getInstance().setCurrentEditDeviceType(DeviceTypeConstant.TYPE.TYPE_ROUTER);
+                        startActivity(intent);
+                    }else{
+                        startActivity(new Intent(RouterSettingActivity.this, LoginActivity.class));
+                    }
+                }
+
                 break;
             case R.id.layout_connect_type_select_out:
                 if (DeviceManager.getInstance().isStartFromExperience()) {

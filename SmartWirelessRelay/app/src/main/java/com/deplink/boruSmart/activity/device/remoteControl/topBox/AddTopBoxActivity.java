@@ -118,11 +118,11 @@ public class AddTopBoxActivity extends Activity implements AdapterView.OnItemCli
     }
 
     private void initViews() {
-        edittext_band_name = findViewById(R.id.edittext_band_name);
-        listview_band= findViewById(R.id.listview_band);
-        sideBar = findViewById(R.id.sidrbar);
-        dialog = findViewById(R.id.dialog);
-        layout_title= findViewById(R.id.layout_title);
+        edittext_band_name = (ClearEditText) findViewById(R.id.edittext_band_name);
+        listview_band= (ListView) findViewById(R.id.listview_band);
+        sideBar = (SideBar) findViewById(R.id.sidrbar);
+        dialog = (TextView) findViewById(R.id.dialog);
+        layout_title= (TitleLayout) findViewById(R.id.layout_title);
     }
 
     @Override

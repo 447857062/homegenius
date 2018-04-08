@@ -56,7 +56,7 @@ public class MyScrollView extends ScrollView {
             return;
 // ScrollView中的唯一子控件的位置信息, 这个位置信息在整个控件的生命周期中保持不变
         originalRect.set(contentView.getLeft(), contentView.getTop(),
-                contentView.getRight(), contentView.getBottom()+30);
+                contentView.getRight(), contentView.getBottom() + 30);
     }
 
 
@@ -86,11 +86,10 @@ public class MyScrollView extends ScrollView {
                 anim.setDuration(ANIM_TIME);
                 contentView.startAnimation(anim);
 // 设置回到正常的布局位置
-
-                contentView.layout(originalRect.left, originalRect.top,
-                        originalRect.right, originalRect.bottom);
-
-
+                if(ev.getY()-startY>100){
+                    contentView.layout(originalRect.left, originalRect.top,
+                            originalRect.right, originalRect.bottom);
+                }
 // 将标志位设回false
                 canPullDown = false;
                 canPullUp = false;
@@ -115,7 +114,7 @@ public class MyScrollView extends ScrollView {
                 boolean shouldMove = (canPullDown && deltaY > 0) // 可以下拉， 并且手指向下移动
                         || (canPullUp && deltaY < 0) // 可以上拉， 并且手指向上移动
                         || (canPullUp && canPullDown); // 既可以上拉也可以下拉（这种情况出现在ScrollView包裹的控件比ScrollView还小）
-                if (shouldMove) {
+                if (shouldMove && deltaY > 100) {
 // 计算偏移量
                     int offset = (int) (deltaY * MOVE_FACTOR);
 // 随着手指的移动而移动布局
@@ -136,7 +135,6 @@ public class MyScrollView extends ScrollView {
 
         return super.dispatchTouchEvent(ev);
     }
-
 
 
     /**

@@ -5,23 +5,25 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.deplink.boruSmart.Protocol.json.device.remotecontrol.AirconditionInitKeyValue;
+import com.deplink.boruSmart.Protocol.json.device.remotecontrol.AirconditionKeyCode;
 import com.deplink.boruSmart.Protocol.json.device.remotecontrol.AirconditionKeyLearnStatu;
 import com.deplink.boruSmart.activity.device.remoteControl.LearnByHandActivity;
 import com.deplink.boruSmart.constant.AirKeyNameConstant;
 import com.deplink.boruSmart.constant.DeviceTypeConstant;
+import com.deplink.boruSmart.manager.device.DeviceManager;
+import com.deplink.boruSmart.manager.device.remoteControl.RemoteControlManager;
 import com.deplink.boruSmart.util.DataExchange;
+import com.deplink.boruSmart.view.combinationwidget.TitleLayout;
 import com.deplink.boruSmart.view.dialog.ActionSheetDialog;
 import com.deplink.boruSmart.view.dialog.KeynotlearnDialog;
 import com.deplink.boruSmart.view.dialog.remotecontrol.RemoteControlMenuDialog;
-import com.deplink.boruSmart.Protocol.json.device.remotecontrol.AirconditionKeyCode;
-import com.deplink.boruSmart.manager.device.DeviceManager;
-import com.deplink.boruSmart.manager.device.remoteControl.RemoteControlManager;
-import com.deplink.boruSmart.view.combinationwidget.TitleLayout;
 
 import org.litepal.crud.DataSupport;
 
@@ -78,6 +80,7 @@ public class AirRemoteControlMianActivity extends Activity implements View.OnCli
     private TitleLayout layout_title;
     private TextView textview_tempature_unit;
     private TextView textview_power;
+    private ImageView gatwaygif;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,6 +98,12 @@ public class AirRemoteControlMianActivity extends Activity implements View.OnCli
         initImageViewKeyBackground();
         initKeyCodeData();
         layout_title.setEditTextVisiable(false);
+        if(!isStartFromExperience){
+            int usercount=mRemoteControlManager.getmSelectRemoteControlDevice().getUserCount();
+            usercount++;
+            mRemoteControlManager.getmSelectRemoteControlDevice().setUserCount(usercount);
+            mRemoteControlManager.getmSelectRemoteControlDevice().save();
+        }
     }
 
     /**
@@ -107,10 +116,65 @@ public class AirRemoteControlMianActivity extends Activity implements View.OnCli
         directionAuto = mAirconditionInitKeyValue.getDirectionAuto();
         tempature = mAirconditionInitKeyValue.getTempature();
         power = mAirconditionInitKeyValue.getKeyPower();
+        final Animation animationFadeIn= AnimationUtils.loadAnimation(this, R.anim.fade_in);
+        final Animation animationFadeOut= AnimationUtils.loadAnimation(this, R.anim.fade_out);
+        final Animation animationFadeHold= AnimationUtils.loadAnimation(this, R.anim.fade_hold);
         if (key_power) {
+            gatwaygif.setVisibility(View.VISIBLE);
             imageview_power.setBackgroundResource(R.drawable.button_power_learn_normal);
+
+            animationFadeIn.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
+
+                }
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    gatwaygif.startAnimation(animationFadeOut);
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+
+                }
+            });
+            animationFadeOut.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
+
+                }
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    gatwaygif.startAnimation(animationFadeHold);
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+
+                }
+            });
+            animationFadeHold.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
+
+                }
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    gatwaygif.startAnimation(animationFadeIn);
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+
+                }
+            });
+            gatwaygif.startAnimation(animationFadeIn);
         } else {
             imageview_power.setBackgroundResource(R.drawable.button_power_notlearn);
+            gatwaygif.setVisibility(View.GONE);
         }
 
         //空调开关时设置其他按键的可不可以点击
@@ -414,6 +478,7 @@ public class AirRemoteControlMianActivity extends Activity implements View.OnCli
                 menu_dialog.show();
             }
         });
+
     }
 
     private boolean isLearnByHand;
@@ -488,21 +553,22 @@ public class AirRemoteControlMianActivity extends Activity implements View.OnCli
     }
 
     private void initViews() {
-        textview_model = findViewById(R.id.textview_model);
-        textview_temperature = findViewById(R.id.textview_temperature);
-        textview_tips = findViewById(R.id.textview_tips);
-        textview_wind_direction = findViewById(R.id.textview_wind_center);
-        textview_wind_speed = findViewById(R.id.textview_wind_speed);
-        imageview_model = findViewById(R.id.imageview_auto_model);
-        imageview_wind_speed = findViewById(R.id.imageview_auto_wind_speed);
-        imageview_wind_direction = findViewById(R.id.imageview_wind_center);
-        imageview_power = findViewById(R.id.imageview_power);
-        imageview_temperature_reduce = findViewById(R.id.imageview_temperature_reduce);
-        imageview_temperature_plus = findViewById(R.id.imageview_temperature_plus);
-        layout_top_content = findViewById(R.id.layout_top_content);
-        layout_title = findViewById(R.id.layout_title);
-        textview_tempature_unit = findViewById(R.id.textview_tempature_unit);
-        textview_power = findViewById(R.id.textview_power);
+        textview_model = (TextView) findViewById(R.id.textview_model);
+        textview_temperature = (TextView) findViewById(R.id.textview_temperature);
+        textview_tips = (TextView) findViewById(R.id.textview_tips);
+        textview_wind_direction = (TextView) findViewById(R.id.textview_wind_center);
+        textview_wind_speed = (TextView) findViewById(R.id.textview_wind_speed);
+        imageview_model = (ImageView) findViewById(R.id.imageview_auto_model);
+        imageview_wind_speed = (ImageView) findViewById(R.id.imageview_auto_wind_speed);
+        imageview_wind_direction = (ImageView) findViewById(R.id.imageview_wind_center);
+        imageview_power = (ImageView) findViewById(R.id.imageview_power);
+        imageview_temperature_reduce = (ImageView) findViewById(R.id.imageview_temperature_reduce);
+        imageview_temperature_plus = (ImageView) findViewById(R.id.imageview_temperature_plus);
+        layout_top_content = (RelativeLayout) findViewById(R.id.layout_top_content);
+        layout_title = (TitleLayout) findViewById(R.id.layout_title);
+        textview_tempature_unit = (TextView) findViewById(R.id.textview_tempature_unit);
+        textview_power = (TextView) findViewById(R.id.textview_power);
+        gatwaygif = (ImageView) findViewById(R.id.gatwaygif);
     }
 
     private byte[] data;
@@ -1584,6 +1650,63 @@ public class AirRemoteControlMianActivity extends Activity implements View.OnCli
             textview_temperature.setTextColor(0xFF60a3f6);
             textview_tempature_unit.setTextColor(0xFF60a3f6);
             textview_power.setTextColor(getResources().getColor(R.color.room_type_text));
+            final Animation animationFadeIn= AnimationUtils.loadAnimation(this, R.anim.fade_in);
+            final Animation animationFadeOut= AnimationUtils.loadAnimation(this, R.anim.fade_out);
+            final Animation animationFadeHold= AnimationUtils.loadAnimation(this, R.anim.fade_hold);
+
+
+
+
+            animationFadeIn.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
+
+                }
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    gatwaygif.startAnimation(animationFadeOut);
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+
+                }
+            });
+            animationFadeOut.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
+
+                }
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    gatwaygif.startAnimation(animationFadeHold);
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+
+                }
+            });
+            animationFadeHold.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
+
+                }
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    gatwaygif.startAnimation(animationFadeIn);
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+
+                }
+            });
+            gatwaygif.startAnimation(animationFadeIn);
+            gatwaygif.setVisibility(View.VISIBLE);
         } else {
             layout_top_content.setBackgroundResource(R.drawable.airconditioningoff);
             textview_model.setTextColor(getResources().getColor(R.color.line_clolor));
@@ -1592,6 +1715,8 @@ public class AirRemoteControlMianActivity extends Activity implements View.OnCli
             textview_power.setTextColor(getResources().getColor(R.color.line_clolor));
             textview_temperature.setTextColor(0xFF999999);
             textview_tempature_unit.setTextColor(0xFF999999);
+            gatwaygif.setAnimation(null);
+            gatwaygif.setVisibility(View.GONE);
         }
         imageview_model.setEnabled(on);
         imageview_wind_speed.setEnabled(on);

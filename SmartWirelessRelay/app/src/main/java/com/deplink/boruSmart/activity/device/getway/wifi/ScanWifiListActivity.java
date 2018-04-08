@@ -73,10 +73,10 @@ public class ScanWifiListActivity extends Activity implements AdapterView.OnItem
     }
 
     private void initViews() {
-        listview_wifi_list = findViewById(R.id.listview_wifi_list);
-        textview_reload_wifilist = findViewById(R.id.textview_reload_wifilist);
-        textview_wifilist_no = findViewById(R.id.textview_wifilist_no);
-        layout_title= findViewById(R.id.layout_title);
+        listview_wifi_list = (ListView) findViewById(R.id.listview_wifi_list);
+        textview_reload_wifilist = (TextView) findViewById(R.id.textview_reload_wifilist);
+        textview_wifilist_no = (TextView) findViewById(R.id.textview_wifilist_no);
+        layout_title= (TitleLayout) findViewById(R.id.layout_title);
     }
 
     @Override

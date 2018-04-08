@@ -45,6 +45,9 @@
         <item name="android:taskToBackEnterAnimation">@null</item>
         <item name="android:taskToBackExitAnimation">@null</item>
     </style>
+    <style name="Base.AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowAnimationStyle">@style/Animation</item>
+    </style>
 
     <style name="Transparent" parent="AppTheme">
         <item name="android:windowBackground">@color/transparent</item>
@@ -138,6 +141,12 @@
         <!-- 模糊 -->
         <item name="android:backgroundDimEnabled">false</item>
     </style>
-
+    <style name="Base.CardView" parent="android:Widget">
+        <item name="cardCornerRadius">@dimen/cardview_default_radius</item>
+        <item name="cardElevation">@dimen/cardview_default_elevation</item>
+        <item name="cardMaxElevation">@dimen/cardview_default_elevation</item>
+        <item name="cardUseCompatPadding">false</item>
+        <item name="cardPreventCornerOverlap">true</item>
+    </style>
 
 </resources>

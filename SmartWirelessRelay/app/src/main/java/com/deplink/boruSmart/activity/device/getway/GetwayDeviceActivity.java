@@ -7,34 +7,37 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.deplink.boruSmart.Protocol.json.Room;
+import com.deplink.boruSmart.Protocol.json.device.DeviceList;
+import com.deplink.boruSmart.activity.device.AddDeviceActivity;
+import com.deplink.boruSmart.activity.device.DevicesActivity;
 import com.deplink.boruSmart.activity.device.ShareDeviceActivity;
+import com.deplink.boruSmart.activity.device.getway.wifi.ScanWifiListActivity;
 import com.deplink.boruSmart.activity.homepage.SmartHomeMainActivity;
 import com.deplink.boruSmart.activity.personal.experienceCenter.ExperienceDevicesActivity;
 import com.deplink.boruSmart.activity.personal.login.LoginActivity;
 import com.deplink.boruSmart.constant.AppConstant;
 import com.deplink.boruSmart.constant.DeviceTypeConstant;
+import com.deplink.boruSmart.manager.connect.local.tcp.LocalConnectmanager;
+import com.deplink.boruSmart.manager.device.DeviceListener;
+import com.deplink.boruSmart.manager.device.DeviceManager;
 import com.deplink.boruSmart.manager.device.getway.GetwayListener;
+import com.deplink.boruSmart.manager.device.getway.GetwayManager;
 import com.deplink.boruSmart.manager.room.RoomManager;
 import com.deplink.boruSmart.util.NetUtil;
 import com.deplink.boruSmart.util.Perfence;
 import com.deplink.boruSmart.util.WeakRefHandler;
-import com.deplink.boruSmart.view.toast.ToastSingleShow;
-import com.deplink.boruSmart.Protocol.json.Room;
-import com.deplink.boruSmart.Protocol.json.device.DeviceList;
-import com.deplink.boruSmart.activity.device.AddDeviceActivity;
-import com.deplink.boruSmart.activity.device.DevicesActivity;
-import com.deplink.boruSmart.activity.device.getway.wifi.ScanWifiListActivity;
-import com.deplink.boruSmart.manager.connect.local.tcp.LocalConnectmanager;
-import com.deplink.boruSmart.manager.device.DeviceListener;
-import com.deplink.boruSmart.manager.device.DeviceManager;
-import com.deplink.boruSmart.manager.device.getway.GetwayManager;
 import com.deplink.boruSmart.view.combinationwidget.TitleLayout;
 import com.deplink.boruSmart.view.dialog.AlertDialog;
 import com.deplink.boruSmart.view.edittext.ClearEditText;
+import com.deplink.boruSmart.view.toast.ToastSingleShow;
 import com.deplink.sdk.android.sdk.DeplinkSDK;
 import com.deplink.sdk.android.sdk.EventCallback;
 import com.deplink.sdk.android.sdk.SDKAction;
@@ -68,6 +71,7 @@ public class GetwayDeviceActivity extends Activity implements View.OnClickListen
     private String action;
     private RelativeLayout layout_device_share;
     private TitleLayout layout_title;
+    private ImageView gatwaygif;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -159,8 +163,59 @@ public class GetwayDeviceActivity extends Activity implements View.OnClickListen
             }
             textview_select_room_name.setText(roomName);
         }
-    }
+       final Animation animationFadeIn= AnimationUtils.loadAnimation(this, R.anim.fade_in);
+        final Animation animationFadeOut= AnimationUtils.loadAnimation(this, R.anim.fade_out);
+        final Animation animationFadeHold= AnimationUtils.loadAnimation(this, R.anim.fade_hold);
+        animationFadeIn.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
 
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                gatwaygif.startAnimation(animationFadeOut);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+        animationFadeOut.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                gatwaygif.startAnimation(animationFadeHold);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+        animationFadeHold.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                gatwaygif.startAnimation(animationFadeIn);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+       gatwaygif.startAnimation(animationFadeIn);
+    }
     private void initMqtt() {
         DeplinkSDK.initSDK(getApplicationContext(), Perfence.SDK_APP_KEY);
         manager = DeplinkSDK.getSDKManager();
@@ -215,13 +270,14 @@ public class GetwayDeviceActivity extends Activity implements View.OnClickListen
     }
 
     private void initViews() {
-        button_delete_device = findViewById(R.id.button_delete_device);
-        layout_config_wifi_getway = findViewById(R.id.layout_config_wifi_getway);
-        layout_select_room = findViewById(R.id.layout_select_room);
-        textview_select_room_name = findViewById(R.id.textview_select_room_name);
-        edittext_input_devie_name = findViewById(R.id.edittext_input_devie_name);
-        layout_device_share = findViewById(R.id.layout_device_share);
-        layout_title= findViewById(R.id.layout_title);
+        button_delete_device = (TextView) findViewById(R.id.button_delete_device);
+        layout_config_wifi_getway = (RelativeLayout) findViewById(R.id.layout_config_wifi_getway);
+        layout_select_room = (RelativeLayout) findViewById(R.id.layout_select_room);
+        textview_select_room_name = (TextView) findViewById(R.id.textview_select_room_name);
+        edittext_input_devie_name = (ClearEditText) findViewById(R.id.edittext_input_devie_name);
+        layout_device_share = (RelativeLayout) findViewById(R.id.layout_device_share);
+        layout_title= (TitleLayout) findViewById(R.id.layout_title);
+        gatwaygif= (ImageView) findViewById(R.id.gatwaygif);
     }
     private boolean isOnActivityResult;
     @Override
@@ -229,6 +285,12 @@ public class GetwayDeviceActivity extends Activity implements View.OnClickListen
         super.onResume();
         isUserLogin = Perfence.getBooleanPerfence(AppConstant.USER_LOGIN);
         isStartFromExperience = mDeviceManager.isStartFromExperience();
+        if(!isStartFromExperience){
+            int usercount=mGetwayManager.getCurrentSelectGetwayDevice().getUseCount();
+            usercount++;
+            mGetwayManager.getCurrentSelectGetwayDevice().setUseCount(usercount);
+            mGetwayManager.getCurrentSelectGetwayDevice().save();
+        }
         manager.addEventCallback(ec);
         mDeviceManager.addDeviceListener(mDeviceListener);
         if (!isStartFromExperience) {
@@ -304,10 +366,15 @@ public class GetwayDeviceActivity extends Activity implements View.OnClickListen
                 if(isStartFromExperience){
                     startActivity(inentShareDevice);
                 }else{
-                    if (deviceUid != null) {
-                        inentShareDevice.putExtra("deviceuid", deviceUid);
-                        startActivity(inentShareDevice);
+                    if(isUserLogin){
+                        if (deviceUid != null) {
+                            inentShareDevice.putExtra("deviceuid", deviceUid);
+                            startActivity(inentShareDevice);
+                        }
+                    }else{
+                        startActivity(new Intent(GetwayDeviceActivity.this, LoginActivity.class));
                     }
+
                 }
                 break;
             case R.id.layout_select_room:
@@ -320,6 +387,8 @@ public class GetwayDeviceActivity extends Activity implements View.OnClickListen
                         mDeviceManager.setCurrentEditDeviceType(DeviceTypeConstant.TYPE.TYPE_SMART_GETWAY);
                         Intent intent = new Intent(this, AddDeviceActivity.class);
                         startActivity(intent);
+                    }else{
+                        startActivity(new Intent(GetwayDeviceActivity.this, LoginActivity.class));
                     }
                 }
                 break;

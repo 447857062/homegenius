@@ -28,14 +28,14 @@ import com.deplink.boruSmart.activity.personal.usrinfo.UserinfoActivity;
 import com.deplink.boruSmart.activity.room.RoomActivity;
 import com.deplink.boruSmart.application.AppManager;
 import com.deplink.boruSmart.constant.AppConstant;
+import com.deplink.boruSmart.manager.device.DeviceManager;
 import com.deplink.boruSmart.util.APKVersionCodeUtils;
 import com.deplink.boruSmart.util.Perfence;
 import com.deplink.boruSmart.util.WeakRefHandler;
+import com.deplink.boruSmart.view.combinationwidget.TitleLayout;
 import com.deplink.boruSmart.view.dialog.AlertDialog;
 import com.deplink.boruSmart.view.imageview.CircleImageView;
 import com.deplink.boruSmart.view.toast.ToastSingleShow;
-import com.deplink.boruSmart.manager.device.DeviceManager;
-import com.deplink.boruSmart.view.combinationwidget.TitleLayout;
 import com.deplink.sdk.android.sdk.DeplinkSDK;
 import com.deplink.sdk.android.sdk.EventCallback;
 import com.deplink.sdk.android.sdk.SDKAction;
@@ -279,29 +279,29 @@ public class PersonalCenterActivity extends Activity implements View.OnClickList
     }
 
     private void initViews() {
-        layout_title= findViewById(R.id.layout_title);
-        textview_home = findViewById(R.id.textview_home);
-        layout_device_share = findViewById(R.id.layout_device_share);
-        layout_about = findViewById(R.id.layout_about);
-        textview_device = findViewById(R.id.textview_device);
-        textview_room = findViewById(R.id.textview_room);
-        textview_mine = findViewById(R.id.textview_mine);
-        imageview_devices = findViewById(R.id.imageview_devices);
-        imageview_home_page = findViewById(R.id.imageview_home_page);
-        imageview_rooms = findViewById(R.id.imageview_rooms);
-        imageview_personal_center = findViewById(R.id.imageview_personal_center);
-        layout_getway_check = findViewById(R.id.layout_getway_check);
-        layout_experience_center = findViewById(R.id.layout_experience_center);
-        layout_home_page = findViewById(R.id.layout_home_page);
-        layout_devices = findViewById(R.id.layout_devices);
-        layout_rooms = findViewById(R.id.layout_rooms);
-        layout_personal_center = findViewById(R.id.layout_personal_center);
-        user_head_portrait = findViewById(R.id.user_head_portrait);
-        layout_user_info = findViewById(R.id.layout_user_info);
-        user_nickname = findViewById(R.id.user_nickname);
-        textview_update_now = findViewById(R.id.textview_update_now);
-        layout_update_soft = findViewById(R.id.layout_update_soft);
-        textview_current_version = findViewById(R.id.textview_current_version);
+        layout_title= (TitleLayout) findViewById(R.id.layout_title);
+        textview_home = (TextView) findViewById(R.id.textview_home);
+        layout_device_share = (RelativeLayout) findViewById(R.id.layout_device_share);
+        layout_about = (RelativeLayout) findViewById(R.id.layout_about);
+        textview_device = (TextView) findViewById(R.id.textview_device);
+        textview_room = (TextView) findViewById(R.id.textview_room);
+        textview_mine = (TextView) findViewById(R.id.textview_mine);
+        imageview_devices = (ImageView) findViewById(R.id.imageview_devices);
+        imageview_home_page = (ImageView) findViewById(R.id.imageview_home_page);
+        imageview_rooms = (ImageView) findViewById(R.id.imageview_rooms);
+        imageview_personal_center = (ImageView) findViewById(R.id.imageview_personal_center);
+        layout_getway_check = (RelativeLayout) findViewById(R.id.layout_getway_check);
+        layout_experience_center = (RelativeLayout) findViewById(R.id.layout_experience_center);
+        layout_home_page = (LinearLayout) findViewById(R.id.layout_home_page);
+        layout_devices = (LinearLayout) findViewById(R.id.layout_devices);
+        layout_rooms = (LinearLayout) findViewById(R.id.layout_rooms);
+        layout_personal_center = (LinearLayout) findViewById(R.id.layout_personal_center);
+        user_head_portrait = (CircleImageView) findViewById(R.id.user_head_portrait);
+        layout_user_info = (RelativeLayout) findViewById(R.id.layout_user_info);
+        user_nickname = (TextView) findViewById(R.id.user_nickname);
+        textview_update_now = (TextView) findViewById(R.id.textview_update_now);
+        layout_update_soft = (RelativeLayout) findViewById(R.id.layout_update_soft);
+        textview_current_version = (TextView) findViewById(R.id.textview_current_version);
     }
     /**
      * 再按一次退出应用
@@ -359,7 +359,11 @@ public class PersonalCenterActivity extends Activity implements View.OnClickList
                 isClickUpdate=true;
                 break;
             case R.id.layout_device_share:
-                startActivity(new Intent(this, SharedDeviceListActivity.class));
+                if(isUserLogin){
+                    startActivity(new Intent(this, SharedDeviceListActivity.class));
+                }else{
+                    startActivity(new Intent(PersonalCenterActivity.this, LoginActivity.class));
+                }
                 break;
             case R.id.layout_about:
 

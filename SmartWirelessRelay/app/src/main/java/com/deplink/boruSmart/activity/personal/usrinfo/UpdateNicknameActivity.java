@@ -128,7 +128,7 @@ public class UpdateNicknameActivity extends Activity  {
     }
 
     private void initViews() {
-        layout_title= findViewById(R.id.layout_title);
-        edittext_update_nickname = findViewById(R.id.edittext_update_nickname);
+        layout_title= (TitleLayout) findViewById(R.id.layout_title);
+        edittext_update_nickname = (ClearEditText) findViewById(R.id.edittext_update_nickname);
     }
 }

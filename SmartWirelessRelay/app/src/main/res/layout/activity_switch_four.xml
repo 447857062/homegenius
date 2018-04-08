@@ -4,10 +4,12 @@
     xmlns:titlelayout="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/switch_page_background"
     tools:context="com.deplink.boruSmart.activity.device.smartSwitch.SwitchFourActivity">
     <com.deplink.boruSmart.view.combinationwidget.TitleLayout
         android:id="@+id/layout_title"
         android:layout_width="match_parent"
+        android:paddingLeft="8dp"
         titlelayout:edit_text_show="true"
         titlelayout:return_image_show="true"
         titlelayout:menu_image_show="false"
@@ -19,51 +21,63 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/layout_title"
-        android:background="@color/page_background">
+       >
         <RelativeLayout
             android:layout_marginTop="@dimen/smart_switch_mainpage_center_image_margintop"
             android:layout_centerHorizontal="true"
-            android:background="@drawable/fourwayswitchoff"
+            android:background="@drawable/fourwayswitch_bg"
             android:layout_width="@dimen/smart_switch_mainpage_center_image_width_height"
             android:layout_height="@dimen/smart_switch_mainpage_center_image_width_height">
-
             <Button
-                android:layout_width="120dp"
-                android:layout_height="120dp"
+                android:layout_width="59dp"
+                android:layout_height="59dp"
+                android:layout_marginLeft="73dp"
+                android:layout_marginTop="73dp"
                 android:id="@+id/button_switch_left"
                 android:layout_alignParentLeft="true"
-
                  />
             <Button
+                android:layout_width="55dp"
+                android:layout_height="59dp"
                 android:layout_alignParentRight="true"
-                android:layout_width="120dp"
-                android:layout_height="120dp"
+                android:layout_marginRight="73dp"
+                android:layout_marginTop="73dp"
                 android:id="@+id/button_switch_2"
-
                  />
             <Button
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentBottom="true"
-                android:layout_width="120dp"
-                android:layout_height="120dp"
+                android:layout_width="55dp"
+                android:layout_height="59dp"
+                android:layout_below="@+id/button_switch_2"
                 android:id="@+id/button_switch_3"
-                />
-
+                android:layout_marginLeft="73dp"
+                android:layout_marginTop="16dp"
+             />
             <Button
+                android:layout_width="55dp"
+                android:layout_height="59dp"
+                android:layout_marginRight="73dp"
+                android:layout_marginTop="16dp"
                 android:layout_alignParentRight="true"
-                android:layout_alignParentBottom="true"
-                android:layout_width="120dp"
-                android:layout_height="120dp"
                 android:id="@+id/button_switch_right"
-                 />
+                android:layout_below="@+id/button_switch_2"
+              />
         </RelativeLayout>
-
     </RelativeLayout>
     <Button
         android:id="@+id/button_all_switch"
-        android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
+        android:layout_marginLeft="48dp"
         android:layout_marginBottom="57dp"
-        android:layout_width="wrap_content"
+        android:background="@drawable/switch_button_all_off"
+        android:layout_width="125dp"
+        android:layout_height="wrap_content" />
+    <Button
+        android:id="@+id/button_all_switch_open"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="48dp"
+        android:background="@drawable/switch_button_all_on"
+        android:layout_marginBottom="57dp"
+        android:layout_width="125dp"
         android:layout_height="wrap_content" />
 </RelativeLayout>

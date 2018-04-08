@@ -25,7 +25,15 @@ public class GatwayDevice extends DataSupport implements Serializable{
     private String topic;
     private String sign_seed;
     private String signature;
+    private int useCount;
 
+    public int getUseCount() {
+        return useCount;
+    }
+
+    public void setUseCount(int useCount) {
+        this.useCount = useCount;
+    }
 
     public String getSign_seed() {
         return sign_seed;

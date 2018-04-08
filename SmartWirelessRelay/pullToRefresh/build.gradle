@@ -13,4 +13,5 @@ android {
             assets.srcDirs = ['assets']
         }
     }
+
 }

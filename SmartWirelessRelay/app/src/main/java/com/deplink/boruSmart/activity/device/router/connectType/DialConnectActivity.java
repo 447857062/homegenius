@@ -255,12 +255,12 @@ public class DialConnectActivity extends Activity  {
     }
 
     private void initViews() {
-        layout_title= findViewById(R.id.layout_title);
-        edittext_account = findViewById(R.id.edittext_account);
-        edittext_password = findViewById(R.id.edittext_password);
-        edittext_dns = findViewById(R.id.edittext_dns);
-        edittext_mtu = findViewById(R.id.edittext_mtu);
-        edittext_mac = findViewById(R.id.edittext_mac);
+        layout_title= (TitleLayout) findViewById(R.id.layout_title);
+        edittext_account = (EditText) findViewById(R.id.edittext_account);
+        edittext_password = (EditText) findViewById(R.id.edittext_password);
+        edittext_dns = (EditText) findViewById(R.id.edittext_dns);
+        edittext_mtu = (EditText) findViewById(R.id.edittext_mtu);
+        edittext_mac = (EditText) findViewById(R.id.edittext_mac);
     }
 
     @Override

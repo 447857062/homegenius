@@ -42,7 +42,7 @@ public class KeynotlearnDialog extends Dialog implements View.OnClickListener {
     private TextView textview_center;
 
     private void initView() {
-        textview_center = findViewById(R.id.textview_center);
+        textview_center = (TextView) findViewById(R.id.textview_center);
 
     }
 

@@ -53,9 +53,9 @@ public class VisitorListAdapter extends BaseSwipListAdapter {
         if (convertView == null) {
             vh = new ViewHolder();
             convertView = LayoutInflater.from(mContext).inflate(R.layout.doorbell_visitor_list_item, null);
-            vh.textview_file_name = convertView.findViewById(R.id.textview_file_name);
-            vh.textview_timestamp = convertView.findViewById(R.id.textview_timestamp);
-            vh.image_snap = convertView.findViewById(R.id.image_snap);
+            vh.textview_file_name = (TextView) convertView.findViewById(R.id.textview_file_name);
+            vh.textview_timestamp = (TextView) convertView.findViewById(R.id.textview_timestamp);
+            vh.image_snap = (ImageView) convertView.findViewById(R.id.image_snap);
             convertView.setTag(vh);
         } else {
             vh = (ViewHolder) convertView.getTag();

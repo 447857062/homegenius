@@ -29,7 +29,7 @@ public class DeviceRoomTypeDialogAdapter extends BaseAdapter {
             viewHolder = new ViewHolder();
             convertView = LayoutInflater.from(mContext).inflate(
                     R.layout.dialog_device_room_type_item, null);
-            viewHolder.textview_room_type = convertView
+            viewHolder.textview_room_type = (TextView) convertView
                     .findViewById(R.id.textview_room_type);
             convertView.setTag(viewHolder);
         } else {

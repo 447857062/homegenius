@@ -7,6 +7,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -15,15 +17,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.deplink.boruSmart.Protocol.json.OpResult;
-import com.deplink.boruSmart.activity.device.adapter.GetwaySelectListAdapter;
-import com.deplink.boruSmart.activity.personal.experienceCenter.ExperienceDevicesActivity;
-import com.deplink.boruSmart.util.Perfence;
 import com.deplink.boruSmart.Protocol.json.Room;
 import com.deplink.boruSmart.Protocol.json.device.SmartDev;
 import com.deplink.boruSmart.Protocol.json.device.getway.GatwayDevice;
 import com.deplink.boruSmart.activity.device.AddDeviceActivity;
 import com.deplink.boruSmart.activity.device.DevicesActivity;
 import com.deplink.boruSmart.activity.device.ShareDeviceActivity;
+import com.deplink.boruSmart.activity.device.adapter.GetwaySelectListAdapter;
+import com.deplink.boruSmart.activity.personal.experienceCenter.ExperienceDevicesActivity;
 import com.deplink.boruSmart.activity.personal.login.LoginActivity;
 import com.deplink.boruSmart.constant.AppConstant;
 import com.deplink.boruSmart.constant.DeviceTypeConstant;
@@ -33,6 +34,7 @@ import com.deplink.boruSmart.manager.device.DeviceManager;
 import com.deplink.boruSmart.manager.device.getway.GetwayManager;
 import com.deplink.boruSmart.manager.device.remoteControl.RemoteControlManager;
 import com.deplink.boruSmart.manager.room.RoomManager;
+import com.deplink.boruSmart.util.Perfence;
 import com.deplink.boruSmart.util.WeakRefHandler;
 import com.deplink.boruSmart.view.combinationwidget.TitleLayout;
 import com.deplink.boruSmart.view.dialog.AlertDialog;
@@ -83,6 +85,7 @@ public class RemoteControlActivity extends Activity implements View.OnClickListe
     private String action;
     private RelativeLayout layout_device_share;
     private TitleLayout layout_title;
+    private ImageView gatwaygif;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -257,6 +260,58 @@ public class RemoteControlActivity extends Activity implements View.OnClickListe
             }
             textview_select_room_name.setText(roomName);
         }
+        final Animation animationFadeIn = AnimationUtils.loadAnimation(this, R.anim.fade_in);
+        final Animation animationFadeOut = AnimationUtils.loadAnimation(this, R.anim.fade_out);
+        final Animation animationFadeHold = AnimationUtils.loadAnimation(this, R.anim.fade_hold);
+        animationFadeIn.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                gatwaygif.startAnimation(animationFadeOut);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+        animationFadeOut.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                gatwaygif.startAnimation(animationFadeHold);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+        animationFadeHold.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                gatwaygif.startAnimation(animationFadeIn);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+        gatwaygif.startAnimation(animationFadeIn);
     }
 
     private void updateDeviceStatu(String result) {
@@ -302,6 +357,11 @@ public class RemoteControlActivity extends Activity implements View.OnClickListe
         isLogin = Perfence.getBooleanPerfence(AppConstant.USER_LOGIN);
         deviceName = edittext_input_devie_name.getText().toString();
         if (!isStartFromExperience) {
+            int usercount = mRemoteControlManager.getmSelectRemoteControlDevice().getUserCount();
+            usercount++;
+            mRemoteControlManager.getmSelectRemoteControlDevice().setUserCount(usercount);
+            mRemoteControlManager.getmSelectRemoteControlDevice().save();
+
             if (!isOnActivityResult) {
                 deviceUid = mRemoteControlManager.getmSelectRemoteControlDevice().getUid();
                 SmartDev smartDev = DataSupport.where("Uid=?", deviceUid).findFirst(SmartDev.class, true);
@@ -342,17 +402,18 @@ public class RemoteControlActivity extends Activity implements View.OnClickListe
     }
 
     private void initViews() {
-        button_delete_device = findViewById(R.id.button_delete_device);
-        textview_select_room_name = findViewById(R.id.textview_select_room_name);
-        layout_getway_list = findViewById(R.id.layout_getway_list);
-        textview_select_getway_name = findViewById(R.id.textview_select_getway_name);
-        layout_getway = findViewById(R.id.layout_getway);
-        layout_select_room = findViewById(R.id.layout_select_room);
-        listview_select_getway = findViewById(R.id.listview_select_getway);
-        imageview_getway_arror_right = findViewById(R.id.imageview_getway_arror_right);
-        edittext_input_devie_name = findViewById(R.id.edittext_input_devie_name);
-        layout_device_share = findViewById(R.id.layout_device_share);
-        layout_title = findViewById(R.id.layout_title);
+        button_delete_device = (TextView) findViewById(R.id.button_delete_device);
+        textview_select_room_name = (TextView) findViewById(R.id.textview_select_room_name);
+        layout_getway_list = (RelativeLayout) findViewById(R.id.layout_getway_list);
+        textview_select_getway_name = (TextView) findViewById(R.id.textview_select_getway_name);
+        layout_getway = (RelativeLayout) findViewById(R.id.layout_getway);
+        layout_select_room = (RelativeLayout) findViewById(R.id.layout_select_room);
+        listview_select_getway = (ListView) findViewById(R.id.listview_select_getway);
+        imageview_getway_arror_right = (ImageView) findViewById(R.id.imageview_getway_arror_right);
+        edittext_input_devie_name = (ClearEditText) findViewById(R.id.edittext_input_devie_name);
+        layout_device_share = (RelativeLayout) findViewById(R.id.layout_device_share);
+        layout_title = (TitleLayout) findViewById(R.id.layout_title);
+        gatwaygif = (ImageView) findViewById(R.id.gatwaygif);
     }
 
     @Override
@@ -365,10 +426,15 @@ public class RemoteControlActivity extends Activity implements View.OnClickListe
                 if (isStartFromExperience) {
                     startActivity(inentShareDevice);
                 } else {
-                    if (deviceUid != null) {
-                        inentShareDevice.putExtra("deviceuid", deviceUid);
-                        startActivity(inentShareDevice);
+                    if(isLogin){
+                        if (deviceUid != null) {
+                            inentShareDevice.putExtra("deviceuid", deviceUid);
+                            startActivity(inentShareDevice);
+                        }
+                    }else{
+                        startActivity(new Intent(RemoteControlActivity.this, LoginActivity.class));
                     }
+
                 }
 
                 break;
@@ -398,10 +464,22 @@ public class RemoteControlActivity extends Activity implements View.OnClickListe
                 }).show();
                 break;
             case R.id.layout_select_room:
-                mDeviceManager.setEditDevice(true);
-                mDeviceManager.setCurrentEditDeviceType(DeviceTypeConstant.TYPE.TYPE_REMOTECONTROL);
-                Intent intent = new Intent(this, AddDeviceActivity.class);
-                startActivity(intent);
+                if(isStartFromExperience){
+                    mDeviceManager.setEditDevice(true);
+                    mDeviceManager.setCurrentEditDeviceType(DeviceTypeConstant.TYPE.TYPE_REMOTECONTROL);
+                    Intent intent = new Intent(this, AddDeviceActivity.class);
+                    startActivity(intent);
+                }else{
+                    if(isLogin){
+                        mDeviceManager.setEditDevice(true);
+                        mDeviceManager.setCurrentEditDeviceType(DeviceTypeConstant.TYPE.TYPE_REMOTECONTROL);
+                        Intent intent = new Intent(this, AddDeviceActivity.class);
+                        startActivity(intent);
+                    }else{
+                        startActivity(new Intent(RemoteControlActivity.this, LoginActivity.class));
+                    }
+                }
+
                 break;
             case R.id.layout_getway:
                 if (layout_getway_list.getVisibility() == View.VISIBLE) {

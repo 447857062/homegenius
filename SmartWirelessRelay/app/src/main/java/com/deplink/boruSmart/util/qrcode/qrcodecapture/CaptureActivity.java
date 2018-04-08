@@ -62,11 +62,11 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback,
     }
 
     private void viewInit() {
-        surfaceView = findViewById(R.id.preview_view);
-        viewfinderView = findViewById(R.id.viewfinder_view);
+        surfaceView = (SurfaceView) findViewById(R.id.preview_view);
+        viewfinderView = (ViewfinderView) findViewById(R.id.viewfinder_view);
         hasSurface = false;
         inactivityTimer = new InactivityTimer(this);
-        TextView textview_cancel = findViewById(R.id.textview_cancel);
+        TextView textview_cancel = (TextView) findViewById(R.id.textview_cancel);
         textview_cancel.setOnClickListener(this);
     }
 

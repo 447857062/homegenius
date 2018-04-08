@@ -63,9 +63,9 @@ public class WirelessRelayAdapter extends BaseAdapter {
         if (convertView == null) {
             vh = new ViewHolder();
             convertView = LayoutInflater.from(mContext).inflate(R.layout.listitem_wireless_relay, null);
-            vh.tv = convertView.findViewById(R.id.list_text_show_name);
-            vh.image = convertView.findViewById(R.id.iamge_item);
-            vh.encryption_type = convertView.findViewById(R.id.encryption_type);
+            vh.tv = (TextView) convertView.findViewById(R.id.list_text_show_name);
+            vh.image = (ImageView) convertView.findViewById(R.id.iamge_item);
+            vh.encryption_type = (TextView) convertView.findViewById(R.id.encryption_type);
             convertView.setTag(vh);
         } else {
             vh = (ViewHolder) convertView.getTag();

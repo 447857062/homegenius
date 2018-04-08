@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.deplink.boruSmart.activity.homepage.SmartHomeMainActivity;
+import com.deplink.boruSmart.activity.personal.PersonalCenterActivity;
 import com.deplink.boruSmart.util.Perfence;
 import com.deplink.boruSmart.util.StringValidatorUtil;
 import com.deplink.boruSmart.Protocol.json.Room;
@@ -57,6 +58,7 @@ public class LoginActivity extends Activity implements View.OnClickListener, Vie
     private View view_password_dirverline;
     private ImageView imageview_eye;
     private TitleLayout layout_title;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,13 +85,14 @@ public class LoginActivity extends Activity implements View.OnClickListener, Vie
     protected void onResume() {
         super.onResume();
         manager.addEventCallback(ec);
-        String userName = Perfence.getPerfence(Perfence.PERFENCE_PHONE);
-        if (!userName.equalsIgnoreCase("")) {
-            edittext_input_phone_number.setText(userName);
-            edittext_input_phone_number.setSelection(userName.length());
-        }
         showInputmothed();
-        button_login.setEnabled(false);
+        if (StringValidatorUtil.isMobileNO(edittext_input_phone_number.getText().toString())
+                && edittext_input_password.getText().toString().length() >= 6) {
+            button_login.setEnabled(true);
+        } else {
+            button_login.setEnabled(false);
+        }
+
     }
 
     @Override
@@ -97,11 +100,20 @@ public class LoginActivity extends Activity implements View.OnClickListener, Vie
         super.onPause();
         manager.removeEventCallback(ec);
     }
+
+    String isFromUserinfoActivity;
+
     private void initDatas() {
+        isFromUserinfoActivity = getIntent().getStringExtra("startfrom");
         layout_title.setReturnClickListener(new TitleLayout.ReturnImageClickListener() {
             @Override
             public void onBackPressed() {
-                LoginActivity.this.onBackPressed();
+                if (isFromUserinfoActivity != null && isFromUserinfoActivity.equals("userinfoactivity")) {
+                    startActivity(new Intent(LoginActivity.this, PersonalCenterActivity.class));
+                } else {
+                    LoginActivity.this.onBackPressed();
+                }
+
             }
         });
         DeplinkSDK.initSDK(getApplicationContext(), Perfence.SDK_APP_KEY);
@@ -162,17 +174,12 @@ public class LoginActivity extends Activity implements View.OnClickListener, Vie
             public void onFailure(SDKAction action, Throwable throwable) {
                 switch (action) {
                     case LOGIN:
-                        ToastSingleShow.showText(LoginActivity.this,""+throwable.getMessage());
+                        ToastSingleShow.showText(LoginActivity.this, "" + throwable.getMessage());
                         Perfence.setPerfence(AppConstant.USER_LOGIN, false);
                         break;
                 }
             }
 
-            @Override
-            public void connectionLost(Throwable throwable) {
-                super.connectionLost(throwable);
-                ToastSingleShow.showText(LoginActivity.this, "当前账号已在其它设备上登录");
-            }
         };
         edittext_input_password.addTextChangedListener(new TextWatcher() {
             @Override
@@ -186,11 +193,11 @@ public class LoginActivity extends Activity implements View.OnClickListener, Vie
 
             @Override
             public void afterTextChanged(Editable editable) {
-                   if(editable.toString().length()>=6){
-                       button_login.setEnabled(true);
-                   }else{
-                       button_login.setEnabled(false);
-                   }
+                if (editable.toString().length() >= 6) {
+                    button_login.setEnabled(true);
+                } else {
+                    button_login.setEnabled(false);
+                }
             }
         });
     }
@@ -206,15 +213,15 @@ public class LoginActivity extends Activity implements View.OnClickListener, Vie
     }
 
     private void initViews() {
-        textview_forget_password = findViewById(R.id.textview_forget_password);
-        textview_regist_now = findViewById(R.id.textview_regist_now);
-        button_login = findViewById(R.id.button_login);
-        edittext_input_password = findViewById(R.id.edittext_input_password);
-        edittext_input_phone_number = findViewById(R.id.edittext_input_phone_number);
+        textview_forget_password = (TextView) findViewById(R.id.textview_forget_password);
+        textview_regist_now = (TextView) findViewById(R.id.textview_regist_now);
+        button_login = (Button) findViewById(R.id.button_login);
+        edittext_input_password = (EditText) findViewById(R.id.edittext_input_password);
+        edittext_input_phone_number = (EditText) findViewById(R.id.edittext_input_phone_number);
         view_phonenumber_dirverline = findViewById(R.id.view_phonenumber_dirverline);
         view_password_dirverline = findViewById(R.id.view_password_dirverline);
-        imageview_eye = findViewById(R.id.imageview_eye);
-        layout_title= findViewById(R.id.layout_title);
+        imageview_eye = (ImageView) findViewById(R.id.imageview_eye);
+        layout_title = (TitleLayout) findViewById(R.id.layout_title);
         layout_title.setBackImageResource(R.drawable.notloggedinicon);
     }
 

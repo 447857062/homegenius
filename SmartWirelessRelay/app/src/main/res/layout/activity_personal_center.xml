@@ -87,7 +87,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_centerVertical="true"
-                        android:text="已设备分享"
+                        android:text="已分享设备"
                         android:gravity="center_vertical"
                         android:textColor="@color/room_type_text"
                         android:textSize="@dimen/text_size_small" />

@@ -215,13 +215,13 @@ public class SignalStrengthSetting extends Activity implements View.OnClickListe
     }
     private boolean  isSetSignalStreng;
     private void initViews() {
-        layout_model_pregnant = findViewById(R.id.layout_model_pregnant);
-        layout_model_walls = findViewById(R.id.layout_model_walls);
-        layout_model_balance = findViewById(R.id.layout_model_balance);
-        imageview_model_pregnant = findViewById(R.id.imageview_model_pregnant);
-        imageview_model_walls = findViewById(R.id.imageview_model_walls);
-        imageview_model_balance = findViewById(R.id.imageview_model_balance);
-        layout_title= findViewById(R.id.layout_title);
+        layout_model_pregnant = (RelativeLayout) findViewById(R.id.layout_model_pregnant);
+        layout_model_walls = (RelativeLayout) findViewById(R.id.layout_model_walls);
+        layout_model_balance = (RelativeLayout) findViewById(R.id.layout_model_balance);
+        imageview_model_pregnant = (ImageView) findViewById(R.id.imageview_model_pregnant);
+        imageview_model_walls = (ImageView) findViewById(R.id.imageview_model_walls);
+        imageview_model_balance = (ImageView) findViewById(R.id.imageview_model_balance);
+        layout_title= (TitleLayout) findViewById(R.id.layout_title);
     }
 
     @Override

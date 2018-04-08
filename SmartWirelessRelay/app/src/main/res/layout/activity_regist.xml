@@ -28,7 +28,7 @@
     <RelativeLayout
         android:id="@+id/layout_input_area"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="192dp"
         android:layout_below="@+id/imageview_boru_logo"
         android:layout_marginLeft="@dimen/input_layout_marginleft_right"
         android:layout_marginRight="@dimen/input_layout_marginleft_right"
@@ -39,12 +39,14 @@
         <RelativeLayout
             android:id="@+id/layout_input_phone_number_outer"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="54dp"
             android:layout_marginLeft="@dimen/input_layout_marginleft_right"
             android:layout_marginRight="@dimen/input_layout_marginleft_right"
-            android:layout_marginTop="30dp">
+            >
 
             <RelativeLayout
+                android:layout_above="@+id/view_phonenumber_dirverline"
+                android:layout_marginBottom="5dp"
                 android:id="@+id/layout_input_phone_number_inner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -77,38 +79,38 @@
                 android:id="@+id/view_phonenumber_dirverline"
                 android:layout_width="match_parent"
                 android:layout_height="1px"
-                android:layout_below="@+id/layout_input_phone_number_inner"
-                android:layout_marginTop="@dimen/line_margintop_input"
+                android:layout_alignParentBottom="true"
                 android:background="@color/line_dirver_color" />
         </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/layout_verification_code_outer"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="54dp"
             android:layout_below="@+id/layout_input_phone_number_outer"
             android:layout_marginLeft="@dimen/input_layout_marginleft_right"
             android:layout_marginRight="@dimen/input_layout_marginleft_right"
-            android:layout_marginTop="30dp"
-            android:gravity="center_vertical">
+            android:gravity="bottom">
 
             <RelativeLayout
+                android:layout_above="@+id/view_yanzhen_dirverline"
                 android:id="@+id/layout_verification_code_inner"
+                android:layout_marginBottom="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <ImageView
+                    android:layout_alignBottom="@+id/buton_get_verification_code"
                     android:id="@+id/image_verification_code"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
                     android:src="@drawable/verificationcodeicon" />
 
                 <EditText
+                    android:layout_alignBottom="@+id/buton_get_verification_code"
                     android:id="@+id/edittext_verification_code"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/input_layout_input_margin_left_image"
                     android:layout_toLeftOf="@+id/buton_get_verification_code"
                     android:layout_toRightOf="@+id/image_verification_code"
@@ -141,24 +143,24 @@
                 android:id="@+id/view_yanzhen_dirverline"
                 android:layout_width="match_parent"
                 android:layout_height="1px"
-                android:layout_below="@+id/layout_verification_code_inner"
-                android:layout_marginTop="@dimen/line_margintop_input"
+                android:layout_alignParentBottom="true"
                 android:background="@color/line_dirver_color" />
         </RelativeLayout>
         <!--请设置密码-->
         <RelativeLayout
             android:id="@+id/layout_input_password_outer"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="54dp"
             android:layout_below="@+id/layout_verification_code_outer"
-            android:layout_marginBottom="30dp"
             android:layout_marginLeft="@dimen/input_layout_marginleft_right"
             android:layout_marginRight="@dimen/input_layout_marginleft_right"
-            android:layout_marginTop="30dp"
-            android:gravity="center_vertical">
+            android:layout_marginBottom="30dp"
+            android:gravity="bottom">
 
             <RelativeLayout
+                android:layout_above="@+id/view_password_dirverline"
                 android:id="@+id/layout_input_password_inner"
+                android:layout_marginBottom="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -166,14 +168,14 @@
                     android:id="@+id/image_input_password"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
+                    android:layout_alignBottom="@+id/layout_eye"
                     android:src="@drawable/passwordicon" />
 
                 <EditText
+                    android:layout_alignBottom="@+id/layout_eye"
                     android:id="@+id/edittext_input_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/input_layout_input_margin_left_image"
                     android:layout_toLeftOf="@+id/layout_eye"
                     android:layout_toRightOf="@+id/image_input_password"
@@ -188,7 +190,7 @@
                 <FrameLayout
                     android:id="@+id/layout_eye"
                     android:layout_width="48dp"
-                    android:layout_height="44dp"
+                    android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true">
 
@@ -196,7 +198,7 @@
                         android:id="@+id/imageview_eye"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical|right"
+                        android:layout_gravity="center_vertical|center_horizontal"
                         android:scaleType="centerInside"
                         android:src="@drawable/hideicon" />
                 </FrameLayout>
@@ -207,7 +209,7 @@
                 android:id="@+id/view_password_dirverline"
                 android:layout_width="match_parent"
                 android:layout_height="1px"
-                android:layout_below="@+id/layout_input_password_inner"
+                android:layout_alignParentBottom="true"
                 android:background="@color/line_dirver_color" />
         </RelativeLayout>
     </RelativeLayout>

@@ -686,9 +686,9 @@ public class WirelessRelayActivity extends Activity implements View.OnClickListe
     }
 
     private void initViews() {
-        button_reload_wifirelay = findViewById(R.id.button_reload_wifirelay);
-        mPullToRefreshListView = findViewById(R.id.list_wireless_relay_line);
-        layout_title= findViewById(R.id.layout_title);
+        button_reload_wifirelay = (TextView) findViewById(R.id.button_reload_wifirelay);
+        mPullToRefreshListView = (PullToRefreshListView) findViewById(R.id.list_wireless_relay_line);
+        layout_title= (TitleLayout) findViewById(R.id.layout_title);
     }
 
 

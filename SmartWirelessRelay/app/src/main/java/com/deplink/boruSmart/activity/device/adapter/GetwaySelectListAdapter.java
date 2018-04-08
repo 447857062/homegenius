@@ -50,7 +50,7 @@ public class GetwaySelectListAdapter extends BaseAdapter {
 
             convertView = LayoutInflater.from(mContext).inflate(
                     R.layout.getway_select_list_item, null);
-            viewHolder.textview_device_name = convertView
+            viewHolder.textview_device_name = (TextView) convertView
                     .findViewById(R.id.textview_device_name);
             convertView.setTag(viewHolder);
         } else {

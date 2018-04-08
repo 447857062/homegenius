@@ -267,15 +267,15 @@ public class EditRemoteDevicesActivity extends Activity implements View.OnClickL
     }
 
     private void initViews() {
-        textview_select_remotecontrol_name = findViewById(R.id.textview_select_remotecontrol_name);
-        button_delete_device = findViewById(R.id.button_delete_device);
-        textview_select_room_name = findViewById(R.id.textview_select_room_name);
-        layout_remotecontrol_select = findViewById(R.id.layout_remotecontrol_select);
-        layout_remotecontrol_list = findViewById(R.id.layout_remotecontrol_list);
-        imageview_remotecontrol_arror_right = findViewById(R.id.imageview_remotecontrol_arror_right);
-        listview_select_remotecontrol = findViewById(R.id.listview_select_remotecontrol);
-        edittext_add_device_input_name = findViewById(R.id.edittext_add_device_input_name);
-        layout_title= findViewById(R.id.layout_title);
+        textview_select_remotecontrol_name = (TextView) findViewById(R.id.textview_select_remotecontrol_name);
+        button_delete_device = (TextView) findViewById(R.id.button_delete_device);
+        textview_select_room_name = (TextView) findViewById(R.id.textview_select_room_name);
+        layout_remotecontrol_select = (RelativeLayout) findViewById(R.id.layout_remotecontrol_select);
+        layout_remotecontrol_list = (RelativeLayout) findViewById(R.id.layout_remotecontrol_list);
+        imageview_remotecontrol_arror_right = (ImageView) findViewById(R.id.imageview_remotecontrol_arror_right);
+        listview_select_remotecontrol = (ListView) findViewById(R.id.listview_select_remotecontrol);
+        edittext_add_device_input_name = (ClearEditText) findViewById(R.id.edittext_add_device_input_name);
+        layout_title= (TitleLayout) findViewById(R.id.layout_title);
     }
     @Override
     public void onClick(View v) {

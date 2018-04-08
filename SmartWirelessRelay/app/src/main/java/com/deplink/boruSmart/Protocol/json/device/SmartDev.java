@@ -57,6 +57,15 @@ public class SmartDev extends DataSupport implements Serializable {
     private int lightIsOpen;
     private int whiteValue;
     private int yellowValue;
+    private int userCount;
+
+    public int getUserCount() {
+        return userCount;
+    }
+
+    public void setUserCount(int userCount) {
+        this.userCount = userCount;
+    }
 
     public int getLightIsOpen() {
         return lightIsOpen;

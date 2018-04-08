@@ -38,9 +38,9 @@ public class AddDeviceGridViewAdapter extends BaseAdapter {
             }else{
                 convertView = LayoutInflater.from(mContext).inflate(
                         R.layout.room_item, null);
-                viewHolder.textview_room_item = convertView
+                viewHolder.textview_room_item = (TextView) convertView
                         .findViewById(R.id.textview_room_item);
-                viewHolder.imageview_room_type = convertView
+                viewHolder.imageview_room_type = (ImageView) convertView
                         .findViewById(R.id.imageview_room_type);
             }
             convertView.setTag(viewHolder);

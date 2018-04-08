@@ -177,8 +177,8 @@ public class RouterNameUpdateActivity extends Activity {
     }
 
     private void initViews() {
-        edittext_router_name = findViewById(R.id.edittext_router_name);
-        layout_title= findViewById(R.id.layout_title);
+        edittext_router_name = (ClearEditText) findViewById(R.id.edittext_router_name);
+        layout_title= (TitleLayout) findViewById(R.id.layout_title);
     }
 
     private String routerName;

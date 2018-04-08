@@ -315,9 +315,9 @@ import deplink.com.smartwirelessrelay.homegenius.EllESDK.R;
             return output;
         }
         private void initViews() {
-            listview_vistor_list = findViewById(R.id.listview_vistor_list);
-            layout_no_visitor = findViewById(R.id.layout_no_visitor);
-            textview_visitor_loading = findViewById(R.id.textview_visitor_loading);
-            layout_title = findViewById(R.id.layout_title);
+            listview_vistor_list = (SwipeMenuListView) findViewById(R.id.listview_vistor_list);
+            layout_no_visitor = (RelativeLayout) findViewById(R.id.layout_no_visitor);
+            textview_visitor_loading = (TextView) findViewById(R.id.textview_visitor_loading);
+            layout_title = (TitleLayout) findViewById(R.id.layout_title);
         }
     }

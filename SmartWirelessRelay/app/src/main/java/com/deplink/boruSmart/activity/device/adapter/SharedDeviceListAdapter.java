@@ -96,17 +96,17 @@ public class SharedDeviceListAdapter extends BaseAdapter {
             if (getItemViewType(position) == TOP_ITEM) {
                 convertView = LayoutInflater.from(mContext).inflate(
                         R.layout.shared_devicelist_device_item, null);
-                viewHolder.imageview_device_type = convertView
+                viewHolder.imageview_device_type = (ImageView) convertView
                         .findViewById(R.id.imageview_device_type);
-                viewHolder.textview_device_name = convertView
+                viewHolder.textview_device_name = (TextView) convertView
                         .findViewById(R.id.textview_device_name);
             } else {
                 convertView = LayoutInflater.from(mContext).inflate(
                         R.layout.shared_devicelist_smartdevice_item, null);
 
-                viewHolder.textview_device_name = convertView
+                viewHolder.textview_device_name = (TextView) convertView
                         .findViewById(R.id.textview_device_name);
-                viewHolder.imageview_device_type = convertView
+                viewHolder.imageview_device_type = (ImageView) convertView
                         .findViewById(R.id.imageview_device_type);
             }
 

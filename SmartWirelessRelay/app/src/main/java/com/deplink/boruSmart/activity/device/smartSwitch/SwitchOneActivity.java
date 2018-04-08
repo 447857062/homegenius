@@ -184,8 +184,8 @@ public class SwitchOneActivity extends Activity implements View.OnClickListener,
     }
 
     private void initViews() {
-        button_switch = findViewById(R.id.button_switch);
-        layout_title= findViewById(R.id.layout_title);
+        button_switch = (Button) findViewById(R.id.button_switch);
+        layout_title= (TitleLayout) findViewById(R.id.layout_title);
     }
 
     @Override

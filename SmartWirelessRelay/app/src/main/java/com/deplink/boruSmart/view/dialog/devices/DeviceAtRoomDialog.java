@@ -50,7 +50,7 @@ public class DeviceAtRoomDialog extends Dialog implements View.OnClickListener ,
     }
     private void initView() {
         view_device_menu=findViewById(R.id.view_device_menu);
-        listview_room_types= findViewById(R.id.listview_room_types);
+        listview_room_types= (ListView) findViewById(R.id.listview_room_types);
 
     }
 

@@ -15,6 +15,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.deplink.boruSmart.Protocol.json.Room;
+import com.deplink.boruSmart.Protocol.json.device.DeviceList;
+import com.deplink.boruSmart.Protocol.json.device.SmartDev;
 import com.deplink.boruSmart.Protocol.json.device.getway.GatwayDevice;
 import com.deplink.boruSmart.activity.device.AddDeviceActivity;
 import com.deplink.boruSmart.activity.device.DevicesActivity;
@@ -24,23 +27,20 @@ import com.deplink.boruSmart.activity.personal.experienceCenter.ExperienceDevice
 import com.deplink.boruSmart.activity.personal.login.LoginActivity;
 import com.deplink.boruSmart.constant.AppConstant;
 import com.deplink.boruSmart.constant.DeviceTypeConstant;
+import com.deplink.boruSmart.manager.connect.local.tcp.LocalConnectmanager;
 import com.deplink.boruSmart.manager.device.DeviceListener;
+import com.deplink.boruSmart.manager.device.DeviceManager;
+import com.deplink.boruSmart.manager.device.getway.GetwayManager;
 import com.deplink.boruSmart.manager.device.smartlock.SmartLockManager;
 import com.deplink.boruSmart.manager.room.RoomManager;
 import com.deplink.boruSmart.util.NetUtil;
 import com.deplink.boruSmart.util.Perfence;
 import com.deplink.boruSmart.util.WeakRefHandler;
+import com.deplink.boruSmart.view.combinationwidget.TitleLayout;
 import com.deplink.boruSmart.view.dialog.AlertDialog;
 import com.deplink.boruSmart.view.dialog.loadingdialog.DialogThreeBounce;
-import com.deplink.boruSmart.view.toast.ToastSingleShow;
-import com.deplink.boruSmart.Protocol.json.Room;
-import com.deplink.boruSmart.Protocol.json.device.DeviceList;
-import com.deplink.boruSmart.Protocol.json.device.SmartDev;
-import com.deplink.boruSmart.manager.connect.local.tcp.LocalConnectmanager;
-import com.deplink.boruSmart.manager.device.DeviceManager;
-import com.deplink.boruSmart.manager.device.getway.GetwayManager;
-import com.deplink.boruSmart.view.combinationwidget.TitleLayout;
 import com.deplink.boruSmart.view.edittext.ClearEditText;
+import com.deplink.boruSmart.view.toast.ToastSingleShow;
 import com.deplink.sdk.android.sdk.DeplinkSDK;
 import com.deplink.sdk.android.sdk.EventCallback;
 import com.deplink.sdk.android.sdk.SDKAction;
@@ -274,17 +274,17 @@ public class EditSmartLockActivity extends Activity implements View.OnClickListe
     }
 
     private void initViews() {
-        layout_title= findViewById(R.id.layout_title);
-        textview_select_getway_name = findViewById(R.id.textview_select_getway_name);
-        button_delete_device = findViewById(R.id.button_delete_device);
-        layout_select_room = findViewById(R.id.layout_select_room);
-        textview_select_room_name = findViewById(R.id.textview_select_room_name);
-        edittext_input_devie_name = findViewById(R.id.edittext_input_devie_name);
-        layout_getway_list = findViewById(R.id.layout_getway_list);
-        layout_getway = findViewById(R.id.layout_getway);
-        listview_select_getway = findViewById(R.id.listview_select_getway);
-        imageview_getway_arror_right = findViewById(R.id.imageview_getway_arror_right);
-        layout_device_share = findViewById(R.id.layout_device_share);
+        layout_title= (TitleLayout) findViewById(R.id.layout_title);
+        textview_select_getway_name = (TextView) findViewById(R.id.textview_select_getway_name);
+        button_delete_device = (Button) findViewById(R.id.button_delete_device);
+        layout_select_room = (RelativeLayout) findViewById(R.id.layout_select_room);
+        textview_select_room_name = (TextView) findViewById(R.id.textview_select_room_name);
+        edittext_input_devie_name = (ClearEditText) findViewById(R.id.edittext_input_devie_name);
+        layout_getway_list = (RelativeLayout) findViewById(R.id.layout_getway_list);
+        layout_getway = (RelativeLayout) findViewById(R.id.layout_getway);
+        listview_select_getway = (ListView) findViewById(R.id.listview_select_getway);
+        imageview_getway_arror_right = (ImageView) findViewById(R.id.imageview_getway_arror_right);
+        layout_device_share = (RelativeLayout) findViewById(R.id.layout_device_share);
     }
 
     private String devcienameChange;
@@ -294,11 +294,21 @@ public class EditSmartLockActivity extends Activity implements View.OnClickListe
         switch (v.getId()) {
 
             case R.id.layout_select_room:
-                mDeviceManager.setEditDevice(true);
-                mDeviceManager.setCurrentEditDeviceType(DeviceTypeConstant.TYPE.TYPE_LOCK);
-                Intent intent = new Intent(this, AddDeviceActivity.class);
-                startActivity(intent);
-
+                if(isStartFromExperience){
+                    mDeviceManager.setEditDevice(true);
+                    mDeviceManager.setCurrentEditDeviceType(DeviceTypeConstant.TYPE.TYPE_LOCK);
+                    Intent intent = new Intent(this, AddDeviceActivity.class);
+                    startActivity(intent);
+                }else{
+                    if(isLogin){
+                        mDeviceManager.setEditDevice(true);
+                        mDeviceManager.setCurrentEditDeviceType(DeviceTypeConstant.TYPE.TYPE_LOCK);
+                        Intent intent = new Intent(this, AddDeviceActivity.class);
+                        startActivity(intent);
+                    }else{
+                        startActivity(new Intent(EditSmartLockActivity.this, LoginActivity.class));
+                    }
+                }
                 break;
             case R.id.layout_device_share:
                 Intent inentShareDevice = new Intent(this, ShareDeviceActivity.class);
@@ -306,10 +316,15 @@ public class EditSmartLockActivity extends Activity implements View.OnClickListe
                 if (isStartFromExperience) {
                     startActivity(inentShareDevice);
                 } else {
-                    if (deviceUid != null) {
-                        inentShareDevice.putExtra("deviceuid", deviceUid);
-                        startActivity(inentShareDevice);
+                    if(isLogin){
+                        if (deviceUid != null) {
+                            inentShareDevice.putExtra("deviceuid", deviceUid);
+                            startActivity(inentShareDevice);
+                        }
+                    }else{
+                        startActivity(new Intent(EditSmartLockActivity.this, LoginActivity.class));
                     }
+
                 }
 
                 break;

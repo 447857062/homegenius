@@ -158,11 +158,11 @@ public class UpdateImmediateActivity extends Activity implements View.OnClickLis
     }
 
     private void initViews() {
-        button_update = findViewById(R.id.button_update);
-        textview_version_code = findViewById(R.id.textview_version_code);
-        textview_file_size = findViewById(R.id.textview_file_size);
-        version_explan = findViewById(R.id.version_explan);
-        layout_title= findViewById(R.id.layout_title);
+        button_update = (Button) findViewById(R.id.button_update);
+        textview_version_code = (TextView) findViewById(R.id.textview_version_code);
+        textview_file_size = (TextView) findViewById(R.id.textview_file_size);
+        version_explan = (TextView) findViewById(R.id.version_explan);
+        layout_title= (TitleLayout) findViewById(R.id.layout_title);
     }
 
     @Override

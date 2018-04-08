@@ -82,8 +82,8 @@ public class UpdateSmartLockUserIdActivity extends Activity {
     }
 
     private void initViews() {
-        layout_title= findViewById(R.id.layout_title);
-        listview_update_ids = findViewById(R.id.listview_update_ids);
+        layout_title= (TitleLayout) findViewById(R.id.layout_title);
+        listview_update_ids = (ListView) findViewById(R.id.listview_update_ids);
     }
 
 

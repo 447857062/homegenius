@@ -195,7 +195,7 @@ public class SharedDeviceListActivity extends Activity {
     }
     private boolean querySmartDeviceShareInfo=false;
     private void initViews() {
-        layout_title = findViewById(R.id.layout_title);
-        shareddevices_list = findViewById(R.id.shareddevices_list);
+        layout_title = (TitleLayout) findViewById(R.id.layout_title);
+        shareddevices_list = (ListView) findViewById(R.id.shareddevices_list);
     }
 }

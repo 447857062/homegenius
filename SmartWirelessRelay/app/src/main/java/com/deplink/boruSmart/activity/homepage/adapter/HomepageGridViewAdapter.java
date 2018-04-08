@@ -8,8 +8,9 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.deplink.boruSmart.Protocol.json.Room;
-import com.deplink.boruSmart.constant.RoomConstant;
+import com.deplink.boruSmart.Protocol.json.device.SmartDev;
+import com.deplink.boruSmart.Protocol.json.device.getway.GatwayDevice;
+import com.deplink.boruSmart.constant.DeviceTypeConstant;
 
 import java.util.List;
 
@@ -21,10 +22,25 @@ import deplink.com.smartwirelessrelay.homegenius.EllESDK.R;
 
 public class HomepageGridViewAdapter extends BaseAdapter {
     private Context mContext;
-    private List<Room> listTop;
-    public HomepageGridViewAdapter(Context mContext, List<Room> mRooms) {
+    private List<GatwayDevice> listTop = null;
+    private List<SmartDev> listBottom = null;
+    private final int TOP_ITEM = 0;
+    private int TopCount = 0;
+
+    public HomepageGridViewAdapter(Context mContext, List<GatwayDevice> list, List<SmartDev> datasOther) {
         this.mContext = mContext;
-        listTop = mRooms;
+        listTop = list;
+        this.listBottom = datasOther;
+        TopCount = listTop.size();
+    }
+
+    public void setTopList(List<GatwayDevice> list) {
+        this.listTop = list;
+        TopCount = listTop.size();
+    }
+
+    public void setBottomList(List<SmartDev> list) {
+        this.listBottom = list;
     }
 
     @Override
@@ -33,20 +49,34 @@ public class HomepageGridViewAdapter extends BaseAdapter {
         if (convertView == null) {
             viewHolder = new ViewHolder();
             convertView = LayoutInflater.from(mContext).inflate(
-                    R.layout.homepage_room_item, null);
-            viewHolder.textview_room_item = convertView
-                    .findViewById(R.id.textview_room_item);
-            viewHolder.imageview_room_type = convertView
-                    .findViewById(R.id.imageview_room_type);
+                    R.layout.homepage_device_item, null);
+            viewHolder.imageview_device_type = (ImageView) convertView
+                    .findViewById(R.id.imageview_device_type);
+            viewHolder.textview_device_name = (TextView) convertView
+                    .findViewById(R.id.textview_device_name);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-        viewHolder.textview_room_item.setText(listTop.get(position).getRoomName());
-        setRoomTypeImageResource(position, viewHolder);
+        //智能网关
+        if (position < TopCount) {
+            viewHolder.imageview_device_type.setImageResource(R.drawable.gatewayicon);
+            String deviceName = listTop.get(position).getName();
+            viewHolder.textview_device_name.setText(deviceName);
+        } else {
+            String deviceType = listBottom.get(position - TopCount).getType();
+            String deviceName = listBottom.get(position - TopCount).getName();
+            if ("SMART_LOCK".equals(deviceType)) {
+                deviceType = DeviceTypeConstant.TYPE.TYPE_LOCK;
+            }
+            if ("IRMOTE_V2".equals(deviceType)) {
+                deviceType = DeviceTypeConstant.TYPE.TYPE_REMOTECONTROL;
+            }
+            viewHolder.textview_device_name.setText(deviceName);
+            getDeviceTypeImage(viewHolder, deviceType, position);
+        }
         return convertView;
     }
-
 
 
     @Override
@@ -57,51 +87,103 @@ public class HomepageGridViewAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int position) {
-        return position;
+        if (position >= 0 && position < TopCount) {
+            return listTop.get(position);
+        }
+        if (position > TopCount) {
+            return listBottom.get(position - TopCount);
+        }
+        if (position <= 1) {
+            return null;
+        }
+        return null;
     }
 
+    @Override
+    public int getViewTypeCount() {
+        return 2;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        int BOTTOM_ITEM = 1;
+        if (position < TopCount)
+            return TOP_ITEM;
+        else
+            return BOTTOM_ITEM;
+    }
 
     @Override
     public int getCount() {
-        return listTop.size();
-    }
-    /**
-     * 设置房间类型对应的图片
-     * @param position
-     * @param viewHolder
-     */
-    private void setRoomTypeImageResource(int position, ViewHolder viewHolder) {
-        if (listTop.get(position).getRoomType() == null) {
-            //默认图片
-            viewHolder.imageview_room_type.setImageResource(R.drawable.homelivingroom);
-            return;
+        int count = 0;
+        if (listTop != null && listBottom != null) {
+            count = TopCount + listBottom.size();
         }
-        switch (listTop.get(position).getRoomType()) {
-            case RoomConstant.ROOMTYPE.TYPE_LIVING:
-                viewHolder.imageview_room_type.setImageResource(R.drawable.homelivingroom);
+        if (listTop != null && listBottom == null) {
+            count = TopCount;
+        }
+        if (listBottom != null && listTop == null) {
+            count = listBottom.size();
+        }
+        return count;
+    }
+
+    private void getDeviceTypeImage(ViewHolder viewHolder, String deviceType, int position) {
+        switch (deviceType) {
+            case DeviceTypeConstant.TYPE.TYPE_ROUTER:
+                viewHolder.imageview_device_type.setImageResource(R.drawable.routericon);
                 break;
-            case RoomConstant.ROOMTYPE.TYPE_BED:
-                viewHolder.imageview_room_type.setImageResource(R.drawable.homebedroom);
+            case DeviceTypeConstant.TYPE.TYPE_LOCK:
+
+                viewHolder.imageview_device_type.setImageResource(R.drawable.doorlockicon);
                 break;
-            case RoomConstant.ROOMTYPE.TYPE_DINING:
-                viewHolder.imageview_room_type.setImageResource(R.drawable.homediningroom);
+            case DeviceTypeConstant.TYPE.TYPE_MENLING:
+                viewHolder.imageview_device_type.setImageResource(R.drawable.doorbellicon);
                 break;
-            case RoomConstant.ROOMTYPE.TYPE_KITCHEN:
-                viewHolder.imageview_room_type.setImageResource(R.drawable.homekitchen);
+            case DeviceTypeConstant.TYPE.TYPE_SWITCH:
+                String deviceSubType;
+                deviceSubType = listBottom.get(position - TopCount).getSubType();
+                if (deviceSubType == null) {
+                    return;
+                }
+                switch (deviceSubType) {
+                    case DeviceTypeConstant.TYPE_SWITCH_SUBTYPE.SUB_TYPE_SWITCH_ONEWAY:
+                        viewHolder.imageview_device_type.setImageResource(R.drawable.switchalltheway);
+                        break;
+                    case DeviceTypeConstant.TYPE_SWITCH_SUBTYPE.SUB_TYPE_SWITCH_TWOWAY:
+                        viewHolder.imageview_device_type.setImageResource(R.drawable.roadswitch);
+                        break;
+                    case DeviceTypeConstant.TYPE_SWITCH_SUBTYPE.SUB_TYPE_SWITCH_THREEWAY:
+                        viewHolder.imageview_device_type.setImageResource(R.drawable.threewayswitch);
+                        break;
+                    case DeviceTypeConstant.TYPE_SWITCH_SUBTYPE.SUB_TYPE_SWITCH_FOURWAY:
+                        viewHolder.imageview_device_type.setImageResource(R.drawable.fourwayswitch);
+                        break;
+                }
                 break;
-            case RoomConstant.ROOMTYPE.TYPE_STORAGE:
-                viewHolder.imageview_room_type.setImageResource(R.drawable.homestorageroom);
+            case DeviceTypeConstant.TYPE.TYPE_REMOTECONTROL:
+                viewHolder.imageview_device_type.setImageResource(R.drawable.infraredremotecontrolicon);
                 break;
-            case RoomConstant.ROOMTYPE.TYPE_STUDY:
-                viewHolder.imageview_room_type.setImageResource(R.drawable.homestudy);
+            case DeviceTypeConstant.TYPE.TYPE_TV_REMOTECONTROL:
+            case "智能电视":
+                viewHolder.imageview_device_type.setImageResource(R.drawable.tvicon);
                 break;
-            case RoomConstant.ROOMTYPE.TYPE_TOILET:
-                viewHolder.imageview_room_type.setImageResource(R.drawable.hometoilet);
+            case DeviceTypeConstant.TYPE.TYPE_AIR_REMOTECONTROL:
+            case "智能空调":
+                viewHolder.imageview_device_type.setImageResource(R.drawable.airconditioningicon);
+                break;
+            case DeviceTypeConstant.TYPE.TYPE_TVBOX_REMOTECONTROL:
+            case "智能机顶盒遥控":
+                viewHolder.imageview_device_type.setImageResource(R.drawable.settopboxesicon);
+                break;
+            case DeviceTypeConstant.TYPE.TYPE_LIGHT:
+                viewHolder.imageview_device_type.setImageResource(R.drawable.equipmentlight);
                 break;
         }
     }
+
     final static class ViewHolder {
-        TextView textview_room_item;
-        ImageView imageview_room_type;
+        TextView textview_device_name;
+        ImageView imageview_device_type;
     }
 }

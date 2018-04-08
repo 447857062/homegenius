@@ -298,7 +298,9 @@ public class DeviceNumberActivity extends Activity implements EllE_Listener {
 
     private void updateListview() {
         //更新房间关联的设备,设备状态更新了
-        currentRoom = DataSupport.where("Uid = ?", currentRoom.getUid()).findFirst(Room.class, true);
+        if(currentRoom.getUid()!=null){
+            currentRoom = DataSupport.where("Uid = ?", currentRoom.getUid()).findFirst(Room.class, true);
+        }
         datasTop.clear();
         datasBottom.clear();
         datasTop.addAll(currentRoom.getmGetwayDevices());
@@ -430,8 +432,8 @@ public class DeviceNumberActivity extends Activity implements EllE_Listener {
     }
 
     private void initViews() {
-        listview_devies = findViewById(R.id.listview_devies);
-        layout_title = findViewById(R.id.layout_title);
+        listview_devies = (ListView) findViewById(R.id.listview_devies);
+        layout_title = (TitleLayout) findViewById(R.id.layout_title);
     }
 
     @Override

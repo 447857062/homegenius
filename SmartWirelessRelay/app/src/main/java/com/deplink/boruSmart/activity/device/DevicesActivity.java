@@ -547,23 +547,23 @@ public class DevicesActivity extends Activity implements View.OnClickListener, G
     }
 
     private void initViews() {
-        layout_home_page = findViewById(R.id.layout_home_page);
-        layout_devices = findViewById(R.id.layout_devices);
-        layout_rooms = findViewById(R.id.layout_rooms);
-        layout_personal_center = findViewById(R.id.layout_personal_center);
-        listview_devies = findViewById(R.id.listview_devies);
-        imageview_add_device = findViewById(R.id.imageview_add_device);
-        layout_select_room_type = findViewById(R.id.layout_select_room_type);
-        imageview_devices = findViewById(R.id.imageview_devices);
-        layout_empty_view_scroll = findViewById(R.id.layout_empty_view_scroll);
-        imageview_home_page = findViewById(R.id.imageview_home_page);
-        imageview_rooms = findViewById(R.id.imageview_rooms);
-        imageview_personal_center = findViewById(R.id.imageview_personal_center);
-        textview_home = findViewById(R.id.textview_home);
-        textview_device = findViewById(R.id.textview_device);
-        textview_room = findViewById(R.id.textview_room);
-        textview_mine = findViewById(R.id.textview_mine);
-        textview_room_name = findViewById(R.id.textview_room_name);
+        layout_home_page = (LinearLayout) findViewById(R.id.layout_home_page);
+        layout_devices = (LinearLayout) findViewById(R.id.layout_devices);
+        layout_rooms = (LinearLayout) findViewById(R.id.layout_rooms);
+        layout_personal_center = (LinearLayout) findViewById(R.id.layout_personal_center);
+        listview_devies = (PullToRefreshListView) findViewById(R.id.listview_devies);
+        imageview_add_device = (ImageView) findViewById(R.id.imageview_add_device);
+        layout_select_room_type = (LinearLayout) findViewById(R.id.layout_select_room_type);
+        imageview_devices = (ImageView) findViewById(R.id.imageview_devices);
+        layout_empty_view_scroll = (ScrollView) findViewById(R.id.layout_empty_view_scroll);
+        imageview_home_page = (ImageView) findViewById(R.id.imageview_home_page);
+        imageview_rooms = (ImageView) findViewById(R.id.imageview_rooms);
+        imageview_personal_center = (ImageView) findViewById(R.id.imageview_personal_center);
+        textview_home = (TextView) findViewById(R.id.textview_home);
+        textview_device = (TextView) findViewById(R.id.textview_device);
+        textview_room = (TextView) findViewById(R.id.textview_room);
+        textview_mine = (TextView) findViewById(R.id.textview_mine);
+        textview_room_name = (TextView) findViewById(R.id.textview_room_name);
     }
 
     @Override

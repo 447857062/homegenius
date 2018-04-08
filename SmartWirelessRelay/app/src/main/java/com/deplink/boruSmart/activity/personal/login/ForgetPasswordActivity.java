@@ -93,7 +93,14 @@ public class ForgetPasswordActivity extends Activity implements View.OnClickList
         buton_get_verification_code.setBackgroundResource(R.drawable.get_vercode_button_disable_background);
         manager.addEventCallback(ec);
         showInputmothed();
-        button_login.setEnabled(false);
+        if (StringValidatorUtil.isMobileNO(edittext_input_phone_number.getText().toString())
+                && edittext_input_password.getText().toString().length() >= 6
+                && edittext_verification_code.getText().toString().length()>=6
+                ) {
+            button_login.setEnabled(true);
+        } else {
+            button_login.setEnabled(false);
+        }
     }
 
     @Override
@@ -268,16 +275,16 @@ public class ForgetPasswordActivity extends Activity implements View.OnClickList
     };
     private Handler mhandler = new WeakRefHandler(mCallback);
     private void initViews() {
-        buton_get_verification_code = findViewById(R.id.buton_get_verification_code);
+        buton_get_verification_code = (TextView) findViewById(R.id.buton_get_verification_code);
         view_phonenumber_dirverline = findViewById(R.id.view_phonenumber_dirverline);
         view_password_dirverline = findViewById(R.id.view_password_dirverline);
         view_yanzhen_dirverline = findViewById(R.id.view_yanzhen_dirverline);
-        edittext_input_phone_number = findViewById(R.id.edittext_input_phone_number);
-        edittext_verification_code = findViewById(R.id.edittext_verification_code);
-        edittext_input_password = findViewById(R.id.edittext_input_password);
-        imageview_eye = findViewById(R.id.imageview_eye);
-        button_login = findViewById(R.id.button_login);
-        layout_title= findViewById(R.id.layout_title);
+        edittext_input_phone_number = (EditText) findViewById(R.id.edittext_input_phone_number);
+        edittext_verification_code = (EditText) findViewById(R.id.edittext_verification_code);
+        edittext_input_password = (EditText) findViewById(R.id.edittext_input_password);
+        imageview_eye = (ImageView) findViewById(R.id.imageview_eye);
+        button_login = (Button) findViewById(R.id.button_login);
+        layout_title= (TitleLayout) findViewById(R.id.layout_title);
     }
 
     private boolean isGetCaptche;

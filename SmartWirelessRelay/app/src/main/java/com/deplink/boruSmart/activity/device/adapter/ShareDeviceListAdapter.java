@@ -60,13 +60,13 @@ public class ShareDeviceListAdapter extends BaseAdapter {
                         R.layout.share_user_list_item, null);
             }
 
-            viewHolder.user_portrait = convertView
+            viewHolder.user_portrait = (CircleImageView) convertView
                     .findViewById(R.id.user_portrait);
-            viewHolder.user_name = convertView
+            viewHolder.user_name = (TextView) convertView
                     .findViewById(R.id.user_name);
-            viewHolder.textview_share_user_bind_state = convertView
+            viewHolder.textview_share_user_bind_state = (TextView) convertView
                     .findViewById(R.id.textview_share_user_bind_state);
-            viewHolder.layout_mamager = convertView
+            viewHolder.layout_mamager = (RelativeLayout) convertView
                     .findViewById(R.id.layout_mamager);
             convertView.setTag(viewHolder);
         } else {

@@ -8,15 +8,15 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 
+import com.deplink.boruSmart.activity.device.smartSwitch.adapter.SwitchTypeAdapter;
 import com.deplink.boruSmart.constant.DeviceTypeConstant;
+import com.deplink.boruSmart.manager.device.smartswitch.SmartSwitchManager;
 import com.deplink.boruSmart.util.qrcode.qrcodecapture.CaptureActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import deplink.com.smartwirelessrelay.homegenius.EllESDK.R;
-import com.deplink.boruSmart.activity.device.smartSwitch.adapter.SwitchTypeAdapter;
-import com.deplink.boruSmart.manager.device.smartswitch.SmartSwitchManager;
 
 public class SelectSwitchTypeActivity extends Activity implements View.OnClickListener,AdapterView.OnItemClickListener{
     private ImageView image_back;
@@ -48,8 +48,8 @@ public class SelectSwitchTypeActivity extends Activity implements View.OnClickLi
     }
 
     private void initViews() {
-        image_back= findViewById(R.id.image_back);
-        listview_switch_type= findViewById(R.id.listview_switch_type);
+        image_back= (ImageView) findViewById(R.id.image_back);
+        listview_switch_type= (ListView) findViewById(R.id.listview_switch_type);
     }
 
     @Override

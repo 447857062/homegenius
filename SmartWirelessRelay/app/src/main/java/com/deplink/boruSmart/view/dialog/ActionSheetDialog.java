@@ -35,9 +35,9 @@ public class ActionSheetDialog {
         float scale = context.getResources().getDisplayMetrics().density;
         int width = (int) (283 * scale + 0.5f);
         view.setMinimumWidth(width);
-        lLayout_content = view
+        lLayout_content = (LinearLayout) view
                 .findViewById(R.id.lLayout_content);
-        txt_cancel = view.findViewById(R.id.txt_cancel);
+        txt_cancel = (TextView) view.findViewById(R.id.txt_cancel);
         txt_cancel.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -26,14 +26,13 @@
         android:textSize="@dimen/text_size_smallest" />
 
     <TextView
-        android:textSize="@dimen/layout_buton_bar_item_text_size"
+        android:textSize="12sp"
         android:textColor="@color/white"
-        android:id="@+id/device_number"
+        android:id="@+id/textview_device_status"
         android:gravity="center_horizontal|center_vertical"
         android:layout_toLeftOf="@+id/arror_right"
         android:layout_centerVertical="true"
         android:layout_marginRight="@dimen/homepage_room_title_marginleft_room_smallimage"
-        android:background="@drawable/homepage_roomselect_ovel_bg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
       <ImageView

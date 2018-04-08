@@ -55,11 +55,11 @@ public class ExperienceCenterListAdapter extends BaseAdapter {
             viewHolder = new ViewHolder();
             convertView = LayoutInflater.from(mContext).inflate(
                     R.layout.experience_center_listitem, null);
-            viewHolder.image_device_type = convertView
+            viewHolder.image_device_type = (ImageView) convertView
                     .findViewById(R.id.image_device_type);
-            viewHolder.textview_device_name = convertView
+            viewHolder.textview_device_name = (TextView) convertView
                     .findViewById(R.id.textview_device_name);
-            viewHolder.iamgeview_setting = convertView
+            viewHolder.iamgeview_setting = (ImageView) convertView
                     .findViewById(R.id.iamgeview_setting);
             viewHolder.view_line = convertView
                     .findViewById(R.id.view_line);

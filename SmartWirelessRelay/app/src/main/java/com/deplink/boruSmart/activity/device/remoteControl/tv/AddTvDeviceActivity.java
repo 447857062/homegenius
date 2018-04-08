@@ -72,7 +72,7 @@ public class AddTvDeviceActivity extends Activity implements AdapterView.OnItemC
 
     private void initEvents() {
         listview_band.setOnItemClickListener(this);
-        ClearEditText edittext_band_name = findViewById(R.id.edittext_band_name);
+        ClearEditText edittext_band_name = (ClearEditText) findViewById(R.id.edittext_band_name);
         sideBar.setOnTouchingLetterChangedListener(new SideBar.OnTouchingLetterChangedListener() {
 
             @Override
@@ -119,10 +119,10 @@ public class AddTvDeviceActivity extends Activity implements AdapterView.OnItemC
     }
 
     private void initViews() {
-        listview_band= findViewById(R.id.listview_band);
-        sideBar = findViewById(R.id.sidrbar);
-        dialog = findViewById(R.id.dialog);
-        layout_title= findViewById(R.id.layout_title);
+        listview_band= (ListView) findViewById(R.id.listview_band);
+        sideBar = (SideBar) findViewById(R.id.sidrbar);
+        dialog = (TextView) findViewById(R.id.dialog);
+        layout_title= (TitleLayout) findViewById(R.id.layout_title);
     }
 
     @Override
