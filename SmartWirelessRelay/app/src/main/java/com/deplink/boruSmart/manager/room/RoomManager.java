@@ -9,7 +9,7 @@ import com.deplink.boruSmart.util.CharSetUtil;
 import com.deplink.boruSmart.util.JsonArrayParseUtil;
 import com.deplink.boruSmart.util.NetUtil;
 import com.deplink.boruSmart.util.Perfence;
-import com.deplink.boruSmart.view.toast.ToastSingleShow;
+import com.deplink.boruSmart.view.toast.Ftoast;
 import com.deplink.sdk.android.sdk.homegenius.DeviceOperationResponse;
 import com.deplink.sdk.android.sdk.homegenius.RoomUpdateName;
 import com.deplink.sdk.android.sdk.rest.RestfulToolsHomeGenius;
@@ -134,6 +134,7 @@ public class RoomManager {
      * 查询房间列表
      */
     public void queryRoomListHttp() {
+        Log.i(TAG,"queryRoomListHttp");
         String userName = Perfence.getPerfence(Perfence.PERFENCE_PHONE);
         if (!NetUtil.isNetAvailable(mContext)) {
             return;
@@ -258,7 +259,7 @@ public class RoomManager {
     public void addRoomHttp(String roomName, String roomType, int sort_num) {
         String userName = Perfence.getPerfence(Perfence.PERFENCE_PHONE);
         if (userName.equals("")) {
-            ToastSingleShow.showText(mContext, "用户未登录");
+            Ftoast.create(mContext).setText("用户未登录").show();
             return;
         }
         com.deplink.sdk.android.sdk.homegenius.Room room = new com.deplink.sdk.android.sdk.homegenius.Room();
@@ -309,7 +310,7 @@ public class RoomManager {
     public void deleteRoomHttp(String roomUid) {
         String userName = Perfence.getPerfence(Perfence.PERFENCE_PHONE);
         if (userName.equals("")) {
-            ToastSingleShow.showText(mContext, "用户未登录");
+            Ftoast.create(mContext).setText("用户未登录").show();
             return;
         }
         RestfulToolsHomeGenius.getSingleton().deleteRomm(userName, roomUid, new Callback<DeviceOperationResponse>() {

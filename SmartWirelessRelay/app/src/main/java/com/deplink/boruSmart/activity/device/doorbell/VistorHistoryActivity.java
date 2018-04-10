@@ -20,20 +20,20 @@ import android.widget.AdapterView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-    import com.deplink.boruSmart.activity.personal.login.LoginActivity;
-    import com.deplink.boruSmart.manager.device.doorbeel.DoorBellListener;
-    import com.deplink.boruSmart.util.Perfence;
-    import com.deplink.boruSmart.util.WeakRefHandler;
-    import com.deplink.boruSmart.view.listview.swipemenulistview.SwipeMenuCreator;
-    import com.deplink.boruSmart.view.listview.swipemenulistview.SwipeMenuItem;
-    import com.deplink.boruSmart.constant.AppConstant;
+import com.deplink.boruSmart.activity.personal.login.LoginActivity;
+import com.deplink.boruSmart.constant.AppConstant;
 import com.deplink.boruSmart.manager.device.DeviceManager;
-    import com.deplink.boruSmart.manager.device.doorbeel.DoorbeelManager;
-    import com.deplink.boruSmart.view.combinationwidget.TitleLayout;
+import com.deplink.boruSmart.manager.device.doorbeel.DoorBellListener;
+import com.deplink.boruSmart.manager.device.doorbeel.DoorbeelManager;
+import com.deplink.boruSmart.util.Perfence;
+import com.deplink.boruSmart.util.WeakRefHandler;
+import com.deplink.boruSmart.view.combinationwidget.TitleLayout;
 import com.deplink.boruSmart.view.dialog.AlertDialog;
 import com.deplink.boruSmart.view.listview.swipemenulistview.SwipeMenu;
-    import com.deplink.boruSmart.view.listview.swipemenulistview.SwipeMenuListView;
-import com.deplink.boruSmart.view.toast.ToastSingleShow;
+import com.deplink.boruSmart.view.listview.swipemenulistview.SwipeMenuCreator;
+import com.deplink.boruSmart.view.listview.swipemenulistview.SwipeMenuItem;
+import com.deplink.boruSmart.view.listview.swipemenulistview.SwipeMenuListView;
+import com.deplink.boruSmart.view.toast.Ftoast;
 import com.deplink.sdk.android.sdk.DeplinkSDK;
 import com.deplink.sdk.android.sdk.EventCallback;
 import com.deplink.sdk.android.sdk.SDKAction;
@@ -83,10 +83,11 @@ import deplink.com.smartwirelessrelay.homegenius.EllESDK.R;
                         mDoorbeelManager.getDoorbellHistory();
                     }
                 } else {
-                    ToastSingleShow.showText(this, "未登录");
+                    Ftoast.create(VistorHistoryActivity.this).setText("未登录").show();
                 }
             } else {
                 layout_no_visitor.setVisibility(View.VISIBLE);
+                textview_visitor_loading.setVisibility(View.GONE);
             }
         }
 
@@ -160,9 +161,9 @@ import deplink.com.smartwirelessrelay.homegenius.EllESDK.R;
                 switch (msg.what) {
                     case MSG_TOAST_DELETE_RECORD_RESULT:
                         if ((boolean) msg.obj) {
-                            ToastSingleShow.showText(VistorHistoryActivity.this, "删除访客记录成功");
+                            Ftoast.create(VistorHistoryActivity.this).setText("删除访客记录成功").show();
                         } else {
-                            ToastSingleShow.showText(VistorHistoryActivity.this, "删除访客记录失败");
+                            Ftoast.create(VistorHistoryActivity.this).setText("删除访客记录失败").show();
                         }
 
                         break;
@@ -222,6 +223,7 @@ import deplink.com.smartwirelessrelay.homegenius.EllESDK.R;
                             textview_visitor_loading.setVisibility(View.GONE);
                         } else {
                             layout_no_visitor.setVisibility(View.VISIBLE);
+                            textview_visitor_loading.setVisibility(View.GONE);
                         }
                     }
                 }

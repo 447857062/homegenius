@@ -35,7 +35,7 @@ import com.deplink.boruSmart.util.WeakRefHandler;
 import com.deplink.boruSmart.view.combinationwidget.TitleLayout;
 import com.deplink.boruSmart.view.dialog.AlertDialog;
 import com.deplink.boruSmart.view.imageview.CircleImageView;
-import com.deplink.boruSmart.view.toast.ToastSingleShow;
+import com.deplink.boruSmart.view.toast.Ftoast;
 import com.deplink.sdk.android.sdk.DeplinkSDK;
 import com.deplink.sdk.android.sdk.EventCallback;
 import com.deplink.sdk.android.sdk.SDKAction;
@@ -142,7 +142,7 @@ public class PersonalCenterActivity extends Activity implements View.OnClickList
                 user_head_portrait.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.defaultavatar));
             }
         } else {
-            ToastSingleShow.showText(this, "sd卡不存在！");
+            Ftoast.create(PersonalCenterActivity.this).setText("sd卡不存在").show();
         }
     }
     private void initDatas() {
@@ -179,7 +179,7 @@ public class PersonalCenterActivity extends Activity implements View.OnClickList
                                 if(isAppUpdate){
                                     startActivity(new Intent(PersonalCenterActivity.this, UpdateImmediateActivity.class));
                                 }else{
-                                    ToastSingleShow.showText(PersonalCenterActivity.this,"已是最新版本");
+                                    Ftoast.create(PersonalCenterActivity.this).setText("已是最新版本").show();
                                 }
                             }
                         break;

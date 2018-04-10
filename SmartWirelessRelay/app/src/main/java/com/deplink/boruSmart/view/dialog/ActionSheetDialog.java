@@ -87,7 +87,8 @@ public class ActionSheetDialog {
             final OnSheetItemClickListener listener = sheetItem.itemClickListener;
             TextView textView = new TextView(context);
             textView.setText(strItem);
-            textView.setTextSize(18);
+            textView.setTextSize(16);
+            textView.setTextColor(R.color.room_type_text);
             textView.setGravity(Gravity.CENTER);
             View view = new View(context);
             view.setBackgroundResource(R.color.line_dirver_color);
@@ -158,7 +159,6 @@ public class ActionSheetDialog {
     public enum SheetItemColor {
         Blue("#F55555"), GRAY("#333333");
         private String name;
-
         SheetItemColor(String name) {
             this.name = name;
         }

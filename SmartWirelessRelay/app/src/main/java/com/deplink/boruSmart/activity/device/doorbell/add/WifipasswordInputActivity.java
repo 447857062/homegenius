@@ -7,11 +7,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.deplink.boruSmart.util.Wifi;
-import com.deplink.boruSmart.view.toast.ToastSingleShow;
 import com.deplink.boruSmart.manager.device.doorbeel.DoorbeelManager;
+import com.deplink.boruSmart.util.Wifi;
 import com.deplink.boruSmart.view.combinationwidget.TitleLayout;
 import com.deplink.boruSmart.view.edittext.ClearEditText;
+import com.deplink.boruSmart.view.toast.Ftoast;
 
 import deplink.com.smartwirelessrelay.homegenius.EllESDK.R;
 
@@ -62,7 +62,7 @@ public class WifipasswordInputActivity extends Activity implements View.OnClickL
             case R.id.button_next_step:
                 String wifiPassword = edittext_wifi_password.getText().toString();
                 if(wifiPassword.length()<8){
-                    ToastSingleShow.showText(this,"请输入正确的wifi密码");
+                    Ftoast.create(WifipasswordInputActivity.this).setText("请输入正确的wifi密码").show();
                     return;
                 }
                 mDoorbeelManager.setSsid(wifiName);

@@ -13,7 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.deplink.boruSmart.Protocol.json.Room;
-import com.deplink.boruSmart.activity.device.AddDeviceActivity;
+import com.deplink.boruSmart.activity.device.SelectRommActivity;
 import com.deplink.boruSmart.activity.personal.login.LoginActivity;
 import com.deplink.boruSmart.activity.room.adapter.ContentAdapterAddRoom;
 import com.deplink.boruSmart.constant.AppConstant;
@@ -25,7 +25,7 @@ import com.deplink.boruSmart.util.Perfence;
 import com.deplink.boruSmart.util.WeakRefHandler;
 import com.deplink.boruSmart.view.dialog.AlertDialog;
 import com.deplink.boruSmart.view.edittext.ClearEditText;
-import com.deplink.boruSmart.view.toast.ToastSingleShow;
+import com.deplink.boruSmart.view.toast.Ftoast;
 import com.deplink.sdk.android.sdk.DeplinkSDK;
 import com.deplink.sdk.android.sdk.EventCallback;
 import com.deplink.sdk.android.sdk.SDKAction;
@@ -159,7 +159,7 @@ public class AddRommActivity extends AppCompatActivity implements View.OnClickLi
                     Toast.makeText(AddRommActivity.this, "添加房间成功", Toast.LENGTH_LONG).show();
                     if (fromAddDevice) {
                         RoomManager.getInstance().setCurrentSelectedRoom(null);
-                        Intent intent = new Intent(AddRommActivity.this, AddDeviceActivity.class);
+                        Intent intent = new Intent(AddRommActivity.this, SelectRommActivity.class);
                         startActivity(intent);
                     }
                     break;
@@ -207,15 +207,15 @@ public class AddRommActivity extends AppCompatActivity implements View.OnClickLi
             case R.id.textview_add_room_complement:
                 roomName = edittext_room_name.getText().toString();
                 if (!NetUtil.isNetAvailable(this)) {
-                    ToastSingleShow.showText(this, "无可用网络连接,请检查网络");
+                    Ftoast.create(this).setText("无可用网络连接,请检查网络").show();
                     return;
                 }
                 if (!isUserLogin) {
-                    ToastSingleShow.showText(this, "用户未登录");
+                    Ftoast.create(this).setText("用户未登录").show();
                     return;
                 }
                 if (roomName.equals("")) {
-                    Toast.makeText(AddRommActivity.this, "请输入房间名称", Toast.LENGTH_SHORT).show();
+                    Ftoast.create(this).setText("请输入房间名称").show();
                     return;
                 }
                 int sort_num = DataSupport.findAll(Room.class, true).size();

@@ -22,12 +22,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.deplink.boruSmart.activity.homepage.SmartHomeMainActivity;
+import com.deplink.boruSmart.util.NetUtil;
 import com.deplink.boruSmart.util.Perfence;
 import com.deplink.boruSmart.util.StringValidatorUtil;
 import com.deplink.boruSmart.util.WeakRefHandler;
-import com.deplink.boruSmart.util.NetUtil;
 import com.deplink.boruSmart.view.combinationwidget.TitleLayout;
-import com.deplink.boruSmart.view.toast.ToastSingleShow;
+import com.deplink.boruSmart.view.toast.Ftoast;
 import com.deplink.sdk.android.sdk.DeplinkSDK;
 import com.deplink.sdk.android.sdk.EventCallback;
 import com.deplink.sdk.android.sdk.SDKAction;
@@ -75,7 +75,7 @@ public class RegistActivity extends Activity implements View.OnClickListener, Vi
     private Handler.Callback mCallback = new Handler.Callback() {
         @Override
         public boolean handleMessage(Message msg) {
-            ToastSingleShow.showText(RegistActivity.this, (String) msg.obj);
+            Ftoast.create(RegistActivity.this).setText((String) msg.obj).show();
             return true;
         }
     };
@@ -186,12 +186,26 @@ public class RegistActivity extends Activity implements View.OnClickListener, Vi
                     try {
                         JSONObject object = new JSONObject(msg);
                         String des = object.optString("detail");
+                        String error = object.optString("error");
                         int status = object.optInt("status");
                         if (status > 0 && !TextUtils.isEmpty(des)) {
                             // Perfence.showCallBack(des);
                             Message message = Message.obtain();
                             message.what = 1;
                             message.obj = des;
+                            mhandler.sendMessage(message);
+                        }
+                        if(status>0 && !TextUtils.isEmpty(error)){
+                            if(error.contains("verification code error")){
+                                error="用户提交验证验证码错误";
+                            }else if(error.contains("within 5 minutes")){
+                                error="每个验证码可以在5分钟内验证3次";
+                            }else if(error.contains("Illegal")){
+                                error="非法检查要求";
+                            }
+                            Message message = Message.obtain();
+                            message.what = 1;
+                            message.obj = error;
                             mhandler.sendMessage(message);
                         }
                     } catch (JSONException e) {
@@ -216,7 +230,7 @@ public class RegistActivity extends Activity implements View.OnClickListener, Vi
                     case REGISTER:
                         Perfence.setPerfence(Perfence.USER_PASSWORD, password);
                         Perfence.setPerfence(Perfence.PERFENCE_PHONE, username);
-                        ToastSingleShow.showText(RegistActivity.this, "注册成功");
+                        Ftoast.create(RegistActivity.this).setText("注册成功").show();
                         Intent intent=new Intent(RegistActivity.this, SmartHomeMainActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
@@ -238,7 +252,7 @@ public class RegistActivity extends Activity implements View.OnClickListener, Vi
                 switch (action) {
                     case REGISTER:
                         try {
-                            ToastSingleShow.showText(RegistActivity.this, "注册失败:" + throwable.getMessage());
+                            Ftoast.create(RegistActivity.this).setText("注册失败:" + throwable.getMessage()).show();
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -334,12 +348,12 @@ public class RegistActivity extends Activity implements View.OnClickListener, Vi
                 }
                 verifycode = edittext_verification_code.getText().toString().trim();
                 if (verifycode.length() < 6) {
-                    ToastSingleShow.showText(this, "需要校验的验证码错误");
+                    Ftoast.create(RegistActivity.this).setText("需要校验的验证码错误").show();
                     return;
                 }
                 //注册
                 if (!isGetCaptche) {
-                    ToastSingleShow.showText(this, "需要校验的验证码错误");
+                    Ftoast.create(RegistActivity.this).setText("需要校验的验证码错误").show();
                     return;
                 } else {
                     SMSSDK.submitVerificationCode(simCountryCode, username, verifycode);

@@ -11,22 +11,22 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.deplink.boruSmart.activity.personal.experienceCenter.ExperienceDevicesActivity;
-import com.deplink.boruSmart.activity.personal.login.LoginActivity;
-import com.deplink.boruSmart.util.Perfence;
 import com.deplink.boruSmart.Protocol.json.Room;
 import com.deplink.boruSmart.Protocol.json.device.SmartDev;
 import com.deplink.boruSmart.activity.device.DevicesActivity;
 import com.deplink.boruSmart.activity.device.adapter.RemoteControlSelectListAdapter;
+import com.deplink.boruSmart.activity.personal.experienceCenter.ExperienceDevicesActivity;
+import com.deplink.boruSmart.activity.personal.login.LoginActivity;
 import com.deplink.boruSmart.constant.AppConstant;
 import com.deplink.boruSmart.manager.device.DeviceManager;
 import com.deplink.boruSmart.manager.device.remoteControl.RemoteControlListener;
 import com.deplink.boruSmart.manager.device.remoteControl.RemoteControlManager;
 import com.deplink.boruSmart.util.NetUtil;
+import com.deplink.boruSmart.util.Perfence;
 import com.deplink.boruSmart.view.combinationwidget.TitleLayout;
 import com.deplink.boruSmart.view.dialog.AlertDialog;
 import com.deplink.boruSmart.view.edittext.ClearEditText;
-import com.deplink.boruSmart.view.toast.ToastSingleShow;
+import com.deplink.boruSmart.view.toast.Ftoast;
 import com.deplink.sdk.android.sdk.DeplinkSDK;
 import com.deplink.sdk.android.sdk.EventCallback;
 import com.deplink.sdk.android.sdk.SDKAction;
@@ -98,7 +98,7 @@ public class EditRemoteDevicesActivity extends Activity implements View.OnClickL
                             mRemoteControlManager.alertVirtualDevice(deviceUid,changeDevicename,null,null);
                         }
                     } else {
-                        ToastSingleShow.showText(EditRemoteDevicesActivity.this, "未登录,登录后才能删除设备");
+                        Ftoast.create(EditRemoteDevicesActivity.this).setText("未登录,登录后才能删除设备").show();
                     }
                 }else{
                     onBackPressed();
@@ -164,10 +164,10 @@ public class EditRemoteDevicesActivity extends Activity implements View.OnClickL
                     if (saveResult > 0) {
                         startActivity(new Intent(EditRemoteDevicesActivity.this, DevicesActivity.class));
                     } else {
-                        ToastSingleShow.showText(EditRemoteDevicesActivity.this, "删除" + deviceType + "失败");
+                        Ftoast.create(EditRemoteDevicesActivity.this).setText("删除" + deviceType + "失败").show();
                     }
                 }else{
-                    ToastSingleShow.showText(EditRemoteDevicesActivity.this, "删除" + deviceType + "失败");
+                    Ftoast.create(EditRemoteDevicesActivity.this).setText("删除" + deviceType + "失败").show();
                 }
             }
 
@@ -181,7 +181,7 @@ public class EditRemoteDevicesActivity extends Activity implements View.OnClickL
                         if (saveResult) {
                             finish();
                         } else {
-                            ToastSingleShow.showText(EditRemoteDevicesActivity.this, "修改设备名称失败");
+                            Ftoast.create(EditRemoteDevicesActivity.this).setText("修改设备名称失败").show();
                         }
                         break;
                     case "alertBindedRemoteControl":
@@ -189,7 +189,7 @@ public class EditRemoteDevicesActivity extends Activity implements View.OnClickL
                         if (saveResult) {
                             finish();
                         } else {
-                            ToastSingleShow.showText(EditRemoteDevicesActivity.this, "修改绑定的真实智能遥控失败");
+                            Ftoast.create(EditRemoteDevicesActivity.this).setText("修改绑定的真实智能遥控失败").show();
                         }
                         break;
                 }
@@ -306,10 +306,10 @@ public class EditRemoteDevicesActivity extends Activity implements View.OnClickL
                                 if (isUserLogin) {
                                     mRemoteControlManager.deleteVirtualDeviceHttp();
                                 } else {
-                                    ToastSingleShow.showText(EditRemoteDevicesActivity.this, "未登录,登录后才能删除设备");
+                                    Ftoast.create(EditRemoteDevicesActivity.this).setText("未登录,登录后才能删除设备").show();
                                 }
                             }else{
-                                ToastSingleShow.showText(EditRemoteDevicesActivity.this, "网络连接不可用");
+                                Ftoast.create(EditRemoteDevicesActivity.this).setText("网络连接不可用").show();
                             }
 
 

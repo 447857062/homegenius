@@ -14,8 +14,8 @@ import android.widget.Toast;
 
 import com.deplink.boruSmart.Protocol.json.Room;
 import com.deplink.boruSmart.Protocol.json.device.getway.GatwayDevice;
-import com.deplink.boruSmart.activity.device.AddDeviceActivity;
 import com.deplink.boruSmart.activity.device.DevicesActivity;
+import com.deplink.boruSmart.activity.device.SelectRommActivity;
 import com.deplink.boruSmart.activity.device.ShareDeviceActivity;
 import com.deplink.boruSmart.activity.device.adapter.GetwaySelectListAdapter;
 import com.deplink.boruSmart.activity.personal.experienceCenter.ExperienceDevicesActivity;
@@ -33,7 +33,7 @@ import com.deplink.boruSmart.view.combinationwidget.TitleLayout;
 import com.deplink.boruSmart.view.dialog.AlertDialog;
 import com.deplink.boruSmart.view.dialog.loadingdialog.DialogThreeBounce;
 import com.deplink.boruSmart.view.edittext.ClearEditText;
-import com.deplink.boruSmart.view.toast.ToastSingleShow;
+import com.deplink.boruSmart.view.toast.Ftoast;
 import com.deplink.sdk.android.sdk.DeplinkSDK;
 import com.deplink.sdk.android.sdk.EventCallback;
 import com.deplink.sdk.android.sdk.SDKAction;
@@ -116,7 +116,7 @@ public class EditActivity extends Activity implements View.OnClickListener {
                     if (isLogin) {
                         mDeviceManager.alertDeviceHttp(deviceUid, null, deviceName, null);
                     } else {
-                        ToastSingleShow.showText(EditActivity.this, "未登录,登录后操作");
+                        Ftoast.create(EditActivity.this).setText("未获取到开锁记录").show();
                     }
                 }
             }
@@ -196,10 +196,10 @@ public class EditActivity extends Activity implements View.OnClickListener {
                     if (deleteResult > 0) {
                         startActivity(new Intent(EditActivity.this, DevicesActivity.class));
                     } else {
-                        ToastSingleShow.showText(EditActivity.this, "删除开关设备失败");
+                        Ftoast.create(EditActivity.this).setText("删除开关设备失败").show();
                     }
                 } else {
-                    ToastSingleShow.showText(EditActivity.this, "删除开关设备失败");
+                    Ftoast.create(EditActivity.this).setText("删除开关设备失败").show();
                 }
 
             }
@@ -370,13 +370,13 @@ public class EditActivity extends Activity implements View.OnClickListener {
                 if(isStartFromExperience){
                     mDeviceManager.setEditDevice(true);
                     mDeviceManager.setCurrentEditDeviceType(DeviceTypeConstant.TYPE.TYPE_SWITCH);
-                    Intent intent = new Intent(this, AddDeviceActivity.class);
+                    Intent intent = new Intent(this, SelectRommActivity.class);
                     startActivity(intent);
                 }else{
                     if(isLogin){
                         mDeviceManager.setEditDevice(true);
                         mDeviceManager.setCurrentEditDeviceType(DeviceTypeConstant.TYPE.TYPE_SWITCH);
-                        Intent intent = new Intent(this, AddDeviceActivity.class);
+                        Intent intent = new Intent(this, SelectRommActivity.class);
                         startActivity(intent);
                     }else{
                         startActivity(new Intent(EditActivity.this, LoginActivity.class));
@@ -397,10 +397,10 @@ public class EditActivity extends Activity implements View.OnClickListener {
                                         if (isLogin) {
                                             mDeviceManager.deleteDeviceHttp();
                                         } else {
-                                            ToastSingleShow.showText(EditActivity.this, "未登录,登录后操作");
+                                            Ftoast.create(EditActivity.this).setText("未登录,登录后操作").show();
                                         }
                                     }else{
-                                        ToastSingleShow.showText(EditActivity.this, "网络连接不可用");
+                                        Ftoast.create(EditActivity.this).setText("网络连接不可用").show();
                                     }
                                 }
                             }

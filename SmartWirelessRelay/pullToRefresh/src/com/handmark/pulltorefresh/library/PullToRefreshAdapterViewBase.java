@@ -44,7 +44,7 @@ public abstract class PullToRefreshAdapterViewBase<T extends AbsListView> extend
 			if (lp instanceof LinearLayout.LayoutParams) {
 				newLp.gravity = ((LinearLayout.LayoutParams) lp).gravity;
 			} else {
-				newLp.gravity = Gravity.CENTER;
+				newLp.gravity = Gravity.TOP;
 			}
 		}
 
@@ -133,7 +133,7 @@ public abstract class PullToRefreshAdapterViewBase<T extends AbsListView> extend
 	 * 
 	 * @param newEmptyView - Empty View to be used
 	 */
-	public final void setEmptyView(View newEmptyView) {
+	public final void setEmptyView(View newEmptyView,float margin) {
 		FrameLayout refreshableViewWrapper = getRefreshableViewWrapper();
 
 		if (null != newEmptyView) {
@@ -149,6 +149,12 @@ public abstract class PullToRefreshAdapterViewBase<T extends AbsListView> extend
 			// We need to convert any LayoutParams so that it works in our
 			// FrameLayout
 			FrameLayout.LayoutParams lp = convertEmptyViewLayoutParams(newEmptyView.getLayoutParams());
+			if(margin>0){
+				lp.leftMargin= (int) margin;
+				lp.rightMargin= (int) margin;
+				lp.topMargin= (int) margin;
+			}
+
 			if (null != lp) {
 				refreshableViewWrapper.addView(newEmptyView, lp);
 			} else {

@@ -22,10 +22,14 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:minHeight="40dp"
             android:layout_gravity="center_vertical"
-            android:layout_margin="16dp">
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            >
 
             <TextView
+                android:layout_centerVertical="true"
                 android:id="@+id/tv_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

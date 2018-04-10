@@ -10,9 +10,9 @@ import android.widget.RelativeLayout;
 import com.deplink.boruSmart.activity.personal.login.LoginActivity;
 import com.deplink.boruSmart.constant.AppConstant;
 import com.deplink.boruSmart.util.Perfence;
-import com.deplink.boruSmart.view.dialog.AlertDialog;
-import com.deplink.boruSmart.view.toast.ToastSingleShow;
 import com.deplink.boruSmart.view.combinationwidget.TitleLayout;
+import com.deplink.boruSmart.view.dialog.AlertDialog;
+import com.deplink.boruSmart.view.toast.Ftoast;
 import com.deplink.sdk.android.sdk.DeplinkSDK;
 import com.deplink.sdk.android.sdk.EventCallback;
 import com.deplink.sdk.android.sdk.SDKAction;
@@ -104,7 +104,7 @@ public class EncryptTypeActivity extends Activity implements View.OnClickListene
                 switch (op) {
                     case RouterDevice.OP_SUCCESS:
                         if (isSetEncrypt) {
-                            ToastSingleShow.showText(EncryptTypeActivity.this, "设置成功");
+                            Ftoast.create(EncryptTypeActivity.this).setText("设置成功").show();
                         }
                         break;
                 }

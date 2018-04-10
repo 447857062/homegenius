@@ -27,7 +27,7 @@ import com.deplink.boruSmart.util.WeakRefHandler;
 import com.deplink.boruSmart.view.combinationwidget.TitleLayout;
 import com.deplink.boruSmart.view.dialog.AlertDialog;
 import com.deplink.boruSmart.view.dialog.InputAlertDialog;
-import com.deplink.boruSmart.view.toast.ToastSingleShow;
+import com.deplink.boruSmart.view.toast.Ftoast;
 import com.deplink.sdk.android.sdk.DeplinkSDK;
 import com.deplink.sdk.android.sdk.EventCallback;
 import com.deplink.sdk.android.sdk.SDKAction;
@@ -213,7 +213,7 @@ public class ScanWifiListActivity extends Activity implements AdapterView.OnItem
                     if(wifiListResult.getResult()!=-1){
                         mHandler.sendEmptyMessage(MSG_GET_WIFILIST_SET_RESULT);
                     }else{
-                        ToastSingleShow.showText(ScanWifiListActivity.this,"设置wifi中继失败");
+                        Ftoast.create(ScanWifiListActivity.this).setText("设置wifi中继失败").show();
                     }
                 }
             }
@@ -248,7 +248,7 @@ public class ScanWifiListActivity extends Activity implements AdapterView.OnItem
                     mWifiListAdapter.notifyDataSetChanged();
                     break;
                 case MSG_GET_WIFILIST_SET_RESULT:
-                    ToastSingleShow.showText(ScanWifiListActivity.this,"设置wifi中继成功");
+                    Ftoast.create(ScanWifiListActivity.this).setText("设置wifi中继成功").show();
                     break;
             }
             return true;
@@ -261,7 +261,7 @@ public class ScanWifiListActivity extends Activity implements AdapterView.OnItem
         if(result!=-1){
             mHandler.sendEmptyMessage(MSG_GET_WIFILIST_SET_RESULT);
         }else{
-            ToastSingleShow.showText(ScanWifiListActivity.this,"设置wifi中继失败");
+            Ftoast.create(ScanWifiListActivity.this).setText("设置wifi中继失败").show();
         }
 
     }
@@ -326,7 +326,7 @@ public class ScanWifiListActivity extends Activity implements AdapterView.OnItem
                     }).show();
                 }
             }else{
-                ToastSingleShow.showText(ScanWifiListActivity.this,"无可用的网络连接");
+                Ftoast.create(ScanWifiListActivity.this).setText("无可用的网络连接").show();
             }
 
         }
@@ -342,7 +342,7 @@ public class ScanWifiListActivity extends Activity implements AdapterView.OnItem
                 if(NetUtil.isNetAvailable(this)){
                     queryWifiRelayList();
                 }else{
-                    ToastSingleShow.showText(this,"无可用的网络连接");
+                    Ftoast.create(ScanWifiListActivity.this).setText("无可用的网络连接").show();
                 }
                 break;
         }

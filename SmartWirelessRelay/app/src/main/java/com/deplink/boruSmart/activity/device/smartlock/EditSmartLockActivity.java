@@ -19,8 +19,8 @@ import com.deplink.boruSmart.Protocol.json.Room;
 import com.deplink.boruSmart.Protocol.json.device.DeviceList;
 import com.deplink.boruSmart.Protocol.json.device.SmartDev;
 import com.deplink.boruSmart.Protocol.json.device.getway.GatwayDevice;
-import com.deplink.boruSmart.activity.device.AddDeviceActivity;
 import com.deplink.boruSmart.activity.device.DevicesActivity;
+import com.deplink.boruSmart.activity.device.SelectRommActivity;
 import com.deplink.boruSmart.activity.device.ShareDeviceActivity;
 import com.deplink.boruSmart.activity.device.adapter.GetwaySelectListAdapter;
 import com.deplink.boruSmart.activity.personal.experienceCenter.ExperienceDevicesActivity;
@@ -40,7 +40,7 @@ import com.deplink.boruSmart.view.combinationwidget.TitleLayout;
 import com.deplink.boruSmart.view.dialog.AlertDialog;
 import com.deplink.boruSmart.view.dialog.loadingdialog.DialogThreeBounce;
 import com.deplink.boruSmart.view.edittext.ClearEditText;
-import com.deplink.boruSmart.view.toast.ToastSingleShow;
+import com.deplink.boruSmart.view.toast.Ftoast;
 import com.deplink.sdk.android.sdk.DeplinkSDK;
 import com.deplink.sdk.android.sdk.EventCallback;
 import com.deplink.sdk.android.sdk.SDKAction;
@@ -129,7 +129,7 @@ public class EditSmartLockActivity extends Activity implements View.OnClickListe
                         }
 
                     } else {
-                        ToastSingleShow.showText(EditSmartLockActivity.this, "网络连接不可用");
+                        Ftoast.create(EditSmartLockActivity.this).setText("网络连接不可用").show();
                     }
 
                 }
@@ -297,13 +297,13 @@ public class EditSmartLockActivity extends Activity implements View.OnClickListe
                 if(isStartFromExperience){
                     mDeviceManager.setEditDevice(true);
                     mDeviceManager.setCurrentEditDeviceType(DeviceTypeConstant.TYPE.TYPE_LOCK);
-                    Intent intent = new Intent(this, AddDeviceActivity.class);
+                    Intent intent = new Intent(this, SelectRommActivity.class);
                     startActivity(intent);
                 }else{
                     if(isLogin){
                         mDeviceManager.setEditDevice(true);
                         mDeviceManager.setCurrentEditDeviceType(DeviceTypeConstant.TYPE.TYPE_LOCK);
-                        Intent intent = new Intent(this, AddDeviceActivity.class);
+                        Intent intent = new Intent(this, SelectRommActivity.class);
                         startActivity(intent);
                     }else{
                         startActivity(new Intent(EditSmartLockActivity.this, LoginActivity.class));
@@ -341,7 +341,7 @@ public class EditSmartLockActivity extends Activity implements View.OnClickListe
                                             mDeviceManager.deleteDeviceHttp();
                                         }
                                     } else {
-                                        ToastSingleShow.showText(EditSmartLockActivity.this, "网络连接不可用");
+                                        Ftoast.create(EditSmartLockActivity.this).setText("网络连接不可用").show();
                                     }
                                 } else {
                                     startActivity(new Intent(EditSmartLockActivity.this, ExperienceDevicesActivity.class));

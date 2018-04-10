@@ -10,17 +10,17 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 
-import com.deplink.boruSmart.util.Perfence;
-import com.deplink.boruSmart.util.StringValidatorUtil;
 import com.deplink.boruSmart.activity.personal.login.LoginActivity;
 import com.deplink.boruSmart.constant.AppConstant;
 import com.deplink.boruSmart.manager.connect.remote.HomeGenius;
 import com.deplink.boruSmart.manager.device.DeviceManager;
 import com.deplink.boruSmart.manager.device.router.RouterManager;
 import com.deplink.boruSmart.util.NetUtil;
+import com.deplink.boruSmart.util.Perfence;
+import com.deplink.boruSmart.util.StringValidatorUtil;
 import com.deplink.boruSmart.view.combinationwidget.TitleLayout;
 import com.deplink.boruSmart.view.dialog.AlertDialog;
-import com.deplink.boruSmart.view.toast.ToastSingleShow;
+import com.deplink.boruSmart.view.toast.Ftoast;
 import com.deplink.sdk.android.sdk.DeplinkSDK;
 import com.deplink.sdk.android.sdk.EventCallback;
 import com.deplink.sdk.android.sdk.SDKAction;
@@ -72,11 +72,11 @@ public class LanSettingActivity extends Activity  {
                 if (dhcpStatus.equalsIgnoreCase("ON")) {
 
                     if (!StringValidatorUtil.isIPString(lanIP)) {
-                        ToastSingleShow.showText(LanSettingActivity.this, "IP地址格式不对");
+                        Ftoast.create(LanSettingActivity.this).setText("IP地址格式不对").show();
                         return;
                     }
                     if (!StringValidatorUtil.isIPString(submask)) {
-                        ToastSingleShow.showText(LanSettingActivity.this, "子网掩码格式不对");
+                        Ftoast.create(LanSettingActivity.this).setText("子网掩码格式不对").show();
                         return;
                     }
 
@@ -86,11 +86,11 @@ public class LanSettingActivity extends Activity  {
                     String ipStart = edittext_ip_addrss_start.getText().toString().trim();
                     String ipEnd = edittext_ip_address_end.getText().toString().trim();
                     if (Integer.parseInt(ipStart) > 254 || ipStart.equals("") || Integer.parseInt(ipStart) == 0) {
-                        ToastSingleShow.showText(LanSettingActivity.this, "输入1-254之间的数字");
+                        Ftoast.create(LanSettingActivity.this).setText("输入1-254之间的数字").show();
                         return;
                     }
                     if (Integer.parseInt(ipEnd) > 254 || ipStart.equals("") || Integer.parseInt(ipEnd) == 0) {
-                        ToastSingleShow.showText(LanSettingActivity.this, "输入1-254之间的数字");
+                        Ftoast.create(LanSettingActivity.this).setText("输入1-254之间的数字").show();
                         return;
                     }
                     lan.setIpStart(ipStart);
@@ -104,14 +104,14 @@ public class LanSettingActivity extends Activity  {
                                 isSetLan = true;
                                 mHomeGenius.setLan(lan, channels);
                             } else {
-                                ToastSingleShow.showText(LanSettingActivity.this, "未登录，无法设置LAN,请登录后重试");
+                                Ftoast.create(LanSettingActivity.this).setText("未登录，无法设置LAN,请登录后重试").show();
                             }
 
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
                     } else {
-                        ToastSingleShow.showText(LanSettingActivity.this, "网络连接已断开");
+                        Ftoast.create(LanSettingActivity.this).setText("网络连接已断开").show();
                     }
 
                 } else {
@@ -124,7 +124,7 @@ public class LanSettingActivity extends Activity  {
                         mHomeGenius.setLan(lan, channels);
 
                     } else {
-                        ToastSingleShow.showText(LanSettingActivity.this, "网络连接已断开");
+                        Ftoast.create(LanSettingActivity.this).setText("网络连接已断开").show();
                     }
 
                 }
@@ -204,7 +204,7 @@ public class LanSettingActivity extends Activity  {
             if (content.getResult().equalsIgnoreCase("OK")) {
                 Log.i(TAG, " mSDKCoordinator.notifyDeviceOpSuccess");
                 if (isSetLan) {
-                    ToastSingleShow.showText(LanSettingActivity.this, "设置成功");
+                    Ftoast.create(LanSettingActivity.this).setText("设置成功").show();
                 }
             }
         }  else if (op.equalsIgnoreCase("LAN")) {
@@ -253,7 +253,7 @@ public class LanSettingActivity extends Activity  {
                     mHomeGenius.queryLan(channels);
                 }
             } else {
-                ToastSingleShow.showText(this, "网络连接已断开");
+                Ftoast.create(LanSettingActivity.this).setText("网络连接已断开").show();
             }
         }
 

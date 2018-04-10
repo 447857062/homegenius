@@ -12,12 +12,11 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.deplink.boruSmart.Protocol.json.device.getway.GatwayDevice;
+import com.deplink.boruSmart.Protocol.json.device.remotecontrol.AirconditionKeyCode;
 import com.deplink.boruSmart.Protocol.json.device.remotecontrol.AirconditionKeyLearnStatu;
 import com.deplink.boruSmart.Protocol.json.device.remotecontrol.TvKeyCode;
 import com.deplink.boruSmart.Protocol.json.device.remotecontrol.TvKeyLearnStatu;
-import com.deplink.boruSmart.util.WeakRefHandler;
-import com.deplink.boruSmart.Protocol.json.device.getway.GatwayDevice;
-import com.deplink.boruSmart.Protocol.json.device.remotecontrol.AirconditionKeyCode;
 import com.deplink.boruSmart.Protocol.json.device.remotecontrol.TvboxKeyCode;
 import com.deplink.boruSmart.Protocol.json.device.remotecontrol.TvboxLearnStatu;
 import com.deplink.boruSmart.Protocol.json.http.QueryRCCodeResponse;
@@ -34,8 +33,9 @@ import com.deplink.boruSmart.manager.device.DeviceManager;
 import com.deplink.boruSmart.manager.device.remoteControl.RemoteControlListener;
 import com.deplink.boruSmart.manager.device.remoteControl.RemoteControlManager;
 import com.deplink.boruSmart.util.DataExchange;
+import com.deplink.boruSmart.util.WeakRefHandler;
 import com.deplink.boruSmart.view.combinationwidget.TitleLayout;
-import com.deplink.boruSmart.view.toast.ToastSingleShow;
+import com.deplink.boruSmart.view.toast.Ftoast;
 
 import org.litepal.crud.DataSupport;
 
@@ -458,7 +458,7 @@ public class RemoteControlQuickLearnActivity extends Activity implements View.On
                             layout_device_response.setVisibility(View.GONE);
                         }
                     }else{
-                        ToastSingleShow.showText(this,"没有可用的网关");
+                        Ftoast.create(RemoteControlQuickLearnActivity.this).setText("没有可用的网关").show();
                     }
                 break;
             case R.id.button_ng:
@@ -511,7 +511,7 @@ public class RemoteControlQuickLearnActivity extends Activity implements View.On
                                     }
 
                                 } else {
-                                    ToastSingleShow.showText(RemoteControlQuickLearnActivity.this, "空调遥控器按键已学习");
+                                    Ftoast.create(RemoteControlQuickLearnActivity.this).setText("空调遥控器按键已学习").show();
                                     Intent intent = new Intent(RemoteControlQuickLearnActivity.this, AirRemoteControlMianActivity.class);
                                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                     startActivity(intent);
@@ -546,7 +546,7 @@ public class RemoteControlQuickLearnActivity extends Activity implements View.On
                                     }
 
                                 } else {
-                                    ToastSingleShow.showText(RemoteControlQuickLearnActivity.this, "电视机顶盒遥控器按键已学习");
+                                    Ftoast.create(RemoteControlQuickLearnActivity.this).setText("电视机顶盒遥控器按键已学习").show();
                                     Intent intent = new Intent(RemoteControlQuickLearnActivity.this, TvBoxMainActivity.class);
                                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                     startActivity(intent);
@@ -845,7 +845,7 @@ public class RemoteControlQuickLearnActivity extends Activity implements View.On
 
 
     private void switchActivity() {
-        ToastSingleShow.showText(RemoteControlQuickLearnActivity.this, "电视遥控器按键已学习");
+        Ftoast.create(RemoteControlQuickLearnActivity.this).setText("电视遥控器按键已学习").show();
         if (mRemoteControlManager.isCurrentActionIsAddDevice()) {
             if(mRemoteControlManager.isCurrentActionIsAddactionQuickLearn()){
                 mRemoteControlManager.setCurrentActionIsAddactionQuickLearn(false);

@@ -17,7 +17,7 @@ import com.deplink.boruSmart.util.Perfence;
 import com.deplink.boruSmart.view.combinationwidget.TitleLayout;
 import com.deplink.boruSmart.view.dialog.AlertDialog;
 import com.deplink.boruSmart.view.edittext.ClearEditText;
-import com.deplink.boruSmart.view.toast.ToastSingleShow;
+import com.deplink.boruSmart.view.toast.Ftoast;
 
 import org.litepal.crud.DataSupport;
 
@@ -61,7 +61,7 @@ public class ManageRoomActivity extends Activity implements View.OnClickListener
                             //查询看看有没有重名的
                             Room room = DataSupport.where("roomName = ?", roomName).findFirst(Room.class);
                             if(room!=null){
-                                ToastSingleShow.showText(ManageRoomActivity.this,"已存在同名的房间,修改房间名称失败");
+                                Ftoast.create(ManageRoomActivity.this).setText("已存在同名的房间,修改房间名称失败").show();
                                 return;
                             }else{
                                 String roomUid = mRoomManager.getCurrentSelectedRoom().getUid();
@@ -73,10 +73,10 @@ public class ManageRoomActivity extends Activity implements View.OnClickListener
                             ManageRoomActivity.this.finish();
                         }
                     } else {
-                        Toast.makeText(ManageRoomActivity.this, "请输入房间名称", Toast.LENGTH_SHORT).show();
+                        Ftoast.create(ManageRoomActivity.this).setText("请输入房间名称").show();
                     }
                 } else {
-                    ToastSingleShow.showText(ManageRoomActivity.this, "未登陆，请先登陆");
+                    Ftoast.create(ManageRoomActivity.this).setText("未登陆，请先登陆").show();
                 }
 
             }
@@ -145,11 +145,11 @@ public class ManageRoomActivity extends Activity implements View.OnClickListener
         switch (v.getId()) {
             case R.id.button_delete_room:
                 if (!NetUtil.isNetAvailable(this)) {
-                    ToastSingleShow.showText(this, "无可用网络连接,请检查网络");
+                    Ftoast.create(ManageRoomActivity.this).setText("无可用网络连接,请检查网络").show();
                     return;
                 }
                 if (! isUserLogin) {
-                    ToastSingleShow.showText(this, "用户未登录");
+                    Ftoast.create(ManageRoomActivity.this).setText("用户未登录").show();
                     return;
                 }
                 if (mRoomName != null) {

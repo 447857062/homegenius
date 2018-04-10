@@ -3,27 +3,32 @@ package com.deplink.boruSmart.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
+import android.os.Handler;
+import android.os.Message;
 import android.view.View;
-import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 
+import com.deplink.boruSmart.Protocol.json.device.SmartDev;
 import com.deplink.boruSmart.Protocol.json.device.getway.GatwayDevice;
+import com.deplink.boruSmart.Protocol.json.device.share.UserShareInfo;
 import com.deplink.boruSmart.activity.device.ShareDeviceActivity;
 import com.deplink.boruSmart.activity.device.adapter.SharedDeviceListAdapter;
 import com.deplink.boruSmart.constant.DeviceTypeConstant;
 import com.deplink.boruSmart.manager.device.DeviceListener;
+import com.deplink.boruSmart.manager.device.DeviceManager;
+import com.deplink.boruSmart.manager.device.doorbeel.DoorbeelManager;
+import com.deplink.boruSmart.manager.device.getway.GetwayManager;
 import com.deplink.boruSmart.manager.device.light.SmartLightManager;
 import com.deplink.boruSmart.manager.device.router.RouterManager;
 import com.deplink.boruSmart.manager.device.smartlock.SmartLockManager;
 import com.deplink.boruSmart.manager.device.smartswitch.SmartSwitchManager;
 import com.deplink.boruSmart.util.JsonArrayParseUtil;
-import com.deplink.boruSmart.Protocol.json.device.SmartDev;
-import com.deplink.boruSmart.Protocol.json.device.share.UserShareInfo;
-import com.deplink.boruSmart.manager.device.DeviceManager;
-import com.deplink.boruSmart.manager.device.doorbeel.DoorbeelManager;
-import com.deplink.boruSmart.manager.device.getway.GetwayManager;
+import com.deplink.boruSmart.util.WeakRefHandler;
 import com.deplink.boruSmart.view.combinationwidget.TitleLayout;
 
 import org.litepal.crud.DataSupport;
@@ -51,6 +56,9 @@ public class SharedDeviceListActivity extends Activity {
     private boolean isStartFromExperience;
     private DeviceManager mDeviceManager;
     private DeviceListener mDeviceListener;
+    private RelativeLayout layout_empty_share_device;
+    private ImageView refresh_image;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,6 +67,7 @@ public class SharedDeviceListActivity extends Activity {
         initDatas();
         initEvents();
     }
+
     private void initEvents() {
         layout_title.setReturnClickListener(new TitleLayout.ReturnImageClickListener() {
             @Override
@@ -67,21 +76,53 @@ public class SharedDeviceListActivity extends Activity {
             }
         });
     }
+
+    Animation animationFadeIn;
+
     @Override
     protected void onResume() {
         super.onResume();
-        querySmartDeviceShareInfo=false;
-        isStartFromExperience = DeviceManager.getInstance().isStartFromExperience();
+        querySmartDeviceShareInfo = false;
         mDeviceManager.addDeviceListener(mDeviceListener);
+        if (!(getwayDevices.size() == 0 && smartDevices.size()==0)) {
+            animationFadeIn = AnimationUtils.loadAnimation(this, R.anim.rotate_find_device);
+            refresh_image.setAnimation(animationFadeIn);
+        }
     }
+
+    private static final int MSG_UPDATE_SHARE_DEVS = 100;
+    private Handler.Callback mCallback = new Handler.Callback() {
+        @Override
+        public boolean handleMessage(Message msg) {
+            switch (msg.what) {
+                case MSG_UPDATE_SHARE_DEVS:
+                    adapter.setTopList(datasTop);
+                    adapter.setBottomList(datasBottom);
+                    if (datasTop.size() + datasBottom.size() == 0) {
+                        layout_empty_share_device.setVisibility(View.VISIBLE);
+                    } else {
+                        layout_empty_share_device.setVisibility(View.GONE);
+                    }
+                    adapter.notifyDataSetChanged();
+                    animationFadeIn.cancel();
+                    refresh_image.setVisibility(View.GONE);
+                    break;
+            }
+            return true;
+        }
+    };
+    private Handler mHandler = new WeakRefHandler(mCallback);
+
 
     @Override
     protected void onPause() {
         super.onPause();
         mDeviceManager.removeDeviceListener(mDeviceListener);
     }
-    private int indexCurrentGatway=0;
-    private int indexCurrentSmartDevcie=0;
+
+    private int indexCurrentGatway = 0;
+    private int indexCurrentSmartDevcie = 0;
+
     private void initDatas() {
         mDeviceManager = DeviceManager.getInstance();
         mDeviceManager.InitDeviceManager(this);
@@ -89,16 +130,17 @@ public class SharedDeviceListActivity extends Activity {
         datasBottom = new ArrayList<>();
         smartDevices = DataSupport.findAll(SmartDev.class);
         getwayDevices = DataSupport.findAll(GatwayDevice.class);
-        if(getwayDevices.size()>0){
+        if (getwayDevices.size() > 0) {
             mDeviceManager.readDeviceShareInfo(getwayDevices.get(0).getUid());
-        }else{
-            mDeviceManager.readDeviceShareInfo(smartDevices.get(0).getUid());
+        } else {
+            if (smartDevices.size() > 0) {
+                mDeviceManager.readDeviceShareInfo(smartDevices.get(0).getUid());
+            } else {
+                layout_empty_share_device.setVisibility(View.VISIBLE);
+                refresh_image.setVisibility(View.GONE);
+            }
         }
-
-        View viewEmpty = LayoutInflater.from(this).inflate(R.layout.sharedevice_empty_view, null);
         adapter = new SharedDeviceListAdapter(this, datasTop, datasBottom);
-        ((ViewGroup) shareddevices_list.getParent()).addView(viewEmpty);
-        shareddevices_list.setEmptyView(viewEmpty);
         shareddevices_list.setAdapter(adapter);
         shareddevices_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -151,51 +193,54 @@ public class SharedDeviceListActivity extends Activity {
                 } else {
                     List<UserShareInfo> response = JsonArrayParseUtil.jsonToArrayList(result, UserShareInfo.class);
                     if (response != null) {
-                            if(!querySmartDeviceShareInfo){
-                                if(getwayDevices.size()!=0){
-                                    if(response.size()>=2){
-                                        datasTop.add(getwayDevices.get(indexCurrentGatway));
-                                    }
-                                    indexCurrentGatway++;
-                                    if(getwayDevices.size()>indexCurrentGatway){
-                                        mDeviceManager.readDeviceShareInfo(getwayDevices.get(indexCurrentGatway).getUid());
-                                    }else{
-                                        querySmartDeviceShareInfo=true;
-                                        mDeviceManager.readDeviceShareInfo(smartDevices.get(indexCurrentSmartDevcie).getUid());
-                                    }
-
-                                }else{
-                                    if(response.size()>=2){
-                                        datasBottom.add(smartDevices.get(indexCurrentSmartDevcie));
-                                    }
-                                    indexCurrentSmartDevcie++;
-                                    if(smartDevices.size()>indexCurrentSmartDevcie){
+                        if (!querySmartDeviceShareInfo) {
+                            if (getwayDevices.size() != 0) {
+                                if (response.size() >= 2) {
+                                    datasTop.add(getwayDevices.get(indexCurrentGatway));
+                                }
+                                indexCurrentGatway++;
+                                if (getwayDevices.size() > indexCurrentGatway) {
+                                    mDeviceManager.readDeviceShareInfo(getwayDevices.get(indexCurrentGatway).getUid());
+                                } else {
+                                    querySmartDeviceShareInfo = true;
+                                    if(smartDevices.size()>(indexCurrentGatway)){
                                         mDeviceManager.readDeviceShareInfo(smartDevices.get(indexCurrentSmartDevcie).getUid());
                                     }
                                 }
-                            }else{
-                                if(response.size()>=2){
+
+                            } else {
+                                if (response.size() >= 2) {
                                     datasBottom.add(smartDevices.get(indexCurrentSmartDevcie));
                                 }
                                 indexCurrentSmartDevcie++;
-                                if(smartDevices.size()>indexCurrentSmartDevcie){
+                                if (smartDevices.size() > indexCurrentSmartDevcie) {
                                     mDeviceManager.readDeviceShareInfo(smartDevices.get(indexCurrentSmartDevcie).getUid());
                                 }
                             }
-
-                        adapter.setTopList(datasTop);
-                        adapter.setBottomList(datasBottom);
-                        adapter.notifyDataSetChanged();
+                        } else {
+                            if (response.size() >= 2) {
+                                datasBottom.add(smartDevices.get(indexCurrentSmartDevcie));
+                            }
+                            indexCurrentSmartDevcie++;
+                            if (smartDevices.size() > indexCurrentSmartDevcie) {
+                                mDeviceManager.readDeviceShareInfo(smartDevices.get(indexCurrentSmartDevcie).getUid());
+                            }
+                        }
                     }
+                    mHandler.sendEmptyMessageDelayed(MSG_UPDATE_SHARE_DEVS, 1500);
                 }
             }
 
 
         };
     }
-    private boolean querySmartDeviceShareInfo=false;
+
+    private boolean querySmartDeviceShareInfo = false;
+
     private void initViews() {
         layout_title = (TitleLayout) findViewById(R.id.layout_title);
         shareddevices_list = (ListView) findViewById(R.id.shareddevices_list);
+        layout_empty_share_device = (RelativeLayout) findViewById(R.id.layout_empty_share_device);
+        refresh_image = (ImageView) findViewById(R.id.refresh_image);
     }
 }

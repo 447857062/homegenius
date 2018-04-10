@@ -310,7 +310,7 @@ public class PullToRefreshListView extends PullToRefreshAdapterViewBase<ListView
 
 		@Override
 		public void setEmptyView(View emptyView) {
-			PullToRefreshListView.this.setEmptyView(emptyView);
+			PullToRefreshListView.this.setEmptyView(emptyView,0);
 		}
 
 		@Override

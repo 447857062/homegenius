@@ -18,8 +18,8 @@ import android.widget.Toast;
 import com.deplink.boruSmart.Protocol.json.Room;
 import com.deplink.boruSmart.Protocol.json.device.SmartDev;
 import com.deplink.boruSmart.Protocol.json.device.getway.GatwayDevice;
-import com.deplink.boruSmart.activity.device.AddDeviceActivity;
 import com.deplink.boruSmart.activity.device.DevicesActivity;
+import com.deplink.boruSmart.activity.device.SelectRommActivity;
 import com.deplink.boruSmart.activity.device.ShareDeviceActivity;
 import com.deplink.boruSmart.activity.device.adapter.GetwaySelectListAdapter;
 import com.deplink.boruSmart.activity.personal.experienceCenter.ExperienceDevicesActivity;
@@ -38,7 +38,7 @@ import com.deplink.boruSmart.util.WeakRefHandler;
 import com.deplink.boruSmart.view.combinationwidget.TitleLayout;
 import com.deplink.boruSmart.view.dialog.AlertDialog;
 import com.deplink.boruSmart.view.edittext.ClearEditText;
-import com.deplink.boruSmart.view.toast.ToastSingleShow;
+import com.deplink.boruSmart.view.toast.Ftoast;
 import com.deplink.sdk.android.sdk.DeplinkSDK;
 import com.deplink.sdk.android.sdk.EventCallback;
 import com.deplink.sdk.android.sdk.SDKAction;
@@ -165,7 +165,7 @@ public class LightEditActivity extends Activity implements View.OnClickListener 
                         if (isLogin) {
                             String lightnameChange = edittext_input_devie_name.getText().toString();
                             if (lightnameChange.equals("")) {
-                                ToastSingleShow.showText(LightEditActivity.this, "请输入设备名称");
+                                Ftoast.create(LightEditActivity.this).setText("请输入设备名称").show();
                                 return;
                             }
                             if (lightnameChange.equals(lightName)) {
@@ -180,7 +180,7 @@ public class LightEditActivity extends Activity implements View.OnClickListener 
                             LightEditActivity.this.finish();
                         }
                     }else{
-                        ToastSingleShow.showText(LightEditActivity.this, "网络连接不可用");
+                        Ftoast.create(LightEditActivity.this).setText("网络连接不可用").show();
                     }
                 }
             }
@@ -371,14 +371,14 @@ public class LightEditActivity extends Activity implements View.OnClickListener 
                 if(isStartFromExperience){
                     mDeviceManager.setEditDevice(true);
                     mDeviceManager.setCurrentEditDeviceType(DeviceTypeConstant.TYPE.TYPE_LIGHT);
-                    Intent intent = new Intent(this, AddDeviceActivity.class);
+                    Intent intent = new Intent(this, SelectRommActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                 }else{
                     if(isLogin){
                         mDeviceManager.setEditDevice(true);
                         mDeviceManager.setCurrentEditDeviceType(DeviceTypeConstant.TYPE.TYPE_LIGHT);
-                        Intent intent = new Intent(this, AddDeviceActivity.class);
+                        Intent intent = new Intent(this, SelectRommActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
                     }else{
@@ -398,7 +398,7 @@ public class LightEditActivity extends Activity implements View.OnClickListener 
                                     if (isLogin) {
                                         mDeviceManager.deleteDeviceHttp();
                                     } else {
-                                        ToastSingleShow.showText(LightEditActivity.this, "用户未登录");
+                                        Ftoast.create(LightEditActivity.this).setText("用户未登录").show();
                                     }
                                 } else {
                                     startActivity(new Intent(LightEditActivity.this, ExperienceDevicesActivity.class));

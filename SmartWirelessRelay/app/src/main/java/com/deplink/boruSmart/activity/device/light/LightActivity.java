@@ -16,16 +16,16 @@ import com.deplink.boruSmart.Protocol.json.QueryOptions;
 import com.deplink.boruSmart.Protocol.json.device.SmartDev;
 import com.deplink.boruSmart.activity.personal.login.LoginActivity;
 import com.deplink.boruSmart.constant.AppConstant;
+import com.deplink.boruSmart.manager.connect.local.tcp.LocalConnectmanager;
+import com.deplink.boruSmart.manager.device.DeviceManager;
+import com.deplink.boruSmart.manager.device.light.SmartLightListener;
 import com.deplink.boruSmart.manager.device.light.SmartLightManager;
 import com.deplink.boruSmart.util.NetUtil;
 import com.deplink.boruSmart.util.Perfence;
 import com.deplink.boruSmart.util.WeakRefHandler;
-import com.deplink.boruSmart.view.dialog.AlertDialog;
-import com.deplink.boruSmart.view.toast.ToastSingleShow;
-import com.deplink.boruSmart.manager.connect.local.tcp.LocalConnectmanager;
-import com.deplink.boruSmart.manager.device.DeviceManager;
-import com.deplink.boruSmart.manager.device.light.SmartLightListener;
 import com.deplink.boruSmart.view.combinationwidget.TitleLayout;
+import com.deplink.boruSmart.view.dialog.AlertDialog;
+import com.deplink.boruSmart.view.toast.Ftoast;
 import com.deplink.sdk.android.sdk.DeplinkSDK;
 import com.deplink.sdk.android.sdk.EventCallback;
 import com.deplink.sdk.android.sdk.SDKAction;
@@ -342,7 +342,7 @@ public class LightActivity extends Activity implements View.OnClickListener, Sma
                 } else {
                     if(NetUtil.isNetAvailable(this)){
                         if(!isUserLogin && !LocalConnectmanager.getInstance().isLocalconnectAvailable()){
-                            ToastSingleShow.showText(this,"本地连接不可用,需要登录后才能操作");
+                            Ftoast.create(LightActivity.this).setText("本地连接不可用,需要登录后才能操作").show();
                         }else{
                             if (switchStatus) {
                                 switchStatus = false;
@@ -354,7 +354,7 @@ public class LightActivity extends Activity implements View.OnClickListener, Sma
                         }
                     }
                     else{
-                        ToastSingleShow.showText(this,"网络连接不正常");
+                        Ftoast.create(LightActivity.this).setText("网络连接不正常").show();
                     }
                 }
                 break;

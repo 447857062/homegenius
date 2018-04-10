@@ -29,10 +29,15 @@ import com.baidu.location.BDAbstractLocationListener;
 import com.baidu.location.BDLocation;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
+import com.deplink.boruSmart.Protocol.json.Room;
 import com.deplink.boruSmart.Protocol.json.device.ExperienceCenterDevice;
 import com.deplink.boruSmart.Protocol.json.device.SmartDev;
 import com.deplink.boruSmart.Protocol.json.device.getway.GatwayDevice;
+import com.deplink.boruSmart.Protocol.json.device.router.Router;
 import com.deplink.boruSmart.Protocol.json.http.weather.HeWeather6;
+import com.deplink.boruSmart.Protocol.packet.ellisdk.BasicPacket;
+import com.deplink.boruSmart.Protocol.packet.ellisdk.EllESDK;
+import com.deplink.boruSmart.Protocol.packet.ellisdk.EllE_Listener;
 import com.deplink.boruSmart.activity.device.AddDeviceQRcodeActivity;
 import com.deplink.boruSmart.activity.device.DevicesActivity;
 import com.deplink.boruSmart.activity.device.doorbell.DoorbeelMainActivity;
@@ -59,15 +64,20 @@ import com.deplink.boruSmart.application.AppManager;
 import com.deplink.boruSmart.constant.AppConstant;
 import com.deplink.boruSmart.constant.DeviceTypeConstant;
 import com.deplink.boruSmart.manager.connect.local.tcp.LocalConnectService;
+import com.deplink.boruSmart.manager.device.DeviceListener;
 import com.deplink.boruSmart.manager.device.DeviceManager;
 import com.deplink.boruSmart.manager.device.doorbeel.DoorbeelManager;
 import com.deplink.boruSmart.manager.device.getway.GetwayManager;
 import com.deplink.boruSmart.manager.device.light.SmartLightManager;
+import com.deplink.boruSmart.manager.device.remoteControl.RemoteControlListener;
 import com.deplink.boruSmart.manager.device.remoteControl.RemoteControlManager;
 import com.deplink.boruSmart.manager.device.router.RouterManager;
 import com.deplink.boruSmart.manager.device.smartlock.SmartLockManager;
 import com.deplink.boruSmart.manager.device.smartswitch.SmartSwitchManager;
+import com.deplink.boruSmart.manager.room.RoomListener;
 import com.deplink.boruSmart.manager.room.RoomManager;
+import com.deplink.boruSmart.util.DataExchange;
+import com.deplink.boruSmart.util.ListViewUtil;
 import com.deplink.boruSmart.util.Perfence;
 import com.deplink.boruSmart.util.WeakRefHandler;
 import com.deplink.boruSmart.view.dialog.AlertDialog;
@@ -77,6 +87,8 @@ import com.deplink.sdk.android.sdk.DeplinkSDK;
 import com.deplink.sdk.android.sdk.EventCallback;
 import com.deplink.sdk.android.sdk.SDKAction;
 import com.deplink.sdk.android.sdk.bean.User;
+import com.deplink.sdk.android.sdk.homegenius.DeviceOperationResponse;
+import com.deplink.sdk.android.sdk.homegenius.Deviceprops;
 import com.deplink.sdk.android.sdk.manager.SDKManager;
 import com.deplink.sdk.android.sdk.rest.RestfulToolsWeather;
 import com.google.gson.Gson;
@@ -89,6 +101,8 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import deplink.com.smartwirelessrelay.homegenius.EllESDK.R;
 import retrofit2.Call;
@@ -98,7 +112,7 @@ import retrofit2.Response;
 /**
  * 智能家居主页
  */
-public class SmartHomeMainActivity extends Activity implements View.OnClickListener {
+public class SmartHomeMainActivity extends Activity implements View.OnClickListener, EllE_Listener {
     private static final String TAG = "SmartHomeMainActivity";
     private LinearLayout layout_devices;
     private LinearLayout layout_rooms;
@@ -131,12 +145,16 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
     private boolean isLogin;
     private String province;
     private String city;
+    private DeviceListener mDeviceListener;
+    private RemoteControlListener mRemoteControlListener;
     private DeviceManager mDeviceManager;
+    private RemoteControlManager mRemoteControlManager;
     private MyScrollView scroll_inner_wrap;
     private String locationStr;
     private String tempature;
     private String pm25;
     private RelativeLayout layout_weather;
+    private List<Room> mRoomList = new ArrayList<>();
     /**
      * 上面半部分列表的数据
      */
@@ -150,6 +168,7 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
     private SmartLockManager mSmartLockManager;
     private RelativeLayout empty_recently_device;
     private ImageView add_equiment;
+    private RoomListener mRoomListener;
     private ServiceConnection connection = new ServiceConnection() {
         @Override
         public void onServiceDisconnected(ComponentName name) {
@@ -160,14 +179,22 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
             Log.i(TAG, "onServiceConnected");
         }
     };
+    private static final int MSG_GET_ROOM = 100;
     private static final int MSG_QUERY_WEATHER_PM25 = 101;
     private static final int MSG_SHOW_PM25_TEXT = 102;
     private static final int MSG_SHOW_WEATHER_TEXT = 103;
     private static final int MSG_INIT_LOCATIONSERVICE = 104;
+    private static final int MSG_GET_DEVS_HTTPS = 105;
+    private static final int MSG_GET_VIRTUAL_DEVS_HTTPS = 106;
+    private static final int MSG_CHECK_DOORBELL_ONLINE_STATU = 0x03;
+    private EllESDK ellESDK;
     private Handler.Callback mCallback = new Handler.Callback() {
         @Override
         public boolean handleMessage(Message msg) {
             switch (msg.what) {
+                case MSG_GET_ROOM:
+                    mDeviceManager.queryDeviceListHttp();
+                    break;
                 case MSG_QUERY_WEATHER_PM25:
                     if (city.substring(city.length() - 1, city.length()).equals("市")) {
                         city = city.substring(0, city.length() - 1);
@@ -210,13 +237,40 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
                         }
                     }.start();
                     break;
-                default:
+                case MSG_GET_DEVS_HTTPS:
+                    mRemoteControlManager.queryVirtualDeviceList();
+                    break;
+                case MSG_GET_VIRTUAL_DEVS_HTTPS:
+                    mRoomList.clear();
+                    mRoomList.addAll(mRoomManager.queryRooms());
+                    setRoomNormalLayout();
+                    Log.i(TAG, "mRoomList.size=" + mRoomList.size());
+                    initRecentlyDeviceData();
+                    mDeviceAdapter.notifyDataSetChanged();
+                    ListViewUtil.setListViewHeight(layout_roomselect_changed_ype);
+                    mRoomSelectTypeChangedAdapter.notifyDataSetChanged();
+
+                    break;
+                case MSG_CHECK_DOORBELL_ONLINE_STATU:
+                    if(currentSmartDoorBell!=null){
+                        if(!receverDoorbellMsg){
+                            currentSmartDoorBell.setStatus("离线");
+                            currentSmartDoorBell.save();
+                        }
+                    }
+                    //停止搜索门铃设备
+                    ellESDK.stopSearchDevs();
                     break;
             }
             return true;
         }
     };
     private Handler mHandler = new WeakRefHandler(mCallback);
+
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+
+    }
 
     public class MyLocationListener extends BDAbstractLocationListener {
         @Override
@@ -247,7 +301,97 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
         initDatas();
         initEvents();
     }
-
+    private Timer refreshTimer = null;
+    private TimerTask refreshTask = null;
+    private static final int TIME_DIFFERENCE_BETWEEN_MESSAGE_INTERVALS = 10000;
+    private SmartDev currentSmartDoorBell;
+    private String seachedDoorbellmac;
+    private boolean isRunSeachDoorbell=false;
+    private void startTimer() {
+        if (refreshTimer == null) {
+            refreshTimer = new Timer();
+        }
+        if (refreshTask == null) {
+            refreshTask = new TimerTask() {
+                @Override
+                public void run() {
+                    mHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            for (int i = 0; i < datasTop.size(); i++) {
+                                if ((mDeviceManager.getmDevicesStatus().get(datasTop.get(i).getUid()) != null)) {
+                                    datasTop.get(i).setStatus(mDeviceManager.getmDevicesStatus().get(datasTop.get(i).getUid()));
+                                    datasTop.get(i).saveFast();
+                                }
+                            }
+                            for(int i=0;i<datasBottom.size();i++){
+                                if ((mDeviceManager.getmDevicesStatus().get(datasBottom.get(i).getMac()) != null)) {
+                                    datasBottom.get(i).setStatus(mDeviceManager.getmDevicesStatus().get(datasBottom.get(i).getMac()));
+                                    datasBottom.get(i).saveFast();
+                                }
+                                if(datasBottom.get(i).getType().equalsIgnoreCase(DeviceTypeConstant.TYPE.TYPE_MENLING)){
+                                    currentSmartDoorBell=datasBottom.get(i);
+                                }
+                            }
+                            if(currentSmartDoorBell!=null){
+                                //查询门邻设备状态
+                                if(!isRunSeachDoorbell){
+                                    ellESDK.startSearchDevs();
+                                    isRunSeachDoorbell=true;
+                                    mHandler.sendEmptyMessageDelayed(MSG_CHECK_DOORBELL_ONLINE_STATU,5000);
+                                }
+                            }
+                            virtualDeviceUpdate();
+                            initRecentlyDeviceData();
+                            mDeviceAdapter.notifyDataSetChanged();
+                            ListViewUtil.setListViewHeight(layout_roomselect_changed_ype);
+                            mRoomSelectTypeChangedAdapter.notifyDataSetChanged();
+                        }
+                    });
+                }
+            };
+        }
+        if (refreshTimer != null) {
+            //10秒钟发一次查询的命令
+            try {
+                refreshTimer.schedule(refreshTask, 0, TIME_DIFFERENCE_BETWEEN_MESSAGE_INTERVALS);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    /**
+     * 更新虚拟设备的状态
+     */
+    private void virtualDeviceUpdate() {
+        List<SmartDev> airRcs = DataSupport.where("Type=?", DeviceTypeConstant.TYPE.TYPE_AIR_REMOTECONTROL).find(SmartDev.class);
+        for (int i = 0; i < airRcs.size(); i++) {
+            SmartDev realRc = DataSupport.where("Uid=?", airRcs.get(i).getRemotecontrolUid()).findFirst(SmartDev.class, true);
+            if (realRc != null) {
+                airRcs.get(i).setRooms(realRc.getRooms());
+                airRcs.get(i).setStatus(realRc.getStatus());
+                airRcs.get(i).saveFast();
+            }
+        }
+        List<SmartDev> tvRcs = DataSupport.where("Type=?", DeviceTypeConstant.TYPE.TYPE_TV_REMOTECONTROL).find(SmartDev.class);
+        for (int i = 0; i < tvRcs.size(); i++) {
+            SmartDev realRc = DataSupport.where("Uid=?", tvRcs.get(i).getRemotecontrolUid()).findFirst(SmartDev.class, true);
+            if (realRc != null) {
+                tvRcs.get(i).setStatus(realRc.getStatus());
+                tvRcs.get(i).setRooms(realRc.getRooms());
+                tvRcs.get(i).saveFast();
+            }
+        }
+        List<SmartDev> tvboxRcs = DataSupport.where("Type=?", DeviceTypeConstant.TYPE.TYPE_TVBOX_REMOTECONTROL).find(SmartDev.class);
+        for (int i = 0; i < tvboxRcs.size(); i++) {
+            SmartDev realRc = DataSupport.where("Uid=?", tvboxRcs.get(i).getRemotecontrolUid()).findFirst(SmartDev.class, true);
+            if (realRc != null) {
+                tvboxRcs.get(i).setStatus(realRc.getStatus());
+                tvboxRcs.get(i).setRooms(realRc.getRooms());
+                tvboxRcs.get(i).saveFast();
+            }
+        }
+    }
     /**
      * 获取pm2.5
      *
@@ -304,7 +448,7 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
                             JsonObject jsonObjectGson = response.body();
                             Gson gson = new Gson();
                             HeWeather6 weatherObject = gson.fromJson(jsonObjectGson.toString(), HeWeather6.class);
-                            Log.i(TAG,"获取天气数据="+weatherObject.toString());
+                            Log.i(TAG, "获取天气数据=" + weatherObject.toString());
                             if (!weatherObject.getInfoList().get(0).getStatus().equalsIgnoreCase("no more requests")) {
                                 if (!weatherObject.getInfoList().get(0).getNow().getTmp().equalsIgnoreCase(tempature)) {
                                     Perfence.setPerfence(AppConstant.TEMPATURE_VALUE, weatherObject.getInfoList().get(0).getNow().getTmp());
@@ -316,6 +460,7 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
                             }
                         }
                     }
+
                     @Override
                     public void onFailure(Call<JsonObject> call, Throwable t) {
 
@@ -325,7 +470,232 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
             }
         }).start();
     }
+    private void initListener() {
+        ellESDK = EllESDK.getInstance();
+        ellESDK.InitEllESDK(this, this);
+        mDeviceListener = new DeviceListener() {
+            @Override
+            public void responseQueryHttpResult(List<Deviceprops> devices) {
+                super.responseQueryHttpResult(devices);
+                //保存设备列表
+                List<SmartDev> dbSmartDev = mDeviceManager.findAllSmartDevice();
+                for (int i = 0; i < devices.size(); i++) {
+                    boolean addToDb = true;
+                    if (devices.get(i).getDevice_type().equalsIgnoreCase("LKSGW")
+                            ) {
+                        addToDb = false;
+                    } else {
+                        for (int j = 0; j < dbSmartDev.size(); j++) {
+                            if (dbSmartDev.get(j).getUid().equals(devices.get(i).getUid())) {
+                                addToDb = false;
+                            }
+                        }
+                    }
+                    if (addToDb) {
+                        Log.i(TAG, "http查询到智能设备,保存下来:");
+                        saveSmartDeviceToSqlite(devices, i);
+                    }
+                }
+                List<GatwayDevice> dbGetwayDev = GetwayManager.getInstance().getAllGetwayDevice();
+                for (int i = 0; i < devices.size(); i++) {
+                    boolean addToDb = true;
+                    if (devices.get(i).getDevice_type().equalsIgnoreCase("LKSGW")) {
+                        for (int j = 0; j < dbGetwayDev.size(); j++) {
+                            if (dbGetwayDev.get(j).getUid().equals(devices.get(i).getUid())) {
+                                addToDb = false;
+                            }
+                        }
+                    } else {
+                        addToDb = false;
+                    }
+                    if (addToDb) {
+                        saveGetwayDeviceToSqlite(devices, i);
+                    }
+                }
+                mHandler.sendEmptyMessage(MSG_GET_DEVS_HTTPS);
+            }
+        };
+        mRemoteControlListener = new RemoteControlListener() {
+            @Override
+            public void responseQueryVirtualDevices(List<DeviceOperationResponse> result) {
+                super.responseQueryVirtualDevices(result);
+                //保存虚拟设备
+                for (int i = 0; i < result.size(); i++) {
+                    saveVirtualDeviceToSqlite(result, i);
+                }
+                mHandler.sendEmptyMessage(MSG_GET_VIRTUAL_DEVS_HTTPS);
+            }
+        };
+        mRoomListener = new RoomListener() {
+            @Override
+            public void responseQueryResultHttps(List<Room> result) {
+                super.responseQueryResultHttps(result);
+                Log.i(TAG, "主页获取到房间列表=" + result);
+                Message msg = Message.obtain();
+                msg.what = MSG_GET_ROOM;
+                mHandler.sendMessage(msg);
+            }
+        };
+    }
+    /**
+     * 保存网关设备到本地数据库
+     *
+     * @param devices
+     * @param i
+     */
+    private void saveGetwayDeviceToSqlite(List<Deviceprops> devices, int i) {
+        GatwayDevice dev = new GatwayDevice();
+        String deviceType = devices.get(i).getDevice_type();
+        dev.setType(deviceType);
+        String deviceName = devices.get(i).getDevice_name();
+        if (deviceType.equalsIgnoreCase("LKSWG") || deviceType.equalsIgnoreCase("LKSGW")) {
+            if (deviceName == null || deviceName.equals("")) {
+                dev.setName("中继器");
+            } else {
+                deviceName = deviceName.replace("/路由器", "");
+                dev.setName(deviceName);
+            }
+            deviceType = DeviceTypeConstant.TYPE.TYPE_SMART_GETWAY;
+            dev.setType(deviceType);
+        }
+        dev.setUid(devices.get(i).getUid());
+        dev.setOrg(devices.get(i).getOrg_code());
+        dev.setVer(devices.get(i).getVersion());
+        dev.setTopic("device/" + devices.get(i).getUid() + "/sub");
+        List<Room> rooms = new ArrayList<>();
+        Room room = DataSupport.where("Uid=?", devices.get(i).getRoom_uid()).findFirst(Room.class);
+        if (room != null) {
+            Log.i(TAG, "添加中继器房间是:" + room.toString());
+            rooms.add(room);
+        } else {
+            rooms.addAll(DataSupport.findAll(Room.class));
+        }
+        dev.setRoomList(rooms);
+        boolean success = dev.save();
+        Log.i(TAG, "保存设备:" + success + "deviceName=" + deviceName);
+    }
 
+    private void saveSmartDeviceToSqlite(List<Deviceprops> devices, int i) {
+        Log.i(TAG, "saveSmartDeviceToSqlite");
+        SmartDev dev = new SmartDev();
+        String deviceType = devices.get(i).getDevice_type();
+        dev.setType(deviceType);
+        String deviceName = devices.get(i).getDevice_name();
+        if (deviceType.equalsIgnoreCase("SMART_LOCK")) {
+            deviceType = DeviceTypeConstant.TYPE.TYPE_LOCK;
+            dev.setType(deviceType);
+            dev.setName(deviceName);
+        } else if (deviceType.equalsIgnoreCase("IRMOTE_V2")) {
+            deviceType = DeviceTypeConstant.TYPE.TYPE_REMOTECONTROL;
+            dev.setType(deviceType);
+            dev.setName(deviceName);
+        } else if (deviceType.equalsIgnoreCase("SmartWallSwitch1")) {
+            deviceType = DeviceTypeConstant.TYPE.TYPE_SWITCH;
+            dev.setType(deviceType);
+            dev.setName(deviceName);
+            dev.setSubType(DeviceTypeConstant.TYPE_SWITCH_SUBTYPE.SUB_TYPE_SWITCH_ONEWAY);
+        } else if (deviceType.equalsIgnoreCase("SmartWallSwitch2")) {
+            deviceType = DeviceTypeConstant.TYPE.TYPE_SWITCH;
+            dev.setType(deviceType);
+            dev.setName(deviceName);
+            dev.setSubType(DeviceTypeConstant.TYPE_SWITCH_SUBTYPE.SUB_TYPE_SWITCH_TWOWAY);
+        } else if (deviceType.equalsIgnoreCase("SmartWallSwitch3")) {
+            deviceType = DeviceTypeConstant.TYPE.TYPE_SWITCH;
+            dev.setType(deviceType);
+            dev.setName(deviceName);
+            dev.setSubType(DeviceTypeConstant.TYPE_SWITCH_SUBTYPE.SUB_TYPE_SWITCH_THREEWAY);
+        } else if (deviceType.equalsIgnoreCase("SmartWallSwitch4")) {
+            deviceType = DeviceTypeConstant.TYPE.TYPE_SWITCH;
+            dev.setType(deviceType);
+            dev.setName(deviceName);
+            dev.setSubType(DeviceTypeConstant.TYPE_SWITCH_SUBTYPE.SUB_TYPE_SWITCH_FOURWAY);
+        } else if (deviceType.equalsIgnoreCase("YWLIGHTCONTROL")) {
+            deviceType = DeviceTypeConstant.TYPE.TYPE_LIGHT;
+            dev.setType(deviceType);
+            dev.setName(deviceName);
+        } else if (deviceType.equalsIgnoreCase("SMART_BELL")) {
+            deviceType = DeviceTypeConstant.TYPE.TYPE_MENLING;
+            dev.setType(deviceType);
+            dev.setStatus("在线");
+            dev.setName(deviceName);
+        } else if (deviceType.equalsIgnoreCase("LKRT")) {
+            deviceType = DeviceTypeConstant.TYPE.TYPE_ROUTER;
+            dev.setType(deviceType);
+            Router router = new Router();
+            Log.i(TAG, "获取绑定的设备" + manager.getDeviceList().size());
+            if (deviceName == null || deviceName.equals("")) {
+                dev.setName("路由器");
+            } else {
+                dev.setName(deviceName);
+            }
+            router.setSign_seed(devices.get(i).getSign_seed());
+            router.setSignature(devices.get(i).getSignature());
+            router.setChannels(devices.get(i).getChannels().getSecondary().getSub());
+            router.setReceveChannels(devices.get(i).getChannels().getSecondary().getPub());
+            router.setSmartDev(dev);
+            router.save();
+            dev.setRouter(router);
+        }
+        GatwayDevice addGatwayDevice = null;
+        String gw_uid = devices.get(i).getGw_uid();
+        if (gw_uid != null) {
+            dev.setGetwayDeviceUid(gw_uid);
+            addGatwayDevice = DataSupport.where("uid=?", gw_uid).findFirst(GatwayDevice.class);
+        }
+        Log.i(TAG, "gw_uid=" + gw_uid + "addGatwayDevice" + (addGatwayDevice != null));
+        if (addGatwayDevice != null) {
+            dev.setGetwayDevice(addGatwayDevice);
+        }
+
+        dev.setUid(devices.get(i).getUid());
+        dev.setOrg(devices.get(i).getOrg_code());
+        dev.setVer(devices.get(i).getVersion());
+        dev.setMac(devices.get(i).getMac().toLowerCase());
+        List<Room> rooms = new ArrayList<>();
+        Room room = DataSupport.where("Uid=?", devices.get(i).getRoom_uid()).findFirst(Room.class);
+        if (room != null) {
+            Log.i(TAG, "saveSmartDeviceToSqlite:" + (room.toString()));
+            rooms.add(room);
+            dev.setRooms(rooms);
+        } else {
+            dev.setRooms(mRoomManager.queryRooms());
+        }
+        dev.save();
+    }
+
+    private void saveVirtualDeviceToSqlite(List<DeviceOperationResponse> devices, int i) {
+        SmartDev dev = DataSupport.where("Uid=?", devices.get(i).getUid()).findFirst(SmartDev.class);
+        if (dev == null) {
+            dev = new SmartDev();
+        }
+        String deviceType = devices.get(i).getDevice_type();
+        switch (deviceType) {
+            case "IREMOTE_V2_AC":
+                deviceType = DeviceTypeConstant.TYPE.TYPE_AIR_REMOTECONTROL;
+                break;
+            case "IREMOTE_V2_TV":
+                deviceType = DeviceTypeConstant.TYPE.TYPE_TV_REMOTECONTROL;
+                break;
+            case "IREMOTE_V2_STB":
+                deviceType = DeviceTypeConstant.TYPE.TYPE_TVBOX_REMOTECONTROL;
+                break;
+        }
+        dev.setType(deviceType);
+        String deviceName = devices.get(i).getDevice_name();
+        dev.setName(deviceName);
+        dev.setUid(devices.get(i).getUid());
+        SmartDev realRc = DataSupport.where("Uid=?", devices.get(i).getIrmote_uid()).findFirst(SmartDev.class, true);
+        if (realRc != null && realRc.getRooms() != null) {
+            dev.setRooms(realRc.getRooms());
+        }
+        dev.setRemotecontrolUid(devices.get(i).getIrmote_uid());
+        dev.setMac(devices.get(i).getIrmote_mac());
+        String key_codes = devices.get(i).getKey_codes();
+        if (key_codes != null) {
+            dev.setKey_codes(key_codes);
+        }
+        dev.save();
+    }
     /**
      * 按照序号排序
      */
@@ -348,7 +718,9 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
         });
         return mGatwayDevices;
     }
+
     private String currentRecentDeviceShowStyle;
+
     /**
      * 按照序号排序
      */
@@ -371,12 +743,20 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
         });
         return mGatwayDevices;
     }
-
+    private boolean receverDoorbellMsg=false;
     @Override
     protected void onResume() {
         super.onResume();
+        receverDoorbellMsg=false;
         isLogin = Perfence.getBooleanPerfence(AppConstant.USER_LOGIN);
+
         manager.addEventCallback(ec);
+        mRoomList.clear();
+        mRoomList.addAll(mRoomManager.queryRooms());
+        mDeviceManager.addDeviceListener(mDeviceListener);
+        mDeviceManager.startQueryStatu();
+        mRemoteControlManager.addRemoteControlListener(mRemoteControlListener);
+        mRoomManager.addRoomListener(mRoomListener);
         setWeatherBackground();
         setButtomBarIcon();
         initRecentlyDeviceData();
@@ -452,8 +832,7 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
             }
         });
         layout_roomselect_changed_ype.setAdapter(mRoomSelectTypeChangedAdapter);
-
-         currentRecentDeviceShowStyle=Perfence.getPerfence(Perfence.HOMEPAGE_DEVICE_SHOW_STYLE);
+        currentRecentDeviceShowStyle = Perfence.getPerfence(Perfence.HOMEPAGE_DEVICE_SHOW_STYLE);
         mDeviceAdapter.setTopList(datasTop);
         mDeviceAdapter.setBottomList(datasBottom);
         mDeviceAdapter.notifyDataSetChanged();
@@ -461,18 +840,22 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
         mRoomSelectTypeChangedAdapter.setTopList(datasTop);
         mRoomSelectTypeChangedAdapter.setBottomList(datasBottom);
         mRoomSelectTypeChangedAdapter.notifyDataSetChanged();
-        if(currentRecentDeviceShowStyle.equals(Perfence.HOMEPAGE_DEVICE_SHOW_STYLE_NORMAL)){
+        if (currentRecentDeviceShowStyle.equals(Perfence.HOMEPAGE_DEVICE_SHOW_STYLE_NORMAL)) {
             layout_roomselect_normal.setVisibility(View.VISIBLE);
             layout_roomselect_changed_ype.setVisibility(View.GONE);
             scroll_inner_wrap.smoothScrollTo(0, 0);
-        }else if(currentRecentDeviceShowStyle.equals(Perfence.HOMEPAGE_DEVICE_SHOW_STYLE_CHANGE)){
+        } else if (currentRecentDeviceShowStyle.equals(Perfence.HOMEPAGE_DEVICE_SHOW_STYLE_CHANGE)) {
             layout_roomselect_normal.setVisibility(View.GONE);
             layout_roomselect_changed_ype.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             layout_roomselect_normal.setVisibility(View.GONE);
             layout_roomselect_changed_ype.setVisibility(View.VISIBLE);
         }
         initDefaultTempaturePm25();
+        if (isLogin) {
+            mRoomManager.updateRooms();
+        }
+        startTimer();
     }
 
     private void initRecentlyDeviceData() {
@@ -491,23 +874,23 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
         sortGatwayDevices(datasTop);
         sortSmartDevices(datasBottom);
         while (datasTop.size() + datasBottom.size() > 5) {
-            if(datasTop.size()>0 ){
-                if ( datasTop.get(datasTop.size() - 1).getUseCount() > datasBottom.get(datasBottom.size() - 1).getUserCount()) {
+            if (datasTop.size() > 0) {
+                if (datasTop.get(datasTop.size() - 1).getUseCount() > datasBottom.get(datasBottom.size() - 1).getUserCount()) {
                     datasBottom.remove(datasBottom.size() - 1);
                 } else {
                     datasTop.remove(datasTop.size() - 1);
                 }
-            }else {
-                if(datasBottom.size()>5){
+            } else {
+                if (datasBottom.size() > 5) {
                     datasBottom.remove(datasBottom.size() - 1);
                 }
             }
         }
-         currentRecentDeviceShowStyle=Perfence.getPerfence(Perfence.HOMEPAGE_DEVICE_SHOW_STYLE);
-        if(datasTop.size()+datasBottom.size()==0){
+        currentRecentDeviceShowStyle = Perfence.getPerfence(Perfence.HOMEPAGE_DEVICE_SHOW_STYLE);
+        if (datasTop.size() + datasBottom.size() == 0) {
             textview_change_show_type.setVisibility(View.GONE);
             empty_recently_device.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             textview_change_show_type.setVisibility(View.VISIBLE);
             empty_recently_device.setVisibility(View.GONE);
         }
@@ -518,8 +901,11 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
         locationStr = Perfence.getPerfence(AppConstant.LOCATION_RECEIVED);
         tempature = Perfence.getPerfence(AppConstant.TEMPATURE_VALUE);
         pm25 = Perfence.getPerfence(AppConstant.PM25_VALUE);
-        if (locationStr != null) {
+        if (locationStr != null && !locationStr.equals("")) {
             textview_city.setText(locationStr);
+            city=locationStr;
+            initWaetherData();
+            sendRequestWithHttpClient(city);
         }
         if (tempature != null) {
             textview_tempature.setText(tempature);
@@ -527,6 +913,7 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
         if (pm25 != null) {
             textview_pm25.setText(pm25);
         }
+
     }
 
     private void setButtomBarIcon() {
@@ -678,6 +1065,7 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
             Perfence.setPerfence(AppConstant.USER_LOGIN, false);
             manager.login(phoneNumber, password);
         }
+        initListener();
     }
 
     private void initManager() {
@@ -685,7 +1073,7 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
         mRoomManager.initRoomManager(this);
         mDeviceManager = DeviceManager.getInstance();
         mDeviceManager.InitDeviceManager(this);
-        RemoteControlManager mRemoteControlManager = RemoteControlManager.getInstance();
+        mRemoteControlManager = RemoteControlManager.getInstance();
         mRemoteControlManager.InitRemoteControlManager(this);
         mSmartLockManager = SmartLockManager.getInstance();
         mSmartLockManager.InitSmartLockManager(this);
@@ -824,9 +1212,23 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
     @Override
     protected void onPause() {
         super.onPause();
+        mRoomManager.removeRoomListener(mRoomListener);
+        mDeviceManager.removeDeviceListener(mDeviceListener);
+        mDeviceManager.stopQueryStatu();
+        mRemoteControlManager.removeRemoteControlListener(mRemoteControlListener);
         manager.removeEventCallback(ec);
+        stopTimer();
     }
-
+    private void stopTimer() {
+        if (refreshTask != null) {
+            refreshTask.cancel();
+            refreshTask = null;
+        }
+        if (refreshTimer != null) {
+            refreshTimer.cancel();
+            refreshTimer = null;
+        }
+    }
     /**
      * 再按一次退出应用
      */
@@ -868,12 +1270,12 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
                 break;
             case R.id.textview_change_show_type:
                 if (layout_roomselect_normal.getVisibility() == View.VISIBLE) {
-                    Perfence.setPerfence(Perfence.HOMEPAGE_DEVICE_SHOW_STYLE,Perfence.HOMEPAGE_DEVICE_SHOW_STYLE_CHANGE);
+                    Perfence.setPerfence(Perfence.HOMEPAGE_DEVICE_SHOW_STYLE, Perfence.HOMEPAGE_DEVICE_SHOW_STYLE_CHANGE);
                     layout_roomselect_normal.setVisibility(View.GONE);
                     layout_roomselect_changed_ype.setVisibility(View.VISIBLE);
                     scroll_inner_wrap.smoothScrollTo(0, 0);
                 } else {
-                    Perfence.setPerfence(Perfence.HOMEPAGE_DEVICE_SHOW_STYLE,Perfence.HOMEPAGE_DEVICE_SHOW_STYLE_NORMAL);
+                    Perfence.setPerfence(Perfence.HOMEPAGE_DEVICE_SHOW_STYLE, Perfence.HOMEPAGE_DEVICE_SHOW_STYLE_NORMAL);
                     layout_roomselect_normal.setVisibility(View.VISIBLE);
                     layout_roomselect_changed_ype.setVisibility(View.GONE);
                     layout_roomselect_normal.smoothScrollTo(0, 0);
@@ -883,5 +1285,34 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
                 }
                 break;
         }
+    }
+    private void updateDoorBellStatus() {
+        if (seachedDoorbellmac != null) {
+            seachedDoorbellmac = seachedDoorbellmac.replaceAll("0x", "").trim();
+            seachedDoorbellmac = seachedDoorbellmac.replaceAll(" ", "-");
+            if (currentSmartDoorBell != null) {
+                if (seachedDoorbellmac.equalsIgnoreCase(currentSmartDoorBell.getMac())) {
+                    currentSmartDoorBell.setStatus("在线");
+                    currentSmartDoorBell.saveFast();
+                    ellESDK.stopSearchDevs();
+                }
+            }
+        }
+    }
+    @Override
+    public void onRecvEllEPacket(BasicPacket packet) {
+        receverDoorbellMsg=true;
+        Log.i(TAG, "onRecvEllEPacket" + packet.toString() + packet.mac);
+        seachedDoorbellmac = DataExchange.byteArrayToHexString(DataExchange.longToEightByte(packet.mac));
+        updateDoorBellStatus();
+        Log.i(TAG, "onRecvEllEPacket" + seachedDoorbellmac);
+
+    }
+    @Override
+    public void searchDevCBS(long mac, byte type, byte ver) {
+        receverDoorbellMsg=true;
+        Log.e(TAG, "mac:" + mac + "type:" + type + "ver:" + ver);
+        seachedDoorbellmac = DataExchange.byteArrayToHexString(DataExchange.longToEightByte(mac));
+        updateDoorBellStatus();
     }
 }

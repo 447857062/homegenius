@@ -4,9 +4,11 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
     <ImageView
+        android:layout_marginTop="35dp"
         android:id="@+id/imageview_empty"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
         android:background="@drawable/nohomenetwork" />
     <TextView
         android:id="@+id/textview_device_name"
@@ -14,7 +16,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/imageview_empty"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="15dp"
         android:gravity="center_horizontal"
         android:text="暂时还没有家庭网络"
         android:textColor="@color/room_type_text"

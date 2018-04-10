@@ -10,13 +10,13 @@ import android.widget.EditText;
 import com.deplink.boruSmart.activity.personal.login.LoginActivity;
 import com.deplink.boruSmart.constant.AppConstant;
 import com.deplink.boruSmart.manager.connect.remote.HomeGenius;
-import com.deplink.boruSmart.util.NetUtil;
-import com.deplink.boruSmart.util.Perfence;
-import com.deplink.boruSmart.view.toast.ToastSingleShow;
 import com.deplink.boruSmart.manager.device.DeviceManager;
 import com.deplink.boruSmart.manager.device.router.RouterManager;
+import com.deplink.boruSmart.util.NetUtil;
+import com.deplink.boruSmart.util.Perfence;
 import com.deplink.boruSmart.view.combinationwidget.TitleLayout;
 import com.deplink.boruSmart.view.dialog.AlertDialog;
+import com.deplink.boruSmart.view.toast.Ftoast;
 import com.deplink.sdk.android.sdk.DeplinkSDK;
 import com.deplink.sdk.android.sdk.EventCallback;
 import com.deplink.sdk.android.sdk.SDKAction;
@@ -156,12 +156,12 @@ public class DynamicsActivity extends Activity {
                             mHomeGenius.setWan(proto,channels);
                         }
                     } else {
-                        ToastSingleShow.showText(DynamicsActivity.this, "未登录，无法设置动态上网,请登录后重试");
+                        Ftoast.create(DynamicsActivity.this).setText("未登录，无法设置动态上网,请登录后重试").show();
                     }
 
 
                 } else {
-                    ToastSingleShow.showText(DynamicsActivity.this, "网络连接不可用");
+                    Ftoast.create(DynamicsActivity.this).setText("网络连接不可用").show();
                 }
 
             }
@@ -181,7 +181,7 @@ public class DynamicsActivity extends Activity {
                 if (method.equalsIgnoreCase("REPORT")) {
                     PERFORMANCE wan = gson.fromJson(xmlStr, PERFORMANCE.class);
                     if (wan.getProto().getDHCP() != null) {
-                        ToastSingleShow.showText(DynamicsActivity.this, "动态IP设置成功");
+                        Ftoast.create(DynamicsActivity.this).setText("动态IP设置成功").show();
                     }
                 }
             }

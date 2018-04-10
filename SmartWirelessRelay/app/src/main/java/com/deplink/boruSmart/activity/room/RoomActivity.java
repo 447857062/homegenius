@@ -30,7 +30,7 @@ import com.deplink.boruSmart.util.Perfence;
 import com.deplink.boruSmart.util.WeakRefHandler;
 import com.deplink.boruSmart.view.combinationwidget.TitleLayout;
 import com.deplink.boruSmart.view.dialog.AlertDialog;
-import com.deplink.boruSmart.view.toast.ToastSingleShow;
+import com.deplink.boruSmart.view.toast.Ftoast;
 import com.deplink.sdk.android.sdk.DeplinkSDK;
 import com.deplink.sdk.android.sdk.EventCallback;
 import com.deplink.sdk.android.sdk.SDKAction;
@@ -143,7 +143,7 @@ public class RoomActivity extends AppCompatActivity implements View.OnClickListe
                 if (NetUtil.isNetAvailable(this)) {
                     mRoomManager.updateRoomsOrdinalNumber(mRooms);
                 } else {
-                    ToastSingleShow.showText(this, "网络连接不可用");
+                    Ftoast.create(this).setText("网络连接不可用").show();
                 }
             }
         }

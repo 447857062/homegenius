@@ -17,19 +17,19 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.deplink.boruSmart.activity.homepage.SmartHomeMainActivity;
-import com.deplink.boruSmart.activity.personal.PersonalCenterActivity;
-import com.deplink.boruSmart.util.Perfence;
-import com.deplink.boruSmart.util.StringValidatorUtil;
 import com.deplink.boruSmart.Protocol.json.Room;
 import com.deplink.boruSmart.Protocol.json.device.SmartDev;
 import com.deplink.boruSmart.Protocol.json.device.getway.GatwayDevice;
 import com.deplink.boruSmart.Protocol.json.device.lock.Record;
 import com.deplink.boruSmart.Protocol.json.device.router.Router;
+import com.deplink.boruSmart.activity.homepage.SmartHomeMainActivity;
+import com.deplink.boruSmart.activity.personal.PersonalCenterActivity;
 import com.deplink.boruSmart.constant.AppConstant;
 import com.deplink.boruSmart.util.NetUtil;
+import com.deplink.boruSmart.util.Perfence;
+import com.deplink.boruSmart.util.StringValidatorUtil;
 import com.deplink.boruSmart.view.combinationwidget.TitleLayout;
-import com.deplink.boruSmart.view.toast.ToastSingleShow;
+import com.deplink.boruSmart.view.toast.Ftoast;
 import com.deplink.sdk.android.sdk.DeplinkSDK;
 import com.deplink.sdk.android.sdk.EventCallback;
 import com.deplink.sdk.android.sdk.SDKAction;
@@ -174,7 +174,7 @@ public class LoginActivity extends Activity implements View.OnClickListener, Vie
             public void onFailure(SDKAction action, Throwable throwable) {
                 switch (action) {
                     case LOGIN:
-                        ToastSingleShow.showText(LoginActivity.this, "" + throwable.getMessage());
+                        Ftoast.create(LoginActivity.this).setText("" + throwable.getMessage()).show();
                         Perfence.setPerfence(AppConstant.USER_LOGIN, false);
                         break;
                 }
@@ -264,7 +264,7 @@ public class LoginActivity extends Activity implements View.OnClickListener, Vie
                 if (NetUtil.isNetAvailable(this)) {
                     manager.login(phoneNumber, password);
                 } else {
-                    ToastSingleShow.showText(this, "网络连接不可用");
+                    Ftoast.create(LoginActivity.this).setText("网络连接不可用").show();
                 }
 
                 break;

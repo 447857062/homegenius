@@ -27,6 +27,37 @@
         android:paddingTop="15dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+        <RelativeLayout
+            android:id="@+id/layout_empty_share_device"
+            android:layout_width="match_parent"
+            android:visibility="gone"
+
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_marginTop="50dp"
+                android:id="@+id/imageview_empty"
+                android:layout_centerHorizontal="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/nosharingdevice" />
+            <TextView
+                android:layout_marginTop="15dp"
+                android:id="@+id/textview_device_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/imageview_empty"
+                android:layout_centerHorizontal="true"
+                android:gravity="center_horizontal"
+                android:text="暂时还没有设备分享"
+                android:textColor="@color/room_type_text"
+                android:textSize="@dimen/text_size_small" />
+        </RelativeLayout>
+        <ImageView
+            android:id="@+id/refresh_image"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/default_ptr_rotate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
         <ListView
             android:id="@+id/shareddevices_list"
             android:layout_width="match_parent"

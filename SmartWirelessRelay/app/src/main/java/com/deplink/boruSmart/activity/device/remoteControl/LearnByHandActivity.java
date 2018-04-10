@@ -11,25 +11,25 @@ import android.widget.Button;
 
 import com.deplink.boruSmart.Protocol.json.OpResult;
 import com.deplink.boruSmart.Protocol.json.QueryOptions;
+import com.deplink.boruSmart.Protocol.json.device.remotecontrol.AirconditionKeyCode;
 import com.deplink.boruSmart.Protocol.json.device.remotecontrol.AirconditionKeyLearnStatu;
 import com.deplink.boruSmart.Protocol.json.device.remotecontrol.TvKeyCode;
 import com.deplink.boruSmart.Protocol.json.device.remotecontrol.TvKeyLearnStatu;
+import com.deplink.boruSmart.Protocol.json.device.remotecontrol.TvboxKeyCode;
+import com.deplink.boruSmart.Protocol.json.device.remotecontrol.TvboxLearnStatu;
 import com.deplink.boruSmart.activity.personal.login.LoginActivity;
 import com.deplink.boruSmart.constant.AirKeyNameConstant;
+import com.deplink.boruSmart.constant.AppConstant;
 import com.deplink.boruSmart.constant.DeviceTypeConstant;
 import com.deplink.boruSmart.constant.TvBoxNameConstant;
 import com.deplink.boruSmart.constant.TvKeyNameConstant;
-import com.deplink.boruSmart.util.Perfence;
-import com.deplink.boruSmart.util.WeakRefHandler;
-import com.deplink.boruSmart.Protocol.json.device.remotecontrol.AirconditionKeyCode;
-import com.deplink.boruSmart.Protocol.json.device.remotecontrol.TvboxKeyCode;
-import com.deplink.boruSmart.Protocol.json.device.remotecontrol.TvboxLearnStatu;
-import com.deplink.boruSmart.constant.AppConstant;
 import com.deplink.boruSmart.manager.device.DeviceManager;
 import com.deplink.boruSmart.manager.device.remoteControl.RemoteControlListener;
 import com.deplink.boruSmart.manager.device.remoteControl.RemoteControlManager;
+import com.deplink.boruSmart.util.Perfence;
+import com.deplink.boruSmart.util.WeakRefHandler;
 import com.deplink.boruSmart.view.dialog.AlertDialog;
-import com.deplink.boruSmart.view.toast.ToastSingleShow;
+import com.deplink.boruSmart.view.toast.Ftoast;
 import com.deplink.sdk.android.sdk.DeplinkSDK;
 import com.deplink.sdk.android.sdk.EventCallback;
 import com.deplink.sdk.android.sdk.SDKAction;
@@ -116,7 +116,7 @@ public class LearnByHandActivity extends Activity implements View.OnClickListene
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ToastSingleShow.showText(LearnByHandActivity.this,"按键已学习");
+                                    Ftoast.create(LearnByHandActivity.this).setText("按键已学习").show();
                                 }
                             });
                             break;
@@ -129,7 +129,7 @@ public class LearnByHandActivity extends Activity implements View.OnClickListene
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ToastSingleShow.showText(LearnByHandActivity.this,"按键已学习");
+                                    Ftoast.create(LearnByHandActivity.this).setText("按键已学习").show();
                                 }
                             });
                             break;
@@ -142,7 +142,7 @@ public class LearnByHandActivity extends Activity implements View.OnClickListene
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ToastSingleShow.showText(LearnByHandActivity.this,"按键已学习");
+                                    Ftoast.create(LearnByHandActivity.this).setText("按键已学习").show();
                                 }
                             });
                             break;
@@ -155,7 +155,7 @@ public class LearnByHandActivity extends Activity implements View.OnClickListene
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ToastSingleShow.showText(LearnByHandActivity.this,"按键已学习");
+                                    Ftoast.create(LearnByHandActivity.this).setText("按键已学习").show();
                                 }
                             });
                             break;
@@ -168,7 +168,7 @@ public class LearnByHandActivity extends Activity implements View.OnClickListene
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ToastSingleShow.showText(LearnByHandActivity.this,"按键已学习");
+                                    Ftoast.create(LearnByHandActivity.this).setText("按键已学习").show();
                                 }
                             });
                             break;
@@ -181,7 +181,7 @@ public class LearnByHandActivity extends Activity implements View.OnClickListene
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ToastSingleShow.showText(LearnByHandActivity.this,"按键已学习");
+                                    Ftoast.create(LearnByHandActivity.this).setText("按键已学习").show();
                                 }
                             });
                             break;
@@ -194,7 +194,7 @@ public class LearnByHandActivity extends Activity implements View.OnClickListene
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ToastSingleShow.showText(LearnByHandActivity.this,"按键已学习");
+                                    Ftoast.create(LearnByHandActivity.this).setText("按键已学习").show();
                                 }
                             });
                             break;
@@ -207,7 +207,7 @@ public class LearnByHandActivity extends Activity implements View.OnClickListene
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ToastSingleShow.showText(LearnByHandActivity.this,"按键已学习");
+                                    Ftoast.create(LearnByHandActivity.this).setText("按键已学习").show();
                                 }
                             });
                             break;
@@ -220,7 +220,7 @@ public class LearnByHandActivity extends Activity implements View.OnClickListene
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ToastSingleShow.showText(LearnByHandActivity.this,"按键已学习");
+                                    Ftoast.create(LearnByHandActivity.this).setText("按键已学习").show();
                                 }
                             });
                             break;
@@ -233,7 +233,7 @@ public class LearnByHandActivity extends Activity implements View.OnClickListene
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ToastSingleShow.showText(LearnByHandActivity.this,"按键已学习");
+                                    Ftoast.create(LearnByHandActivity.this).setText("按键已学习").show();
                                 }
                             });
                             break;
@@ -246,7 +246,7 @@ public class LearnByHandActivity extends Activity implements View.OnClickListene
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ToastSingleShow.showText(LearnByHandActivity.this,"按键已学习");
+                                    Ftoast.create(LearnByHandActivity.this).setText("按键已学习").show();
                                 }
                             });
                             break;
@@ -259,7 +259,7 @@ public class LearnByHandActivity extends Activity implements View.OnClickListene
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ToastSingleShow.showText(LearnByHandActivity.this,"按键已学习");
+                                    Ftoast.create(LearnByHandActivity.this).setText("按键已学习").show();
                                 }
                             });
                             break;
@@ -272,7 +272,7 @@ public class LearnByHandActivity extends Activity implements View.OnClickListene
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ToastSingleShow.showText(LearnByHandActivity.this,"按键已学习");
+                                    Ftoast.create(LearnByHandActivity.this).setText("按键已学习").show();
                                 }
                             });
                             break;
@@ -285,7 +285,7 @@ public class LearnByHandActivity extends Activity implements View.OnClickListene
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ToastSingleShow.showText(LearnByHandActivity.this,"按键已学习");
+                                    Ftoast.create(LearnByHandActivity.this).setText("按键已学习").show();
                                 }
                             });
                             break;
@@ -298,7 +298,7 @@ public class LearnByHandActivity extends Activity implements View.OnClickListene
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ToastSingleShow.showText(LearnByHandActivity.this,"按键已学习");
+                                    Ftoast.create(LearnByHandActivity.this).setText("按键已学习").show();
                                 }
                             });
                             break;
@@ -311,7 +311,7 @@ public class LearnByHandActivity extends Activity implements View.OnClickListene
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ToastSingleShow.showText(LearnByHandActivity.this,"按键已学习");
+                                    Ftoast.create(LearnByHandActivity.this).setText("按键已学习").show();
                                 }
                             });
                             break;
@@ -324,7 +324,7 @@ public class LearnByHandActivity extends Activity implements View.OnClickListene
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ToastSingleShow.showText(LearnByHandActivity.this,"按键已学习");
+                                    Ftoast.create(LearnByHandActivity.this).setText("按键已学习").show();
                                 }
                             });
                             break;
@@ -337,7 +337,7 @@ public class LearnByHandActivity extends Activity implements View.OnClickListene
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ToastSingleShow.showText(LearnByHandActivity.this,"按键已学习");
+                                    Ftoast.create(LearnByHandActivity.this).setText("按键已学习").show();
                                 }
                             });
                             break;
@@ -350,7 +350,7 @@ public class LearnByHandActivity extends Activity implements View.OnClickListene
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ToastSingleShow.showText(LearnByHandActivity.this,"按键已学习");
+                                    Ftoast.create(LearnByHandActivity.this).setText("按键已学习").show();
                                 }
                             });
                             break;
@@ -363,7 +363,7 @@ public class LearnByHandActivity extends Activity implements View.OnClickListene
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ToastSingleShow.showText(LearnByHandActivity.this,"按键已学习");
+                                    Ftoast.create(LearnByHandActivity.this).setText("按键已学习").show();
                                 }
                             });
                             break;
@@ -376,7 +376,7 @@ public class LearnByHandActivity extends Activity implements View.OnClickListene
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ToastSingleShow.showText(LearnByHandActivity.this,"按键已学习");
+                                    Ftoast.create(LearnByHandActivity.this).setText("按键已学习").show();
                                 }
                             });
                             break;
@@ -389,7 +389,7 @@ public class LearnByHandActivity extends Activity implements View.OnClickListene
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ToastSingleShow.showText(LearnByHandActivity.this,"按键已学习");
+                                    Ftoast.create(LearnByHandActivity.this).setText("按键已学习").show();
                                 }
                             });
                             break;
@@ -402,7 +402,7 @@ public class LearnByHandActivity extends Activity implements View.OnClickListene
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ToastSingleShow.showText(LearnByHandActivity.this,"按键已学习");
+                                    Ftoast.create(LearnByHandActivity.this).setText("按键已学习").show();
                                 }
                             });
                             break;
@@ -415,7 +415,7 @@ public class LearnByHandActivity extends Activity implements View.OnClickListene
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ToastSingleShow.showText(LearnByHandActivity.this,"按键已学习");
+                                    Ftoast.create(LearnByHandActivity.this).setText("按键已学习").show();
                                 }
                             });
                             break;
@@ -428,7 +428,7 @@ public class LearnByHandActivity extends Activity implements View.OnClickListene
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ToastSingleShow.showText(LearnByHandActivity.this,"按键已学习");
+                                    Ftoast.create(LearnByHandActivity.this).setText("按键已学习").show();
                                 }
                             });
                             break;
@@ -441,7 +441,7 @@ public class LearnByHandActivity extends Activity implements View.OnClickListene
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ToastSingleShow.showText(LearnByHandActivity.this,"按键已学习");
+                                    Ftoast.create(LearnByHandActivity.this).setText("按键已学习").show();
                                 }
                             });
                             break;
@@ -454,7 +454,7 @@ public class LearnByHandActivity extends Activity implements View.OnClickListene
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ToastSingleShow.showText(LearnByHandActivity.this,"按键已学习");
+                                    Ftoast.create(LearnByHandActivity.this).setText("按键已学习").show();
                                 }
                             });
                             break;
@@ -467,7 +467,7 @@ public class LearnByHandActivity extends Activity implements View.OnClickListene
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ToastSingleShow.showText(LearnByHandActivity.this,"按键已学习");
+                                    Ftoast.create(LearnByHandActivity.this).setText("按键已学习").show();
                                 }
                             });
                             break;
@@ -480,7 +480,7 @@ public class LearnByHandActivity extends Activity implements View.OnClickListene
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ToastSingleShow.showText(LearnByHandActivity.this,"按键已学习");
+                                    Ftoast.create(LearnByHandActivity.this).setText("按键已学习").show();
                                 }
                             });
                             break;
@@ -493,7 +493,7 @@ public class LearnByHandActivity extends Activity implements View.OnClickListene
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ToastSingleShow.showText(LearnByHandActivity.this,"按键已学习");
+                                    Ftoast.create(LearnByHandActivity.this).setText("按键已学习").show();
                                 }
                             });
                             break;
@@ -507,7 +507,7 @@ public class LearnByHandActivity extends Activity implements View.OnClickListene
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ToastSingleShow.showText(LearnByHandActivity.this,"开关已学习");
+                                    Ftoast.create(LearnByHandActivity.this).setText("按键已学习").show();
                                 }
                             });
                             break;
@@ -519,7 +519,7 @@ public class LearnByHandActivity extends Activity implements View.OnClickListene
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ToastSingleShow.showText(LearnByHandActivity.this,"自动风向已学习");
+                                    Ftoast.create(LearnByHandActivity.this).setText("按键已学习").show();
                                 }
                             });
                             break;
@@ -531,7 +531,7 @@ public class LearnByHandActivity extends Activity implements View.OnClickListene
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ToastSingleShow.showText(LearnByHandActivity.this,"风向下已学习");
+                                    Ftoast.create(LearnByHandActivity.this).setText("按键已学习").show();
                                 }
                             });
                             break;
@@ -543,7 +543,7 @@ public class LearnByHandActivity extends Activity implements View.OnClickListene
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ToastSingleShow.showText(LearnByHandActivity.this,"风向中已学习");
+                                    Ftoast.create(LearnByHandActivity.this).setText("按键已学习").show();
                                 }
                             });
                             break;
@@ -555,7 +555,7 @@ public class LearnByHandActivity extends Activity implements View.OnClickListene
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ToastSingleShow.showText(LearnByHandActivity.this,"风向上已学习");
+                                    Ftoast.create(LearnByHandActivity.this).setText("按键已学习").show();
                                 }
                             });
                             break;
@@ -567,7 +567,7 @@ public class LearnByHandActivity extends Activity implements View.OnClickListene
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ToastSingleShow.showText(LearnByHandActivity.this,"自动风量已学习");
+                                    Ftoast.create(LearnByHandActivity.this).setText("按键已学习").show();
                                 }
                             });
                             break;
@@ -579,7 +579,7 @@ public class LearnByHandActivity extends Activity implements View.OnClickListene
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ToastSingleShow.showText(LearnByHandActivity.this,"低风已学习");
+                                    Ftoast.create(LearnByHandActivity.this).setText("按键已学习").show();
                                 }
                             });
                             break;
@@ -591,7 +591,7 @@ public class LearnByHandActivity extends Activity implements View.OnClickListene
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ToastSingleShow.showText(LearnByHandActivity.this,"中风已学习");
+                                    Ftoast.create(LearnByHandActivity.this).setText("按键已学习").show();
                                 }
                             });
                             break;
@@ -603,7 +603,7 @@ public class LearnByHandActivity extends Activity implements View.OnClickListene
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ToastSingleShow.showText(LearnByHandActivity.this,"高风已学习");
+                                    Ftoast.create(LearnByHandActivity.this).setText("按键已学习").show();
                                 }
                             });
                             break;
@@ -615,7 +615,7 @@ public class LearnByHandActivity extends Activity implements View.OnClickListene
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ToastSingleShow.showText(LearnByHandActivity.this,"制热模式已学习");
+                                    Ftoast.create(LearnByHandActivity.this).setText("按键已学习").show();
                                 }
                             });
                             break;
@@ -627,7 +627,7 @@ public class LearnByHandActivity extends Activity implements View.OnClickListene
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ToastSingleShow.showText(LearnByHandActivity.this,"制冷模式已学习");
+                                    Ftoast.create(LearnByHandActivity.this).setText("按键已学习").show();
                                 }
                             });
                             break;
@@ -639,7 +639,7 @@ public class LearnByHandActivity extends Activity implements View.OnClickListene
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ToastSingleShow.showText(LearnByHandActivity.this,"除湿模式已学习");
+                                    Ftoast.create(LearnByHandActivity.this).setText("按键已学习").show();
                                 }
                             });
                             break;
@@ -651,7 +651,7 @@ public class LearnByHandActivity extends Activity implements View.OnClickListene
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ToastSingleShow.showText(LearnByHandActivity.this,"送风模式已学习");
+                                    Ftoast.create(LearnByHandActivity.this).setText("按键已学习").show();
                                 }
                             });
                             break;
@@ -663,7 +663,7 @@ public class LearnByHandActivity extends Activity implements View.OnClickListene
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ToastSingleShow.showText(LearnByHandActivity.this,"自动模式已学习");
+                                    Ftoast.create(LearnByHandActivity.this).setText("按键已学习").show();
                                 }
                             });
                             break;
@@ -688,7 +688,7 @@ public class LearnByHandActivity extends Activity implements View.OnClickListene
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ToastSingleShow.showText(LearnByHandActivity.this,"按键频道加已学习");
+                                    Ftoast.create(LearnByHandActivity.this).setText("按键频道加已学习").show();
                                 }
                             });
 
@@ -701,7 +701,7 @@ public class LearnByHandActivity extends Activity implements View.OnClickListene
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ToastSingleShow.showText(LearnByHandActivity.this,"按键频道减已学习");
+                                    Ftoast.create(LearnByHandActivity.this).setText("按键频道减已学习").show();
                                 }
                             });
 
@@ -714,7 +714,7 @@ public class LearnByHandActivity extends Activity implements View.OnClickListene
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ToastSingleShow.showText(LearnByHandActivity.this,"按键下已学习");
+                                    Ftoast.create(LearnByHandActivity.this).setText("按键下已学习").show();
                                 }
                             });
                             break;
@@ -730,7 +730,7 @@ public class LearnByHandActivity extends Activity implements View.OnClickListene
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ToastSingleShow.showText(LearnByHandActivity.this,"按键左已学习");
+                                    Ftoast.create(LearnByHandActivity.this).setText("按键左已学习").show();
                                 }
                             });
                             break;
@@ -742,7 +742,7 @@ public class LearnByHandActivity extends Activity implements View.OnClickListene
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ToastSingleShow.showText(LearnByHandActivity.this,"按键右已学习");
+                                    Ftoast.create(LearnByHandActivity.this).setText("按键右已学习").show();
                                 }
                             });
                             break;
@@ -754,7 +754,7 @@ public class LearnByHandActivity extends Activity implements View.OnClickListene
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ToastSingleShow.showText(LearnByHandActivity.this,"按键静音已学习");
+                                    Ftoast.create(LearnByHandActivity.this).setText("按键静音已学习").show();
                                 }
                             });
                             break;
@@ -766,7 +766,7 @@ public class LearnByHandActivity extends Activity implements View.OnClickListene
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ToastSingleShow.showText(LearnByHandActivity.this,"按键音量加已学习");
+                                    Ftoast.create(LearnByHandActivity.this).setText("按键音量加已学习").show();
                                 }
                             });
                             break;
@@ -778,7 +778,7 @@ public class LearnByHandActivity extends Activity implements View.OnClickListene
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ToastSingleShow.showText(LearnByHandActivity.this,"按键音量减已学习");
+                                    Ftoast.create(LearnByHandActivity.this).setText("按键音量减已学习").show();
                                 }
                             });
                             break;
@@ -791,7 +791,7 @@ public class LearnByHandActivity extends Activity implements View.OnClickListene
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ToastSingleShow.showText(LearnByHandActivity.this,"按键开关已学习");
+                                    Ftoast.create(LearnByHandActivity.this).setText("按键开关已学习").show();
                                 }
                             });
                             break;
@@ -801,7 +801,7 @@ public class LearnByHandActivity extends Activity implements View.OnClickListene
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ToastSingleShow.showText(LearnByHandActivity.this,"按键返回已学习");
+                                    Ftoast.create(LearnByHandActivity.this).setText("按键返回已学习").show();
                                 }
                             });
                             break;
@@ -813,7 +813,7 @@ public class LearnByHandActivity extends Activity implements View.OnClickListene
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ToastSingleShow.showText(LearnByHandActivity.this,"按键确认已学习");
+                                    Ftoast.create(LearnByHandActivity.this).setText("按键确认已学习").show();
                                 }
                             });
                             break;
@@ -825,7 +825,7 @@ public class LearnByHandActivity extends Activity implements View.OnClickListene
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ToastSingleShow.showText(LearnByHandActivity.this,"按键0已学习");
+                                    Ftoast.create(LearnByHandActivity.this).setText("按键0已学习").show();
                                 }
                             });
                             break;
@@ -837,7 +837,7 @@ public class LearnByHandActivity extends Activity implements View.OnClickListene
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ToastSingleShow.showText(LearnByHandActivity.this,"按键1已学习");
+                                    Ftoast.create(LearnByHandActivity.this).setText("按键1已学习").show();
                                 }
                             });
                             break;
@@ -849,7 +849,7 @@ public class LearnByHandActivity extends Activity implements View.OnClickListene
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ToastSingleShow.showText(LearnByHandActivity.this,"按键2已学习");
+                                    Ftoast.create(LearnByHandActivity.this).setText("按键2已学习").show();
                                 }
                             });
                             break;
@@ -861,7 +861,7 @@ public class LearnByHandActivity extends Activity implements View.OnClickListene
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ToastSingleShow.showText(LearnByHandActivity.this,"按键3已学习");
+                                    Ftoast.create(LearnByHandActivity.this).setText("按键3已学习").show();
                                 }
                             });
                             break;
@@ -873,7 +873,7 @@ public class LearnByHandActivity extends Activity implements View.OnClickListene
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ToastSingleShow.showText(LearnByHandActivity.this,"按键4已学习");
+                                    Ftoast.create(LearnByHandActivity.this).setText("按键4已学习").show();
                                 }
                             });
                             break;
@@ -885,7 +885,7 @@ public class LearnByHandActivity extends Activity implements View.OnClickListene
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ToastSingleShow.showText(LearnByHandActivity.this,"按键5已学习");
+                                    Ftoast.create(LearnByHandActivity.this).setText("按键5已学习").show();
                                 }
                             });
                             break;
@@ -897,7 +897,7 @@ public class LearnByHandActivity extends Activity implements View.OnClickListene
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ToastSingleShow.showText(LearnByHandActivity.this,"按键6已学习");
+                                    Ftoast.create(LearnByHandActivity.this).setText("按键6已学习").show();
                                 }
                             });
                             break;
@@ -909,7 +909,7 @@ public class LearnByHandActivity extends Activity implements View.OnClickListene
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ToastSingleShow.showText(LearnByHandActivity.this,"按键7已学习");
+                                    Ftoast.create(LearnByHandActivity.this).setText("按键7已学习").show();
                                 }
                             });
                             break;
@@ -921,7 +921,7 @@ public class LearnByHandActivity extends Activity implements View.OnClickListene
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ToastSingleShow.showText(LearnByHandActivity.this,"按键8已学习");
+                                    Ftoast.create(LearnByHandActivity.this).setText("按键8已学习").show();
                                 }
                             });
                             break;
@@ -933,7 +933,7 @@ public class LearnByHandActivity extends Activity implements View.OnClickListene
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ToastSingleShow.showText(LearnByHandActivity.this,"按键9已学习");
+                                    Ftoast.create(LearnByHandActivity.this).setText("按键9已学习").show();
                                 }
                             });
                             break;
@@ -945,7 +945,7 @@ public class LearnByHandActivity extends Activity implements View.OnClickListene
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ToastSingleShow.showText(LearnByHandActivity.this,"按键-/--已学习");
+                                    Ftoast.create(LearnByHandActivity.this).setText("按键-/--已学习").show();
                                 }
                             });
                             break;
@@ -957,7 +957,7 @@ public class LearnByHandActivity extends Activity implements View.OnClickListene
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ToastSingleShow.showText(LearnByHandActivity.this,"按键AV/TV已学习");
+                                    Ftoast.create(LearnByHandActivity.this).setText("按键AV/TV已学习").show();
                                 }
                             });
                             break;
@@ -981,7 +981,7 @@ public class LearnByHandActivity extends Activity implements View.OnClickListene
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ToastSingleShow.showText(LearnByHandActivity.this,"按键开关已学习");
+                                    Ftoast.create(LearnByHandActivity.this).setText("按键开关已学习").show();
                                 }
                             });
                             break;
@@ -993,7 +993,7 @@ public class LearnByHandActivity extends Activity implements View.OnClickListene
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ToastSingleShow.showText(LearnByHandActivity.this,"按键上已学习");
+                                    Ftoast.create(LearnByHandActivity.this).setText("按键上已学习").show();
                                 }
                             });
                             break;
@@ -1005,7 +1005,7 @@ public class LearnByHandActivity extends Activity implements View.OnClickListene
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ToastSingleShow.showText(LearnByHandActivity.this,"按键下已学习");
+                                    Ftoast.create(LearnByHandActivity.this).setText("按键下已学习").show();
                                 }
                             });
                             break;
@@ -1017,7 +1017,7 @@ public class LearnByHandActivity extends Activity implements View.OnClickListene
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ToastSingleShow.showText(LearnByHandActivity.this,"按键左已学习");
+                                    Ftoast.create(LearnByHandActivity.this).setText("按键左已学习").show();
                                 }
                             });
                             break;
@@ -1029,7 +1029,7 @@ public class LearnByHandActivity extends Activity implements View.OnClickListene
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ToastSingleShow.showText(LearnByHandActivity.this,"按键右已学习");
+                                    Ftoast.create(LearnByHandActivity.this).setText("按键右已学习").show();
                                 }
                             });
                             break;
@@ -1041,7 +1041,7 @@ public class LearnByHandActivity extends Activity implements View.OnClickListene
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ToastSingleShow.showText(LearnByHandActivity.this,"按键确定已学习");
+                                    Ftoast.create(LearnByHandActivity.this).setText("按键确定已学习").show();
                                 }
                             });
                             break;
@@ -1053,7 +1053,7 @@ public class LearnByHandActivity extends Activity implements View.OnClickListene
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ToastSingleShow.showText(LearnByHandActivity.this,"按键音量减已学习");
+                                    Ftoast.create(LearnByHandActivity.this).setText("按键音量减已学习").show();
                                 }
                             });
                             break;
@@ -1065,7 +1065,7 @@ public class LearnByHandActivity extends Activity implements View.OnClickListene
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ToastSingleShow.showText(LearnByHandActivity.this,"按键音量加已学习");
+                                    Ftoast.create(LearnByHandActivity.this).setText("按键音量加已学习").show();
                                 }
                             });
                             break;
@@ -1077,7 +1077,7 @@ public class LearnByHandActivity extends Activity implements View.OnClickListene
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ToastSingleShow.showText(LearnByHandActivity.this,"按键频道减已学习");
+                                    Ftoast.create(LearnByHandActivity.this).setText("按键频道减已学习").show();
                                 }
                             });
                             break;
@@ -1089,7 +1089,7 @@ public class LearnByHandActivity extends Activity implements View.OnClickListene
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ToastSingleShow.showText(LearnByHandActivity.this,"按键菜单已学习");
+                                    Ftoast.create(LearnByHandActivity.this).setText("按键菜单已学习").show();
                                 }
                             });
                             break;
@@ -1101,7 +1101,7 @@ public class LearnByHandActivity extends Activity implements View.OnClickListene
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ToastSingleShow.showText(LearnByHandActivity.this,"按键返回已学习");
+                                    Ftoast.create(LearnByHandActivity.this).setText("按键返回已学习").show();
                                 }
                             });
                             break;
@@ -1113,7 +1113,7 @@ public class LearnByHandActivity extends Activity implements View.OnClickListene
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ToastSingleShow.showText(LearnByHandActivity.this,"按键导航已学习");
+                                    Ftoast.create(LearnByHandActivity.this).setText("按键导航已学习").show();
                                 }
                             });
                             break;
@@ -1125,7 +1125,7 @@ public class LearnByHandActivity extends Activity implements View.OnClickListene
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ToastSingleShow.showText(LearnByHandActivity.this,"按键0已学习");
+                                    Ftoast.create(LearnByHandActivity.this).setText("按键0已学习").show();
                                 }
                             });
                             break;
@@ -1137,7 +1137,7 @@ public class LearnByHandActivity extends Activity implements View.OnClickListene
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ToastSingleShow.showText(LearnByHandActivity.this,"按键1已学习");
+                                    Ftoast.create(LearnByHandActivity.this).setText("按键1已学习").show();
                                 }
                             });
                             break;
@@ -1149,7 +1149,7 @@ public class LearnByHandActivity extends Activity implements View.OnClickListene
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ToastSingleShow.showText(LearnByHandActivity.this,"按键2已学习");
+                                    Ftoast.create(LearnByHandActivity.this).setText("按键2已学习").show();
                                 }
                             });
                             break;
@@ -1161,7 +1161,7 @@ public class LearnByHandActivity extends Activity implements View.OnClickListene
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ToastSingleShow.showText(LearnByHandActivity.this,"按键3已学习");
+                                    Ftoast.create(LearnByHandActivity.this).setText("按键3已学习").show();
                                 }
                             });
                             break;
@@ -1173,7 +1173,7 @@ public class LearnByHandActivity extends Activity implements View.OnClickListene
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ToastSingleShow.showText(LearnByHandActivity.this,"按键4已学习");
+                                    Ftoast.create(LearnByHandActivity.this).setText("按键4已学习").show();
                                 }
                             });
                             break;
@@ -1185,7 +1185,7 @@ public class LearnByHandActivity extends Activity implements View.OnClickListene
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ToastSingleShow.showText(LearnByHandActivity.this,"按键5已学习");
+                                    Ftoast.create(LearnByHandActivity.this).setText("按键5已学习").show();
                                 }
                             });
                             break;
@@ -1197,7 +1197,7 @@ public class LearnByHandActivity extends Activity implements View.OnClickListene
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ToastSingleShow.showText(LearnByHandActivity.this,"按键6已学习");
+                                    Ftoast.create(LearnByHandActivity.this).setText("按键6已学习").show();
                                 }
                             });
                             break;
@@ -1209,7 +1209,7 @@ public class LearnByHandActivity extends Activity implements View.OnClickListene
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ToastSingleShow.showText(LearnByHandActivity.this,"按键7已学习");
+                                    Ftoast.create(LearnByHandActivity.this).setText("按键7已学习").show();
                                 }
                             });
                             break;
@@ -1221,7 +1221,7 @@ public class LearnByHandActivity extends Activity implements View.OnClickListene
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ToastSingleShow.showText(LearnByHandActivity.this,"按键8已学习");
+                                    Ftoast.create(LearnByHandActivity.this).setText("按键8已学习").show();
                                 }
                             });
                             break;
@@ -1233,7 +1233,7 @@ public class LearnByHandActivity extends Activity implements View.OnClickListene
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ToastSingleShow.showText(LearnByHandActivity.this,"按键9已学习");
+                                    Ftoast.create(LearnByHandActivity.this).setText("按键9已学习").show();
                                 }
                             });
                             break;

@@ -8,17 +8,17 @@ import android.os.Message;
 import android.view.View;
 import android.widget.Toast;
 
-import com.deplink.boruSmart.util.Perfence;
 import com.deplink.boruSmart.activity.personal.login.LoginActivity;
 import com.deplink.boruSmart.constant.AppConstant;
 import com.deplink.boruSmart.manager.device.DeviceListener;
 import com.deplink.boruSmart.manager.device.DeviceManager;
 import com.deplink.boruSmart.manager.device.router.RouterManager;
+import com.deplink.boruSmart.util.Perfence;
 import com.deplink.boruSmart.util.WeakRefHandler;
 import com.deplink.boruSmart.view.combinationwidget.TitleLayout;
 import com.deplink.boruSmart.view.dialog.AlertDialog;
 import com.deplink.boruSmart.view.edittext.ClearEditText;
-import com.deplink.boruSmart.view.toast.ToastSingleShow;
+import com.deplink.boruSmart.view.toast.Ftoast;
 import com.deplink.sdk.android.sdk.DeplinkSDK;
 import com.deplink.sdk.android.sdk.EventCallback;
 import com.deplink.sdk.android.sdk.SDKAction;
@@ -90,11 +90,11 @@ public class RouterNameUpdateActivity extends Activity {
                                     null
                             );
                         } else {
-                            ToastSingleShow.showText(RouterNameUpdateActivity.this, "登录后才能操作");
+                            Ftoast.create(RouterNameUpdateActivity.this).setText( "登录后才能操作").show();
                         }
                     }
                 } else {
-                    Toast.makeText(RouterNameUpdateActivity.this, "请输入路由器名称", Toast.LENGTH_SHORT).show();
+                    Ftoast.create(RouterNameUpdateActivity.this).setText( "请输入路由器名称").show();
                 }
             }
         });

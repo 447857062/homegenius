@@ -10,21 +10,22 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import com.deplink.boruSmart.Protocol.json.device.share.UserShareInfo;
 import com.deplink.boruSmart.activity.device.adapter.ShareDeviceListAdapter;
 import com.deplink.boruSmart.activity.personal.login.LoginActivity;
-import com.deplink.boruSmart.util.Perfence;
-import com.deplink.boruSmart.util.StringValidatorUtil;
-import com.deplink.boruSmart.util.WeakRefHandler;
-import com.deplink.boruSmart.view.dialog.InputAlertDialog;
-import com.deplink.boruSmart.Protocol.json.device.share.UserShareInfo;
 import com.deplink.boruSmart.constant.AppConstant;
 import com.deplink.boruSmart.manager.device.DeviceListener;
 import com.deplink.boruSmart.manager.device.DeviceManager;
 import com.deplink.boruSmart.util.JsonArrayParseUtil;
+import com.deplink.boruSmart.util.Perfence;
+import com.deplink.boruSmart.util.StringValidatorUtil;
+import com.deplink.boruSmart.util.WeakRefHandler;
 import com.deplink.boruSmart.view.combinationwidget.TitleLayout;
 import com.deplink.boruSmart.view.dialog.AlertDialog;
-import com.deplink.boruSmart.view.toast.ToastSingleShow;
+import com.deplink.boruSmart.view.dialog.InputAlertDialog;
+import com.deplink.boruSmart.view.toast.Ftoast;
 import com.deplink.sdk.android.sdk.DeplinkSDK;
 import com.deplink.sdk.android.sdk.EventCallback;
 import com.deplink.sdk.android.sdk.SDKAction;
@@ -97,7 +98,7 @@ public class ShareDeviceActivity extends Activity  {
                                                         body.setAssuper(1);
                                                         mDeviceManager.shareDevice(deviceuid, body);
                                                     } else {
-                                                        ToastSingleShow.showText(ShareDeviceActivity.this, "未登录,登录后操作");
+                                                        Ftoast.create(ShareDeviceActivity.this).setText("未登录,登录后操作").show();
                                                     }
                                                 }
                                             } else if (userInfos.get(position).getStatus() == 1) {
@@ -105,7 +106,7 @@ public class ShareDeviceActivity extends Activity  {
                                                     if (isUserLogin) {
                                                         mDeviceManager.cancelDeviceShare(deviceuid, userInfos.get(position).getShareid());
                                                     } else {
-                                                        ToastSingleShow.showText(ShareDeviceActivity.this, "未登录,登录后操作");
+                                                        Ftoast.create(ShareDeviceActivity.this).setText("未登录,登录后操作").show();
                                                     }
                                                 }
                                             }
@@ -133,7 +134,7 @@ public class ShareDeviceActivity extends Activity  {
                                                         body.setAssuper(1);
                                                         mDeviceManager.shareDevice(deviceuid, body);
                                                     } else {
-                                                        ToastSingleShow.showText(ShareDeviceActivity.this, "未登录,登录后操作");
+                                                        Ftoast.create(ShareDeviceActivity.this).setText("未登录,登录后操作").show();
                                                     }
                                                 }
                                             } else if (userInfos.get(position).getStatus() == 1) {
@@ -141,7 +142,7 @@ public class ShareDeviceActivity extends Activity  {
                                                     if (isUserLogin) {
                                                         mDeviceManager.cancelDeviceShare(deviceuid, userInfos.get(position).getShareid());
                                                     } else {
-                                                        ToastSingleShow.showText(ShareDeviceActivity.this, "未登录,登录后操作");
+                                                        Ftoast.create(ShareDeviceActivity.this).setText("未登录,登录后操作").show();
                                                     }
                                                 }
                                             }
@@ -218,11 +219,11 @@ public class ShareDeviceActivity extends Activity  {
                                             if (isUserLogin) {
                                                 mDeviceManager.shareDevice(deviceuid, body);
                                             } else {
-                                                ToastSingleShow.showText(ShareDeviceActivity.this, "未登录,登录后操作");
+                                                Ftoast.create(ShareDeviceActivity.this).setText("未登录,登录后操作").setDuration(Toast.LENGTH_SHORT).show();
                                             }
                                         }
                                     } else {
-                                        ToastSingleShow.showText(ShareDeviceActivity.this, "请输入想要分享该设备的用户名");
+                                        Ftoast.create(ShareDeviceActivity.this).setText("请输入想要分享该设备的用户名").show();
                                     }
                                 }
                             }).setNegativeButton("取消", new View.OnClickListener() {
@@ -232,7 +233,7 @@ public class ShareDeviceActivity extends Activity  {
                         }
                     }).show();
                 }else{
-                    ToastSingleShow.showText(ShareDeviceActivity.this,"自己不是管理员,无法分享此设备");
+                    Ftoast.create(ShareDeviceActivity.this).setText("自己不是管理员,无法分享此设备").show();
                 }
             }
         });
@@ -336,18 +337,18 @@ public class ShareDeviceActivity extends Activity  {
                     switch (action) {
                         case "share":
                             if (result.getStatus().equalsIgnoreCase("ok")) {
-                                ToastSingleShow.showText(ShareDeviceActivity.this, "分享设备成功");
+                                Ftoast.create(ShareDeviceActivity.this).setText("分享设备成功").show();
                                 mDeviceManager.readDeviceShareInfo(deviceuid);
                             } else {
-                                ToastSingleShow.showText(ShareDeviceActivity.this, "分享设备失败");
+                                Ftoast.create(ShareDeviceActivity.this).setText("分享设备失败").show();
                             }
                             break;
                         case "setmanager":
                             if (result.getStatus().equalsIgnoreCase("ok")) {
                                 mDeviceManager.readDeviceShareInfo(deviceuid);
-                                ToastSingleShow.showText(ShareDeviceActivity.this, "设置管理员成功");
+                                Ftoast.create(ShareDeviceActivity.this).setText("设置管理员成功").show();
                             } else {
-                                ToastSingleShow.showText(ShareDeviceActivity.this, "设置管理员失败");
+                                Ftoast.create(ShareDeviceActivity.this).setText("设置管理员失败").show();
                             }
                             break;
                     }
@@ -355,9 +356,9 @@ public class ShareDeviceActivity extends Activity  {
                 case MSG_SHOW_CANCEL_SHARE_RESULT:
                     if (result.getStatus().equalsIgnoreCase("ok")) {
                         mDeviceManager.readDeviceShareInfo(deviceuid);
-                        ToastSingleShow.showText(ShareDeviceActivity.this, "取消分享成功");
+                        Ftoast.create(ShareDeviceActivity.this).setText("取消分享成功").show();
                     } else {
-                        ToastSingleShow.showText(ShareDeviceActivity.this, "取消分享失败");
+                        Ftoast.create(ShareDeviceActivity.this).setText("取消分享失败").show();
                     }
                     break;
             }

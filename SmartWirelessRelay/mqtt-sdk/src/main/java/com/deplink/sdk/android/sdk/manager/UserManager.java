@@ -83,6 +83,7 @@ public class UserManager implements MqttListener {
         RestfulTools.getSingleton().register(user, new Callback<UserSession>() {
             @Override
             public void onResponse(Call<UserSession> call, Response<UserSession> response) {
+                Log.i(TAG,"response.code()="+response.code());
                 switch (response.code()) {
                     case 200:
                         mSDKCoordinator.notifySuccess(SDKAction.REGISTER);

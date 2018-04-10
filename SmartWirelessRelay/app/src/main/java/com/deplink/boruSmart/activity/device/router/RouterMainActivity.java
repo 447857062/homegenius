@@ -18,25 +18,25 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.deplink.boruSmart.Protocol.json.device.SmartDev;
 import com.deplink.boruSmart.activity.device.router.adapter.BlackListAdapter;
+import com.deplink.boruSmart.activity.device.router.adapter.ConnectedDeviceListAdapter;
 import com.deplink.boruSmart.activity.personal.login.LoginActivity;
 import com.deplink.boruSmart.constant.AppConstant;
 import com.deplink.boruSmart.manager.connect.remote.HomeGenius;
+import com.deplink.boruSmart.manager.device.DeviceManager;
 import com.deplink.boruSmart.manager.device.router.RouterManager;
 import com.deplink.boruSmart.util.NetUtil;
 import com.deplink.boruSmart.util.Perfence;
 import com.deplink.boruSmart.util.WeakRefHandler;
+import com.deplink.boruSmart.view.combinationwidget.TitleLayout;
 import com.deplink.boruSmart.view.dialog.AlertDialog;
 import com.deplink.boruSmart.view.dialog.InputAlertDialog;
 import com.deplink.boruSmart.view.listview.swipemenulistview.SwipeMenu;
 import com.deplink.boruSmart.view.listview.swipemenulistview.SwipeMenuCreator;
 import com.deplink.boruSmart.view.listview.swipemenulistview.SwipeMenuItem;
 import com.deplink.boruSmart.view.listview.swipemenulistview.SwipeMenuListView;
-import com.deplink.boruSmart.view.toast.ToastSingleShow;
-import com.deplink.boruSmart.Protocol.json.device.SmartDev;
-import com.deplink.boruSmart.activity.device.router.adapter.ConnectedDeviceListAdapter;
-import com.deplink.boruSmart.manager.device.DeviceManager;
-import com.deplink.boruSmart.view.combinationwidget.TitleLayout;
+import com.deplink.boruSmart.view.toast.Ftoast;
 import com.deplink.sdk.android.sdk.DeplinkSDK;
 import com.deplink.sdk.android.sdk.EventCallback;
 import com.deplink.sdk.android.sdk.SDKAction;
@@ -114,6 +114,8 @@ public class RouterMainActivity extends Activity implements View.OnClickListener
     private boolean isConnectLocalRouter = false;
     private ImageView iamgeview_no_connected_device;
     private ImageView iamgeview_no_blacklist;
+    private View line_dirver_connectdevice;
+    private View line_dirver_blacklist;
     private TitleLayout layout_title;
 
     @Override
@@ -202,10 +204,9 @@ public class RouterMainActivity extends Activity implements View.OnClickListener
         }
         frame_blacklist_content.setVisibility(View.GONE);
         frame_devicelist_content_content.setVisibility(View.VISIBLE);
-        textview_connected_devices.setTextColor(ContextCompat.getColor(this, R.color.white));
+        textview_connected_devices.setTextColor(ContextCompat.getColor(this, R.color.title_blue_bg));
         textview_blak_list.setTextColor(ContextCompat.getColor(this, R.color.huise));
-        layout_connected_devices.setBackgroundResource(R.color.huise);
-        layout_blak_list.setBackgroundResource(R.color.white);
+        line_dirver_connectdevice.setVisibility(View.VISIBLE);
     }
 
 
@@ -486,12 +487,12 @@ public class RouterMainActivity extends Activity implements View.OnClickListener
                 Log.i(TAG, " mSDKCoordinator.notifyDeviceOpSuccess");
                 if (frame_devicelist_content_content.getVisibility() == View.VISIBLE) {
                     if (isSetBlackList) {
-                        ToastSingleShow.showText(RouterMainActivity.this, "加入黑名单成功");
+                        Ftoast.create(RouterMainActivity.this).setText( "加入黑名单成功").show();
                     }
                 }
                 if (frame_blacklist_content.getVisibility() == View.VISIBLE) {
                     if (isRemoveBlackList) {
-                        ToastSingleShow.showText(RouterMainActivity.this, "恢复上网设置成功");
+                        Ftoast.create(RouterMainActivity.this).setText( "恢复上网设置成功").show();
                     }
                 }
             }
@@ -730,6 +731,8 @@ public class RouterMainActivity extends Activity implements View.OnClickListener
         layout_no_connected_device = (RelativeLayout) findViewById(R.id.layout_no_connected_device);
         iamgeview_no_connected_device = (ImageView) findViewById(R.id.iamgeview_no_connected_device);
         iamgeview_no_blacklist = (ImageView) findViewById(R.id.iamgeview_no_blacklist);
+        line_dirver_connectdevice = findViewById(R.id.line_dirver_connectdevice);
+        line_dirver_blacklist =  findViewById(R.id.line_dirver_blacklist);
     }
 
     @Override
@@ -738,19 +741,19 @@ public class RouterMainActivity extends Activity implements View.OnClickListener
             case R.id.layout_connected_devices:
                 frame_blacklist_content.setVisibility(View.GONE);
                 frame_devicelist_content_content.setVisibility(View.VISIBLE);
-                textview_connected_devices.setTextColor(getResources().getColor(R.color.white));
+                textview_connected_devices.setTextColor(getResources().getColor(R.color.title_blue_bg));
                 textview_blak_list.setTextColor(getResources().getColor(R.color.huise));
-                layout_connected_devices.setBackgroundResource(R.color.huise);
-                layout_blak_list.setBackgroundResource(R.color.white);
+                line_dirver_connectdevice.setVisibility(View.VISIBLE);
+                line_dirver_blacklist.setVisibility(View.GONE);
                 showQueryingDialog();
                 break;
             case R.id.layout_blak_list:
                 frame_devicelist_content_content.setVisibility(View.GONE);
                 frame_blacklist_content.setVisibility(View.VISIBLE);
                 textview_connected_devices.setTextColor(getResources().getColor(R.color.huise));
-                textview_blak_list.setTextColor(getResources().getColor(R.color.white));
-                layout_connected_devices.setBackgroundResource(R.color.white);
-                layout_blak_list.setBackgroundResource(R.color.huise);
+                textview_blak_list.setTextColor(getResources().getColor(R.color.title_blue_bg));
+                line_dirver_connectdevice.setVisibility(View.GONE);
+                line_dirver_blacklist.setVisibility(View.VISIBLE);
                 showQueryingDialog();
                 break;
         }

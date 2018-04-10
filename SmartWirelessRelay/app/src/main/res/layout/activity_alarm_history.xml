@@ -34,6 +34,8 @@
             android:layout_centerHorizontal="true"
             >
             <ImageView
+                android:layout_marginTop="50dp"
+                android:layout_centerHorizontal="true"
                 android:id="@+id/imageview_no_alarm_hitory"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -44,6 +46,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/imageview_no_alarm_hitory"
                 android:gravity="center_horizontal"
+                android:layout_marginTop="15dp"
                 android:text="没有报警记录"
                 android:textColor="@color/room_type_text"
                 android:textSize="@dimen/text_size_small" />

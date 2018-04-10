@@ -20,7 +20,7 @@ import com.deplink.boruSmart.manager.device.DeviceManager;
 import com.deplink.boruSmart.manager.device.doorbeel.DoorbeelManager;
 import com.deplink.boruSmart.util.DataExchange;
 import com.deplink.boruSmart.view.combinationwidget.TitleLayout;
-import com.deplink.boruSmart.view.toast.ToastSingleShow;
+import com.deplink.boruSmart.view.toast.Ftoast;
 
 import deplink.com.smartwirelessrelay.homegenius.EllESDK.R;
 
@@ -79,7 +79,7 @@ public class AddDoorbellTipsActivity extends Activity implements View.OnClickLis
                     ellESDK.startSearchDevs();
                 }else{
                     if(mDoorbeelManager.isConfigWifi()){
-                        ToastSingleShow.showText(AddDoorbellTipsActivity.this, "门铃网络已配置,现在重启门邻设备");
+                        Ftoast.create(AddDoorbellTipsActivity.this).setText("门铃网络已配置,现在重启门邻设备").show();
                         Intent intent = new Intent(AddDoorbellTipsActivity.this, EditDoorbellActivity.class);
                         startActivity(intent);
                     }
@@ -111,11 +111,11 @@ public class AddDoorbellTipsActivity extends Activity implements View.OnClickLis
                             public void run() {
                                 EllESDK.getInstance().stopSearchDevs();
                                 if(mDoorbeelManager.isConfigWifi()){
-                                    ToastSingleShow.showText(AddDoorbellTipsActivity.this, "门铃网络已配置,现在重启门邻设备");
+                                    Ftoast.create(AddDoorbellTipsActivity.this).setText("门铃网络已配置,现在重启门邻设备").show();
                                     Intent intent = new Intent(AddDoorbellTipsActivity.this, EditDoorbellActivity.class);
                                     startActivity(intent);
                                 }else{
-                                    ToastSingleShow.showText(AddDoorbellTipsActivity.this, "门铃网络已配置,现在重启门邻设备,等手机连上网络后进行设备添加");
+                                    Ftoast.create(AddDoorbellTipsActivity.this).setText("门铃网络已配置,现在重启门邻设备,等手机连上网络后进行设备添加").show();
                                     Intent intent = new Intent(AddDoorbellTipsActivity.this, AddDeviceNameActivity.class);
                                     intent.putExtra("DeviceType", DeviceTypeConstant.TYPE.TYPE_MENLING);
                                     startActivity(intent);

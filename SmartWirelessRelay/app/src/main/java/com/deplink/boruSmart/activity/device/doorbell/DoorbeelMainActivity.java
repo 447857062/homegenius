@@ -15,16 +15,15 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.deplink.boruSmart.Protocol.json.OpResult;
-import com.deplink.boruSmart.Protocol.json.device.lock.UserIdInfo;
-import com.deplink.boruSmart.manager.device.doorbeel.DoorBellListener;
-import com.deplink.boruSmart.manager.device.smartlock.SmartLockListener;
-import com.deplink.boruSmart.util.Perfence;
 import com.deplink.boruSmart.Protocol.json.device.SmartDev;
+import com.deplink.boruSmart.Protocol.json.device.lock.UserIdInfo;
 import com.deplink.boruSmart.Protocol.json.device.lock.UserIdPairs;
 import com.deplink.boruSmart.activity.personal.login.LoginActivity;
 import com.deplink.boruSmart.broadcast.PushMessage;
@@ -32,13 +31,16 @@ import com.deplink.boruSmart.constant.AppConstant;
 import com.deplink.boruSmart.constant.SmartLockConstant;
 import com.deplink.boruSmart.manager.device.DeviceListener;
 import com.deplink.boruSmart.manager.device.DeviceManager;
+import com.deplink.boruSmart.manager.device.doorbeel.DoorBellListener;
 import com.deplink.boruSmart.manager.device.doorbeel.DoorbeelManager;
+import com.deplink.boruSmart.manager.device.smartlock.SmartLockListener;
 import com.deplink.boruSmart.manager.device.smartlock.SmartLockManager;
+import com.deplink.boruSmart.util.Perfence;
 import com.deplink.boruSmart.util.WeakRefHandler;
 import com.deplink.boruSmart.view.combinationwidget.TitleLayout;
 import com.deplink.boruSmart.view.dialog.AlertDialog;
 import com.deplink.boruSmart.view.dialog.doorbeel.DoorbeelMenuDialog;
-import com.deplink.boruSmart.view.toast.ToastSingleShow;
+import com.deplink.boruSmart.view.toast.Ftoast;
 import com.deplink.sdk.android.sdk.DeplinkSDK;
 import com.deplink.sdk.android.sdk.EventCallback;
 import com.deplink.sdk.android.sdk.SDKAction;
@@ -67,6 +69,7 @@ public class DoorbeelMainActivity extends Activity implements View.OnClickListen
     private DeviceListener mDeviceListener;
     private TitleLayout layout_title;
     private boolean isUserLogin;
+    private ImageView imageview_gif;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -306,6 +309,58 @@ public class DoorbeelMainActivity extends Activity implements View.OnClickListen
         } else {
             button_opendoor.setBackgroundResource(R.drawable.login_button_enable_background);
         }
+        final Animation animationFadeIn= AnimationUtils.loadAnimation(this, R.anim.fade_in);
+        final Animation animationFadeOut= AnimationUtils.loadAnimation(this, R.anim.fade_out);
+        final Animation animationFadeHold= AnimationUtils.loadAnimation(this, R.anim.fade_hold);
+        animationFadeIn.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                imageview_gif.startAnimation(animationFadeOut);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+        animationFadeOut.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                imageview_gif.startAnimation(animationFadeHold);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+        animationFadeHold.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                imageview_gif.startAnimation(animationFadeIn);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+        imageview_gif.startAnimation(animationFadeIn);
     }
 
     private PushMessage pushMessage;
@@ -327,6 +382,7 @@ public class DoorbeelMainActivity extends Activity implements View.OnClickListen
         button_opendoor = (Button) findViewById(R.id.button_opendoor);
         layout_no_vistor = (RelativeLayout) findViewById(R.id.layout_no_vistor);
         imageview_visitor = (ImageView) findViewById(R.id.imageview_visitor);
+        imageview_gif = (ImageView) findViewById(R.id.imageview_gif);
     }
 
     private DoorbeelMenuDialog doorbeelMenuDialog;
@@ -340,18 +396,18 @@ public class DoorbeelMainActivity extends Activity implements View.OnClickListen
         switch (v.getId()) {
             case R.id.button_opendoor:
                 if (isStartFromExperience) {
-                    ToastSingleShow.showText(this, "门锁已开");
+                    Ftoast.create(DoorbeelMainActivity.this).setText("门锁已开").show();
                 } else {
                     if(!isUserLogin){
-                        ToastSingleShow.showText(this, "未登录,登陆后才能开锁");
+                        Ftoast.create(DoorbeelMainActivity.this).setText("未登录,登陆后才能开锁").show();
                         return;
                     }
                     if (lockDevice == null) {
-                        ToastSingleShow.showText(this, "未绑定门锁,无法开门");
+                        Ftoast.create(DoorbeelMainActivity.this).setText("未绑定门锁,无法开门").show();
                         return;
                     }
                     if (selfUserId == null) {
-                        ToastSingleShow.showText(this, "未获取到门锁id,无法开锁");
+                        Ftoast.create(DoorbeelMainActivity.this).setText("未获取到门锁id,无法开锁").show();
                         return;
                     }
                     Log.i(TAG, "lockDevice=" + lockDevice.toString() + "selfUserId=" + selfUserId);
@@ -370,7 +426,7 @@ public class DoorbeelMainActivity extends Activity implements View.OnClickListen
         public boolean handleMessage(Message msg) {
             switch (msg.what) {
                 case MSG_SHOW_OPENLOCK_RESULT:
-                    ToastSingleShow.showText(DoorbeelMainActivity.this, "" + msg.obj);
+                    Ftoast.create(DoorbeelMainActivity.this).setText( "" + msg.obj).show();
                     break;
             }
             return true;

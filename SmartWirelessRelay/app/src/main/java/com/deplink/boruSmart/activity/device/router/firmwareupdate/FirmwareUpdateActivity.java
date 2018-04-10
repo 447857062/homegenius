@@ -18,7 +18,7 @@ import com.deplink.boruSmart.manager.device.router.RouterManager;
 import com.deplink.boruSmart.util.Perfence;
 import com.deplink.boruSmart.view.combinationwidget.TitleLayout;
 import com.deplink.boruSmart.view.dialog.AlertDialog;
-import com.deplink.boruSmart.view.toast.ToastSingleShow;
+import com.deplink.boruSmart.view.toast.Ftoast;
 import com.deplink.sdk.android.sdk.DeplinkSDK;
 import com.deplink.sdk.android.sdk.EventCallback;
 import com.deplink.sdk.android.sdk.SDKAction;
@@ -263,7 +263,7 @@ public class FirmwareUpdateActivity extends Activity implements View.OnClickList
                 if (canEnterUpdate) {
                     startActivity(new Intent(FirmwareUpdateActivity.this, UpdateImmediatelyActivity.class));
                 } else {
-                    ToastSingleShow.showText(this, "已是最新版本");
+                    Ftoast.create(this).setText("已是最新版本").show();
                 }
 
                 break;

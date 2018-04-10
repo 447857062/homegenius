@@ -87,7 +87,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/Transparent" />
         <activity
-            android:name="com.deplink.boruSmart.activity.device.AddDeviceActivity"
+            android:name="com.deplink.boruSmart.activity.device.SelectRommActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.deplink.boruSmart.activity.room.AddRommActivity"
@@ -106,6 +106,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name="com.deplink.boruSmart.activity.device.AddDeviceQRcodeActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.deplink.boruSmart.util.qrcode.qrcodecapture.CaptureActivity"

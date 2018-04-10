@@ -10,6 +10,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.deplink.boruSmart.Protocol.json.device.ExperienceCenterDevice;
+import com.deplink.boruSmart.activity.device.DevicesActivity;
 import com.deplink.boruSmart.activity.device.doorbell.DoorbeelMainActivity;
 import com.deplink.boruSmart.activity.device.getway.GetwayDeviceActivity;
 import com.deplink.boruSmart.activity.device.light.LightActivity;
@@ -155,6 +156,12 @@ public class ExperienceDevicesActivity extends Activity implements AdapterView.O
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        DeviceManager.getInstance().setExperCenterStartFromDevice(false);
+    }
+
+    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.image_back:
@@ -162,7 +169,12 @@ public class ExperienceDevicesActivity extends Activity implements AdapterView.O
                     Intent intent=new Intent(this, SmartHomeMainActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
-                }else{
+                }else if(DeviceManager.getInstance().isExperCenterStartFromDevice()){
+                    Intent intent=new Intent(this, DevicesActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                }
+                else{
                     Intent intent=new Intent(this, PersonalCenterActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);

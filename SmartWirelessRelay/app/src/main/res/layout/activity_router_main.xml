@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/page_background"
     tools:context="com.deplink.boruSmart.activity.device.router.RouterMainActivity">
 
     <com.deplink.boruSmart.view.combinationwidget.TitleLayout
@@ -244,10 +245,10 @@
     <LinearLayout
         android:id="@+id/layout_select_show_current_list"
         android:layout_width="match_parent"
+
         android:layout_height="@dimen/layout_item_content_height"
         android:layout_below="@+id/layout_top_content"
-        android:layout_marginTop="@dimen/layout_room_content_margin_top"
-        android:background="@color/page_background"
+        android:background="@color/white"
         android:weightSum="2">
 
         <RelativeLayout
@@ -264,6 +265,13 @@
                 android:gravity="center_horizontal|center_vertical"
                 android:text="已连接设备"
                 android:textSize="@dimen/text_size_small" />
+            <View
+                android:id="@+id/line_dirver_connectdevice"
+                android:layout_alignParentBottom="true"
+                android:visibility="gone"
+                android:background="@color/title_blue_bg"
+                android:layout_width="match_parent"
+                android:layout_height="1px"/>
         </RelativeLayout>
 
         <RelativeLayout
@@ -280,6 +288,13 @@
                 android:gravity="center_horizontal|center_vertical"
                 android:text="黑名单"
                 android:textSize="@dimen/text_size_small" />
+            <View
+                android:id="@+id/line_dirver_blacklist"
+                android:visibility="gone"
+                android:layout_alignParentBottom="true"
+                android:background="@color/title_blue_bg"
+                android:layout_width="match_parent"
+                android:layout_height="1px"/>
         </RelativeLayout>
     </LinearLayout>
     <!--滑动删除的组件（已连接设备列表）-->
@@ -287,28 +302,26 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/layout_select_show_current_list">
-
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
+                android:layout_height="match_parent">
                 <FrameLayout
                     android:id="@+id/frame_devicelist_content_content"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
-
                     <RelativeLayout
                         android:id="@+id/layout_no_connected_device"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
+                        android:gravity="top"
+                        android:layout_gravity="center_horizontal"
                         android:visibility="gone">
-
                         <ImageView
+                            android:layout_marginTop="50dp"
+                            android:layout_centerHorizontal="true"
                             android:id="@+id/iamgeview_no_connected_device"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -319,6 +332,7 @@
                             android:id="@+id/textview_show_query_device_result"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
                             android:layout_below="@+id/iamgeview_no_connected_device"
                             android:gravity="center_horizontal"
                             android:textSize="@dimen/text_size_small" />
@@ -339,12 +353,13 @@
                         android:id="@+id/layout_no_blacklist"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
+                        android:layout_gravity="center_horizontal"
                         android:visibility="gone">
-
                         <ImageView
+                            android:layout_marginTop="50dp"
                             android:id="@+id/iamgeview_no_blacklist"
                             android:layout_width="wrap_content"
+                            android:layout_centerHorizontal="true"
                             android:layout_height="wrap_content"
                             android:background="@drawable/blacklist"
                             android:scaleType="centerInside" />
@@ -354,6 +369,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/iamgeview_no_blacklist"
+                            android:layout_marginTop="15dp"
                             android:gravity="center_horizontal"
                             android:textColor="@color/room_type_text"
                             android:textSize="@dimen/text_size_small" />

@@ -12,15 +12,15 @@ import android.widget.Button;
 import com.deplink.boruSmart.Protocol.json.OpResult;
 import com.deplink.boruSmart.activity.personal.login.LoginActivity;
 import com.deplink.boruSmart.constant.AppConstant;
+import com.deplink.boruSmart.manager.connect.local.tcp.LocalConnectmanager;
 import com.deplink.boruSmart.manager.device.smartswitch.SmartSwitchListener;
 import com.deplink.boruSmart.manager.device.smartswitch.SmartSwitchManager;
 import com.deplink.boruSmart.util.NetUtil;
 import com.deplink.boruSmart.util.Perfence;
 import com.deplink.boruSmart.util.WeakRefHandler;
-import com.deplink.boruSmart.view.dialog.AlertDialog;
-import com.deplink.boruSmart.view.toast.ToastSingleShow;
-import com.deplink.boruSmart.manager.connect.local.tcp.LocalConnectmanager;
 import com.deplink.boruSmart.view.combinationwidget.TitleLayout;
+import com.deplink.boruSmart.view.dialog.AlertDialog;
+import com.deplink.boruSmart.view.toast.Ftoast;
 import com.deplink.sdk.android.sdk.DeplinkSDK;
 import com.deplink.sdk.android.sdk.EventCallback;
 import com.deplink.sdk.android.sdk.SDKAction;
@@ -228,7 +228,7 @@ public class SwitchTwoActivity extends Activity implements View.OnClickListener,
             case R.id.button_all_switch:
                 if(NetUtil.isNetAvailable(this)){
                     if(!isUserLogin && !LocalConnectmanager.getInstance().isLocalconnectAvailable()){
-                        ToastSingleShow.showText(this,"本地连接不可用,需要登录后才能操作");
+                        Ftoast.create(this).setText("本地连接不可用,需要登录后才能操作").show();
                     }else{
                         if (switch_one_open||switch_two_open) {
                             mSmartSwitchManager.setSwitchCommand("close_all");
@@ -238,14 +238,14 @@ public class SwitchTwoActivity extends Activity implements View.OnClickListener,
                     }
                 }
                 else{
-                    ToastSingleShow.showText(this,"网络连接不正常");
+                    Ftoast.create(this).setText("网络连接不正常").show();
                 }
 
                 break;
             case R.id.button_switch_left:
                 if(NetUtil.isNetAvailable(this)){
                     if(!isUserLogin && !LocalConnectmanager.getInstance().isLocalconnectAvailable()){
-                        ToastSingleShow.showText(this,"本地连接不可用,需要登录后才能操作");
+                        Ftoast.create(this).setText("本地连接不可用,需要登录后才能操作").show();
                     }else{
                         Log.i(TAG, "switch_one_open=" + switch_one_open);
                         if (switch_one_open) {
@@ -256,14 +256,14 @@ public class SwitchTwoActivity extends Activity implements View.OnClickListener,
                     }
                 }
                 else{
-                    ToastSingleShow.showText(this,"网络连接不正常");
+                    Ftoast.create(this).setText("网络连接不正常").show();
                 }
 
                 break;
             case R.id.button_switch_right:
                 if(NetUtil.isNetAvailable(this)){
                     if(!isUserLogin && !LocalConnectmanager.getInstance().isLocalconnectAvailable()){
-                        ToastSingleShow.showText(this,"本地连接不可用,需要登录后才能操作");
+                        Ftoast.create(this).setText("本地连接不可用,需要登录后才能操作").show();
                     }else{
                         if (switch_two_open) {
                             mSmartSwitchManager.setSwitchCommand("close2");
@@ -273,7 +273,7 @@ public class SwitchTwoActivity extends Activity implements View.OnClickListener,
                     }
                 }
                 else{
-                    ToastSingleShow.showText(this,"网络连接不正常");
+                    Ftoast.create(this).setText("网络连接不正常").show();
                 }
 
 
@@ -310,23 +310,23 @@ public class SwitchTwoActivity extends Activity implements View.OnClickListener,
         mSmartSwitchManager.getCurrentSelectSmartDevice().setSwitch_two_open(switch_two_open);
         switch (mOpResult.getCommand()) {
             case "close1":
-                ToastSingleShow.showText(SwitchTwoActivity.this,"开关一已关闭");
+                Ftoast.create(this).setText("开关一已关闭").show();
                 switch_one_open = false;
                 mSmartSwitchManager.getCurrentSelectSmartDevice().setSwitch_one_open(switch_one_open);
                 break;
             case "close2":
-                ToastSingleShow.showText(SwitchTwoActivity.this,"开关二已关闭");
+                Ftoast.create(this).setText("开关二已关闭").show();
                 switch_two_open = false;
                 mSmartSwitchManager.getCurrentSelectSmartDevice().setSwitch_two_open(switch_two_open);
                 break;
 
             case "open1":
-                ToastSingleShow.showText(SwitchTwoActivity.this,"开关一已开启");
+                Ftoast.create(this).setText("开关一已开启").show();
                 switch_one_open = true;
                 mSmartSwitchManager.getCurrentSelectSmartDevice().setSwitch_one_open(switch_one_open);
                 break;
             case "open2":
-                ToastSingleShow.showText(SwitchTwoActivity.this,"开关二已开启");
+                Ftoast.create(this).setText("开关二已开启").show();
                 switch_two_open = true;
                 mSmartSwitchManager.getCurrentSelectSmartDevice().setSwitch_two_open(switch_two_open);
                 break;

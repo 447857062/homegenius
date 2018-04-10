@@ -9,13 +9,18 @@ import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.ScrollView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.deplink.boruSmart.Protocol.json.Room;
+import com.deplink.boruSmart.Protocol.json.device.DeviceList;
+import com.deplink.boruSmart.Protocol.json.device.SmartDev;
 import com.deplink.boruSmart.Protocol.json.device.getway.GatwayDevice;
+import com.deplink.boruSmart.Protocol.json.device.router.Router;
 import com.deplink.boruSmart.Protocol.json.qrcode.QrcodeSmartDevice;
 import com.deplink.boruSmart.Protocol.packet.ellisdk.BasicPacket;
 import com.deplink.boruSmart.Protocol.packet.ellisdk.EllESDK;
@@ -23,17 +28,32 @@ import com.deplink.boruSmart.Protocol.packet.ellisdk.EllE_Listener;
 import com.deplink.boruSmart.activity.device.adapter.DeviceListAdapter;
 import com.deplink.boruSmart.activity.device.doorbell.DoorbeelMainActivity;
 import com.deplink.boruSmart.activity.device.getway.GetwayDeviceActivity;
+import com.deplink.boruSmart.activity.device.light.LightActivity;
 import com.deplink.boruSmart.activity.device.remoteControl.airContorl.AirRemoteControlMianActivity;
 import com.deplink.boruSmart.activity.device.remoteControl.realRemoteControl.RemoteControlActivity;
+import com.deplink.boruSmart.activity.device.remoteControl.topBox.TvBoxMainActivity;
+import com.deplink.boruSmart.activity.device.remoteControl.tv.TvMainActivity;
+import com.deplink.boruSmart.activity.device.router.RouterMainActivity;
+import com.deplink.boruSmart.activity.device.smartSwitch.SwitchFourActivity;
 import com.deplink.boruSmart.activity.device.smartSwitch.SwitchOneActivity;
+import com.deplink.boruSmart.activity.device.smartSwitch.SwitchThreeActivity;
+import com.deplink.boruSmart.activity.device.smartSwitch.SwitchTwoActivity;
 import com.deplink.boruSmart.activity.device.smartlock.SmartLockActivity;
 import com.deplink.boruSmart.activity.homepage.SmartHomeMainActivity;
+import com.deplink.boruSmart.activity.personal.PersonalCenterActivity;
+import com.deplink.boruSmart.activity.personal.experienceCenter.ExperienceDevicesActivity;
 import com.deplink.boruSmart.activity.personal.login.LoginActivity;
 import com.deplink.boruSmart.activity.room.RoomActivity;
+import com.deplink.boruSmart.application.AppManager;
 import com.deplink.boruSmart.constant.AppConstant;
 import com.deplink.boruSmart.constant.DeviceTypeConstant;
+import com.deplink.boruSmart.manager.device.DeviceListener;
+import com.deplink.boruSmart.manager.device.DeviceManager;
+import com.deplink.boruSmart.manager.device.doorbeel.DoorbeelManager;
 import com.deplink.boruSmart.manager.device.getway.GetwayListener;
+import com.deplink.boruSmart.manager.device.getway.GetwayManager;
 import com.deplink.boruSmart.manager.device.light.SmartLightManager;
+import com.deplink.boruSmart.manager.device.remoteControl.RemoteControlListener;
 import com.deplink.boruSmart.manager.device.remoteControl.RemoteControlManager;
 import com.deplink.boruSmart.manager.device.router.RouterManager;
 import com.deplink.boruSmart.manager.device.smartlock.SmartLockManager;
@@ -42,26 +62,8 @@ import com.deplink.boruSmart.manager.room.RoomManager;
 import com.deplink.boruSmart.util.DataExchange;
 import com.deplink.boruSmart.util.Perfence;
 import com.deplink.boruSmart.util.WeakRefHandler;
-import com.deplink.boruSmart.view.dialog.devices.DeviceAtRoomDialog;
-import com.deplink.boruSmart.Protocol.json.Room;
-import com.deplink.boruSmart.Protocol.json.device.DeviceList;
-import com.deplink.boruSmart.Protocol.json.device.SmartDev;
-import com.deplink.boruSmart.Protocol.json.device.router.Router;
-import com.deplink.boruSmart.activity.device.light.LightActivity;
-import com.deplink.boruSmart.activity.device.remoteControl.topBox.TvBoxMainActivity;
-import com.deplink.boruSmart.activity.device.remoteControl.tv.TvMainActivity;
-import com.deplink.boruSmart.activity.device.router.RouterMainActivity;
-import com.deplink.boruSmart.activity.device.smartSwitch.SwitchFourActivity;
-import com.deplink.boruSmart.activity.device.smartSwitch.SwitchThreeActivity;
-import com.deplink.boruSmart.activity.device.smartSwitch.SwitchTwoActivity;
-import com.deplink.boruSmart.activity.personal.PersonalCenterActivity;
-import com.deplink.boruSmart.application.AppManager;
-import com.deplink.boruSmart.manager.device.DeviceListener;
-import com.deplink.boruSmart.manager.device.DeviceManager;
-import com.deplink.boruSmart.manager.device.doorbeel.DoorbeelManager;
-import com.deplink.boruSmart.manager.device.getway.GetwayManager;
-import com.deplink.boruSmart.manager.device.remoteControl.RemoteControlListener;
 import com.deplink.boruSmart.view.dialog.AlertDialog;
+import com.deplink.boruSmart.view.dialog.devices.DeviceAtRoomDialog;
 import com.deplink.sdk.android.sdk.DeplinkSDK;
 import com.deplink.sdk.android.sdk.EventCallback;
 import com.deplink.sdk.android.sdk.SDKAction;
@@ -119,7 +121,7 @@ public class DevicesActivity extends Activity implements View.OnClickListener, G
     private TextView textview_room_name;
     //所有房间的名称
     private List<String> mRooms = new ArrayList<>();
-    private ScrollView layout_empty_view_scroll;
+    private RelativeLayout layout_empty_view_scroll;
     private SDKManager manager;
     private EventCallback ec;
     private DeviceListener mDeviceListener;
@@ -136,6 +138,9 @@ public class DevicesActivity extends Activity implements View.OnClickListener, G
     private boolean isUserLogin;
     private SmartDev currentSmartDoorBell;
     private String seachedDoorbellmac;
+
+    private Button button_add_device;
+    private RelativeLayout layout_experience_center;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -181,7 +186,6 @@ public class DevicesActivity extends Activity implements View.OnClickListener, G
                                 if(datasBottom.get(i).getType().equalsIgnoreCase(DeviceTypeConstant.TYPE.TYPE_MENLING)){
                                     currentSmartDoorBell=datasBottom.get(i);
                                 }
-
                             }
                             if(currentSmartDoorBell!=null){
                                 //查询门邻设备状态
@@ -226,6 +230,7 @@ public class DevicesActivity extends Activity implements View.OnClickListener, G
                     //查询虚拟设备
                     mRemoteControlManager.queryVirtualDeviceList();
                     virtualDeviceUpdate();
+                    notifyDeviceListView();
                     break;
                 case MSG_GET_DEVS_HTTPS:
                     List<Deviceprops> devices;
@@ -233,9 +238,10 @@ public class DevicesActivity extends Activity implements View.OnClickListener, G
                     List<SmartDev> dbSmartDev = saveSmartDevices(devices);
                     syncSmartDevices(devices, dbSmartDev);
                     List<GatwayDevice> dbGetwayDev = saveGatwayDevices(devices);
-                    SyncGatwayDevices(devices, dbSmartDev, dbGetwayDev);
+                    SyncGatwayDevices(devices, dbGetwayDev);
                     mRemoteControlManager.queryVirtualDeviceList();
                     mDeviceManager.queryDeviceList();
+                    notifyDeviceListView();
                     break;
                 case MSG_CHECK_DOORBELL_ONLINE_STATU:
                     if(currentSmartDoorBell!=null){
@@ -291,7 +297,8 @@ public class DevicesActivity extends Activity implements View.OnClickListener, G
         mDeviceAdapter.setBottomList(datasBottom);
         mDeviceAdapter.notifyDataSetChanged();
         listview_devies.onRefreshComplete();
-        listview_devies.setEmptyView(layout_empty_view_scroll);
+        float margin=Perfence.dp2px(this,15);
+        listview_devies.setEmptyView(layout_empty_view_scroll,margin);
     }
 
     private void setButtomBarImageResource() {
@@ -544,6 +551,8 @@ public class DevicesActivity extends Activity implements View.OnClickListener, G
 
             }
         });
+        button_add_device.setOnClickListener(this);
+        layout_experience_center.setOnClickListener(this);
     }
 
     private void initViews() {
@@ -555,7 +564,7 @@ public class DevicesActivity extends Activity implements View.OnClickListener, G
         imageview_add_device = (ImageView) findViewById(R.id.imageview_add_device);
         layout_select_room_type = (LinearLayout) findViewById(R.id.layout_select_room_type);
         imageview_devices = (ImageView) findViewById(R.id.imageview_devices);
-        layout_empty_view_scroll = (ScrollView) findViewById(R.id.layout_empty_view_scroll);
+        layout_empty_view_scroll = (RelativeLayout) findViewById(R.id.layout_empty_view_scroll);
         imageview_home_page = (ImageView) findViewById(R.id.imageview_home_page);
         imageview_rooms = (ImageView) findViewById(R.id.imageview_rooms);
         imageview_personal_center = (ImageView) findViewById(R.id.imageview_personal_center);
@@ -564,11 +573,20 @@ public class DevicesActivity extends Activity implements View.OnClickListener, G
         textview_room = (TextView) findViewById(R.id.textview_room);
         textview_mine = (TextView) findViewById(R.id.textview_mine);
         textview_room_name = (TextView) findViewById(R.id.textview_room_name);
+        button_add_device = (Button) findViewById(R.id.button_add_device);
+        layout_experience_center = (RelativeLayout) findViewById(R.id.layout_experience_center);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.layout_experience_center:
+                DeviceManager.getInstance().setExperCenterStartFromDevice(true);
+                startActivity(new Intent(this, ExperienceDevicesActivity.class));
+                break;
+            case R.id.button_add_device:
+                startActivity(new Intent(this, AddDeviceQRcodeActivity.class));
+                break;
             case R.id.layout_home_page:
                 startActivity(new Intent(this, SmartHomeMainActivity.class));
                 break;
@@ -856,18 +874,17 @@ public class DevicesActivity extends Activity implements View.OnClickListener, G
         return dbSmartDev;
     }
 
-    private void SyncGatwayDevices(List<Deviceprops> devices, List<SmartDev> dbSmartDev, List<GatwayDevice> dbGetwayDev) {
+    private void SyncGatwayDevices(List<Deviceprops> devices, List<GatwayDevice> dbGetwayDev) {
         //本地数据库中有,http返回没有(设备在其他地方删除了,在这个设备需要同步服务器的)
         for (int j = 0; j < dbGetwayDev.size(); j++) {
             boolean deleteDevice = true;
             for (int i = 0; i < devices.size(); i++) {
                 if (devices.get(i).getDevice_type().equalsIgnoreCase("LKSGW")) {
-                    if(dbSmartDev.size()>j && devices.size()>i){
-                        if (dbSmartDev.get(j).getUid().equals(devices.get(i).getUid())) {
+                    if(dbGetwayDev.size()>j && devices.size()>i){
+                        if (dbGetwayDev.get(j).getUid().equals(devices.get(i).getUid())) {
                             deleteDevice = false;
                         }
                     }
-
                 } else {
                     deleteDevice = false;
                 }

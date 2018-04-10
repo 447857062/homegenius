@@ -323,9 +323,6 @@ public class UpdateService extends Service {
                         stopSelf();
                     }
                 }, 1500);
-          /*  } else {
-                ToastSingleShow.showText(this, "MD5校验失败");
-            }*/
         }
 
 

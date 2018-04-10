@@ -21,15 +21,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.deplink.boruSmart.util.Perfence;
-import com.deplink.boruSmart.util.StringValidatorUtil;
 import com.deplink.boruSmart.activity.homepage.SmartHomeMainActivity;
 import com.deplink.boruSmart.constant.AppConstant;
 import com.deplink.boruSmart.util.NetUtil;
+import com.deplink.boruSmart.util.Perfence;
+import com.deplink.boruSmart.util.StringValidatorUtil;
 import com.deplink.boruSmart.util.WeakRefHandler;
 import com.deplink.boruSmart.view.combinationwidget.TitleLayout;
 import com.deplink.boruSmart.view.dialog.AlertDialog;
-import com.deplink.boruSmart.view.toast.ToastSingleShow;
+import com.deplink.boruSmart.view.toast.Ftoast;
 import com.deplink.sdk.android.sdk.DeplinkSDK;
 import com.deplink.sdk.android.sdk.EventCallback;
 import com.deplink.sdk.android.sdk.SDKAction;
@@ -170,7 +170,7 @@ public class ForgetPasswordActivity extends Activity implements View.OnClickList
                     case RESET_PASSWORD:
                         Perfence.setPerfence(Perfence.USER_PASSWORD, newPassword);
                         manager.login(Perfence.getPerfence(Perfence.PERFENCE_PHONE), newPassword);
-                        ToastSingleShow.showText(ForgetPasswordActivity.this, "重置密码成功");
+                        Ftoast.create(ForgetPasswordActivity.this).setText("重置密码成功").show();
                         break;
                     case LOGIN:
                         startActivity(new Intent(ForgetPasswordActivity.this, SmartHomeMainActivity.class));
@@ -189,7 +189,7 @@ public class ForgetPasswordActivity extends Activity implements View.OnClickList
             public void onFailure(SDKAction action, Throwable throwable) {
                 switch (action) {
                     case ALERTPASSWORD:
-                        ToastSingleShow.showText(ForgetPasswordActivity.this, "更改密码失败:" + throwable.getMessage());
+                        Ftoast.create(ForgetPasswordActivity.this).setText("更改密码失败:" + throwable.getMessage()).show();
                         break;
                 }
             }
@@ -269,7 +269,7 @@ public class ForgetPasswordActivity extends Activity implements View.OnClickList
     private Handler.Callback mCallback = new Handler.Callback() {
         @Override
         public boolean handleMessage(Message msg) {
-            ToastSingleShow.showText(ForgetPasswordActivity.this, (String) msg.obj);
+            Ftoast.create(ForgetPasswordActivity.this).setText((String) msg.obj).show();
             return true;
         }
     };
@@ -301,17 +301,17 @@ public class ForgetPasswordActivity extends Activity implements View.OnClickList
             case R.id.button_login:
                 String newPassword = edittext_input_password.getText().toString().trim();
                 if (newPassword.length() < 6) {
-                    ToastSingleShow.showText(this, "密码位数不对");
+                    Ftoast.create(ForgetPasswordActivity.this).setText("密码位数不对").show();
                     return;
                 }
                 this.newPassword = newPassword;
                 verifycode = edittext_verification_code.getText().toString().trim();
                 if (verifycode.length() < 6) {
-                    ToastSingleShow.showText(this, "验证码位数不对");
+                    Ftoast.create(ForgetPasswordActivity.this).setText("密码位数不对").show();
                     return;
                 }
                 if (!isGetCaptche) {
-                    ToastSingleShow.showText(this, "需要校验的验证码错误");
+                    Ftoast.create(ForgetPasswordActivity.this).setText("需要校验的验证码错误").show();
                     return;
                 } else {
                     SMSSDK.submitVerificationCode(simCountryCode, username, verifycode);

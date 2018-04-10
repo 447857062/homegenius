@@ -7,17 +7,17 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
+import com.deplink.boruSmart.activity.device.router.wifi.WifiSetting24;
 import com.deplink.boruSmart.activity.personal.login.LoginActivity;
 import com.deplink.boruSmart.constant.AppConstant;
 import com.deplink.boruSmart.manager.connect.remote.HomeGenius;
-import com.deplink.boruSmart.util.NetUtil;
-import com.deplink.boruSmart.util.Perfence;
-import com.deplink.boruSmart.view.toast.ToastSingleShow;
-import com.deplink.boruSmart.activity.device.router.wifi.WifiSetting24;
 import com.deplink.boruSmart.manager.device.DeviceManager;
 import com.deplink.boruSmart.manager.device.router.RouterManager;
+import com.deplink.boruSmart.util.NetUtil;
+import com.deplink.boruSmart.util.Perfence;
 import com.deplink.boruSmart.view.combinationwidget.TitleLayout;
 import com.deplink.boruSmart.view.dialog.AlertDialog;
+import com.deplink.boruSmart.view.toast.Ftoast;
 import com.deplink.sdk.android.sdk.DeplinkSDK;
 import com.deplink.sdk.android.sdk.EventCallback;
 import com.deplink.sdk.android.sdk.SDKAction;
@@ -129,7 +129,7 @@ public class DialConnectActivity extends Activity  {
                 String mac = edittext_mac.getText().toString().trim();
                 if (NetUtil.isNetAvailable(DialConnectActivity.this)) {
                     if (account.equals("") || password.equals("")) {
-                        ToastSingleShow.showText(DialConnectActivity.this, "账号，密码不能为空");
+                        Ftoast.create(DialConnectActivity.this).setText( "账号，密码不能为空").show();
                         return;
                     }
                     Proto proto = new Proto();
@@ -147,7 +147,7 @@ public class DialConnectActivity extends Activity  {
                                 mHomeGenius.setWan(proto,channels);
                             }
                         } else {
-                            ToastSingleShow.showText(DialConnectActivity.this, "未登录，无法设置拨号上网,请登录后重试");
+                            Ftoast.create(DialConnectActivity.this).setText( "未登录，无法设置拨号上网,请登录后重试").show();
                         }
 
 
@@ -165,7 +165,7 @@ public class DialConnectActivity extends Activity  {
 
                                         switch (errorResponse.getErrcode()) {
                                             case AppConstant.ERROR_CODE.OP_ERRCODE_BAD_TOKEN:
-                                                ToastSingleShow.showText(DialConnectActivity.this, "登录的Token已过期");
+                                                Ftoast.create(DialConnectActivity.this).setText( "登录的Token已过期").show();
                                                 startActivity(new Intent(DialConnectActivity.this, LoginActivity.class));
                                                 return;
                                             case AppConstant.ERROR_CODE.OP_ERRCODE_BAD_ACCOUNT:
@@ -211,7 +211,7 @@ public class DialConnectActivity extends Activity  {
                                     } catch (IOException e) {
                                         e.printStackTrace();
                                     }
-                                    ToastSingleShow.showText(DialConnectActivity.this, errorMsg);
+                                    Ftoast.create(DialConnectActivity.this).setText(errorMsg).show();
                                 } else {
                                     startActivity(new Intent(DialConnectActivity.this, WifiSetting24.class));
                                 }
@@ -224,7 +224,7 @@ public class DialConnectActivity extends Activity  {
                     }
 
                 } else {
-                    ToastSingleShow.showText(DialConnectActivity.this, "网络连接已断开");
+                    Ftoast.create(DialConnectActivity.this).setText("网络连接已断开").show();
                 }
 
             }
@@ -245,7 +245,7 @@ public class DialConnectActivity extends Activity  {
                     PERFORMANCE wan = gson.fromJson(xmlStr, PERFORMANCE.class);
                     Proto proto = wan.getProto();
                     if (proto.getPPPOE() != null) {
-                        ToastSingleShow.showText(DialConnectActivity.this, "拨号上网设置成功");
+                        Ftoast.create(DialConnectActivity.this).setText("拨号上网设置成功").show();
                     }
                 }
             }

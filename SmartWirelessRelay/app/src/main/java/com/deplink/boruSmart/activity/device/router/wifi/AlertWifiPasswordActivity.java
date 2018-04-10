@@ -11,15 +11,15 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
-import com.deplink.boruSmart.util.Perfence;
 import com.deplink.boruSmart.activity.personal.login.LoginActivity;
 import com.deplink.boruSmart.constant.AppConstant;
 import com.deplink.boruSmart.manager.connect.remote.HomeGenius;
 import com.deplink.boruSmart.manager.device.DeviceManager;
 import com.deplink.boruSmart.manager.device.router.RouterManager;
+import com.deplink.boruSmart.util.Perfence;
 import com.deplink.boruSmart.view.combinationwidget.TitleLayout;
 import com.deplink.boruSmart.view.dialog.AlertDialog;
-import com.deplink.boruSmart.view.toast.ToastSingleShow;
+import com.deplink.boruSmart.view.toast.Ftoast;
 import com.deplink.sdk.android.sdk.DeplinkSDK;
 import com.deplink.sdk.android.sdk.EventCallback;
 import com.deplink.sdk.android.sdk.SDKAction;
@@ -69,11 +69,11 @@ public class AlertWifiPasswordActivity extends Activity implements View.OnClickL
                 String password = edittext_password.getText().toString().trim();
                 String passwordAgain = edittext_password_again.getText().toString().trim();
                 if (password.length() < 8) {
-                    ToastSingleShow.showText(AlertWifiPasswordActivity.this, "密码长度最小为8");
+                    Ftoast.create(AlertWifiPasswordActivity.this).setText("密码长度最小为8").show();
                     return;
                 }
                 if (!password.equals(passwordAgain)) {
-                    ToastSingleShow.showText(AlertWifiPasswordActivity.this, "两次输入的密码不一致");
+                    Ftoast.create(AlertWifiPasswordActivity.this).setText("两次输入的密码不一致").show();
                     return;
                 }
                 if (isLogin && channels != null) {
@@ -175,7 +175,7 @@ public class AlertWifiPasswordActivity extends Activity implements View.OnClickL
             if (content.getResult().equalsIgnoreCase("OK")) {
                 Log.i(TAG," mSDKCoordinator.notifyDeviceOpSuccess");
                 if (isSetWifiPassword) {
-                    ToastSingleShow.showText(AlertWifiPasswordActivity.this, "设置成功");
+                    Ftoast.create(AlertWifiPasswordActivity.this).setText("设置成功").show();
                 }
             }
         }

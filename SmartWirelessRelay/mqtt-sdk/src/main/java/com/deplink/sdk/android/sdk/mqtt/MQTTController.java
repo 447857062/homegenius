@@ -461,7 +461,8 @@ public class MQTTController implements MqttListener {
                 }
             }
         } else {
-            NetworkInfo.State wifiState = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState();
+            NetworkInfo.State wifiState;
+            wifiState = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState();
             NetworkInfo.State mobileState = cm.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState();
             available = (wifiState == NetworkInfo.State.CONNECTED || mobileState == NetworkInfo.State.CONNECTED);
         }

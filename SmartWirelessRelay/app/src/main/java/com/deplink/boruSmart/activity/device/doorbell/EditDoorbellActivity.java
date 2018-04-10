@@ -22,7 +22,7 @@ import com.deplink.boruSmart.Protocol.packet.ellisdk.EllE_Listener;
 import com.deplink.boruSmart.Protocol.packet.ellisdk.Handler_Background;
 import com.deplink.boruSmart.Protocol.packet.ellisdk.Handler_UiThread;
 import com.deplink.boruSmart.Protocol.packet.ellisdk.WIFIData;
-import com.deplink.boruSmart.activity.device.AddDeviceActivity;
+import com.deplink.boruSmart.activity.device.SelectRommActivity;
 import com.deplink.boruSmart.activity.device.DevicesActivity;
 import com.deplink.boruSmart.activity.device.ShareDeviceActivity;
 import com.deplink.boruSmart.activity.device.doorbell.add.WifipasswordInputActivity;
@@ -385,13 +385,13 @@ public class EditDoorbellActivity extends Activity implements View.OnClickListen
                 break;
             case R.id.layout_room_select:
                 if (isStartFromExperience) {
-                    Intent intent = new Intent(this, AddDeviceActivity.class);
+                    Intent intent = new Intent(this, SelectRommActivity.class);
                     startActivityForResult(intent, REQUEST_CODE_SELECT_DEVICE_IN_WHAT_ROOM);
                 } else {
                     if (isUserLogin) {
                         mDeviceManager.setEditDevice(true);
                         mDeviceManager.setCurrentEditDeviceType(DeviceTypeConstant.TYPE.TYPE_MENLING);
-                        Intent intent = new Intent(this, AddDeviceActivity.class);
+                        Intent intent = new Intent(this, SelectRommActivity.class);
                         startActivity(intent);
                     }else{
                         startActivity(new Intent(EditDoorbellActivity.this, LoginActivity.class));

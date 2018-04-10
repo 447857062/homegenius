@@ -2,13 +2,16 @@ package com.deplink.boruSmart.activity.device;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.LayoutRes;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.deplink.boruSmart.Protocol.json.device.SmartDev;
 import com.deplink.boruSmart.activity.device.adapter.AddDeviceTypeSelectAdapter;
@@ -23,7 +26,7 @@ import com.deplink.boruSmart.manager.device.smartlock.SmartLockManager;
 import com.deplink.boruSmart.util.Perfence;
 import com.deplink.boruSmart.util.qrcode.qrcodecapture.CaptureActivity;
 import com.deplink.boruSmart.view.dialog.AlertDialog;
-import com.deplink.boruSmart.view.toast.ToastSingleShow;
+import com.deplink.boruSmart.view.toast.Ftoast;
 import com.deplink.sdk.android.sdk.DeplinkSDK;
 import com.deplink.sdk.android.sdk.EventCallback;
 import com.deplink.sdk.android.sdk.SDKAction;
@@ -132,7 +135,14 @@ public class AddDeviceQRcodeActivity extends AppCompatActivity implements Adapte
         isUserLogin=Perfence.getBooleanPerfence(AppConstant.USER_LOGIN);
         manager.addEventCallback(ec);
     }
-
+    public Toolbar mToolbarTb;
+    @Override
+    protected void onTitleChanged(CharSequence title, int color) {
+        super.onTitleChanged(title, color);
+        if (mToolbarTb != null) {
+            mToolbarTb.setTitle(title);
+        }
+    }
     @Override
     protected void onPause() {
         super.onPause();
@@ -160,7 +170,7 @@ public class AddDeviceQRcodeActivity extends AppCompatActivity implements Adapte
                     RemoteControlManager.getInstance().setCurrentActionIsAddDevice(true);
                     mRemotecontrol.addAll(RemoteControlManager.getInstance().findAllRemotecontrolDevice());
                     if (mRemotecontrol.size() == 0) {
-                        ToastSingleShow.showText(this, "未添加智能遥控，无法添加设备");
+                        Ftoast.create(this).setText("未添加智能遥控，无法添加设备").setDuration(Toast.LENGTH_SHORT).show();
                     } else {
                         RemoteControlManager.getInstance().setmSelectRemoteControlDevice(mRemotecontrol.get(0));
                         intentEditDeviceMessage.putExtra("DeviceType", DeviceTypeConstant.TYPE.TYPE_AIR_REMOTECONTROL);
@@ -175,7 +185,7 @@ public class AddDeviceQRcodeActivity extends AppCompatActivity implements Adapte
                     RemoteControlManager.getInstance().setCurrentActionIsAddDevice(true);
                     mRemotecontrol.addAll(RemoteControlManager.getInstance().findAllRemotecontrolDevice());
                     if (mRemotecontrol.size() == 0) {
-                        ToastSingleShow.showText(this, "未添加智能遥控，无法添加设备");
+                        Ftoast.create(this).setText("未添加智能遥控，无法添加设备").setDuration(Toast.LENGTH_SHORT).show();
                     } else {
                         RemoteControlManager.getInstance().setmSelectRemoteControlDevice(mRemotecontrol.get(0));
                         intentEditDeviceMessage.putExtra("DeviceType", DeviceTypeConstant.TYPE.TYPE_TV_REMOTECONTROL);
@@ -187,7 +197,7 @@ public class AddDeviceQRcodeActivity extends AppCompatActivity implements Adapte
                     RemoteControlManager.getInstance().setCurrentActionIsAddDevice(true);
                     mRemotecontrol.addAll(RemoteControlManager.getInstance().findAllRemotecontrolDevice());
                     if (mRemotecontrol.size() == 0) {
-                        ToastSingleShow.showText(this, "未添加智能遥控，无法添加设备");
+                        Ftoast.create(this).setText("未添加智能遥控，无法添加设备").setDuration(Toast.LENGTH_SHORT).show();
                     } else {
                         RemoteControlManager.getInstance().setmSelectRemoteControlDevice(mRemotecontrol.get(0));
                         intentEditDeviceMessage.putExtra("DeviceType", DeviceTypeConstant.TYPE.TYPE_TVBOX_REMOTECONTROL);
@@ -217,7 +227,29 @@ public class AddDeviceQRcodeActivity extends AppCompatActivity implements Adapte
      */
     public final static int REQUEST_ADD_INFRAED_UNIVERSAL_RC = 3;
     public final static int REQUEST_ADD_GETWAY_OR_ROUTER = 5;
+  //  public Context mContext;
+    @Override
+    public void setContentView(@LayoutRes int layoutResID) {
+        super.setContentView(layoutResID);
 
+        //mContext = this;
+
+       // mToolbarTb = (Toolbar) findViewById(R.id.tb_toolbar);
+      /*  if (mToolbarTb!=null) {
+            setSupportActionBar(mToolbarTb);
+            getSupportActionBar().setHomeButtonEnabled(true);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }*/
+    }
+ /*   @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }*/
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -269,7 +301,7 @@ public class AddDeviceQRcodeActivity extends AppCompatActivity implements Adapte
                         startActivity(intent);
                     }
                     else {
-                    ToastSingleShow.showText(AddDeviceQRcodeActivity.this,"不支持的设备");
+                        Ftoast.create(this).setText("不支持的设备").setDuration(Toast.LENGTH_SHORT).show();
                     }
                     break;
                 case REQUEST_ADD_INFRAED_UNIVERSAL_RC:
@@ -285,7 +317,6 @@ public class AddDeviceQRcodeActivity extends AppCompatActivity implements Adapte
                         intent.putExtra("DeviceType",addDeviceType);
                     }else{
                         intent.putExtra("DeviceType", DeviceTypeConstant.TYPE.TYPE_GETWAY_OR_ROUTER);
-
                     }
                     startActivity(intent);
                     break;

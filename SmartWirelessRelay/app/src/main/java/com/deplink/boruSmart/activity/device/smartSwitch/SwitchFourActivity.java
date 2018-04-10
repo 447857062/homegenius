@@ -21,7 +21,7 @@ import com.deplink.boruSmart.util.Perfence;
 import com.deplink.boruSmart.util.WeakRefHandler;
 import com.deplink.boruSmart.view.combinationwidget.TitleLayout;
 import com.deplink.boruSmart.view.dialog.AlertDialog;
-import com.deplink.boruSmart.view.toast.ToastSingleShow;
+import com.deplink.boruSmart.view.toast.Ftoast;
 import com.deplink.sdk.android.sdk.DeplinkSDK;
 import com.deplink.sdk.android.sdk.EventCallback;
 import com.deplink.sdk.android.sdk.SDKAction;
@@ -193,42 +193,42 @@ public class SwitchFourActivity extends Activity implements View.OnClickListener
                     mSmartSwitchManager.getCurrentSelectSmartDevice().setSwitch_four_open(switch_four_open);
                     switch (mOpResult.getCommand()) {
                         case "close1":
-                            ToastSingleShow.showText(SwitchFourActivity.this,"开关一已关闭");
+                            Ftoast.create(SwitchFourActivity.this).setText("开关一已关闭").show();
                             switch_one_open = false;
                             mSmartSwitchManager.getCurrentSelectSmartDevice().setSwitch_one_open(switch_one_open);
                             break;
                         case "close2":
-                            ToastSingleShow.showText(SwitchFourActivity.this,"开关二已关闭");
+                            Ftoast.create(SwitchFourActivity.this).setText("开关二已关闭").show();
                             switch_two_open = false;
                             mSmartSwitchManager.getCurrentSelectSmartDevice().setSwitch_two_open(switch_two_open);
                             break;
                         case "close3":
-                            ToastSingleShow.showText(SwitchFourActivity.this,"开关三已关闭");
+                            Ftoast.create(SwitchFourActivity.this).setText("开关三已关闭").show();
                             switch_three_open = false;
                             mSmartSwitchManager.getCurrentSelectSmartDevice().setSwitch_three_open(switch_three_open);
                             break;
                         case "close4":
-                            ToastSingleShow.showText(SwitchFourActivity.this,"开关四已关闭");
+                            Ftoast.create(SwitchFourActivity.this).setText("开关四已关闭").show();
                             switch_four_open = false;
                             mSmartSwitchManager.getCurrentSelectSmartDevice().setSwitch_four_open(switch_four_open);
                             break;
                         case "open1":
-                            ToastSingleShow.showText(SwitchFourActivity.this,"开关一已开启");
+                            Ftoast.create(SwitchFourActivity.this).setText("开关一已开启").show();
                             switch_one_open = true;
                             mSmartSwitchManager.getCurrentSelectSmartDevice().setSwitch_one_open(switch_one_open);
                             break;
                         case "open2":
-                            ToastSingleShow.showText(SwitchFourActivity.this,"开关二已开启");
+                            Ftoast.create(SwitchFourActivity.this).setText("开关二已开启").show();
                             switch_two_open = true;
                             mSmartSwitchManager.getCurrentSelectSmartDevice().setSwitch_two_open(switch_two_open);
                             break;
                         case "open3":
-                            ToastSingleShow.showText(SwitchFourActivity.this,"开关三已开启");
+                            Ftoast.create(SwitchFourActivity.this).setText("开关三已开启").show();
                             switch_three_open = true;
                             mSmartSwitchManager.getCurrentSelectSmartDevice().setSwitch_three_open(switch_three_open);
                             break;
                         case "open4":
-                            ToastSingleShow.showText(SwitchFourActivity.this,"开关四已开启");
+                            Ftoast.create(SwitchFourActivity.this).setText("开关四已开启").show();
                             switch_four_open = true;
                             mSmartSwitchManager.getCurrentSelectSmartDevice().setSwitch_four_open(switch_four_open);
                             break;
@@ -296,31 +296,31 @@ public class SwitchFourActivity extends Activity implements View.OnClickListener
             case R.id.button_all_switch:
                 if(NetUtil.isNetAvailable(this)){
                     if(!isUserLogin && !LocalConnectmanager.getInstance().isLocalconnectAvailable()){
-                        ToastSingleShow.showText(this,"本地连接不可用,需要登录后才能操作");
+                        Ftoast.create(SwitchFourActivity.this).setText("本地连接不可用,需要登录后才能操作").show();
                     }else{
                         mSmartSwitchManager.setSwitchCommand("close_all");
                     }
                 }else{
-                    ToastSingleShow.showText(this,"网络连接不正常");
+                    Ftoast.create(SwitchFourActivity.this).setText("网络连接不正常").show();
                 }
 
                 break;
             case R.id.button_all_switch_open:
                 if(NetUtil.isNetAvailable(this)){
                     if(!isUserLogin && !LocalConnectmanager.getInstance().isLocalconnectAvailable()){
-                        ToastSingleShow.showText(this,"本地连接不可用,需要登录后才能操作");
+                        Ftoast.create(SwitchFourActivity.this).setText("本地连接不可用,需要登录后才能操作").show();
                     }else{
                         mSmartSwitchManager.setSwitchCommand("open_all");
                     }
                 }else{
-                    ToastSingleShow.showText(this,"网络连接不正常");
+                    Ftoast.create(SwitchFourActivity.this).setText("网络连接不正常").show();
                 }
 
                 break;
             case R.id.button_switch_left:
                 if(NetUtil.isNetAvailable(this)){
                     if(!isUserLogin && !LocalConnectmanager.getInstance().isLocalconnectAvailable()){
-                        ToastSingleShow.showText(this,"本地连接不可用,需要登录后才能操作");
+                        Ftoast.create(SwitchFourActivity.this).setText("本地连接不可用,需要登录后才能操作").show();
                     }else{
                         Log.i(TAG, "switch_one_open=" + switch_one_open);
                         if (switch_one_open) {
@@ -331,14 +331,14 @@ public class SwitchFourActivity extends Activity implements View.OnClickListener
                     }
                 }
                 else{
-                    ToastSingleShow.showText(this,"网络连接不正常");
+                    Ftoast.create(SwitchFourActivity.this).setText("网络连接不正常").show();
                 }
 
                 break;
             case R.id.button_switch_2:
                 if(NetUtil.isNetAvailable(this)){
                     if(!isUserLogin && !LocalConnectmanager.getInstance().isLocalconnectAvailable()){
-                        ToastSingleShow.showText(this,"本地连接不可用,需要登录后才能操作");
+                        Ftoast.create(SwitchFourActivity.this).setText("本地连接不可用,需要登录后才能操作").show();
                     }else{
                         if (switch_two_open) {
                             mSmartSwitchManager.setSwitchCommand("close2");
@@ -348,7 +348,7 @@ public class SwitchFourActivity extends Activity implements View.OnClickListener
                     }
                 }
                 else{
-                    ToastSingleShow.showText(this,"网络连接不正常");
+                    Ftoast.create(SwitchFourActivity.this).setText("网络连接不正常").show();
                 }
 
 
@@ -356,7 +356,7 @@ public class SwitchFourActivity extends Activity implements View.OnClickListener
             case R.id.button_switch_3:
                 if(NetUtil.isNetAvailable(this)){
                     if(!isUserLogin && !LocalConnectmanager.getInstance().isLocalconnectAvailable()){
-                        ToastSingleShow.showText(this,"本地连接不可用,需要登录后才能操作");
+                        Ftoast.create(SwitchFourActivity.this).setText("本地连接不可用,需要登录后才能操作").show();
                     }else{
                         if (switch_three_open) {
                             mSmartSwitchManager.setSwitchCommand("close3");
@@ -366,7 +366,7 @@ public class SwitchFourActivity extends Activity implements View.OnClickListener
                     }
                 }
                 else{
-                    ToastSingleShow.showText(this,"网络连接不正常");
+                    Ftoast.create(SwitchFourActivity.this).setText("网络连接不正常").show();
                 }
 
 
@@ -374,7 +374,7 @@ public class SwitchFourActivity extends Activity implements View.OnClickListener
             case R.id.button_switch_right:
                 if(NetUtil.isNetAvailable(this)){
                     if(!isUserLogin && !LocalConnectmanager.getInstance().isLocalconnectAvailable()){
-                        ToastSingleShow.showText(this,"本地连接不可用,需要登录后才能操作");
+                        Ftoast.create(SwitchFourActivity.this).setText("本地连接不可用,需要登录后才能操作").show();
                     }else{
                         if (switch_four_open) {
                             mSmartSwitchManager.setSwitchCommand("close4");
@@ -384,7 +384,7 @@ public class SwitchFourActivity extends Activity implements View.OnClickListener
                     }
                 }
                 else{
-                    ToastSingleShow.showText(this,"网络连接不正常");
+                    Ftoast.create(SwitchFourActivity.this).setText("网络连接不正常").show();
                 }
                 break;
         }
@@ -439,42 +439,34 @@ public class SwitchFourActivity extends Activity implements View.OnClickListener
                 mSmartSwitchManager.getCurrentSelectSmartDevice().setSwitch_four_open(switch_four_open);
                 switch (mOpResult.getCommand()) {
                     case "close1":
-                      //  ToastSingleShow.showText(SwitchFourActivity.this,"开关一已关闭");
                         switch_one_open = false;
                         mSmartSwitchManager.getCurrentSelectSmartDevice().setSwitch_one_open(switch_one_open);
                         break;
                     case "close2":
-                       // ToastSingleShow.showText(SwitchFourActivity.this,"开关二已关闭");
                         switch_two_open = false;
                         mSmartSwitchManager.getCurrentSelectSmartDevice().setSwitch_two_open(switch_two_open);
                         break;
                     case "close3":
-                      //  ToastSingleShow.showText(SwitchFourActivity.this,"开关三已关闭");
                         switch_three_open = false;
                         mSmartSwitchManager.getCurrentSelectSmartDevice().setSwitch_three_open(switch_three_open);
                         break;
                     case "close4":
-                     //   ToastSingleShow.showText(SwitchFourActivity.this,"开关四已关闭");
                         switch_four_open = false;
                         mSmartSwitchManager.getCurrentSelectSmartDevice().setSwitch_four_open(switch_four_open);
                         break;
                     case "open1":
-                      //  ToastSingleShow.showText(SwitchFourActivity.this,"开关一已开启");
                         switch_one_open = true;
                         mSmartSwitchManager.getCurrentSelectSmartDevice().setSwitch_one_open(switch_one_open);
                         break;
                     case "open2":
-                     //   ToastSingleShow.showText(SwitchFourActivity.this,"开关二已开启");
                         switch_two_open = true;
                         mSmartSwitchManager.getCurrentSelectSmartDevice().setSwitch_two_open(switch_two_open);
                         break;
                     case "open3":
-                     //   ToastSingleShow.showText(SwitchFourActivity.this,"开关三已开启");
                         switch_three_open = true;
                         mSmartSwitchManager.getCurrentSelectSmartDevice().setSwitch_three_open(switch_three_open);
                         break;
                     case "open4":
-                      //  ToastSingleShow.showText(SwitchFourActivity.this,"开关四已开启");
                         switch_four_open = true;
                         mSmartSwitchManager.getCurrentSelectSmartDevice().setSwitch_four_open(switch_four_open);
                         break;

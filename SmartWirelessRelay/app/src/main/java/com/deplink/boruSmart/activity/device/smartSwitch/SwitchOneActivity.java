@@ -12,16 +12,16 @@ import android.widget.Button;
 import com.deplink.boruSmart.Protocol.json.OpResult;
 import com.deplink.boruSmart.activity.personal.login.LoginActivity;
 import com.deplink.boruSmart.constant.AppConstant;
+import com.deplink.boruSmart.manager.connect.local.tcp.LocalConnectmanager;
+import com.deplink.boruSmart.manager.device.DeviceManager;
 import com.deplink.boruSmart.manager.device.smartswitch.SmartSwitchListener;
 import com.deplink.boruSmart.manager.device.smartswitch.SmartSwitchManager;
 import com.deplink.boruSmart.util.NetUtil;
 import com.deplink.boruSmart.util.Perfence;
 import com.deplink.boruSmart.util.WeakRefHandler;
-import com.deplink.boruSmart.view.toast.ToastSingleShow;
-import com.deplink.boruSmart.manager.connect.local.tcp.LocalConnectmanager;
-import com.deplink.boruSmart.manager.device.DeviceManager;
 import com.deplink.boruSmart.view.combinationwidget.TitleLayout;
 import com.deplink.boruSmart.view.dialog.AlertDialog;
+import com.deplink.boruSmart.view.toast.Ftoast;
 import com.deplink.sdk.android.sdk.DeplinkSDK;
 import com.deplink.sdk.android.sdk.EventCallback;
 import com.deplink.sdk.android.sdk.SDKAction;
@@ -200,7 +200,7 @@ public class SwitchOneActivity extends Activity implements View.OnClickListener,
                 } else {
                     if(NetUtil.isNetAvailable(this)){
                         if(!isUserLogin && !LocalConnectmanager.getInstance().isLocalconnectAvailable()){
-                            ToastSingleShow.showText(this,"本地连接不可用,需要登录后才能操作");
+                            Ftoast.create(this).setText("本地连接不可用,需要登录后才能操作").show();
                         }else{
                             if (switch_one_open) {
                                 mSmartSwitchManager.setSwitchCommand("close1");
@@ -210,7 +210,7 @@ public class SwitchOneActivity extends Activity implements View.OnClickListener,
                         }
                     }
                     else{
-                        ToastSingleShow.showText(this,"网络连接不正常");
+                        Ftoast.create(this).setText("网络连接不正常").show();
                     }
                 }
 
@@ -242,12 +242,12 @@ public class SwitchOneActivity extends Activity implements View.OnClickListener,
         mSmartSwitchManager.getCurrentSelectSmartDevice().setSwitch_one_open(switch_one_open);
         switch (mOpResult.getCommand()) {
             case "close1":
-                ToastSingleShow.showText(SwitchOneActivity.this,"开关已关闭");
+                Ftoast.create(this).setText("开关已关闭").show();
                 switch_one_open = false;
                 mSmartSwitchManager.getCurrentSelectSmartDevice().setSwitch_one_open(switch_one_open);
                 break;
             case "open1":
-                ToastSingleShow.showText(SwitchOneActivity.this,"开关已开启");
+                Ftoast.create(this).setText("开关已开启").show();
                 switch_one_open = true;
                 mSmartSwitchManager.getCurrentSelectSmartDevice().setSwitch_one_open(switch_one_open);
                 break;

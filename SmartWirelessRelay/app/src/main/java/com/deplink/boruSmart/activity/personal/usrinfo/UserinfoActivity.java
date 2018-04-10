@@ -18,17 +18,22 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.deplink.boruSmart.Protocol.json.Room;
+import com.deplink.boruSmart.Protocol.json.device.SmartDev;
+import com.deplink.boruSmart.Protocol.json.device.getway.GatwayDevice;
+import com.deplink.boruSmart.Protocol.json.device.lock.Record;
+import com.deplink.boruSmart.Protocol.json.device.router.Router;
 import com.deplink.boruSmart.activity.personal.login.LoginActivity;
 import com.deplink.boruSmart.constant.AppConstant;
 import com.deplink.boruSmart.util.Perfence;
 import com.deplink.boruSmart.util.WeakRefHandler;
-import com.deplink.boruSmart.view.dialog.ActionSheetDialog;
-import com.deplink.boruSmart.view.imageview.CircleImageView;
-import com.deplink.boruSmart.view.toast.ToastSingleShow;
-import com.deplink.boruSmart.view.viewselector.TimeSelector;
 import com.deplink.boruSmart.util.bitmap.BitmapHandler;
 import com.deplink.boruSmart.view.combinationwidget.TitleLayout;
+import com.deplink.boruSmart.view.dialog.ActionSheetDialog;
 import com.deplink.boruSmart.view.dialog.AlertDialog;
+import com.deplink.boruSmart.view.imageview.CircleImageView;
+import com.deplink.boruSmart.view.toast.Ftoast;
+import com.deplink.boruSmart.view.viewselector.TimeSelector;
 import com.deplink.sdk.android.sdk.DeplinkSDK;
 import com.deplink.sdk.android.sdk.EventCallback;
 import com.deplink.sdk.android.sdk.SDKAction;
@@ -39,6 +44,8 @@ import com.zxy.tiny.Tiny;
 import com.zxy.tiny.callback.FileCallback;
 import com.zxy.tiny.core.FileKit;
 
+import org.litepal.crud.DataSupport;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -46,6 +53,7 @@ import java.io.IOException;
 import java.util.Calendar;
 
 import deplink.com.smartwirelessrelay.homegenius.EllESDK.R;
+
 public class UserinfoActivity extends Activity implements View.OnClickListener {
     private static final String TAG = "UserinfoActivity";
     private RelativeLayout layout_user_header_image;
@@ -60,6 +68,7 @@ public class UserinfoActivity extends Activity implements View.OnClickListener {
     private EventCallback ec;
     private TextView button_logout;
     private TitleLayout layout_title;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,6 +77,7 @@ public class UserinfoActivity extends Activity implements View.OnClickListener {
         initDatas();
         initEvents();
     }
+
     private void initDatas() {
         layout_title.setReturnClickListener(new TitleLayout.ReturnImageClickListener() {
             @Override
@@ -207,7 +217,7 @@ public class UserinfoActivity extends Activity implements View.OnClickListener {
                 user_head_portrait.setImageDrawable(getResources().getDrawable(R.drawable.defaultavatar));
             }
         } else {
-            ToastSingleShow.showText(this, "sd卡不存在！");
+            Ftoast.create(this).setText("sd卡不存在！").show();
         }
     }
 
@@ -270,24 +280,30 @@ public class UserinfoActivity extends Activity implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.button_logout:
 
-                    new AlertDialog(UserinfoActivity.this).builder().setTitle("退出登录")
-                            .setMsg("确定退出登录?")
-                            .setPositiveButton("确认", new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    manager.logout();
-                                    Perfence.setPerfence(AppConstant.USER_LOGIN, false);
-                                    Perfence.setPerfence(Perfence.USER_PASSWORD, "");//重置登录密码
-                                    Intent intent=new Intent(UserinfoActivity.this, LoginActivity.class);
-                                    intent.putExtra("startfrom","userinfoactivity");
-                                    startActivity(intent);
-                                }
-                            }).setNegativeButton("取消", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
+                new AlertDialog(UserinfoActivity.this).builder().setTitle("退出登录")
+                        .setMsg("确定退出登录?")
+                        .setPositiveButton("确认", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                manager.logout();
+                                Perfence.setPerfence(AppConstant.USER_LOGIN, false);
+                                Perfence.setPerfence(Perfence.USER_PASSWORD, "");//重置登录密码
+                                DataSupport.deleteAll(SmartDev.class);
+                                DataSupport.deleteAll(GatwayDevice.class);
+                                DataSupport.deleteAll(Room.class);
+                                DataSupport.deleteAll(Record.class);
+                                DataSupport.deleteAll(Router.class);
+                                Intent intent = new Intent(UserinfoActivity.this, LoginActivity.class);
+                                intent.putExtra("startfrom", "userinfoactivity");
+                                startActivity(intent);
 
-                        }
-                    }).show();
+                            }
+                        }).setNegativeButton("取消", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                }).show();
 
                 break;
             case R.id.layout_update_user_nickname:
@@ -296,7 +312,7 @@ public class UserinfoActivity extends Activity implements View.OnClickListener {
                     intent.putExtra("nickname", textview_show_nicknamke.getText().toString());
                     startActivity(intent);
                 } else {
-                    ToastSingleShow.showText(this, "未登录,登录后操作");
+                    Ftoast.create(this).setText("未登录,登录后操作").show();
                 }
 
                 break;
@@ -328,7 +344,7 @@ public class UserinfoActivity extends Activity implements View.OnClickListener {
                                     })
                             .show();
                 } else {
-                    ToastSingleShow.showText(this, "未登录,登录后操作");
+                    Ftoast.create(this).setText("未登录,登录后操作").show();
                 }
                 break;
             case R.id.layout_birthday:
@@ -344,7 +360,7 @@ public class UserinfoActivity extends Activity implements View.OnClickListener {
                     }, "1900-1-1");
                     timeSelector.show();
                 } else {
-                    ToastSingleShow.showText(this, "未登录,登录后操作");
+                    Ftoast.create(this).setText("未登录,登录后操作").show();
                 }
                 break;
             case R.id.layout_user_header_image:

@@ -17,15 +17,27 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.deplink.boruSmart.Protocol.json.Room;
+import com.deplink.boruSmart.Protocol.json.device.DeviceList;
+import com.deplink.boruSmart.Protocol.json.device.SmartDev;
 import com.deplink.boruSmart.Protocol.json.device.getway.GatwayDevice;
+import com.deplink.boruSmart.Protocol.json.device.router.Router;
 import com.deplink.boruSmart.Protocol.json.qrcode.QrcodeSmartDevice;
 import com.deplink.boruSmart.activity.device.adapter.GetwaySelectListAdapter;
+import com.deplink.boruSmart.activity.device.adapter.RemoteControlSelectListAdapter;
+import com.deplink.boruSmart.activity.device.getway.wifi.ScanWifiListActivity;
 import com.deplink.boruSmart.activity.device.remoteControl.airContorl.add.AirconditionChooseBandActivity;
+import com.deplink.boruSmart.activity.device.remoteControl.topBox.AddTopBoxActivity;
 import com.deplink.boruSmart.activity.device.remoteControl.tv.AddTvDeviceActivity;
 import com.deplink.boruSmart.activity.personal.login.LoginActivity;
 import com.deplink.boruSmart.constant.AppConstant;
 import com.deplink.boruSmart.constant.DeviceTypeConstant;
+import com.deplink.boruSmart.manager.connect.local.tcp.LocalConnectmanager;
+import com.deplink.boruSmart.manager.device.DeviceListener;
+import com.deplink.boruSmart.manager.device.DeviceManager;
+import com.deplink.boruSmart.manager.device.doorbeel.DoorbeelManager;
 import com.deplink.boruSmart.manager.device.getway.GetwayListener;
+import com.deplink.boruSmart.manager.device.getway.GetwayManager;
 import com.deplink.boruSmart.manager.device.light.SmartLightManager;
 import com.deplink.boruSmart.manager.device.remoteControl.RemoteControlManager;
 import com.deplink.boruSmart.manager.device.router.RouterManager;
@@ -35,21 +47,9 @@ import com.deplink.boruSmart.util.NetUtil;
 import com.deplink.boruSmart.util.Perfence;
 import com.deplink.boruSmart.util.StringValidatorUtil;
 import com.deplink.boruSmart.util.WeakRefHandler;
-import com.deplink.boruSmart.view.toast.ToastSingleShow;
-import com.deplink.boruSmart.Protocol.json.Room;
-import com.deplink.boruSmart.Protocol.json.device.DeviceList;
-import com.deplink.boruSmart.Protocol.json.device.SmartDev;
-import com.deplink.boruSmart.Protocol.json.device.router.Router;
-import com.deplink.boruSmart.activity.device.adapter.RemoteControlSelectListAdapter;
-import com.deplink.boruSmart.activity.device.getway.wifi.ScanWifiListActivity;
-import com.deplink.boruSmart.activity.device.remoteControl.topBox.AddTopBoxActivity;
-import com.deplink.boruSmart.manager.connect.local.tcp.LocalConnectmanager;
-import com.deplink.boruSmart.manager.device.DeviceListener;
-import com.deplink.boruSmart.manager.device.DeviceManager;
-import com.deplink.boruSmart.manager.device.doorbeel.DoorbeelManager;
-import com.deplink.boruSmart.manager.device.getway.GetwayManager;
 import com.deplink.boruSmart.view.combinationwidget.TitleLayout;
 import com.deplink.boruSmart.view.dialog.AlertDialog;
+import com.deplink.boruSmart.view.toast.Ftoast;
 import com.deplink.sdk.android.sdk.DeplinkSDK;
 import com.deplink.sdk.android.sdk.EventCallback;
 import com.deplink.sdk.android.sdk.SDKAction;
@@ -304,7 +304,7 @@ public class AddDeviceNameActivity extends Activity implements View.OnClickListe
                 Log.i(TAG,"deviceTypeHttp="+deviceTypeHttp);
                 SmartDev dbSmartDev = DataSupport.where("Uid = ?", addDeviceUid).findFirst(SmartDev.class);
                 if (dbSmartDev != null) {
-                    ToastSingleShow.showText(AddDeviceNameActivity.this, "已添加过设备:" + dbSmartDev.getName() + "与待添加设备冲突,添加失败");
+                    Ftoast.create(AddDeviceNameActivity.this).setText("已添加过设备:" + dbSmartDev.getName() + "与待添加设备冲突,添加失败").setDuration(Toast.LENGTH_SHORT).show();
                     return;
                 }
                 if (deviceTypeHttp == null) {
@@ -751,7 +751,7 @@ public class AddDeviceNameActivity extends Activity implements View.OnClickListe
         switch (v.getId()) {
             case R.id.button_add_device_sure:
                 if (!isUserLogin) {
-                    ToastSingleShow.showText(this, "用户未登录");
+                    Ftoast.create(this).setText("用户未登录").setDuration(Toast.LENGTH_SHORT).show();
                     return;
                 }
                 DeviceAddBody deviceAddBody = new DeviceAddBody();
@@ -791,7 +791,7 @@ public class AddDeviceNameActivity extends Activity implements View.OnClickListe
                         }
                         boolean isRemoteControlAdded = RemoteControlManager.getInstance().judgAirconditionDeviceisAdded(deviceName);
                         if (isRemoteControlAdded) {
-                            ToastSingleShow.showText(this, "已存在相同名称的空调遥控器");
+                            Ftoast.create(this).setText("已存在相同名称的空调遥控器").setDuration(Toast.LENGTH_SHORT).show();
                             return;
                         }
                         addVirtualDevice(virtualDeviceAddBody, DeviceTypeConstant.TYPE.TYPE_AIR_REMOTECONTROL);
@@ -802,7 +802,7 @@ public class AddDeviceNameActivity extends Activity implements View.OnClickListe
                         }
                         boolean isTvAdded = RemoteControlManager.getInstance().judgTvDeviceisAdded(deviceName);
                         if (isTvAdded) {
-                            ToastSingleShow.showText(this, "已存在相同名称的电视遥控器");
+                            Ftoast.create(this).setText("已存在相同名称的电视遥控器").setDuration(Toast.LENGTH_SHORT).show();
                             return;
                         }
 
@@ -814,7 +814,7 @@ public class AddDeviceNameActivity extends Activity implements View.OnClickListe
                         }
                         boolean isTvBoxAdded = RemoteControlManager.getInstance().judgTvBoxDeviceisAdded(deviceName);
                         if (isTvBoxAdded) {
-                            ToastSingleShow.showText(this, "已存在相同名称的电视机顶盒遥控器");
+                            Ftoast.create(this).setText("已存在相同名称的电视机顶盒遥控器").setDuration(Toast.LENGTH_SHORT).show();
                             return;
                         }
 
@@ -840,7 +840,7 @@ public class AddDeviceNameActivity extends Activity implements View.OnClickListe
                 }
                 break;
             case R.id.layout_room_select:
-                Intent intent = new Intent(this, AddDeviceActivity.class);
+                Intent intent = new Intent(this, SelectRommActivity.class);
                 intent.putExtra("DeviceType",deviceType);
                 intent.putExtra("currentAddDevice",currentAddDevice);
                 startActivityForResult(intent, REQUEST_CODE_SELECT_DEVICE_IN_WHAT_ROOM);
@@ -868,7 +868,7 @@ public class AddDeviceNameActivity extends Activity implements View.OnClickListe
 
     private void addDoorBeelDevice(DeviceAddBody deviceAddBody) {
         if (!NetUtil.isNetAvailable(this)) {
-            ToastSingleShow.showText(this, "网络连接不可用,请重新连接上网络");
+            Ftoast.create(this).setText("网络连接不可用,请重新连接上网络").setDuration(Toast.LENGTH_SHORT).show();
             startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
         }
         deviceAddBody.setDevice_name(deviceName);
@@ -892,25 +892,25 @@ public class AddDeviceNameActivity extends Activity implements View.OnClickListe
      switch (deviceType){
          case DeviceTypeConstant.TYPE.TYPE_LIGHT:
              if(!device.getTp().equalsIgnoreCase("YWLIGHTCONTROL")){
-                 ToastSingleShow.showText(AddDeviceNameActivity.this,"请选择正确的设备类型然后添加");
+                 Ftoast.create(this).setText("请选择正确的设备类型然后添加").setDuration(Toast.LENGTH_SHORT).show();
                  return;
              }
              break;
          case DeviceTypeConstant.TYPE.TYPE_LOCK:
              if(!device.getTp().equalsIgnoreCase("SMART_LOCK")){
-                 ToastSingleShow.showText(AddDeviceNameActivity.this,"请选择正确的设备类型然后添加");
+                 Ftoast.create(this).setText("请选择正确的设备类型然后添加").setDuration(Toast.LENGTH_SHORT).show();
                  return;
              }
              break;
          case DeviceTypeConstant.TYPE.TYPE_SWITCH:
              if(!device.getTp().equalsIgnoreCase("SmartWallSwitch4")){
-                 ToastSingleShow.showText(AddDeviceNameActivity.this,"请选择正确的设备类型然后添加");
+                 Ftoast.create(this).setText("请选择正确的设备类型然后添加").setDuration(Toast.LENGTH_SHORT).show();
                  return;
              }
              break;
          case DeviceTypeConstant.TYPE.TYPE_REMOTECONTROL:
              if(!device.getTp().equalsIgnoreCase("IRMOTE_V2")){
-                 ToastSingleShow.showText(AddDeviceNameActivity.this,"请选择正确的设备类型然后添加");
+                 Ftoast.create(this).setText("请选择正确的设备类型然后添加").setDuration(Toast.LENGTH_SHORT).show();
                  return;
              }
              break;
@@ -938,7 +938,7 @@ public class AddDeviceNameActivity extends Activity implements View.OnClickListe
      */
     private void addVirtualDevice(VirtualDeviceAddBody deviceAddBody, String deviceType) {
         if (currentSelectRemotecontrol == null) {
-            ToastSingleShow.showText(this, "未添加智能遥控");
+            Ftoast.create(this).setText("未添加智能遥控").setDuration(Toast.LENGTH_SHORT).show();
             return;
         }
         deviceAddBody.setDevice_name(deviceName);

@@ -11,18 +11,18 @@ import android.widget.CheckBox;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.deplink.boruSmart.activity.device.DevicesActivity;
 import com.deplink.boruSmart.activity.personal.login.LoginActivity;
 import com.deplink.boruSmart.constant.AppConstant;
 import com.deplink.boruSmart.manager.connect.remote.HomeGenius;
+import com.deplink.boruSmart.manager.device.DeviceManager;
 import com.deplink.boruSmart.manager.device.router.RouterManager;
 import com.deplink.boruSmart.util.NetUtil;
 import com.deplink.boruSmart.util.Perfence;
 import com.deplink.boruSmart.util.WeakRefHandler;
-import com.deplink.boruSmart.view.toast.ToastSingleShow;
-import com.deplink.boruSmart.activity.device.DevicesActivity;
-import com.deplink.boruSmart.manager.device.DeviceManager;
 import com.deplink.boruSmart.view.combinationwidget.TitleLayout;
 import com.deplink.boruSmart.view.dialog.AlertDialog;
+import com.deplink.boruSmart.view.toast.Ftoast;
 import com.deplink.sdk.android.sdk.DeplinkSDK;
 import com.deplink.sdk.android.sdk.EventCallback;
 import com.deplink.sdk.android.sdk.SDKAction;
@@ -232,7 +232,7 @@ public class WifiSetting24 extends Activity implements View.OnClickListener{
             if (content.getResult().equalsIgnoreCase("OK")) {
                 Log.i(TAG," mSDKCoordinator.notifyDeviceOpSuccess");
                 if (isSetWifi2G) {
-                    ToastSingleShow.showText(WifiSetting24.this, "设置成功");
+                    Ftoast.create(this).setText("设置成功").show();
                 }
             }
         }else{
@@ -354,7 +354,7 @@ public class WifiSetting24 extends Activity implements View.OnClickListener{
                 if (NetUtil.isNetAvailable(this)) {
                     mHomeGenius.queryWifi(channels);
                 } else {
-                    ToastSingleShow.showText(this, "网络连接已断开");
+                    Ftoast.create(this).setText("网络连接已断开").show();
                 }
                 layout_wireless_wifi.setVisibility(View.VISIBLE);
                 layout_hide_net.setVisibility(View.VISIBLE);
@@ -422,7 +422,7 @@ public class WifiSetting24 extends Activity implements View.OnClickListener{
         public boolean handleMessage(Message msg) {
             switch (msg.what) {
                 case MSG_LOCAL_OP_RETURN_OK:
-                    ToastSingleShow.showText(WifiSetting24.this,"已重启路由器");
+                    Ftoast.create(WifiSetting24.this).setText("已重启路由器").show();
                     Log.i(TAG, "路由器本地设置成功，重启步骤");
                     RestfulToolsRouter.getSingleton(WifiSetting24.this).rebootRouter(new retrofit2.Callback<String>() {
                         @Override

@@ -14,16 +14,16 @@ import android.widget.TextView;
 import com.deplink.boruSmart.activity.personal.login.LoginActivity;
 import com.deplink.boruSmart.constant.AppConstant;
 import com.deplink.boruSmart.manager.connect.remote.HomeGenius;
+import com.deplink.boruSmart.manager.device.DeviceManager;
+import com.deplink.boruSmart.manager.device.router.RouterManager;
 import com.deplink.boruSmart.util.NetUtil;
 import com.deplink.boruSmart.util.Perfence;
 import com.deplink.boruSmart.util.WeakRefHandler;
-import com.deplink.boruSmart.view.dialog.InputAlertDialog;
-import com.deplink.boruSmart.view.dialog.loadingdialog.DialogThreeBounce;
-import com.deplink.boruSmart.view.toast.ToastSingleShow;
-import com.deplink.boruSmart.manager.device.DeviceManager;
-import com.deplink.boruSmart.manager.device.router.RouterManager;
 import com.deplink.boruSmart.view.combinationwidget.TitleLayout;
 import com.deplink.boruSmart.view.dialog.AlertDialog;
+import com.deplink.boruSmart.view.dialog.InputAlertDialog;
+import com.deplink.boruSmart.view.dialog.loadingdialog.DialogThreeBounce;
+import com.deplink.boruSmart.view.toast.Ftoast;
 import com.deplink.sdk.android.sdk.DeplinkSDK;
 import com.deplink.sdk.android.sdk.EventCallback;
 import com.deplink.sdk.android.sdk.SDKAction;
@@ -400,10 +400,10 @@ public class WirelessRelayActivity extends Activity implements View.OnClickListe
                         proto.setAP_CLIENT(ap_client);
                         if (NetUtil.isNetAvailable(WirelessRelayActivity.this)) {
                             mHomeGenius.setWan(proto,channels);
-                            ToastSingleShow.showText(WirelessRelayActivity.this, "中继上网已设置,正在重启路由器");
+                            Ftoast.create(WirelessRelayActivity.this).setText("中继上网已设置,正在重启路由器").show();
 
                         } else {
-                            ToastSingleShow.showText(WirelessRelayActivity.this, "网络连接已断开");
+                            Ftoast.create(WirelessRelayActivity.this).setText("网络连接已断开").show();
                         }
                     }
                 }).setNegativeButton("取消", new View.OnClickListener() {
@@ -438,14 +438,14 @@ public class WirelessRelayActivity extends Activity implements View.OnClickListe
                             isUserLogin = Perfence.getBooleanPerfence(AppConstant.USER_LOGIN);
                             if (isUserLogin) {
                                 mHomeGenius.setWan(proto,channels);
-                                ToastSingleShow.showText(WirelessRelayActivity.this, "中继上网已设置，正在重启路由器");
+                                Ftoast.create(WirelessRelayActivity.this).setText("中继上网已设置，正在重启路由器").show();
                             } else {
-                                ToastSingleShow.showText(WirelessRelayActivity.this, "未登录，无法设置静态上网,请登录后重试");
+                                Ftoast.create(WirelessRelayActivity.this).setText("未登录，无法设置静态上网,请登录后重试").show();
                             }
 
 
                         } else {
-                            ToastSingleShow.showText(WirelessRelayActivity.this, "网络连接已断开");
+                            Ftoast.create(WirelessRelayActivity.this).setText("网络连接已断开").show();
                         }
                     }
                 }).setNegativeButton("取消", new View.OnClickListener() {
@@ -518,7 +518,7 @@ public class WirelessRelayActivity extends Activity implements View.OnClickListe
                 int code = response.code();
                 if (code == 200) {
                     Log.i(TAG, "WirelessRelayConnect" + code + "message=" + response.body().getMsg());
-                    ToastSingleShow.showText(WirelessRelayActivity.this, "无线中继上网设置成功");
+                    Ftoast.create(WirelessRelayActivity.this).setText("无线中继上网设置成功").show();
                     //重启
                     mHandler.post(new Runnable() {
                         @Override
@@ -615,7 +615,7 @@ public class WirelessRelayActivity extends Activity implements View.OnClickListe
                         switch (errorResponse.getErrcode()) {
                             case AppConstant.ERROR_CODE.OP_ERRCODE_BAD_TOKEN:
                                 text = AppConstant.ERROR_MSG.OP_ERRCODE_BAD_TOKEN;
-                                ToastSingleShow.showText(WirelessRelayActivity.this, "登录失效 :" + text);
+                                Ftoast.create(WirelessRelayActivity.this).setText("登录失效").show();
                                 startActivity(new Intent(WirelessRelayActivity.this, LoginActivity.class));
                                 return;
                             case AppConstant.ERROR_CODE.OP_ERRCODE_BAD_ACCOUNT:
@@ -661,7 +661,7 @@ public class WirelessRelayActivity extends Activity implements View.OnClickListe
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    ToastSingleShow.showText(WirelessRelayActivity.this, errorMsg);
+                    Ftoast.create(WirelessRelayActivity.this).setText(errorMsg).show();
                 } else {
 
                     if (mDatas == null) {

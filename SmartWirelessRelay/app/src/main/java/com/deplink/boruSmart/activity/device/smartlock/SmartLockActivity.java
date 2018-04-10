@@ -35,7 +35,7 @@ import com.deplink.boruSmart.view.combinationwidget.TitleLayout;
 import com.deplink.boruSmart.view.dialog.ActionSheetDialog;
 import com.deplink.boruSmart.view.dialog.AlertDialog;
 import com.deplink.boruSmart.view.dialog.smartlock.AuthoriseDialog;
-import com.deplink.boruSmart.view.toast.ToastSingleShow;
+import com.deplink.boruSmart.view.toast.Ftoast;
 import com.deplink.sdk.android.sdk.DeplinkSDK;
 import com.deplink.sdk.android.sdk.EventCallback;
 import com.deplink.sdk.android.sdk.SDKAction;
@@ -337,7 +337,7 @@ public class SmartLockActivity extends Activity implements View.OnClickListener,
                                             mAuthoriseDialog.show();
                                         } else {
                                             if (statu.equalsIgnoreCase("off")) {
-                                                ToastSingleShow.showText(SmartLockActivity.this, "设备已离线");
+                                                Ftoast.create(SmartLockActivity.this).setText("设备已离线").show();
                                             } else {
                                                 saveManagetPassword = (mSmartLockManager.getCurrentSelectLock().isRemerberPassword());
                                                 savedManagePassword = mSmartLockManager.getCurrentSelectLock().getLockPassword();
@@ -346,7 +346,7 @@ public class SmartLockActivity extends Activity implements View.OnClickListener,
                                                     mAuthoriseDialog.setGetDialogAuthtTypeTimeListener(SmartLockActivity.this);
                                                     mAuthoriseDialog.show();
                                                 } else {
-                                                    ToastSingleShow.showText(SmartLockActivity.this, "没有记住开锁密码,请在开锁后记住开锁密码,才能授权");
+                                                    Ftoast.create(SmartLockActivity.this).setText("没有记住开锁密码,请在开锁后记住开锁密码,才能授权").show();
                                                 }
                                             }
                                         }
@@ -437,7 +437,7 @@ public class SmartLockActivity extends Activity implements View.OnClickListener,
                             statu = "off";
                         }
                         if (statu.equalsIgnoreCase("off")) {
-                            ToastSingleShow.showText(this, "设备已离线");
+                            Ftoast.create(SmartLockActivity.this).setText("设备已离线").show();
                             return;
                         } else {
                             saveManagetPassword = (mSmartLockManager.getCurrentSelectLock().isRemerberPassword());
@@ -459,7 +459,7 @@ public class SmartLockActivity extends Activity implements View.OnClickListener,
                                         startActivity(intentSetLockPwd);
                                     }
                                 } else {
-                                    ToastSingleShow.showText(SmartLockActivity.this, "未登录");
+                                    Ftoast.create(SmartLockActivity.this).setText("未登录").show();
                                 }
                             }
                         }
@@ -562,7 +562,7 @@ public class SmartLockActivity extends Activity implements View.OnClickListener,
             }
         } else {
             if (statu.equalsIgnoreCase("off")) {
-                ToastSingleShow.showText(SmartLockActivity.this, "设备已离线");
+                Ftoast.create(SmartLockActivity.this).setText("设备已离线").show();
             } else {
                 switch (authType) {
                     case SmartLockConstant.AUTH_TYPE_ONCE:

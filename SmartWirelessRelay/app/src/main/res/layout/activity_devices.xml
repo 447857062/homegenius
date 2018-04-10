@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:background="@color/page_background"
     tools:context="com.deplink.boruSmart.activity.device.DevicesActivity">
-
     <RelativeLayout
         android:id="@+id/layout_title"
         android:layout_width="match_parent"
@@ -61,19 +60,67 @@
             android:layout_height="1px"/>
     </RelativeLayout>
 
-    <ScrollView
+    <RelativeLayout
         android:id="@+id/layout_empty_view_scroll"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/layout_buttom_bar"
+        android:background="@drawable/radius4_white_background"
+        android:layout_height="311dp"
         android:layout_below="@+id/layout_title">
-
-        <ImageView
-            android:id="@+id/imageview_empty_device"
+        <TextView
+            android:id="@+id/textview_empty_device"
+            android:textSize="14sp"
+            android:layout_marginTop="30dp"
+            android:text="该房间分类下暂时没有添加设备"
+            android:textColor="@color/room_type_text"
+            android:gravity="center_horizontal"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <ImageView
+            android:layout_below="@+id/textview_empty_device"
+            android:layout_marginTop="15dp"
+            android:id="@+id/imageview_empty_device"
+            android:layout_width="wrap_content"
+            android:layout_centerHorizontal="true"
             android:layout_height="wrap_content"
             android:background="@drawable/equipmentemptystate" />
-    </ScrollView>
+        <Button
+            android:id="@+id/button_add_device"
+            android:textColor="@color/white"
+            android:layout_below="@+id/imageview_empty_device"
+            android:textSize="14sp"
+            android:text="添加设备"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="27dp"
+            android:background="@drawable/login_button_enable_background"
+            android:layout_width="150dp"
+            android:layout_height="30dp" />
+        <RelativeLayout
+            android:id="@+id/layout_experience_center"
+            android:layout_marginTop="30dp"
+            android:layout_below="@+id/button_add_device"
+            android:layout_centerHorizontal="true"
+            android:gravity="center_horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="48dp">
+            <TextView
+                android:textSize="12sp"
+                android:text="体验中心"
+                android:layout_centerVertical="true"
+                android:id="@+id/textview_experience_center"
+                android:textColor="@color/huise"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <ImageView
+                android:id="@+id/image_goto"
+                android:paddingTop="2dp"
+                android:layout_marginLeft="5dp"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/textview_experience_center"
+                android:src="@drawable/equipmentgoto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
+    </RelativeLayout>
 
     <com.handmark.pulltorefresh.library.PullToRefreshListView
         android:id="@+id/listview_devies"

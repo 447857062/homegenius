@@ -18,10 +18,10 @@ import com.deplink.boruSmart.manager.device.router.RouterManager;
 import com.deplink.boruSmart.util.NetUtil;
 import com.deplink.boruSmart.util.Perfence;
 import com.deplink.boruSmart.util.StringValidatorUtil;
+import com.deplink.boruSmart.view.combinationwidget.TitleLayout;
 import com.deplink.boruSmart.view.dialog.AlertDialog;
 import com.deplink.boruSmart.view.dialog.InputAlertDialog;
-import com.deplink.boruSmart.view.toast.ToastSingleShow;
-import com.deplink.boruSmart.view.combinationwidget.TitleLayout;
+import com.deplink.boruSmart.view.toast.Ftoast;
 import com.deplink.sdk.android.sdk.DeplinkSDK;
 import com.deplink.sdk.android.sdk.EventCallback;
 import com.deplink.sdk.android.sdk.SDKAction;
@@ -92,15 +92,15 @@ public class StaticConnectActivity extends Activity {
                 }
                 String dns2 = edittext_dns2.getText().toString().trim();
                 if (!StringValidatorUtil.isIPString(ipaddress)) {
-                    ToastSingleShow.showText(StaticConnectActivity.this, "输入的ip地址格式不正确");
+                    Ftoast.create(StaticConnectActivity.this).setText("输入的ip地址格式不正确").show();
                     return;
                 }
                 if (!StringValidatorUtil.isIPString(submask)) {
-                    ToastSingleShow.showText(StaticConnectActivity.this, "输入的子网掩码格式不正确");
+                    Ftoast.create(StaticConnectActivity.this).setText("输入的子网掩码格式不正确").show();
                     return;
                 }
                 if (!StringValidatorUtil.isIPString(getway)) {
-                    ToastSingleShow.showText(StaticConnectActivity.this, "输入的默认网关地址格式不正确");
+                    Ftoast.create(StaticConnectActivity.this).setText("输入的默认网关地址格式不正确").show();
                     return;
                 }
                 Log.i(TAG, "ipaddress=" + ipaddress + "submask=" + submask + "getway=" + getway + "dns1=" + dns1);
@@ -108,7 +108,7 @@ public class StaticConnectActivity extends Activity {
                     if (NetUtil.isNetAvailable(StaticConnectActivity.this)) {
                         setStaticConnectLocal(ipaddress, submask, getway, dns1);
                     } else {
-                        ToastSingleShow.showText(StaticConnectActivity.this, "请确保连接上想配置路由器的wifi");
+                        Ftoast.create(StaticConnectActivity.this).setText("请确保连接上想配置路由器的wifi").show();
                     }
                 } else {
                     //MQTT接口
@@ -122,12 +122,12 @@ public class StaticConnectActivity extends Activity {
                         static_.setMTU(mtu);
                         if (!StringValidatorUtil.isIPString(dns1)) {
                             if (!dns1.equals("")) {
-                                ToastSingleShow.showText(StaticConnectActivity.this, "DNS1 不是有效的Ip地址,已忽略DNS1");
+                                Ftoast.create(StaticConnectActivity.this).setText("DNS1 不是有效的Ip地址,已忽略DNS1").show();
                             }
                             //return;
                         } else if (!StringValidatorUtil.isIPString(dns2)) {
                             if (!dns2.equals("")) {
-                                ToastSingleShow.showText(StaticConnectActivity.this, "DNS1 不是有效的Ip地址,已忽略DNS1");
+                                Ftoast.create(StaticConnectActivity.this).setText("DNS2 不是有效的Ip地址,已忽略DNS2").show();
                             }
                         } else {
                             if (!dns1.equals("")) {
@@ -142,10 +142,10 @@ public class StaticConnectActivity extends Activity {
                         if(isUserLogin){
                             mHomeGenius.setWan(proto,channels);
                         }else{
-                            ToastSingleShow.showText(StaticConnectActivity.this,"未登录，无法设置静态上网,请登录后重试");
+                            Ftoast.create(StaticConnectActivity.this).setText("未登录，无法设置静态上网,请登录后重试").show();
                         }
                     } else {
-                        ToastSingleShow.showText(StaticConnectActivity.this, "网络连接已断开");
+                        Ftoast.create(StaticConnectActivity.this).setText("网络连接已断开").show();
                     }
 
                 }
@@ -177,8 +177,7 @@ public class StaticConnectActivity extends Activity {
                 super.deviceOpSuccess(op, deviceKey);
                 switch (op) {
                     case RouterDevice.OP_GET_WAN:
-                                ToastSingleShow.showText(StaticConnectActivity.this, "动态IP设置成功");
-
+                        Ftoast.create(StaticConnectActivity.this).setText("动态IP设置成功").show();
 
                     case RouterDevice.OP_SUCCESS:
 
@@ -225,14 +224,14 @@ public class StaticConnectActivity extends Activity {
                 if (content.getResult().equalsIgnoreCase("OK")) {
                     Log.i(TAG," mSDKCoordinator.notifyDeviceOpSuccess");
                     if (isSetStaticConnect) {
-                        ToastSingleShow.showText(StaticConnectActivity.this, "设置成功");
+                        Ftoast.create(StaticConnectActivity.this).setText("设置成功").show();
                     }
                 }
             }
         }else if (op.equalsIgnoreCase("WAN")) {
             if (method.equalsIgnoreCase("REPORT")) {
                 PERFORMANCE wan = gson.fromJson(xmlStr, PERFORMANCE.class);
-                ToastSingleShow.showText(StaticConnectActivity.this, "静态IP设置成功");
+                Ftoast.create(StaticConnectActivity.this).setText("静态IP设置成功").show();
             }
         }
     }
@@ -325,7 +324,7 @@ public class StaticConnectActivity extends Activity {
                         switch (errorResponse.getErrcode()) {
                             case AppConstant.ERROR_CODE.OP_ERRCODE_BAD_TOKEN:
                                 text = AppConstant.ERROR_MSG.OP_ERRCODE_BAD_TOKEN;
-                                ToastSingleShow.showText(StaticConnectActivity.this, "登录失效 :" + text);
+                                Ftoast.create(StaticConnectActivity.this).setText( "登录失效 :" + text).show();
                                 startActivity(new Intent(StaticConnectActivity.this, LoginActivity.class));
                                 return;
                             case AppConstant.ERROR_CODE.OP_ERRCODE_BAD_ACCOUNT:
@@ -371,9 +370,9 @@ public class StaticConnectActivity extends Activity {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    ToastSingleShow.showText(StaticConnectActivity.this, errorMsg);
+                    Ftoast.create(StaticConnectActivity.this).setText(errorMsg).show();
                 } else {
-                    ToastSingleShow.showText(StaticConnectActivity.this, "静态IP设置成功，请设置wifi名字密码");
+                    Ftoast.create(StaticConnectActivity.this).setText("静态IP设置成功，请设置wifi名字密码").show();
                     Intent intentWifiSetting = new Intent(StaticConnectActivity.this, WifiSetting24.class);
                     intentWifiSetting.putExtra(AppConstant.OPERATION_TYPE, AppConstant.OPERATION_TYPE_LOCAL);
                     startActivity(intentWifiSetting);

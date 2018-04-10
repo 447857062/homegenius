@@ -8,12 +8,12 @@ import android.widget.EditText;
 
 import com.deplink.boruSmart.activity.personal.login.LoginActivity;
 import com.deplink.boruSmart.constant.AppConstant;
-import com.deplink.boruSmart.util.Perfence;
-import com.deplink.boruSmart.view.toast.ToastSingleShow;
 import com.deplink.boruSmart.manager.device.DeviceManager;
 import com.deplink.boruSmart.manager.device.router.RouterManager;
+import com.deplink.boruSmart.util.Perfence;
 import com.deplink.boruSmart.view.combinationwidget.TitleLayout;
 import com.deplink.boruSmart.view.dialog.AlertDialog;
+import com.deplink.boruSmart.view.toast.Ftoast;
 import com.deplink.sdk.android.sdk.DeplinkSDK;
 import com.deplink.sdk.android.sdk.EventCallback;
 import com.deplink.sdk.android.sdk.SDKAction;
@@ -73,7 +73,7 @@ public class WifinameSetActivity extends Activity {
             public void onEditTextPressed() {
                 wifiname = edittext_wifi_name.getText().toString().trim();
                 if (wifiname.equals("")) {
-                    ToastSingleShow.showText(WifinameSetActivity.this, "还没有输入wifi名称");
+                    Ftoast.create(WifinameSetActivity.this).setText("还没有输入wifi名称").show();
                     return;
                 }
                 if (isLogin && channels != null) {
@@ -126,7 +126,7 @@ public class WifinameSetActivity extends Activity {
                 switch (op) {
                     case RouterDevice.OP_SUCCESS:
                         if (isSetWifiname) {
-                            ToastSingleShow.showText(WifinameSetActivity.this, "设置成功");
+                            Ftoast.create(WifinameSetActivity.this).setText("设置成功").show();
                         }
                         break;
                 }

@@ -16,8 +16,8 @@ import android.widget.Toast;
 
 import com.deplink.boruSmart.Protocol.json.Room;
 import com.deplink.boruSmart.Protocol.json.device.DeviceList;
-import com.deplink.boruSmart.activity.device.AddDeviceActivity;
 import com.deplink.boruSmart.activity.device.DevicesActivity;
+import com.deplink.boruSmart.activity.device.SelectRommActivity;
 import com.deplink.boruSmart.activity.device.ShareDeviceActivity;
 import com.deplink.boruSmart.activity.device.getway.wifi.ScanWifiListActivity;
 import com.deplink.boruSmart.activity.homepage.SmartHomeMainActivity;
@@ -37,7 +37,7 @@ import com.deplink.boruSmart.util.WeakRefHandler;
 import com.deplink.boruSmart.view.combinationwidget.TitleLayout;
 import com.deplink.boruSmart.view.dialog.AlertDialog;
 import com.deplink.boruSmart.view.edittext.ClearEditText;
-import com.deplink.boruSmart.view.toast.ToastSingleShow;
+import com.deplink.boruSmart.view.toast.Ftoast;
 import com.deplink.sdk.android.sdk.DeplinkSDK;
 import com.deplink.sdk.android.sdk.EventCallback;
 import com.deplink.sdk.android.sdk.SDKAction;
@@ -335,7 +335,7 @@ public class GetwayDeviceActivity extends Activity implements View.OnClickListen
                                         if (isUserLogin) {
                                             mGetwayManager.deleteDeviceHttp();
                                         } else {
-                                            ToastSingleShow.showText(GetwayDeviceActivity.this, "未登录,登录后才能操作");
+                                            Ftoast.create(GetwayDeviceActivity.this).setText("未登录,登录后才能操作").show();
                                         }
                                     }
                                 }
@@ -346,7 +346,7 @@ public class GetwayDeviceActivity extends Activity implements View.OnClickListen
                         }
                     }).show();
                 } else {
-                    ToastSingleShow.showText(GetwayDeviceActivity.this, "网络未连接");
+                    Ftoast.create(GetwayDeviceActivity.this).setText("网络未连接").show();
                 }
 
                 break;
@@ -356,7 +356,7 @@ public class GetwayDeviceActivity extends Activity implements View.OnClickListen
                     inent.putExtra("isShowSkipOption", false);
                     startActivity(inent);
                 }else{
-                    ToastSingleShow.showText(this,"无可用的网络连接");
+                    Ftoast.create(GetwayDeviceActivity.this).setText("无可用的网络连接").show();
                 }
 
                 break;
@@ -379,13 +379,13 @@ public class GetwayDeviceActivity extends Activity implements View.OnClickListen
                 break;
             case R.id.layout_select_room:
                 if (isStartFromExperience) {
-                    Intent intent = new Intent(this, AddDeviceActivity.class);
+                    Intent intent = new Intent(this, SelectRommActivity.class);
                     startActivityForResult(intent, REQUEST_CODE_SELECT_DEVICE_IN_WHAT_ROOM);
                 } else {
                     if (isUserLogin) {
                         mDeviceManager.setEditDevice(true);
                         mDeviceManager.setCurrentEditDeviceType(DeviceTypeConstant.TYPE.TYPE_SMART_GETWAY);
-                        Intent intent = new Intent(this, AddDeviceActivity.class);
+                        Intent intent = new Intent(this, SelectRommActivity.class);
                         startActivity(intent);
                     }else{
                         startActivity(new Intent(GetwayDeviceActivity.this, LoginActivity.class));
@@ -459,13 +459,12 @@ public class GetwayDeviceActivity extends Activity implements View.OnClickListen
 
     @Override
     public void responseDeleteDeviceHttpResult(DeviceOperationResponse result) {
+
         if (result.getStatus() != null && result.getStatus().equals("ok")) {
             if (LocalConnectmanager.getInstance().isLocalconnectAvailable()) {
                 mGetwayManager.deleteGetwayDevice();
-            } else {
-                mHandler.sendEmptyMessage(MSG_HANDLE_DELETE_DEVICE_RESULT);
             }
-
+            mHandler.sendEmptyMessage(MSG_HANDLE_DELETE_DEVICE_RESULT);
         }
     }
 

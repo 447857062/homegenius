@@ -13,7 +13,6 @@
 package com.deplink.sdk.android.sdk.mqtt;
 
 import android.content.Context;
-import android.text.Html;
 import android.text.Spanned;
 
 import com.deplink.sdk.android.R;
@@ -26,6 +25,8 @@ import java.beans.PropertyChangeListener;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+
+import static android.text.Html.fromHtml;
 
 
 /**
@@ -131,7 +132,7 @@ public class Connection {
 
     for (String s : history) {
       if (s != null) {
-        array[i] = Html.fromHtml(s);
+        array[i] = fromHtml(s);
         i++;
       }
     }

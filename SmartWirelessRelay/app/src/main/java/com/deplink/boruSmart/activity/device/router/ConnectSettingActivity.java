@@ -22,7 +22,7 @@ import com.deplink.boruSmart.util.Perfence;
 import com.deplink.boruSmart.view.combinationwidget.TitleLayout;
 import com.deplink.boruSmart.view.dialog.ActionSheetDialog;
 import com.deplink.boruSmart.view.dialog.AlertDialog;
-import com.deplink.boruSmart.view.toast.ToastSingleShow;
+import com.deplink.boruSmart.view.toast.Ftoast;
 import com.deplink.sdk.android.sdk.DeplinkSDK;
 import com.deplink.sdk.android.sdk.EventCallback;
 import com.deplink.sdk.android.sdk.SDKAction;
@@ -440,7 +440,7 @@ public class ConnectSettingActivity extends Activity implements View.OnClickList
                                     })
                             .show();
                 } else {
-                    ToastSingleShow.showText(this, "未登录，无法设置上网方式,请登录后重试");
+                    Ftoast.create(this).setText("未登录，无法设置上网方式,请登录后重试").show();
                 }
 
                 break;
@@ -464,7 +464,7 @@ public class ConnectSettingActivity extends Activity implements View.OnClickList
                         switch (errorResponse.getErrcode()) {
                             case AppConstant.ERROR_CODE.OP_ERRCODE_BAD_TOKEN:
                                 text = AppConstant.ERROR_MSG.OP_ERRCODE_BAD_TOKEN;
-                                ToastSingleShow.showText(ConnectSettingActivity.this, "登录已失效 :" + text);
+                                Ftoast.create(ConnectSettingActivity.this).setText( "登录已失效 :" + text).show();
                                 startActivity(new Intent(ConnectSettingActivity.this, LoginActivity.class));
                                 return;
                             case AppConstant.ERROR_CODE.OP_ERRCODE_BAD_ACCOUNT:
@@ -510,10 +510,10 @@ public class ConnectSettingActivity extends Activity implements View.OnClickList
                         e.printStackTrace();
                     }
                     if (!errorMsg.equalsIgnoreCase("")) {
-                        ToastSingleShow.showText(ConnectSettingActivity.this, errorMsg);
+                        Ftoast.create(ConnectSettingActivity.this).setText( errorMsg).show();
                     }
                 } else {
-                    ToastSingleShow.showText(ConnectSettingActivity.this, "动态IP设置成功，请设置wifi名字密码");
+                    Ftoast.create(ConnectSettingActivity.this).setText( "动态IP设置成功，请设置wifi名字密码").show();
                     Intent intentWifiSetting = new Intent(ConnectSettingActivity.this, WifiSetting24.class);
                     intentWifiSetting.putExtra(AppConstant.OPERATION_TYPE, AppConstant.OPERATION_TYPE_LOCAL);
                     startActivity(intentWifiSetting);

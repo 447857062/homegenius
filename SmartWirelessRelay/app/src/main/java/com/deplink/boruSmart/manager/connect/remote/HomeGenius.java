@@ -230,6 +230,7 @@ public class HomeGenius {
         MQTTController.getSingleton().publish(topic, text, new MqttActionHandler(""));
     }
     public void queryWifiList(String topic, String userUuid) {
+        Log.i(TAG,"topic:"+topic);
         QueryOptions queryCmd = new QueryOptions();
         queryCmd.setOP("QUERY");
         queryCmd.setMethod("WIFIRELAY");

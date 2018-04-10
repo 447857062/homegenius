@@ -13,13 +13,13 @@ import android.widget.RelativeLayout;
 import com.deplink.boruSmart.activity.personal.login.LoginActivity;
 import com.deplink.boruSmart.constant.AppConstant;
 import com.deplink.boruSmart.manager.connect.remote.HomeGenius;
+import com.deplink.boruSmart.manager.device.DeviceManager;
 import com.deplink.boruSmart.manager.device.router.RouterManager;
 import com.deplink.boruSmart.util.NetUtil;
 import com.deplink.boruSmart.util.Perfence;
-import com.deplink.boruSmart.view.toast.ToastSingleShow;
-import com.deplink.boruSmart.manager.device.DeviceManager;
 import com.deplink.boruSmart.view.combinationwidget.TitleLayout;
 import com.deplink.boruSmart.view.dialog.AlertDialog;
+import com.deplink.boruSmart.view.toast.Ftoast;
 import com.deplink.sdk.android.sdk.DeplinkSDK;
 import com.deplink.sdk.android.sdk.EventCallback;
 import com.deplink.sdk.android.sdk.SDKAction;
@@ -79,16 +79,16 @@ public class QosSettingActivity extends Activity implements View.OnClickListener
                         boolean isUserLogin;
                         isUserLogin = Perfence.getBooleanPerfence(AppConstant.USER_LOGIN);
                         if (isUserLogin) {
-                            ToastSingleShow.showText(QosSettingActivity.this, "QOS已设置");
+                            Ftoast.create(QosSettingActivity.this).setText("QOS已设置").show();
                             if(mHomeGenius!=null){
                                 mHomeGenius.setQos(qos, channels);
                             }
                         } else {
-                            ToastSingleShow.showText(QosSettingActivity.this, "未登录，无法设置静态上网,请登录后重试");
+                            Ftoast.create(QosSettingActivity.this).setText("未登录，无法设置静态上网,请登录后重试").show();
                         }
 
                     } else {
-                        ToastSingleShow.showText(QosSettingActivity.this, "网络连接已断开");
+                        Ftoast.create(QosSettingActivity.this).setText("网络连接已断开").show();
                     }
 
             }
@@ -207,7 +207,7 @@ public class QosSettingActivity extends Activity implements View.OnClickListener
                     mHomeGenius.queryQos(channels);
                 }
             } else {
-                ToastSingleShow.showText(this, "网络连接已断开");
+                Ftoast.create(QosSettingActivity.this).setText("网络连接已断开").show();
             }
         }
     }

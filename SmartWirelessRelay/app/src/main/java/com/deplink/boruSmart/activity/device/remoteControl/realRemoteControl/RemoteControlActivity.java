@@ -20,8 +20,8 @@ import com.deplink.boruSmart.Protocol.json.OpResult;
 import com.deplink.boruSmart.Protocol.json.Room;
 import com.deplink.boruSmart.Protocol.json.device.SmartDev;
 import com.deplink.boruSmart.Protocol.json.device.getway.GatwayDevice;
-import com.deplink.boruSmart.activity.device.AddDeviceActivity;
 import com.deplink.boruSmart.activity.device.DevicesActivity;
+import com.deplink.boruSmart.activity.device.SelectRommActivity;
 import com.deplink.boruSmart.activity.device.ShareDeviceActivity;
 import com.deplink.boruSmart.activity.device.adapter.GetwaySelectListAdapter;
 import com.deplink.boruSmart.activity.personal.experienceCenter.ExperienceDevicesActivity;
@@ -40,7 +40,7 @@ import com.deplink.boruSmart.view.combinationwidget.TitleLayout;
 import com.deplink.boruSmart.view.dialog.AlertDialog;
 import com.deplink.boruSmart.view.dialog.loadingdialog.DialogThreeBounce;
 import com.deplink.boruSmart.view.edittext.ClearEditText;
-import com.deplink.boruSmart.view.toast.ToastSingleShow;
+import com.deplink.boruSmart.view.toast.Ftoast;
 import com.deplink.sdk.android.sdk.DeplinkSDK;
 import com.deplink.sdk.android.sdk.EventCallback;
 import com.deplink.sdk.android.sdk.SDKAction;
@@ -110,7 +110,7 @@ public class RemoteControlActivity extends Activity implements View.OnClickListe
                 action = "alertname";
                 String changeDeviceName = edittext_input_devie_name.getText().toString();
                 if (changeDeviceName.equals("")) {
-                    ToastSingleShow.showText(RemoteControlActivity.this, "请输入设备而名称");
+                    Ftoast.create(RemoteControlActivity.this).setText("请输入设备而名称").show();
                     return;
                 }
                 if (!isStartFromExperience) {
@@ -221,7 +221,7 @@ public class RemoteControlActivity extends Activity implements View.OnClickListe
                     case "alertgetway":
                         boolean saveGetwayResult = mRemoteControlManager.updateSmartDeviceGetway(selectedGatway);
                         if (!saveGetwayResult) {
-                            ToastSingleShow.showText(RemoteControlActivity.this, "更新智能设备所属网关失败");
+                            Ftoast.create(RemoteControlActivity.this).setText("更新智能设备所属网关失败").show();
                         }
                         break;
                 }
@@ -255,7 +255,7 @@ public class RemoteControlActivity extends Activity implements View.OnClickListe
                     deviceUid = DeviceManager.getInstance().getCurrentSelectSmartDevice().getUid();
                     mDeviceManager.alertDeviceHttp(deviceUid, room.getUid(), null, null);
                 } else {
-                    ToastSingleShow.showText(RemoteControlActivity.this, "未登录登录后操作");
+                    Ftoast.create(RemoteControlActivity.this).setText("未登录登录后操作").show();
                 }
             }
             textview_select_room_name.setText(roomName);
@@ -450,7 +450,7 @@ public class RemoteControlActivity extends Activity implements View.OnClickListe
                                         DialogThreeBounce.showLoading(RemoteControlActivity.this);
                                         mDeviceManager.deleteDeviceHttp();
                                     } else {
-                                        ToastSingleShow.showText(RemoteControlActivity.this, "用户未登录");
+                                        Ftoast.create(RemoteControlActivity.this).setText("用户未登录").show();
                                     }
                                 } else {
                                     startActivity(new Intent(RemoteControlActivity.this, ExperienceDevicesActivity.class));
@@ -467,13 +467,13 @@ public class RemoteControlActivity extends Activity implements View.OnClickListe
                 if(isStartFromExperience){
                     mDeviceManager.setEditDevice(true);
                     mDeviceManager.setCurrentEditDeviceType(DeviceTypeConstant.TYPE.TYPE_REMOTECONTROL);
-                    Intent intent = new Intent(this, AddDeviceActivity.class);
+                    Intent intent = new Intent(this, SelectRommActivity.class);
                     startActivity(intent);
                 }else{
                     if(isLogin){
                         mDeviceManager.setEditDevice(true);
                         mDeviceManager.setCurrentEditDeviceType(DeviceTypeConstant.TYPE.TYPE_REMOTECONTROL);
-                        Intent intent = new Intent(this, AddDeviceActivity.class);
+                        Intent intent = new Intent(this, SelectRommActivity.class);
                         startActivity(intent);
                     }else{
                         startActivity(new Intent(RemoteControlActivity.this, LoginActivity.class));
@@ -509,7 +509,7 @@ public class RemoteControlActivity extends Activity implements View.OnClickListe
                     deviceUid = DeviceManager.getInstance().getCurrentSelectSmartDevice().getUid();
                     mDeviceManager.alertDeviceHttp(deviceUid, room.getUid(), null, null);
                 } else {
-                    ToastSingleShow.showText(RemoteControlActivity.this, "未登录登录后操作");
+                    Ftoast.create(RemoteControlActivity.this).setText("未登录登录后操作").show();
                 }
             }
             textview_select_room_name.setText(roomName);

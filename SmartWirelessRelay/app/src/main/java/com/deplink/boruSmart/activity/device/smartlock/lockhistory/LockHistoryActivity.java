@@ -12,23 +12,23 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.deplink.boruSmart.Protocol.json.OpResult;
-import com.deplink.boruSmart.Protocol.json.device.lock.UserIdInfo;
-import com.deplink.boruSmart.manager.device.smartlock.SmartLockListener;
-import com.deplink.boruSmart.util.Perfence;
 import com.deplink.boruSmart.Protocol.json.device.lock.LockHistorys;
 import com.deplink.boruSmart.Protocol.json.device.lock.Record;
+import com.deplink.boruSmart.Protocol.json.device.lock.UserIdInfo;
 import com.deplink.boruSmart.activity.device.smartlock.userid.UpdateSmartLockUserIdActivity;
 import com.deplink.boruSmart.activity.personal.login.LoginActivity;
 import com.deplink.boruSmart.constant.AppConstant;
 import com.deplink.boruSmart.constant.SmartLockConstant;
 import com.deplink.boruSmart.manager.connect.local.tcp.LocalConnectmanager;
 import com.deplink.boruSmart.manager.device.DeviceManager;
+import com.deplink.boruSmart.manager.device.smartlock.SmartLockListener;
 import com.deplink.boruSmart.manager.device.smartlock.SmartLockManager;
 import com.deplink.boruSmart.util.DateUtil;
+import com.deplink.boruSmart.util.Perfence;
 import com.deplink.boruSmart.util.WeakRefHandler;
 import com.deplink.boruSmart.view.combinationwidget.TitleLayout;
 import com.deplink.boruSmart.view.dialog.AlertDialog;
-import com.deplink.boruSmart.view.toast.ToastSingleShow;
+import com.deplink.boruSmart.view.toast.Ftoast;
 import com.deplink.sdk.android.sdk.DeplinkSDK;
 import com.deplink.sdk.android.sdk.EventCallback;
 import com.deplink.sdk.android.sdk.SDKAction;
@@ -105,7 +105,7 @@ public class LockHistoryActivity extends Activity implements SmartLockListener {
                         intent.putStringArrayListExtra("recordlistid", mRecordListId);
                         startActivity(intent);
                     } else {
-                        ToastSingleShow.showText(LockHistoryActivity.this, "未获取到开锁记录");
+                        Ftoast.create(LockHistoryActivity.this).setText("未获取到开锁记录").show();
                     }
                 }
             }

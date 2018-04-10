@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.deplink.boruSmart.Protocol.json.OpResult;
 import com.deplink.boruSmart.Protocol.json.QueryOptions;
+import com.deplink.boruSmart.Protocol.json.Room;
 import com.deplink.boruSmart.Protocol.json.device.DeviceList;
 import com.deplink.boruSmart.Protocol.json.device.SmartDev;
 import com.deplink.boruSmart.Protocol.json.device.getway.GatwayDevice;
@@ -26,8 +27,7 @@ import com.deplink.boruSmart.manager.device.smartswitch.SmartSwitchManager;
 import com.deplink.boruSmart.manager.room.RoomManager;
 import com.deplink.boruSmart.util.JsonArrayParseUtil;
 import com.deplink.boruSmart.util.Perfence;
-import com.deplink.boruSmart.view.toast.ToastSingleShow;
-import com.deplink.boruSmart.Protocol.json.Room;
+import com.deplink.boruSmart.view.toast.Ftoast;
 import com.deplink.sdk.android.sdk.DeplinkSDK;
 import com.deplink.sdk.android.sdk.EventCallback;
 import com.deplink.sdk.android.sdk.SDKAction;
@@ -78,6 +78,7 @@ public class DeviceManager implements LocalConnecteListener {
     private boolean isStartFromExperience;
     private boolean isStartFromHomePage;
     private boolean isExperCenterStartFromHomePage;
+    private boolean isExperCenterStartFromDevice;
     protected RemoteConnectManager mRemoteConnectManager;
     protected HomeGenius mHomeGenius;
     private static String uuid;
@@ -94,9 +95,18 @@ public class DeviceManager implements LocalConnecteListener {
     private RemoteControlManager mRemoteControlManager;
     private boolean editDevice;
     private String currentEditDeviceType;
-    private static   String userName;
+    private static String userName;
+
     public boolean isEditDevice() {
         return editDevice;
+    }
+
+    public boolean isExperCenterStartFromDevice() {
+        return isExperCenterStartFromDevice;
+    }
+
+    public void setExperCenterStartFromDevice(boolean experCenterStartFromDevice) {
+        isExperCenterStartFromDevice = experCenterStartFromDevice;
     }
 
     public void setEditDevice(boolean editDevice) {
@@ -147,19 +157,21 @@ public class DeviceManager implements LocalConnecteListener {
     private List<DeviceListener> mDeviceListenerList;
 
     public void addDeviceListener(DeviceListener listener) {
-        Log.i(TAG,"onResume");
+        Log.i(TAG, "onResume");
         if (listener != null && !mDeviceListenerList.contains(listener)) {
-            Log.i(TAG,"onResume"+listener.toString());
+            Log.i(TAG, "onResume" + listener.toString());
             this.mDeviceListenerList.add(listener);
         }
         manager.addEventCallback(ec);
     }
+
     public void startQueryStatu() {
         mDevicesStatus = new HashMap<>();
         startTimer();
     }
+
     public void stopQueryStatu() {
-        mDevicesStatus=null;
+        mDevicesStatus = null;
         stopTimer();
     }
 
@@ -240,8 +252,8 @@ public class DeviceManager implements LocalConnecteListener {
                     for (int i = 0; i < smartDevices.size(); i++) {
                         switch (smartDevices.get(i).getType()) {
                             case DeviceTypeConstant.TYPE.TYPE_SWITCH:
-                                    mSmartSwitchManager.setCurrentSelectSmartDevice(smartDevices.get(i));
-                                    mSmartSwitchManager.querySwitchStatus("query");
+                                mSmartSwitchManager.setCurrentSelectSmartDevice(smartDevices.get(i));
+                                mSmartSwitchManager.querySwitchStatus("query");
                                 break;
                             case DeviceTypeConstant.TYPE.TYPE_REMOTECONTROL:
                                 mRemoteControlManager.setmSelectRemoteControlDevice(smartDevices.get(i));
@@ -279,6 +291,7 @@ public class DeviceManager implements LocalConnecteListener {
      * 查询设备列表
      */
     public void queryDeviceListHttp() {
+        Log.i(TAG, "queryDeviceListHttp");
         if (userName.equals("")) {
             return;
         }
@@ -346,14 +359,14 @@ public class DeviceManager implements LocalConnecteListener {
                             gson.fromJson(response.body().toString(), DeviceOperationResponse.class);
                 }
                 if (response.code() == 200) {
-                    Log.i(TAG, "" + response.body().toString()+"返回结果"+deviceOperationResponse.toString());
+                    Log.i(TAG, "" + response.body().toString() + "返回结果" + deviceOperationResponse.toString());
                     for (int i = 0; i < mDeviceListenerList.size(); i++) {
                         mDeviceListenerList.get(i).responseAddDeviceHttpResult(
                                 deviceOperationResponse
                         );
                     }
                 } else if (response.code() == 403) {
-                    ToastSingleShow.showText(mContext, "没有授权,请让第一次添加此设备的用户给你授权");
+                    Ftoast.create(mContext).setText("没有授权,请让第一次添加此设备的用户给你授权").show();
                 }
             }
 
@@ -599,7 +612,7 @@ public class DeviceManager implements LocalConnecteListener {
         if (manager == null) {
             initMqttCallback();
         }
-        userName= Perfence.getPerfence(Perfence.PERFENCE_PHONE);
+        userName = Perfence.getPerfence(Perfence.PERFENCE_PHONE);
         mLocalConnectmanager.addLocalConnectListener(this);
         packet = new GeneralPacket(mContext);
         cachedThreadPool = Executors.newCachedThreadPool();
@@ -894,7 +907,6 @@ public class DeviceManager implements LocalConnecteListener {
     }
 
 
-
     @Override
     public void OnGetQueryresult(String result) {
         //返回查询结果：设备列表
@@ -913,44 +925,41 @@ public class DeviceManager implements LocalConnecteListener {
             }
         }
         OpResult type = gson.fromJson(result, OpResult.class);
-        if( type.getOP().equalsIgnoreCase("REPORT")
-                ){
-            if((type.getMethod().equalsIgnoreCase("SMART_LOCK") || type.getMethod().equalsIgnoreCase("SmartLock"))){
+        if (type.getOP().equalsIgnoreCase("REPORT")
+                ) {
+            if ((type.getMethod().equalsIgnoreCase("SMART_LOCK") || type.getMethod().equalsIgnoreCase("SmartLock"))) {
                 if (type.getCommand().equalsIgnoreCase(SmartLockConstant.CMD.QUERY)) {
-                    if(type.getSmartUid()!=null){
-                        if(mDevicesStatus!=null){
-                            mDevicesStatus.put(type.getSmartUid(),"在线");
+                    if (type.getSmartUid() != null) {
+                        if (mDevicesStatus != null) {
+                            mDevicesStatus.put(type.getSmartUid(), "在线");
                         }
                     }
                 }
-            }
-            else if(type.getMethod().equalsIgnoreCase("SmartWallSwitch")){
+            } else if (type.getMethod().equalsIgnoreCase("SmartWallSwitch")) {
                 if (type.getCommand().equalsIgnoreCase(SmartLockConstant.CMD.QUERY)) {
-                    if(type.getSmartUid()!=null){
-                        if(mDevicesStatus!=null){
-                            mDevicesStatus.put(type.getSmartUid(),"在线");
-                        }
-
-                    }
-
-                }
-            }
-            else if(type.getMethod().equalsIgnoreCase("YWLIGHTCONTROL")){
-                if (type.getCommand().equalsIgnoreCase(SmartLockConstant.CMD.QUERY)) {
-                    if(type.getSmartUid()!=null){
-                        if(mDevicesStatus!=null){
-                            mDevicesStatus.put(type.getSmartUid(),"在线");
+                    if (type.getSmartUid() != null) {
+                        if (mDevicesStatus != null) {
+                            mDevicesStatus.put(type.getSmartUid(), "在线");
                         }
 
                     }
 
                 }
-            }
-            else if(type.getMethod().equalsIgnoreCase("IrmoteV2")){
+            } else if (type.getMethod().equalsIgnoreCase("YWLIGHTCONTROL")) {
                 if (type.getCommand().equalsIgnoreCase(SmartLockConstant.CMD.QUERY)) {
-                    if(type.getSmartUid()!=null){
-                        if(mDevicesStatus!=null){
-                            mDevicesStatus.put(type.getSmartUid(),"在线");
+                    if (type.getSmartUid() != null) {
+                        if (mDevicesStatus != null) {
+                            mDevicesStatus.put(type.getSmartUid(), "在线");
+                        }
+
+                    }
+
+                }
+            } else if (type.getMethod().equalsIgnoreCase("IrmoteV2")) {
+                if (type.getCommand().equalsIgnoreCase(SmartLockConstant.CMD.QUERY)) {
+                    if (type.getSmartUid() != null) {
+                        if (mDevicesStatus != null) {
+                            mDevicesStatus.put(type.getSmartUid(), "在线");
                         }
 
                     }
@@ -963,8 +972,23 @@ public class DeviceManager implements LocalConnecteListener {
     }
 
     @Override
-    public void OnGetSetresult(String setResult) {
+    public void OnGetSetresult(String result) {
+        Gson gson = new Gson();
+        OpResult type = gson.fromJson(result, OpResult.class);
+        if (type.getOP().equalsIgnoreCase("REPORT")
+                ) {
+            if (type.getMethod().equalsIgnoreCase("SmartWallSwitch")) {
+                if (type.getCommand().equalsIgnoreCase(SmartLockConstant.CMD.QUERY)) {
+                    if (type.getSmartUid() != null) {
+                        if (mDevicesStatus != null) {
+                            mDevicesStatus.put(type.getSmartUid(), "在线");
+                        }
 
+                    }
+
+                }
+            }
+        }
     }
 
     @Override

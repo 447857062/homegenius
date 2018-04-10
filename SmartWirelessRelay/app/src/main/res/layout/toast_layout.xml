@@ -9,7 +9,7 @@
         android:layout_marginRight="10dp"
         android:textColor="@color/white"
         android:layout_centerVertical="true"
-        android:textSize="@dimen/text_size_small"
+        android:textSize="@dimen/text_size_smallest"
         android:layout_width="wrap_content"
         android:layout_height="match_parent" />
 </RelativeLayout>

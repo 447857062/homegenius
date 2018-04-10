@@ -13,8 +13,8 @@ import android.widget.Toast;
 
 import com.deplink.boruSmart.Protocol.json.Room;
 import com.deplink.boruSmart.Protocol.json.device.SmartDev;
-import com.deplink.boruSmart.activity.device.AddDeviceActivity;
 import com.deplink.boruSmart.activity.device.DevicesActivity;
+import com.deplink.boruSmart.activity.device.SelectRommActivity;
 import com.deplink.boruSmart.activity.device.ShareDeviceActivity;
 import com.deplink.boruSmart.activity.device.router.connectType.DialConnectActivity;
 import com.deplink.boruSmart.activity.device.router.connectType.StaticConnectActivity;
@@ -40,7 +40,7 @@ import com.deplink.boruSmart.view.combinationwidget.TitleLayout;
 import com.deplink.boruSmart.view.dialog.ActionSheetDialog;
 import com.deplink.boruSmart.view.dialog.AlertDialog;
 import com.deplink.boruSmart.view.dialog.loadingdialog.DialogThreeBounce;
-import com.deplink.boruSmart.view.toast.ToastSingleShow;
+import com.deplink.boruSmart.view.toast.Ftoast;
 import com.deplink.sdk.android.sdk.DeplinkSDK;
 import com.deplink.sdk.android.sdk.EventCallback;
 import com.deplink.sdk.android.sdk.SDKAction;
@@ -155,7 +155,7 @@ public class RouterSettingActivity extends Activity implements View.OnClickListe
                 super.deviceOpSuccess(op, deviceKey);
                 switch (op) {
                     case RouterDevice.OP_REBOOT:
-                        ToastSingleShow.showText(RouterSettingActivity.this, "重启设备成功");
+                        Ftoast.create(RouterSettingActivity.this).setText( "重启设备成功").show();
                         break;
                 }
             }
@@ -206,7 +206,7 @@ public class RouterSettingActivity extends Activity implements View.OnClickListe
                 super.responseDeleteDeviceHttpResult(result);
                 int affectColumn = DataSupport.deleteAll(SmartDev.class, "Uid = ?", mRouterManager.getCurrentSelectedRouter().getUid());
                 Log.i(TAG, "删除路由器设备=" + affectColumn);
-                ToastSingleShow.showText(RouterSettingActivity.this, "解除绑定成功");
+                Ftoast.create(RouterSettingActivity.this).setText( "解除绑定成功").show();
                 RouterSettingActivity.this.startActivity(new Intent(RouterSettingActivity.this, DevicesActivity.class));
             }
         };
@@ -285,13 +285,13 @@ public class RouterSettingActivity extends Activity implements View.OnClickListe
                 break;
             case R.id.layout_room_select_out:
                 if(isStartFromExperience){
-                    Intent intent = new Intent(this, AddDeviceActivity.class);
+                    Intent intent = new Intent(this, SelectRommActivity.class);
                     DeviceManager.getInstance().setEditDevice(true);
                     DeviceManager.getInstance().setCurrentEditDeviceType(DeviceTypeConstant.TYPE.TYPE_ROUTER);
                     startActivity(intent);
                 }else{
                     if(isUserLogin){
-                        Intent intent = new Intent(this, AddDeviceActivity.class);
+                        Intent intent = new Intent(this, SelectRommActivity.class);
                         DeviceManager.getInstance().setEditDevice(true);
                         DeviceManager.getInstance().setCurrentEditDeviceType(DeviceTypeConstant.TYPE.TYPE_ROUTER);
                         startActivity(intent);
@@ -406,9 +406,9 @@ public class RouterSettingActivity extends Activity implements View.OnClickListe
                         .setPositiveButton("确认", new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                ToastSingleShow.showText(RouterSettingActivity.this, "已重启设备");
+                                Ftoast.create(RouterSettingActivity.this).setText( "已重启设备").show();
                                 if (!NetUtil.isNetAvailable(RouterSettingActivity.this)) {
-                                    ToastSingleShow.showText(RouterSettingActivity.this, "网络连接已断开");
+                                    Ftoast.create(RouterSettingActivity.this).setText( "网络连接已断开").show();
                                 } else {
                                     if (isUserLogin) {
                                         if(channels!=null){
@@ -441,11 +441,11 @@ public class RouterSettingActivity extends Activity implements View.OnClickListe
                                             DialogThreeBounce.showLoading(RouterSettingActivity.this);
                                             mDeviceManager.deleteDeviceHttp();
                                         } else {
-                                            ToastSingleShow.showText(RouterSettingActivity.this, "用户已离线，登录后使用");
+                                            Ftoast.create(RouterSettingActivity.this).setText( "用户已离线，登录后使用").show();
                                         }
 
                                     } else {
-                                        ToastSingleShow.showText(RouterSettingActivity.this, "网络连接不可用");
+                                        Ftoast.create(RouterSettingActivity.this).setText( "网络连接不可用").show();
                                     }
                                 }
                             }
@@ -496,7 +496,7 @@ public class RouterSettingActivity extends Activity implements View.OnClickListe
                         switch (errorResponse.getErrcode()) {
                             case AppConstant.ERROR_CODE.OP_ERRCODE_BAD_TOKEN:
                                 text = AppConstant.ERROR_MSG.OP_ERRCODE_BAD_TOKEN;
-                                ToastSingleShow.showText(RouterSettingActivity.this, "登录已失效 :" + text);
+                                Ftoast.create(RouterSettingActivity.this).setText( "登录已失效").show();
                                 startActivity(new Intent(RouterSettingActivity.this, LoginActivity.class));
                                 return;
                             case AppConstant.ERROR_CODE.OP_ERRCODE_BAD_ACCOUNT:
@@ -541,9 +541,9 @@ public class RouterSettingActivity extends Activity implements View.OnClickListe
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    ToastSingleShow.showText(RouterSettingActivity.this, errorMsg);
+                    Ftoast.create(RouterSettingActivity.this).setText( "errorMsg").show();
                 } else {
-                    ToastSingleShow.showText(RouterSettingActivity.this, "动态IP设置成功，请设置wifi名字密码");
+                    Ftoast.create(RouterSettingActivity.this).setText( "动态IP设置成功，请设置wifi名字密码").show();
                     Intent intentWifiSetting = new Intent(RouterSettingActivity.this, WifiSetting24.class);
                     intentWifiSetting.putExtra(AppConstant.OPERATION_TYPE, AppConstant.OPERATION_TYPE_LOCAL);
                     startActivity(intentWifiSetting);

@@ -11,15 +11,15 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.deplink.boruSmart.activity.personal.login.LoginActivity;
-import com.deplink.boruSmart.util.Perfence;
 import com.deplink.boruSmart.constant.AppConstant;
 import com.deplink.boruSmart.manager.connect.remote.HomeGenius;
 import com.deplink.boruSmart.manager.device.DeviceManager;
 import com.deplink.boruSmart.manager.device.router.RouterManager;
 import com.deplink.boruSmart.util.NetUtil;
+import com.deplink.boruSmart.util.Perfence;
 import com.deplink.boruSmart.view.combinationwidget.TitleLayout;
 import com.deplink.boruSmart.view.dialog.AlertDialog;
-import com.deplink.boruSmart.view.toast.ToastSingleShow;
+import com.deplink.boruSmart.view.toast.Ftoast;
 import com.deplink.sdk.android.sdk.DeplinkSDK;
 import com.deplink.sdk.android.sdk.EventCallback;
 import com.deplink.sdk.android.sdk.SDKAction;
@@ -175,7 +175,7 @@ public class WifiSettingCustom extends Activity implements View.OnClickListener 
             if (content.getResult().equalsIgnoreCase("OK")) {
                 Log.i(TAG, " mSDKCoordinator.notifyDeviceOpSuccess");
                 if (isSetWifiVisitor) {
-                    ToastSingleShow.showText(WifiSettingCustom.this, "设置成功");
+                    Ftoast.create(this).setText("设置成功").show();
                 }
             }
         } else {
@@ -248,7 +248,7 @@ public class WifiSettingCustom extends Activity implements View.OnClickListener 
                     mHomeGenius.queryWifi(channels);
                 }
             } else {
-                ToastSingleShow.showText(this, "网络连接已断开");
+                Ftoast.create(this).setText("网络连接已断开").show();
             }
         }
 
@@ -316,10 +316,10 @@ public class WifiSettingCustom extends Activity implements View.OnClickListener 
                         intent.putExtra(AppConstant.WIFISETTING.WIFI_TYPE, AppConstant.WIFISETTING.WIFI_TYPE_VISITOR);
                         startActivityForResult(intent, REQUESTCODE_SET_ENCRYPT_TYPE);
                     } else {
-                        ToastSingleShow.showText(this, "访客wifi未打开");
+                        Ftoast.create(this).setText("访客wifi未打开").show();
                     }
                 } else {
-                    ToastSingleShow.showText(this, "未获取到访客wifi状态");
+                    Ftoast.create(this).setText("未获取到访客wifi状态").show();
                 }
 
 
@@ -332,10 +332,10 @@ public class WifiSettingCustom extends Activity implements View.OnClickListener 
                         intentWifiname.putExtra(AppConstant.WIFISETTING.WIFI_TYPE, AppConstant.WIFISETTING.WIFI_TYPE_VISITOR);
                         startActivityForResult(intentWifiname, REQUESTCODE_SET_WIFI_NAME);
                     } else {
-                        ToastSingleShow.showText(this, "访客wifi未打开");
+                        Ftoast.create(this).setText("访客wifi未打开").show();
                     }
                 } else {
-                    ToastSingleShow.showText(this, "还未获取到访客wifi状态");
+                    Ftoast.create(this).setText("还未获取到访客wifi状态").show();
                 }
 
 
@@ -348,10 +348,10 @@ public class WifiSettingCustom extends Activity implements View.OnClickListener 
                         intentAlertPassword.putExtra(AppConstant.WIFISETTING.WIFI_PASSWORD, password);
                         startActivityForResult(intentAlertPassword, REQUESTCODE_SET_WIFI_PASSWORD);
                     } else {
-                        ToastSingleShow.showText(this, "访客wifi未打开");
+                        Ftoast.create(this).setText("访客wifi未打开").show();
                     }
                 } else {
-                    ToastSingleShow.showText(this, "还未获取到访客wifi状态");
+                    Ftoast.create(this).setText("还未获取到访客wifi状态").show();
                 }
 
 

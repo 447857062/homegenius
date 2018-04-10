@@ -15,7 +15,7 @@ import com.deplink.boruSmart.util.NetUtil;
 import com.deplink.boruSmart.util.Perfence;
 import com.deplink.boruSmart.view.combinationwidget.TitleLayout;
 import com.deplink.boruSmart.view.dialog.AlertDialog;
-import com.deplink.boruSmart.view.toast.ToastSingleShow;
+import com.deplink.boruSmart.view.toast.Ftoast;
 import com.deplink.sdk.android.sdk.DeplinkSDK;
 import com.deplink.sdk.android.sdk.EventCallback;
 import com.deplink.sdk.android.sdk.SDKAction;
@@ -79,7 +79,7 @@ public class SignalStrengthSetting extends Activity implements View.OnClickListe
                     e.printStackTrace();
                 }
             } else {
-                ToastSingleShow.showText(this, "网络连接已断开");
+                Ftoast.create(SignalStrengthSetting.this).setText("网络连接已断开").show();
             }
         }
     }
@@ -91,7 +91,7 @@ public class SignalStrengthSetting extends Activity implements View.OnClickListe
             if(manager.getDeviceList()!=null && manager.getDeviceList().size()!=0){
                 Perfence.setPerfence(AppConstant.DEVICE.CURRENT_DEVICE_KEY, manager.getDeviceList().get(0).getDeviceKey());
             }else{
-                ToastSingleShow.showText(this,"还没有绑定设备");
+                Ftoast.create(this).setText("还没有绑定设备").show();
             }
         }
         routerDevice = (RouterDevice) manager.getDevice(Perfence.getPerfence(AppConstant.DEVICE.CURRENT_DEVICE_KEY));
@@ -125,7 +125,7 @@ public class SignalStrengthSetting extends Activity implements View.OnClickListe
                         e.printStackTrace();
                     }
                 } else {
-                    ToastSingleShow.showText(SignalStrengthSetting.this, "网络连接已断开");
+                    Ftoast.create(SignalStrengthSetting.this).setText("网络连接已断开").show();
                 }
             }
         });
@@ -181,7 +181,7 @@ public class SignalStrengthSetting extends Activity implements View.OnClickListe
                         break;
                     case RouterDevice.OP_SUCCESS:
                         if (isSetSignalStreng) {
-                            ToastSingleShow.showText(SignalStrengthSetting.this, "设置成功");
+                            Ftoast.create(SignalStrengthSetting.this).setText("设置成功").show();
                         }
                         break;
                 }
