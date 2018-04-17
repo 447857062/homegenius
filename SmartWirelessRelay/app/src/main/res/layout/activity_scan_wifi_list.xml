@@ -54,12 +54,19 @@
         android:layout_below="@+id/layout_select_wifi"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <ListView
-            android:id="@+id/listview_wifi_list"
+        <com.deplink.boruSmart.view.scrollview.MyScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:divider="@null"
-            android:visibility="visible" />
+            android:scrollbars="none"
+            android:layout_height="match_parent">
+            <com.deplink.boruSmart.view.scrollview.NonScrollableListView
+                android:id="@+id/listview_wifi_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="none"
+                android:divider="@null"
+                android:visibility="visible" />
+        </com.deplink.boruSmart.view.scrollview.MyScrollView>
+
         <TextView
             android:id="@+id/textview_wifilist_no"
             android:textSize="@dimen/text_size_small"

@@ -8,7 +8,6 @@ import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.deplink.boruSmart.Protocol.json.OpResult;
@@ -28,6 +27,7 @@ import com.deplink.boruSmart.util.WeakRefHandler;
 import com.deplink.boruSmart.view.combinationwidget.TitleLayout;
 import com.deplink.boruSmart.view.dialog.AlertDialog;
 import com.deplink.boruSmart.view.dialog.InputAlertDialog;
+import com.deplink.boruSmart.view.scrollview.NonScrollableListView;
 import com.deplink.boruSmart.view.toast.Ftoast;
 import com.deplink.sdk.android.sdk.DeplinkSDK;
 import com.deplink.sdk.android.sdk.EventCallback;
@@ -48,7 +48,7 @@ import deplink.com.smartwirelessrelay.homegenius.EllESDK.R;
 public class ScanWifiListActivity extends Activity implements AdapterView.OnItemClickListener, View.OnClickListener, GetwayListener {
     private static final String TAG = "ScanWifiListActivity";
     private DeviceManager mDeviceManager;
-    private ListView listview_wifi_list;
+    private NonScrollableListView listview_wifi_list;
     private WifiListAdapter mWifiListAdapter;
     private TextView textview_reload_wifilist;
     private boolean isStartFromExperience;
