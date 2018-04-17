@@ -294,6 +294,8 @@ public class SmartLockActivity extends Activity implements View.OnClickListener,
             mSmartLockManager.queryLockUidHttp(mSmartLockManager.getCurrentSelectLock().getUid());
             statu = mSmartLockManager.getCurrentSelectLock().getStatus();
             Log.i(TAG, "当前设备uid=" + mSmartLockManager.getCurrentSelectLock().getUid() + "状态=" + statu);
+        }else{
+            saveManagetPasswordExperience=false;
         }
     }
 
@@ -310,10 +312,10 @@ public class SmartLockActivity extends Activity implements View.OnClickListener,
     }
 
     private void initViews() {
-        layout_title = (TitleLayout) findViewById(R.id.layout_title);
-        imageview_unlock = (TextView) findViewById(R.id.imageview_unlock);
-        layout_open_door = (RelativeLayout) findViewById(R.id.layout_open_door);
-        gif_alert = (ImageView) findViewById(R.id.gif_alert);
+        layout_title = findViewById(R.id.layout_title);
+        imageview_unlock = findViewById(R.id.imageview_unlock);
+        layout_open_door = findViewById(R.id.layout_open_door);
+        gif_alert = findViewById(R.id.gif_alert);
     }
 
     @Override
@@ -346,7 +348,7 @@ public class SmartLockActivity extends Activity implements View.OnClickListener,
                                                     mAuthoriseDialog.setGetDialogAuthtTypeTimeListener(SmartLockActivity.this);
                                                     mAuthoriseDialog.show();
                                                 } else {
-                                                    Ftoast.create(SmartLockActivity.this).setText("没有记住开锁密码,请在开锁后记住开锁密码,才能授权").show();
+                                                    Ftoast.create(SmartLockActivity.this).setText("请在开锁后记住开锁密码,然后授权").show();
                                                 }
                                             }
                                         }

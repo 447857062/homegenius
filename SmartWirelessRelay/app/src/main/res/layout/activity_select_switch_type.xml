@@ -13,9 +13,6 @@
         android:paddingLeft="@dimen/title_layout_margin_left"
         android:paddingRight="@dimen/title_layout_margin_right"
         android:background="@color/white">
-
-
-
             <ImageView
                 android:layout_centerVertical="true"
                 android:id="@+id/image_back"
@@ -34,14 +31,19 @@
                 android:text="智能开关"
                 android:textColor="@color/room_type_text"
                 android:textSize="@dimen/layout_top_bar_item_text_size" />
-
     </RelativeLayout>
 
+    <com.deplink.boruSmart.view.scrollview.MyScrollView
+        android:layout_width="wrap_content"
+        android:layout_below="@+id/layout_title"
+        android:layout_height="match_parent">
+        <com.deplink.boruSmart.view.scrollview.NonScrollableListView
+            android:id="@+id/listview_switch_type"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:divider="@null"
+           />
+    </com.deplink.boruSmart.view.scrollview.MyScrollView>
 
-    <ListView
-        android:id="@+id/listview_switch_type"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:divider="@null"
-        android:layout_below="@+id/layout_title"/>
 </RelativeLayout>

@@ -17,11 +17,10 @@
         titlelayout:title_text="编辑"
         android:layout_height="@dimen/title_bar_height"
         />
-    <com.deplink.boruSmart.view.scrollview.ScrollViewLinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/layout_title">
-        <ScrollView
+
+        <com.deplink.boruSmart.view.scrollview.MyScrollView
+            android:layout_below="@+id/layout_title"
+            android:scrollbars="none"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <RelativeLayout
@@ -71,7 +70,7 @@
                     android:text="删除房间"
                     android:textColor="@android:color/holo_red_light" />
             </RelativeLayout>
-        </ScrollView>
-    </com.deplink.boruSmart.view.scrollview.ScrollViewLinearLayout>
+        </com.deplink.boruSmart.view.scrollview.MyScrollView>
+
 
 </RelativeLayout>

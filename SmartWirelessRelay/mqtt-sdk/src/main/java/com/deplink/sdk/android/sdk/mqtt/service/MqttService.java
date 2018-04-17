@@ -499,8 +499,6 @@ public class MqttService extends Service implements MqttTraceHandler {
         // create somewhere to buffer received messages until
         // we know that they have been passed to the application
         messageStore = new DatabaseMessageStore(this, this);
-
-       // System.out.println("Service被创建--------------->onCreate");
     }
 
     /**
@@ -517,7 +515,6 @@ public class MqttService extends Service implements MqttTraceHandler {
             mqttServiceBinder = null;
         }
         super.onDestroy();
-        Log.d(DeplinkSDK.SDK_TAG, "Service--------------->onDestroy");
     }
 
     /**

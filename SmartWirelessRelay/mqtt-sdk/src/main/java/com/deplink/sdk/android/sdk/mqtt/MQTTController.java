@@ -263,7 +263,6 @@ public class MQTTController implements MqttListener {
         try {
             client.connect(conOpt, null, callback);
         } catch (MqttException e) {
-            Log.d(DeplinkSDK.SDK_TAG, "client.connect----------------->" + e.getMessage());
             Log.e(this.getClass().getCanonicalName(), "MqttException Occured", e);
         }
 

@@ -12,6 +12,7 @@ public class ExperienceCenterDevice extends DataSupport implements Serializable{
     @Column(unique = true,nullable = false)
     private String deviceName;
     private String type;
+    private String subtype;
     private boolean online;
 
     public String getDeviceName() {
@@ -36,5 +37,13 @@ public class ExperienceCenterDevice extends DataSupport implements Serializable{
 
     public void setOnline(boolean online) {
         this.online = online;
+    }
+
+    public String getSubtype() {
+        return subtype;
+    }
+
+    public void setSubtype(String subtype) {
+        this.subtype = subtype;
     }
 }

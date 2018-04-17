@@ -19,7 +19,10 @@ import com.deplink.boruSmart.activity.device.remoteControl.realRemoteControl.Rem
 import com.deplink.boruSmart.activity.device.remoteControl.topBox.TvBoxMainActivity;
 import com.deplink.boruSmart.activity.device.remoteControl.tv.TvMainActivity;
 import com.deplink.boruSmart.activity.device.router.RouterMainActivity;
+import com.deplink.boruSmart.activity.device.smartSwitch.SwitchFourActivity;
 import com.deplink.boruSmart.activity.device.smartSwitch.SwitchOneActivity;
+import com.deplink.boruSmart.activity.device.smartSwitch.SwitchThreeActivity;
+import com.deplink.boruSmart.activity.device.smartSwitch.SwitchTwoActivity;
 import com.deplink.boruSmart.activity.device.smartlock.SmartLockActivity;
 import com.deplink.boruSmart.activity.homepage.SmartHomeMainActivity;
 import com.deplink.boruSmart.activity.homepage.adapter.ExperienceCenterListAdapter;
@@ -74,10 +77,6 @@ public class ExperienceDevicesActivity extends Activity implements AdapterView.O
         device.setOnline(true);
         mExperienceCenterDevices.add(device);
         device = new ExperienceCenterDevice();
-        device.setDeviceName(DeviceTypeConstant.TYPE.TYPE_SWITCH);
-        device.setOnline(true);
-        mExperienceCenterDevices.add(device);
-        device = new ExperienceCenterDevice();
         device.setDeviceName(DeviceTypeConstant.TYPE.TYPE_REMOTECONTROL);
         device.setOnline(true);
         mExperienceCenterDevices.add(device);
@@ -97,13 +96,34 @@ public class ExperienceDevicesActivity extends Activity implements AdapterView.O
         device.setDeviceName(DeviceTypeConstant.TYPE.TYPE_LIGHT);
         device.setOnline(true);
         mExperienceCenterDevices.add(device);
+       /* device = new ExperienceCenterDevice();
+        device.setDeviceName(DeviceTypeConstant.TYPE.TYPE_SWITCH);
+        device.setSubtype(DeviceTypeConstant.TYPE_SWITCH_SUBTYPE.SUB_TYPE_SWITCH_ONEWAY);
+        device.setOnline(true);
+        mExperienceCenterDevices.add(device);*/
+        device = new ExperienceCenterDevice();
+        device.setDeviceName(DeviceTypeConstant.TYPE_SWITCH_SUBTYPE.SUB_TYPE_SWITCH_TWOWAY);
+        device.setSubtype(DeviceTypeConstant.TYPE_SWITCH_SUBTYPE.SUB_TYPE_SWITCH_TWOWAY);
+        device.setOnline(true);
+        mExperienceCenterDevices.add(device);
+        device = new ExperienceCenterDevice();
+        device.setDeviceName(DeviceTypeConstant.TYPE_SWITCH_SUBTYPE.SUB_TYPE_SWITCH_THREEWAY);
+        device.setSubtype(DeviceTypeConstant.TYPE_SWITCH_SUBTYPE.SUB_TYPE_SWITCH_THREEWAY);
+        device.setOnline(true);
+        mExperienceCenterDevices.add(device);
+        device = new ExperienceCenterDevice();
+        device.setDeviceName(DeviceTypeConstant.TYPE_SWITCH_SUBTYPE.SUB_TYPE_SWITCH_FOURWAY);
+        device.setSubtype(DeviceTypeConstant.TYPE_SWITCH_SUBTYPE.SUB_TYPE_SWITCH_FOURWAY);
+        device.setOnline(true);
+        mExperienceCenterDevices.add(device);
         mAdapter = new ExperienceCenterListAdapter(this, mExperienceCenterDevices);
+
     }
 
     private void initViews() {
-        listview_experience_center = (ListView) findViewById(R.id.listview_experience_center);
-        imageview_back = (ImageView) findViewById(R.id.image_back);
-        textview_title = (TextView) findViewById(R.id.textview_title);
+        listview_experience_center = findViewById(R.id.listview_experience_center);
+        imageview_back = findViewById(R.id.image_back);
+        textview_title = findViewById(R.id.textview_title);
     }
 
     @Override
@@ -128,8 +148,20 @@ public class ExperienceDevicesActivity extends Activity implements AdapterView.O
                 intent = new Intent(this, DoorbeelMainActivity.class);
                 startActivity(intent);
                 break;
-            case DeviceTypeConstant.TYPE.TYPE_SWITCH:
+            case DeviceTypeConstant.TYPE_SWITCH_SUBTYPE.SUB_TYPE_SWITCH_ONEWAY:
                 intent = new Intent(this, SwitchOneActivity.class);
+                startActivity(intent);
+                break;
+            case DeviceTypeConstant.TYPE_SWITCH_SUBTYPE.SUB_TYPE_SWITCH_TWOWAY:
+                intent = new Intent(this, SwitchTwoActivity.class);
+                startActivity(intent);
+                break;
+            case DeviceTypeConstant.TYPE_SWITCH_SUBTYPE.SUB_TYPE_SWITCH_THREEWAY:
+                intent = new Intent(this, SwitchThreeActivity.class);
+                startActivity(intent);
+                break;
+            case DeviceTypeConstant.TYPE_SWITCH_SUBTYPE.SUB_TYPE_SWITCH_FOURWAY:
+                intent = new Intent(this, SwitchFourActivity.class);
                 startActivity(intent);
                 break;
             case DeviceTypeConstant.TYPE.TYPE_REMOTECONTROL:

@@ -1,12 +1,16 @@
 package com.deplink.boruSmart.manager.device.remoteControl;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 
 import com.deplink.boruSmart.Protocol.json.OpResult;
 import com.deplink.boruSmart.Protocol.json.QueryOptions;
+import com.deplink.boruSmart.Protocol.json.device.lock.Record;
 import com.deplink.boruSmart.Protocol.json.device.lock.alertreport.Info;
+import com.deplink.boruSmart.Protocol.json.device.router.Router;
 import com.deplink.boruSmart.Protocol.packet.GeneralPacket;
+import com.deplink.boruSmart.activity.personal.login.LoginActivity;
 import com.deplink.boruSmart.constant.AppConstant;
 import com.deplink.boruSmart.constant.DeviceTypeConstant;
 import com.deplink.boruSmart.constant.SmartLockConstant;
@@ -20,6 +24,7 @@ import com.deplink.boruSmart.Protocol.json.device.getway.GatwayDevice;
 import com.deplink.boruSmart.manager.connect.local.tcp.LocalConnectmanager;
 import com.deplink.boruSmart.manager.device.DeviceManager;
 import com.deplink.boruSmart.util.JsonArrayParseUtil;
+import com.deplink.boruSmart.view.toast.Ftoast;
 import com.deplink.sdk.android.sdk.homegenius.DeviceOperationResponse;
 import com.deplink.sdk.android.sdk.homegenius.Deviceprops;
 import com.deplink.sdk.android.sdk.homegenius.VirtualDeviceAlertBody;
@@ -326,6 +331,15 @@ public class RemoteControlManager extends DeviceManager {
                     for (int i = 0; i < mRemoteControlListenerList.size(); i++) {
                         mRemoteControlListenerList.get(i).responseDeleteVirtualDevice(response.body());
                     }
+                }else if(response.code() == 403){
+                    Ftoast.create(mContext).setText("登录已过期,请重新登录").show();
+                    Perfence.setPerfence(AppConstant.USER_LOGIN, false);
+                    DataSupport.deleteAll(SmartDev.class);
+                    DataSupport.deleteAll(GatwayDevice.class);
+                    DataSupport.deleteAll(Room.class);
+                    DataSupport.deleteAll(Record.class);
+                    DataSupport.deleteAll(Router.class);
+                    mContext.startActivity(new Intent(mContext, LoginActivity.class));
                 }
             }
 

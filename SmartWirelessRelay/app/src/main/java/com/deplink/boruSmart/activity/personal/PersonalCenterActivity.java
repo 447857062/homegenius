@@ -40,6 +40,7 @@ import com.deplink.sdk.android.sdk.DeplinkSDK;
 import com.deplink.sdk.android.sdk.EventCallback;
 import com.deplink.sdk.android.sdk.SDKAction;
 import com.deplink.sdk.android.sdk.homegenius.UserInfoAlertBody;
+import com.deplink.sdk.android.sdk.json.ErrorBody;
 import com.deplink.sdk.android.sdk.manager.SDKManager;
 import com.google.gson.Gson;
 
@@ -207,8 +208,17 @@ public class PersonalCenterActivity extends Activity implements View.OnClickList
                 super.onGetUserInfouccess(info);
                 Gson gson = new Gson();
                 if(!info.equalsIgnoreCase("[]")){
-                    UserInfoAlertBody responseInfo = gson.fromJson(info, UserInfoAlertBody.class);
-                    user_nickname.setText(responseInfo.getNickname());
+                    ErrorBody error=gson.fromJson(info,ErrorBody.class);
+                    if(error!=null){
+                       if(error.getStatus()!=null &&
+                               error.getStatus().equalsIgnoreCase("token invalid or expired, please login")){
+                            Perfence.setPerfence(AppConstant.USER_LOGIN, false);
+                            isUserLogin=false;
+                        }else{
+                           UserInfoAlertBody responseInfo = gson.fromJson(info, UserInfoAlertBody.class);
+                           user_nickname.setText(responseInfo.getNickname());
+                       }
+                    }
                 }
             }
 
@@ -232,6 +242,7 @@ public class PersonalCenterActivity extends Activity implements View.OnClickList
                 case MSG_SHOW_CONNECT_LOST:
                     Perfence.setPerfence(AppConstant.USER_LOGIN, false);
                     isUserLogin=false;
+                    user_nickname.setText("请登录");
                     user_head_portrait.setImageDrawable(ContextCompat.getDrawable(PersonalCenterActivity.this,R.drawable.defaultavatar));
                     new AlertDialog(PersonalCenterActivity.this).builder().setTitle("账号异地登录")
                             .setMsg("当前账号已在其它设备上登录,是否重新登录")
@@ -279,29 +290,29 @@ public class PersonalCenterActivity extends Activity implements View.OnClickList
     }
 
     private void initViews() {
-        layout_title= (TitleLayout) findViewById(R.id.layout_title);
-        textview_home = (TextView) findViewById(R.id.textview_home);
-        layout_device_share = (RelativeLayout) findViewById(R.id.layout_device_share);
-        layout_about = (RelativeLayout) findViewById(R.id.layout_about);
-        textview_device = (TextView) findViewById(R.id.textview_device);
-        textview_room = (TextView) findViewById(R.id.textview_room);
-        textview_mine = (TextView) findViewById(R.id.textview_mine);
-        imageview_devices = (ImageView) findViewById(R.id.imageview_devices);
-        imageview_home_page = (ImageView) findViewById(R.id.imageview_home_page);
-        imageview_rooms = (ImageView) findViewById(R.id.imageview_rooms);
-        imageview_personal_center = (ImageView) findViewById(R.id.imageview_personal_center);
-        layout_getway_check = (RelativeLayout) findViewById(R.id.layout_getway_check);
-        layout_experience_center = (RelativeLayout) findViewById(R.id.layout_experience_center);
-        layout_home_page = (LinearLayout) findViewById(R.id.layout_home_page);
-        layout_devices = (LinearLayout) findViewById(R.id.layout_devices);
-        layout_rooms = (LinearLayout) findViewById(R.id.layout_rooms);
-        layout_personal_center = (LinearLayout) findViewById(R.id.layout_personal_center);
-        user_head_portrait = (CircleImageView) findViewById(R.id.user_head_portrait);
-        layout_user_info = (RelativeLayout) findViewById(R.id.layout_user_info);
-        user_nickname = (TextView) findViewById(R.id.user_nickname);
-        textview_update_now = (TextView) findViewById(R.id.textview_update_now);
-        layout_update_soft = (RelativeLayout) findViewById(R.id.layout_update_soft);
-        textview_current_version = (TextView) findViewById(R.id.textview_current_version);
+        layout_title= findViewById(R.id.layout_title);
+        textview_home = findViewById(R.id.textview_home);
+        layout_device_share = findViewById(R.id.layout_device_share);
+        layout_about = findViewById(R.id.layout_about);
+        textview_device = findViewById(R.id.textview_device);
+        textview_room = findViewById(R.id.textview_room);
+        textview_mine = findViewById(R.id.textview_mine);
+        imageview_devices = findViewById(R.id.imageview_devices);
+        imageview_home_page = findViewById(R.id.imageview_home_page);
+        imageview_rooms = findViewById(R.id.imageview_rooms);
+        imageview_personal_center = findViewById(R.id.imageview_personal_center);
+        layout_getway_check = findViewById(R.id.layout_getway_check);
+        layout_experience_center = findViewById(R.id.layout_experience_center);
+        layout_home_page = findViewById(R.id.layout_home_page);
+        layout_devices = findViewById(R.id.layout_devices);
+        layout_rooms = findViewById(R.id.layout_rooms);
+        layout_personal_center = findViewById(R.id.layout_personal_center);
+        user_head_portrait = findViewById(R.id.user_head_portrait);
+        layout_user_info = findViewById(R.id.layout_user_info);
+        user_nickname = findViewById(R.id.user_nickname);
+        textview_update_now = findViewById(R.id.textview_update_now);
+        layout_update_soft = findViewById(R.id.layout_update_soft);
+        textview_current_version = findViewById(R.id.textview_current_version);
     }
     /**
      * 再按一次退出应用
@@ -366,7 +377,7 @@ public class PersonalCenterActivity extends Activity implements View.OnClickList
                 }
                 break;
             case R.id.layout_about:
-
+                startActivity(new Intent(this, AboutUsActivity.class));
                 break;
 
         }

@@ -19,6 +19,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Matrix;
 import android.graphics.drawable.Drawable;
+import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageView.ScaleType;
@@ -58,6 +59,7 @@ public class RotateLoadingLayout extends LoadingLayout {
 			mRotationPivotX = Math.round(imageDrawable.getIntrinsicWidth() / 2f);
 			mRotationPivotY = Math.round(imageDrawable.getIntrinsicHeight() / 2f);
 		}
+
 	}
 
 	protected void onPullImpl(float scaleOfLayout) {
@@ -71,7 +73,7 @@ public class RotateLoadingLayout extends LoadingLayout {
 		mHeaderImageMatrix.setRotate(angle, mRotationPivotX, mRotationPivotY);
 		mHeaderImage.setImageMatrix(mHeaderImageMatrix);
 	}
-
+	//private long currentTime;
 	@Override
 	protected void refreshingImpl() {
 		mHeaderImage.startAnimation(mRotateAnimation);
@@ -81,6 +83,10 @@ public class RotateLoadingLayout extends LoadingLayout {
 	protected void resetImpl() {
 		mHeaderImage.clearAnimation();
 		resetImageRotation();
+	//	Log.i(TAG,"System.currentTimeMillis()-currentTime="+(System.currentTimeMillis()-currentTime));
+	//	if(System.currentTimeMillis()-currentTime>1500){
+			mHeaderImagerefreshComplement.setVisibility(View.VISIBLE);
+	//	}
 	}
 
 	private void resetImageRotation() {

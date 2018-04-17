@@ -30,4 +30,13 @@ public class WeatherInfo {
     public void setStatus(String status) {
         this.status = status;
     }
+
+    @Override
+    public String toString() {
+        return "WeatherInfo{" +
+                "now=" + now +
+                ", air_now_city=" + air_now_city +
+                ", status='" + status + '\'' +
+                '}';
+    }
 }

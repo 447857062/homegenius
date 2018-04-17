@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:titlelayout="http://schemas.android.com/apk/res-auto"
+    android:background="@color/page_background"
+    tools:context="com.deplink.boruSmart.activity.personal.login.BoraeulaActivity">
+    <com.deplink.boruSmart.view.combinationwidget.TitleLayout
+        android:id="@+id/layout_title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/title_bar_height"
+        titlelayout:edit_text_show="false"
+        titlelayout:menu_image_show="false"
+        titlelayout:return_image_show="true"
+        titlelayout:title_text="协议条款" />
+    <View
+        android:id="@+id/view_line_dirver"
+        android:layout_below="@+id/layout_title"
+        android:background="@color/line_dirver_color"
+        android:layout_width="match_parent"
+        android:layout_height="1px"/>
+    <com.deplink.boruSmart.view.scrollview.MyScrollView
+        android:scrollbars="none"
+        android:layout_below="@+id/view_line_dirver"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <WebView
+
+            android:id="@+id/main_webview"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </WebView>
+    </com.deplink.boruSmart.view.scrollview.MyScrollView>
+</RelativeLayout>

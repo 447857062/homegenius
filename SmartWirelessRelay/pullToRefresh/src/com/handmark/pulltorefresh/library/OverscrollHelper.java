@@ -130,15 +130,6 @@ public final class OverscrollHelper {
 				} else if (newScrollValue > (scrollRange + fuzzyThreshold)) {
 					// Check the mode supports the overscroll direction, and
 					// then move scroll
-					if (mode.showFooterLoadingLayout()) {
-						// If we're currently at zero, we're about to start
-						// overscrolling, so change the state
-						if (currentScrollValue == 0) {
-							view.setState(State.OVERSCROLLING);
-						}
-
-						view.setHeaderScroll((int) (scaleFactor * (currentScrollValue + newScrollValue - scrollRange)));
-					}
 				} else if (Math.abs(newScrollValue) <= fuzzyThreshold
 						|| Math.abs(newScrollValue - scrollRange) <= fuzzyThreshold) {
 					// Means we've stopped overscrolling, so scroll back to 0

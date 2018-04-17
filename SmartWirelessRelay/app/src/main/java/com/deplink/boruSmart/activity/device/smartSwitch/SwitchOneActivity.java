@@ -95,7 +95,7 @@ public class SwitchOneActivity extends Activity implements View.OnClickListener,
         layout_title.setEditTextClickListener(new TitleLayout.EditTextClickListener() {
             @Override
             public void onEditTextPressed() {
-                Intent intent = new Intent(SwitchOneActivity.this, EditActivity.class);
+                Intent intent = new Intent(SwitchOneActivity.this, EditSwitchActivity.class);
                 intent.putExtra("switchType", "一路开关");
                 startActivity(intent);
             }

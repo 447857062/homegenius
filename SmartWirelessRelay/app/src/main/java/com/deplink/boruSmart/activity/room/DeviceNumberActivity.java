@@ -8,24 +8,22 @@ import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ListView;
+import android.widget.Button;
+import android.widget.RelativeLayout;
 
-import com.deplink.boruSmart.Protocol.packet.ellisdk.BasicPacket;
-import com.deplink.boruSmart.Protocol.packet.ellisdk.EllE_Listener;
-import com.deplink.boruSmart.activity.device.doorbell.DoorbeelMainActivity;
-import com.deplink.boruSmart.activity.device.remoteControl.realRemoteControl.RemoteControlActivity;
-import com.deplink.boruSmart.activity.device.smartlock.SmartLockActivity;
-import com.deplink.boruSmart.constant.DeviceTypeConstant;
-import com.deplink.boruSmart.util.Perfence;
-import com.deplink.boruSmart.util.WeakRefHandler;
 import com.deplink.boruSmart.Protocol.json.Room;
 import com.deplink.boruSmart.Protocol.json.device.SmartDev;
 import com.deplink.boruSmart.Protocol.json.device.getway.GatwayDevice;
+import com.deplink.boruSmart.Protocol.packet.ellisdk.BasicPacket;
 import com.deplink.boruSmart.Protocol.packet.ellisdk.EllESDK;
+import com.deplink.boruSmart.Protocol.packet.ellisdk.EllE_Listener;
+import com.deplink.boruSmart.activity.device.AddDeviceQRcodeActivity;
 import com.deplink.boruSmart.activity.device.adapter.DeviceListAdapter;
+import com.deplink.boruSmart.activity.device.doorbell.DoorbeelMainActivity;
 import com.deplink.boruSmart.activity.device.getway.GetwayDeviceActivity;
 import com.deplink.boruSmart.activity.device.light.LightActivity;
 import com.deplink.boruSmart.activity.device.remoteControl.airContorl.AirRemoteControlMianActivity;
+import com.deplink.boruSmart.activity.device.remoteControl.realRemoteControl.RemoteControlActivity;
 import com.deplink.boruSmart.activity.device.remoteControl.topBox.TvBoxMainActivity;
 import com.deplink.boruSmart.activity.device.remoteControl.tv.TvMainActivity;
 import com.deplink.boruSmart.activity.device.router.RouterMainActivity;
@@ -33,8 +31,11 @@ import com.deplink.boruSmart.activity.device.smartSwitch.SwitchFourActivity;
 import com.deplink.boruSmart.activity.device.smartSwitch.SwitchOneActivity;
 import com.deplink.boruSmart.activity.device.smartSwitch.SwitchThreeActivity;
 import com.deplink.boruSmart.activity.device.smartSwitch.SwitchTwoActivity;
+import com.deplink.boruSmart.activity.device.smartlock.SmartLockActivity;
+import com.deplink.boruSmart.activity.personal.experienceCenter.ExperienceDevicesActivity;
 import com.deplink.boruSmart.activity.personal.login.LoginActivity;
 import com.deplink.boruSmart.constant.AppConstant;
+import com.deplink.boruSmart.constant.DeviceTypeConstant;
 import com.deplink.boruSmart.manager.device.DeviceListener;
 import com.deplink.boruSmart.manager.device.DeviceManager;
 import com.deplink.boruSmart.manager.device.doorbeel.DoorbeelManager;
@@ -46,8 +47,11 @@ import com.deplink.boruSmart.manager.device.smartlock.SmartLockManager;
 import com.deplink.boruSmart.manager.device.smartswitch.SmartSwitchManager;
 import com.deplink.boruSmart.manager.room.RoomManager;
 import com.deplink.boruSmart.util.DataExchange;
+import com.deplink.boruSmart.util.Perfence;
+import com.deplink.boruSmart.util.WeakRefHandler;
 import com.deplink.boruSmart.view.combinationwidget.TitleLayout;
 import com.deplink.boruSmart.view.dialog.AlertDialog;
+import com.deplink.boruSmart.view.scrollview.NonScrollableListView;
 import com.deplink.sdk.android.sdk.DeplinkSDK;
 import com.deplink.sdk.android.sdk.EventCallback;
 import com.deplink.sdk.android.sdk.SDKAction;
@@ -65,7 +69,7 @@ import deplink.com.smartwirelessrelay.homegenius.EllESDK.R;
 /**
  * 查看智能设备列表的界面
  */
-public class DeviceNumberActivity extends Activity implements EllE_Listener {
+public class DeviceNumberActivity extends Activity implements EllE_Listener ,View.OnClickListener{
     private static final String TAG = "DeviceNumberActivity";
     private DeviceListAdapter mDeviceAdapter;
     /**
@@ -76,7 +80,7 @@ public class DeviceNumberActivity extends Activity implements EllE_Listener {
      * 下面半部分列表的数据
      */
     private List<SmartDev> datasBottom;
-    private ListView listview_devies;
+    private NonScrollableListView listview_devies;
     private RoomManager mRoomManager;
     private Room currentRoom;
     private DeviceManager mDeviceManager;
@@ -92,6 +96,9 @@ public class DeviceNumberActivity extends Activity implements EllE_Listener {
     private TimerTask refreshTask = null;
     private static final int TIME_DIFFERENCE_BETWEEN_MESSAGE_INTERVALS = 10000;
     private DeviceListener mDeviceListener;
+    private Button button_add_device;
+    private RelativeLayout layout_experience_center;
+    private RelativeLayout layout_empty_view_scroll;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -239,7 +246,8 @@ public class DeviceNumberActivity extends Activity implements EllE_Listener {
 
 
     private void initEvents() {
-
+        button_add_device.setOnClickListener(this);
+        layout_experience_center.setOnClickListener(this);
     }
 
     @Override
@@ -309,6 +317,7 @@ public class DeviceNumberActivity extends Activity implements EllE_Listener {
         mDeviceAdapter.setBottomList(datasBottom);
         listview_devies.setAdapter(mDeviceAdapter);
         mDeviceAdapter.notifyDataSetChanged();
+        listview_devies.setEmptyView(layout_empty_view_scroll);
     }
 
 
@@ -432,8 +441,11 @@ public class DeviceNumberActivity extends Activity implements EllE_Listener {
     }
 
     private void initViews() {
-        listview_devies = (ListView) findViewById(R.id.listview_devies);
-        layout_title = (TitleLayout) findViewById(R.id.layout_title);
+        listview_devies = findViewById(R.id.listview_devies);
+        layout_title = findViewById(R.id.layout_title);
+        button_add_device = findViewById(R.id.button_add_device);
+        layout_experience_center = findViewById(R.id.layout_experience_center);
+        layout_empty_view_scroll = findViewById(R.id.layout_empty_view_scroll);
     }
 
     @Override
@@ -472,5 +484,19 @@ public class DeviceNumberActivity extends Activity implements EllE_Listener {
                 currentSmartDoorBell.saveFast();
             }
         }
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.layout_experience_center:
+                DeviceManager.getInstance().setExperCenterStartFromDevice(true);
+                startActivity(new Intent(this, ExperienceDevicesActivity.class));
+                break;
+            case R.id.button_add_device:
+                startActivity(new Intent(this, AddDeviceQRcodeActivity.class));
+                break;
+        }
+
     }
 }

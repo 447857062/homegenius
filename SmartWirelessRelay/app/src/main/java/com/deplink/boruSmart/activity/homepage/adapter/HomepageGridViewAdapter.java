@@ -50,9 +50,9 @@ public class HomepageGridViewAdapter extends BaseAdapter {
             viewHolder = new ViewHolder();
             convertView = LayoutInflater.from(mContext).inflate(
                     R.layout.homepage_device_item, null);
-            viewHolder.imageview_device_type = (ImageView) convertView
+            viewHolder.imageview_device_type = convertView
                     .findViewById(R.id.imageview_device_type);
-            viewHolder.textview_device_name = (TextView) convertView
+            viewHolder.textview_device_name = convertView
                     .findViewById(R.id.textview_device_name);
             convertView.setTag(viewHolder);
         } else {

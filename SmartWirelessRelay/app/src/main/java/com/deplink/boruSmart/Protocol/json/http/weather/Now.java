@@ -13,4 +13,11 @@ public class Now {
     public void setTmp(String tmp) {
         this.tmp = tmp;
     }
+
+    @Override
+    public String toString() {
+        return "Now{" +
+                "tmp='" + tmp + '\'' +
+                '}';
+    }
 }

@@ -1,7 +1,6 @@
 package com.deplink.boruSmart.activity.personal.login;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -9,8 +8,8 @@ import android.text.TextWatcher;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -29,6 +28,7 @@ import com.deplink.boruSmart.util.NetUtil;
 import com.deplink.boruSmart.util.Perfence;
 import com.deplink.boruSmart.util.StringValidatorUtil;
 import com.deplink.boruSmart.view.combinationwidget.TitleLayout;
+import com.deplink.boruSmart.view.edittext.ClearEditText;
 import com.deplink.boruSmart.view.toast.Ftoast;
 import com.deplink.sdk.android.sdk.DeplinkSDK;
 import com.deplink.sdk.android.sdk.EventCallback;
@@ -40,17 +40,14 @@ import com.tencent.android.tpush.XGPushManager;
 
 import org.litepal.crud.DataSupport;
 
-import java.util.Timer;
-import java.util.TimerTask;
-
 import deplink.com.smartwirelessrelay.homegenius.EllESDK.R;
 
-public class LoginActivity extends Activity implements View.OnClickListener, View.OnFocusChangeListener {
+public class LoginActivity extends Activity implements View.OnClickListener{
     private static final String TAG = "LoginActivity";
     private TextView textview_forget_password;
     private TextView textview_regist_now;
     private Button button_login;
-    private EditText edittext_input_phone_number;
+    private ClearEditText edittext_input_phone_number;
     private EditText edittext_input_password;
     private SDKManager manager;
     private EventCallback ec;
@@ -58,7 +55,7 @@ public class LoginActivity extends Activity implements View.OnClickListener, Vie
     private View view_password_dirverline;
     private ImageView imageview_eye;
     private TitleLayout layout_title;
-
+    private TextView textview_protocal;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,32 +64,27 @@ public class LoginActivity extends Activity implements View.OnClickListener, Vie
         initDatas();
         initEvents();
     }
-
-    private void showInputmothed() {
-        Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
-                           public void run() {
-                               InputMethodManager inputManager =
-                                       (InputMethodManager) edittext_input_phone_number.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-                               inputManager.showSoftInput(edittext_input_phone_number, 0);
-                           }
-                       },
-                500);
-
-    }
-
     @Override
     protected void onResume() {
         super.onResume();
         manager.addEventCallback(ec);
-        showInputmothed();
         if (StringValidatorUtil.isMobileNO(edittext_input_phone_number.getText().toString())
                 && edittext_input_password.getText().toString().length() >= 6) {
             button_login.setEnabled(true);
         } else {
             button_login.setEnabled(false);
         }
+        view_phonenumber_dirverline.setBackgroundResource(R.color.huise);
+    }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if (isFromUserinfoActivity != null && isFromUserinfoActivity.equals("userinfoactivity")) {
+            startActivity(new Intent(LoginActivity.this, PersonalCenterActivity.class));
+        } else {
+          finish();
+        }
     }
 
     @Override
@@ -206,22 +198,46 @@ public class LoginActivity extends Activity implements View.OnClickListener, Vie
     private void initEvents() {
         textview_forget_password.setOnClickListener(this);
         textview_regist_now.setOnClickListener(this);
+        textview_protocal.setOnClickListener(this);
         button_login.setOnClickListener(this);
-        edittext_input_phone_number.setOnFocusChangeListener(this);
-        edittext_input_password.setOnFocusChangeListener(this);
+        edittext_input_phone_number.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                switch (motionEvent.getAction()){
+                    case MotionEvent.ACTION_DOWN:
+                        view_phonenumber_dirverline.setBackgroundResource(R.color.huise);
+                        view_password_dirverline.setBackgroundResource(R.color.line_dirver_color);
+                        break;
+                }
+                return false;
+            }
+        });
+        edittext_input_password.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                switch (motionEvent.getAction()){
+                    case MotionEvent.ACTION_DOWN:
+                        view_phonenumber_dirverline.setBackgroundResource(R.color.line_dirver_color);
+                        view_password_dirverline.setBackgroundResource(R.color.huise);
+                        break;
+                }
+                return false;
+            }
+        });
         imageview_eye.setOnClickListener(this);
     }
 
     private void initViews() {
-        textview_forget_password = (TextView) findViewById(R.id.textview_forget_password);
-        textview_regist_now = (TextView) findViewById(R.id.textview_regist_now);
-        button_login = (Button) findViewById(R.id.button_login);
-        edittext_input_password = (EditText) findViewById(R.id.edittext_input_password);
-        edittext_input_phone_number = (EditText) findViewById(R.id.edittext_input_phone_number);
+        textview_forget_password = findViewById(R.id.textview_forget_password);
+        textview_regist_now = findViewById(R.id.textview_regist_now);
+        textview_protocal = findViewById(R.id.textview_protocal);
+        button_login = findViewById(R.id.button_login);
+        edittext_input_password = findViewById(R.id.edittext_input_password);
+        edittext_input_phone_number = findViewById(R.id.edittext_input_phone_number);
         view_phonenumber_dirverline = findViewById(R.id.view_phonenumber_dirverline);
         view_password_dirverline = findViewById(R.id.view_password_dirverline);
-        imageview_eye = (ImageView) findViewById(R.id.imageview_eye);
-        layout_title = (TitleLayout) findViewById(R.id.layout_title);
+        imageview_eye = findViewById(R.id.imageview_eye);
+        layout_title = findViewById(R.id.layout_title);
         layout_title.setBackImageResource(R.drawable.notloggedinicon);
     }
 
@@ -274,29 +290,8 @@ public class LoginActivity extends Activity implements View.OnClickListener, Vie
             case R.id.textview_regist_now:
                 startActivity(new Intent(LoginActivity.this, RegistActivity.class));
                 break;
-        }
-    }
-
-    @Override
-    public void onFocusChange(View v, boolean hasFocus) {
-        switch (v.getId()) {
-            case R.id.edittext_input_phone_number:
-                if (hasFocus) {
-                    // 此处为得到焦点时的处理内容
-                    view_phonenumber_dirverline.setBackgroundResource(R.color.huise);
-                } else {
-                    // 此处为失去焦点时的处理内容
-                    view_phonenumber_dirverline.setBackgroundResource(R.color.line_dirver_color);
-                }
-                break;
-            case R.id.edittext_input_password:
-                if (hasFocus) {
-                    // 此处为得到焦点时的处理内容
-                    view_password_dirverline.setBackgroundResource(R.color.huise);
-                } else {
-                    // 此处为失去焦点时的处理内容
-                    view_password_dirverline.setBackgroundResource(R.color.line_dirver_color);
-                }
+            case R.id.textview_protocal:
+                startActivity(new Intent(LoginActivity.this, BoraeulaActivity.class));
                 break;
         }
     }

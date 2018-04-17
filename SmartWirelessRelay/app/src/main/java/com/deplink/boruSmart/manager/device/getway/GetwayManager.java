@@ -1,15 +1,20 @@
 package com.deplink.boruSmart.manager.device.getway;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 
 import com.deplink.boruSmart.Protocol.json.OpResult;
 import com.deplink.boruSmart.Protocol.json.QueryOptions;
+import com.deplink.boruSmart.Protocol.json.device.SmartDev;
 import com.deplink.boruSmart.Protocol.json.device.getway.GatwayDevice;
+import com.deplink.boruSmart.Protocol.json.device.lock.Record;
 import com.deplink.boruSmart.Protocol.json.device.lock.alertreport.Info;
+import com.deplink.boruSmart.Protocol.json.device.router.Router;
 import com.deplink.boruSmart.Protocol.json.wifi.AP_CLIENT;
 import com.deplink.boruSmart.Protocol.json.wifi.Proto;
 import com.deplink.boruSmart.Protocol.packet.GeneralPacket;
+import com.deplink.boruSmart.activity.personal.login.LoginActivity;
 import com.deplink.boruSmart.constant.AppConstant;
 import com.deplink.boruSmart.constant.DeviceTypeConstant;
 import com.deplink.boruSmart.manager.connect.remote.HomeGenius;
@@ -19,6 +24,7 @@ import com.deplink.boruSmart.util.Perfence;
 import com.deplink.boruSmart.Protocol.json.Room;
 import com.deplink.boruSmart.manager.connect.local.tcp.LocalConnectmanager;
 import com.deplink.boruSmart.manager.device.DeviceManager;
+import com.deplink.boruSmart.view.toast.Ftoast;
 import com.deplink.sdk.android.sdk.homegenius.DeviceOperationResponse;
 import com.deplink.sdk.android.sdk.homegenius.Deviceprops;
 import com.deplink.sdk.android.sdk.rest.RestfulToolsHomeGenius;
@@ -44,17 +50,8 @@ public class GetwayManager extends DeviceManager {
      */
     private static GetwayManager instance;
     private Context mContext;
-    /**
-     * 当前要添加设备的识别码，二维码扫码出来的
-     */
-    private String currentAddDevice;
     private GatwayDevice currentSelectGetwayDevice;
     private static String uuid ;
-    public String getCurrentAddDevice() {
-        Log.i(TAG, "获取当前添加设备：" + currentAddDevice);
-        return currentAddDevice;
-    }
-
     public void deleteDeviceHttp() {
         String uid = currentSelectGetwayDevice.getUid();
         Log.i(TAG, "删除设备uid=" + uid);
@@ -69,28 +66,29 @@ public class GetwayManager extends DeviceManager {
         RestfulToolsHomeGenius.getSingleton().deleteDevice(userName, uid, new Callback<DeviceOperationResponse>() {
             @Override
             public void onResponse(Call<DeviceOperationResponse> call, Response<DeviceOperationResponse> response) {
-                Log.i(TAG, "" + response.code());
-                Log.i(TAG, "" + response.message());
+                Log.i(TAG, "code="+ response.code()+",message=" + response.message());
                 if (response.code() == 200) {
                     Log.i(TAG, "" + response.body().toString());
                     for (int i = 0; i < mGetwayListenerList.size(); i++) {
                         mGetwayListenerList.get(i).responseDeleteDeviceHttpResult(response.body());
                     }
+                }else if(response.code()==403){
+                    Ftoast.create(mContext).setText("登录已过期,请重新登录").show();
+                    Perfence.setPerfence(AppConstant.USER_LOGIN, false);
+                    DataSupport.deleteAll(SmartDev.class);
+                    DataSupport.deleteAll(GatwayDevice.class);
+                    DataSupport.deleteAll(Room.class);
+                    DataSupport.deleteAll(Record.class);
+                    DataSupport.deleteAll(Router.class);
+                    mContext.startActivity(new Intent(mContext, LoginActivity.class));
                 }
             }
-
             @Override
             public void onFailure(Call<DeviceOperationResponse> call, Throwable t) {
                 Log.i(TAG, "" + t.getMessage());
             }
         });
     }
-
-    public void setCurrentAddDevice(String currentAddDevice) {
-        this.currentAddDevice = currentAddDevice;
-    }
-
-
     public static synchronized GetwayManager getInstance() {
         if (instance == null) {
             instance = new GetwayManager();
@@ -117,8 +115,6 @@ public class GetwayManager extends DeviceManager {
         if (cachedThreadPool == null) {
             cachedThreadPool = Executors.newCachedThreadPool();
         }
-        addGetwayListener(listener);
-
     }
 
     private List<GetwayListener> mGetwayListenerList;
@@ -269,7 +265,7 @@ public class GetwayManager extends DeviceManager {
     public List<GatwayDevice> getAllGetwayDevice() {
         List<GatwayDevice> list = DataSupport.findAll(GatwayDevice.class, true);
         if (list.size() > 0) {
-            Log.i(TAG, "查询到的网关设备个数=" + list.size() + list.get(0).getUid());
+            Log.i(TAG, "查询到的网关设备个数=" + list.size());
         }
         return list;
     }

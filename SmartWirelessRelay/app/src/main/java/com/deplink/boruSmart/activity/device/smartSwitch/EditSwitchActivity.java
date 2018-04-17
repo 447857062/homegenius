@@ -47,7 +47,7 @@ import java.util.List;
 
 import deplink.com.smartwirelessrelay.homegenius.EllESDK.R;
 
-public class EditActivity extends Activity implements View.OnClickListener {
+public class EditSwitchActivity extends Activity implements View.OnClickListener {
     private static final String TAG = "EditDoorbeelActivity";
     private static final int REQUEST_CODE_SELECT_DEVICE_IN_WHAT_ROOM = 100;
     private TextView button_delete_device;
@@ -101,7 +101,7 @@ public class EditActivity extends Activity implements View.OnClickListener {
         layout_title.setReturnClickListener(new TitleLayout.ReturnImageClickListener() {
             @Override
             public void onBackPressed() {
-                EditActivity.this.onBackPressed();
+                EditSwitchActivity.this.onBackPressed();
             }
         });
         layout_title.setEditTextClickListener(new TitleLayout.EditTextClickListener() {
@@ -116,7 +116,7 @@ public class EditActivity extends Activity implements View.OnClickListener {
                     if (isLogin) {
                         mDeviceManager.alertDeviceHttp(deviceUid, null, deviceName, null);
                     } else {
-                        Ftoast.create(EditActivity.this).setText("未获取到开锁记录").show();
+                        Ftoast.create(EditSwitchActivity.this).setText("未获取到开锁记录").show();
                     }
                 }
             }
@@ -170,12 +170,12 @@ public class EditActivity extends Activity implements View.OnClickListener {
                 super.connectionLost(throwable);
                 isLogin = false;
                 Perfence.setPerfence(AppConstant.USER_LOGIN, false);
-                new AlertDialog(EditActivity.this).builder().setTitle("账号异地登录")
+                new AlertDialog(EditSwitchActivity.this).builder().setTitle("账号异地登录")
                         .setMsg("当前账号已在其它设备上登录,是否重新登录")
                         .setPositiveButton("确认", new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                startActivity(new Intent(EditActivity.this, LoginActivity.class));
+                                startActivity(new Intent(EditSwitchActivity.this, LoginActivity.class));
                             }
                         }).setNegativeButton("取消", new View.OnClickListener() {
                     @Override
@@ -194,12 +194,12 @@ public class EditActivity extends Activity implements View.OnClickListener {
                     DialogThreeBounce.hideLoading();
                     int deleteResult = mSmartSwitchManager.deleteDBSmartDevice(mSmartSwitchManager.getCurrentSelectSmartDevice().getUid());
                     if (deleteResult > 0) {
-                        startActivity(new Intent(EditActivity.this, DevicesActivity.class));
+                        startActivity(new Intent(EditSwitchActivity.this, DevicesActivity.class));
                     } else {
-                        Ftoast.create(EditActivity.this).setText("删除开关设备失败").show();
+                        Ftoast.create(EditSwitchActivity.this).setText("删除开关设备失败").show();
                     }
                 } else {
-                    Ftoast.create(EditActivity.this).setText("删除开关设备失败").show();
+                    Ftoast.create(EditSwitchActivity.this).setText("删除开关设备失败").show();
                 }
 
             }
@@ -222,7 +222,7 @@ public class EditActivity extends Activity implements View.OnClickListener {
                     case "alertgetway":
                         boolean saveDbResult = mSmartSwitchManager.updateSmartDeviceGetway(selectedGatway);
                         if (!saveDbResult) {
-                            Toast.makeText(EditActivity.this, "更新智能设备所属网关失败", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(EditSwitchActivity.this, "更新智能设备所属网关失败", Toast.LENGTH_SHORT).show();
                         }
                         break;
                 }
@@ -304,17 +304,17 @@ public class EditActivity extends Activity implements View.OnClickListener {
     }
 
     private void initViews() {
-        button_delete_device = (TextView) findViewById(R.id.button_delete_device);
-        layout_select_room = (RelativeLayout) findViewById(R.id.layout_room_select);
-        textview_select_room_name = (TextView) findViewById(R.id.textview_select_room_name);
-        edittext_add_device_input_name = (ClearEditText) findViewById(R.id.edittext_add_device_input_name);
-        layout_getway_list = (RelativeLayout) findViewById(R.id.layout_getway_list);
-        layout_getway_select = (RelativeLayout) findViewById(R.id.layout_getway_select);
-        listview_select_getway = (ListView) findViewById(R.id.listview_select_getway);
-        textview_select_getway_name = (TextView) findViewById(R.id.textview_select_getway_name);
-        imageview_getway_arror_right = (ImageView) findViewById(R.id.imageview_getway_arror_right);
-        layout_device_share = (RelativeLayout) findViewById(R.id.layout_device_share);
-        layout_title= (TitleLayout) findViewById(R.id.layout_title);
+        button_delete_device = findViewById(R.id.button_delete_device);
+        layout_select_room = findViewById(R.id.layout_room_select);
+        textview_select_room_name = findViewById(R.id.textview_select_room_name);
+        edittext_add_device_input_name = findViewById(R.id.edittext_add_device_input_name);
+        layout_getway_list = findViewById(R.id.layout_getway_list);
+        layout_getway_select = findViewById(R.id.layout_getway_select);
+        listview_select_getway = findViewById(R.id.listview_select_getway);
+        textview_select_getway_name = findViewById(R.id.textview_select_getway_name);
+        imageview_getway_arror_right = findViewById(R.id.imageview_getway_arror_right);
+        layout_device_share = findViewById(R.id.layout_device_share);
+        layout_title= findViewById(R.id.layout_title);
     }
 
 
@@ -350,7 +350,7 @@ public class EditActivity extends Activity implements View.OnClickListener {
                             startActivity(inentShareDevice);
                         }
                     }else{
-                        startActivity(new Intent(EditActivity.this, LoginActivity.class));
+                        startActivity(new Intent(EditSwitchActivity.this, LoginActivity.class));
                     }
 
                 }
@@ -379,28 +379,28 @@ public class EditActivity extends Activity implements View.OnClickListener {
                         Intent intent = new Intent(this, SelectRommActivity.class);
                         startActivity(intent);
                     }else{
-                        startActivity(new Intent(EditActivity.this, LoginActivity.class));
+                        startActivity(new Intent(EditSwitchActivity.this, LoginActivity.class));
                     }
                 }
 
                 break;
             case R.id.button_delete_device:
-                new AlertDialog(EditActivity.this).builder().setTitle("删除设备")
+                new AlertDialog(EditSwitchActivity.this).builder().setTitle("删除设备")
                         .setMsg("确认删除设备")
                         .setPositiveButton("确认", new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 if(isStartFromExperience){
-                                    startActivity(new Intent(EditActivity.this, ExperienceDevicesActivity.class));
+                                    startActivity(new Intent(EditSwitchActivity.this, ExperienceDevicesActivity.class));
                                 }else{
-                                    if(NetUtil.isNetAvailable(EditActivity.this)){
+                                    if(NetUtil.isNetAvailable(EditSwitchActivity.this)){
                                         if (isLogin) {
                                             mDeviceManager.deleteDeviceHttp();
                                         } else {
-                                            Ftoast.create(EditActivity.this).setText("未登录,登录后操作").show();
+                                            Ftoast.create(EditSwitchActivity.this).setText("未登录,登录后操作").show();
                                         }
                                     }else{
-                                        Ftoast.create(EditActivity.this).setText("网络连接不可用").show();
+                                        Ftoast.create(EditSwitchActivity.this).setText("网络连接不可用").show();
                                     }
                                 }
                             }

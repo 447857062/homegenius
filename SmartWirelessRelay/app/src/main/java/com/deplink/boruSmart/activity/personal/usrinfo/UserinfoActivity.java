@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -18,6 +19,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bigkoo.pickerview.TimePickerView;
 import com.deplink.boruSmart.Protocol.json.Room;
 import com.deplink.boruSmart.Protocol.json.device.SmartDev;
 import com.deplink.boruSmart.Protocol.json.device.getway.GatwayDevice;
@@ -33,7 +35,6 @@ import com.deplink.boruSmart.view.dialog.ActionSheetDialog;
 import com.deplink.boruSmart.view.dialog.AlertDialog;
 import com.deplink.boruSmart.view.imageview.CircleImageView;
 import com.deplink.boruSmart.view.toast.Ftoast;
-import com.deplink.boruSmart.view.viewselector.TimeSelector;
 import com.deplink.sdk.android.sdk.DeplinkSDK;
 import com.deplink.sdk.android.sdk.EventCallback;
 import com.deplink.sdk.android.sdk.SDKAction;
@@ -50,7 +51,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 import deplink.com.smartwirelessrelay.homegenius.EllESDK.R;
 
@@ -349,16 +352,37 @@ public class UserinfoActivity extends Activity implements View.OnClickListener {
                 break;
             case R.id.layout_birthday:
                 if (isUserLogin) {
-                    TimeSelector timeSelector = new TimeSelector(this, new TimeSelector.ResultHandler() {
+                    final Calendar calender = Calendar.getInstance();
+                    TimePickerView pvTime = new TimePickerView.Builder(UserinfoActivity.this, new TimePickerView.OnTimeSelectListener() {
                         @Override
-                        public void handle(String time, Calendar selectedCalendar) {
+                        public void onTimeSelect(Date date2, View v) {//选中事件回调
+                            String time = getTime(date2);
                             textview_show_birthday.setText(time);
                             UserInfoAlertBody body = new UserInfoAlertBody();
                             body.setBirthday(time);
                             manager.alertUserInfo(userName, body);
+
                         }
-                    }, "1900-1-1");
-                    timeSelector.show();
+                    })
+                            .setType(TimePickerView.Type.YEAR_MONTH_DAY)//默认全部显示
+                            .setCancelText("取消")//取消按钮文字
+                            .setSubmitText("确定")//确认按钮文字
+                            .setContentSize(16)//滚轮文字大小
+                            .setOutSideCancelable(true)//点击屏幕，点在控件外部范围时，是否取消显示
+                            .isCyclic(true)//是否循环滚动
+                            .setTextColorCenter(Color.BLACK)//设置选中项的颜色
+                            .setSubmitColor(Color.BLACK)//确定按钮文字颜色
+                            .setCancelColor(Color.BLACK)//取消按钮文字颜色
+                            .setBgColor(0xFFF1F2F3)//滚轮背景颜色 Night mode
+                            .setRange(calender.get(Calendar.YEAR) - 100, calender.get(Calendar.YEAR))//默认是1900-2100年
+//                        .setDate(selectedDate)// 如果不设置的话，默认是系统时间*/
+//                        .setRangDate(startDate,endDate)//起始终止年月日设定
+//                        .setLabel("年","月","日","时","分","秒")
+                            .isCenterLabel(false) //是否只显示中间选中项的label文字，false则每项item全部都带有label。
+                            .isDialog(false)//是否显示为对话框样式
+                            .build();
+                    pvTime.setDate(Calendar.getInstance());//注：根据需求来决定是否使用该方法（一般是精确到秒的情况），此项可以在弹出选择器的时候重新设置当前时间，避免在初始化之后由于时间已经设定，导致选中时间与当前时间不匹配的问题。
+                    pvTime.show();
                 } else {
                     Ftoast.create(this).setText("未登录,登录后操作").show();
                 }
@@ -398,7 +422,10 @@ public class UserinfoActivity extends Activity implements View.OnClickListener {
                 break;
         }
     }
-
+    public String getTime(Date date) {//可根据需要自行截取数据显示
+        SimpleDateFormat format = new SimpleDateFormat("yyyy年MM月dd日");
+        return format.format(date);
+    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

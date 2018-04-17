@@ -1,6 +1,7 @@
 package com.deplink.boruSmart.manager.device;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 
 import com.deplink.boruSmart.Protocol.json.OpResult;
@@ -9,9 +10,12 @@ import com.deplink.boruSmart.Protocol.json.Room;
 import com.deplink.boruSmart.Protocol.json.device.DeviceList;
 import com.deplink.boruSmart.Protocol.json.device.SmartDev;
 import com.deplink.boruSmart.Protocol.json.device.getway.GatwayDevice;
+import com.deplink.boruSmart.Protocol.json.device.lock.Record;
 import com.deplink.boruSmart.Protocol.json.device.lock.alertreport.Info;
+import com.deplink.boruSmart.Protocol.json.device.router.Router;
 import com.deplink.boruSmart.Protocol.json.qrcode.QrcodeSmartDevice;
 import com.deplink.boruSmart.Protocol.packet.GeneralPacket;
+import com.deplink.boruSmart.activity.personal.login.LoginActivity;
 import com.deplink.boruSmart.constant.AppConstant;
 import com.deplink.boruSmart.constant.DeviceTypeConstant;
 import com.deplink.boruSmart.constant.SmartLockConstant;
@@ -36,6 +40,7 @@ import com.deplink.sdk.android.sdk.homegenius.DeviceOperationResponse;
 import com.deplink.sdk.android.sdk.homegenius.Deviceprops;
 import com.deplink.sdk.android.sdk.homegenius.ShareDeviceBody;
 import com.deplink.sdk.android.sdk.homegenius.VirtualDeviceAddBody;
+import com.deplink.sdk.android.sdk.json.ErrorBody;
 import com.deplink.sdk.android.sdk.manager.SDKManager;
 import com.deplink.sdk.android.sdk.rest.RestfulToolsHomeGenius;
 import com.deplink.sdk.android.sdk.rest.RestfulToolsHomeGeniusString;
@@ -345,28 +350,45 @@ public class DeviceManager implements LocalConnecteListener {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 Log.i(TAG, "" + response.message());
-                if (response.errorBody() != null) {
-                    try {
-                        Log.i(TAG, "" + response.errorBody().string());
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
                 DeviceOperationResponse deviceOperationResponse = null;
+                Gson gson = new Gson();
                 if (response.body() != null) {
-                    Gson gson = new Gson();
+
                     deviceOperationResponse =
                             gson.fromJson(response.body().toString(), DeviceOperationResponse.class);
                 }
                 if (response.code() == 200) {
-                    Log.i(TAG, "" + response.body().toString() + "返回结果" + deviceOperationResponse.toString());
+                    Log.i(TAG, "" + response.body().toString() + "返回结果" + (deviceOperationResponse != null ? deviceOperationResponse.toString() : null));
                     for (int i = 0; i < mDeviceListenerList.size(); i++) {
                         mDeviceListenerList.get(i).responseAddDeviceHttpResult(
                                 deviceOperationResponse
                         );
                     }
                 } else if (response.code() == 403) {
-                    Ftoast.create(mContext).setText("没有授权,请让第一次添加此设备的用户给你授权").show();
+                    if (response.errorBody() != null) {
+                        try {
+                            String errorString=response.errorBody().string();
+                            Log.i(TAG, "" + errorString);
+                           ErrorBody errorBody= gson.fromJson(errorString, ErrorBody.class);
+                            if(errorBody.getMsg().equalsIgnoreCase("token invalid or expired, please login")){
+                                Ftoast.create(mContext).setText("登录已过期,请重新登录").show();
+                                Perfence.setPerfence(AppConstant.USER_LOGIN, false);
+                                DataSupport.deleteAll(SmartDev.class);
+                                DataSupport.deleteAll(GatwayDevice.class);
+                                DataSupport.deleteAll(Room.class);
+                                DataSupport.deleteAll(Record.class);
+                                DataSupport.deleteAll(Router.class);
+                                mContext.startActivity(new Intent(mContext, LoginActivity.class));
+                            }else{
+                                Ftoast.create(mContext).setText("没有授权,请让第一次添加此设备的用户给你授权").show();
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+
+
                 }
             }
 
@@ -421,6 +443,15 @@ public class DeviceManager implements LocalConnecteListener {
                     for (int i = 0; i < mDeviceListenerList.size(); i++) {
                         mDeviceListenerList.get(i).responseDeleteDeviceHttpResult(response.body());
                     }
+                }else if(response.code() ==403){
+                    Ftoast.create(mContext).setText("登录已过期,请重新登录").show();
+                    Perfence.setPerfence(AppConstant.USER_LOGIN, false);
+                    DataSupport.deleteAll(SmartDev.class);
+                    DataSupport.deleteAll(GatwayDevice.class);
+                    DataSupport.deleteAll(Room.class);
+                    DataSupport.deleteAll(Record.class);
+                    DataSupport.deleteAll(Router.class);
+                    mContext.startActivity(new Intent(mContext, LoginActivity.class));
                 }
             }
 
@@ -467,6 +498,15 @@ public class DeviceManager implements LocalConnecteListener {
                         Log.i(TAG, "alert device:" + mDeviceListenerList.get(i).toString());
                         mDeviceListenerList.get(i).responseAlertDeviceHttpResult(response.body());
                     }
+                }else if(response.code() == 403){
+                    Ftoast.create(mContext).setText("登录已过期,请重新登录").show();
+                    Perfence.setPerfence(AppConstant.USER_LOGIN, false);
+                    DataSupport.deleteAll(SmartDev.class);
+                    DataSupport.deleteAll(GatwayDevice.class);
+                    DataSupport.deleteAll(Room.class);
+                    DataSupport.deleteAll(Record.class);
+                    DataSupport.deleteAll(Router.class);
+                    mContext.startActivity(new Intent(mContext, LoginActivity.class));
                 }
             }
 
@@ -961,16 +1001,11 @@ public class DeviceManager implements LocalConnecteListener {
                         if (mDevicesStatus != null) {
                             mDevicesStatus.put(type.getSmartUid(), "在线");
                         }
-
                     }
-
                 }
             }
-
         }
-
     }
-
     @Override
     public void OnGetSetresult(String result) {
         Gson gson = new Gson();
@@ -978,6 +1013,16 @@ public class DeviceManager implements LocalConnecteListener {
         if (type.getOP().equalsIgnoreCase("REPORT")
                 ) {
             if (type.getMethod().equalsIgnoreCase("SmartWallSwitch")) {
+                if (type.getCommand().equalsIgnoreCase(SmartLockConstant.CMD.QUERY)) {
+                    if (type.getSmartUid() != null) {
+                        if (mDevicesStatus != null) {
+                            mDevicesStatus.put(type.getSmartUid(), "在线");
+                        }
+
+                    }
+
+                }
+            }else if(type.getMethod().equalsIgnoreCase("YWLIGHTCONTROL")){
                 if (type.getCommand().equalsIgnoreCase(SmartLockConstant.CMD.QUERY)) {
                     if (type.getSmartUid() != null) {
                         if (mDevicesStatus != null) {
@@ -1008,14 +1053,10 @@ public class DeviceManager implements LocalConnecteListener {
             }
         }
     }
-
     @Override
     public void onSetWifiRelayResult(String result) {
-
     }
-
     @Override
     public void onGetalarmRecord(List<Info> alarmList) {
-
     }
 }

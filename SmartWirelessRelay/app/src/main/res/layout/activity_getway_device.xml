@@ -22,6 +22,7 @@
         android:background="@color/line_dirver_color"
         android:layout_width="match_parent"
         android:layout_height="1px"/>
+
     <RelativeLayout
         android:layout_below="@+id/view_line_dirver"
         android:id="@+id/layout_topbar"
@@ -36,15 +37,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </RelativeLayout>
-
-    <com.deplink.boruSmart.view.scrollview.ScrollViewLinearLayout
+    <com.deplink.boruSmart.view.scrollview.MyScrollView
+        android:layout_below="@+id/layout_topbar"
         android:layout_width="match_parent"
+        android:scrollbars="none"
         android:layout_height="match_parent"
-        android:layout_below="@+id/layout_topbar">
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+        >
             <RelativeLayout
+
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <!--网关名称-->
@@ -88,6 +88,7 @@
 
                 <!--房间分类-->
                 <RelativeLayout
+
                     android:id="@+id/layout_select_room"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/layout_item_content_height"
@@ -198,6 +199,6 @@
                     android:textColor="@color/delete_button"
                     android:textSize="@dimen/text_size_small" />
             </RelativeLayout>
-        </ScrollView>
-    </com.deplink.boruSmart.view.scrollview.ScrollViewLinearLayout>
+
+    </com.deplink.boruSmart.view.scrollview.MyScrollView>
 </RelativeLayout>

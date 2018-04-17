@@ -17,8 +17,10 @@ public class HeWeather6 {
 
     @Override
     public String toString() {
-        return "HeWeather6{" +
-                "HeWeather6=" + HeWeather6 +
-                '}';
+        StringBuilder stringBuilder=new StringBuilder();
+        for(int i=0;i<HeWeather6.size();i++){
+            stringBuilder.append(HeWeather6.get(i).toString());
+        }
+        return stringBuilder.toString();
     }
 }

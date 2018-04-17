@@ -21,7 +21,6 @@ import deplink.com.smartwirelessrelay.homegenius.EllESDK.R;
 public class ActionSheetDialog {
     private Context context;
     private Dialog dialog;
-    private TextView txt_cancel;
     private LinearLayout lLayout_content;
     private List<SheetItem> sheetItemList;
 
@@ -37,7 +36,7 @@ public class ActionSheetDialog {
         view.setMinimumWidth(width);
         lLayout_content = (LinearLayout) view
                 .findViewById(R.id.lLayout_content);
-        txt_cancel = (TextView) view.findViewById(R.id.txt_cancel);
+        TextView txt_cancel = (TextView) view.findViewById(R.id.txt_cancel);
         txt_cancel.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {

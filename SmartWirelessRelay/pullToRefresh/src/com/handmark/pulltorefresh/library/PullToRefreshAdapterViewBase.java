@@ -181,29 +181,22 @@ public abstract class PullToRefreshAdapterViewBase<T extends AbsListView> extend
 	public void setOnItemClickListener(OnItemClickListener listener) {
 		mRefreshableView.setOnItemClickListener(listener);
 	}
-
 	public final void setOnLastItemVisibleListener(OnLastItemVisibleListener listener) {
 		mOnLastItemVisibleListener = listener;
 	}
-
 	@Override
 	protected void onPullToRefresh() {
 		super.onPullToRefresh();
 		if (getShowIndicatorInternal()) {
 			switch (getCurrentMode()) {
-				case PULL_FROM_END:
-					mIndicatorIvBottom.pullToRefresh();
-					break;
 				case PULL_FROM_START:
 					mIndicatorIvTop.pullToRefresh();
 					break;
 			}
 		}
 	}
-
 	protected void onRefreshing(boolean doScroll) {
 		super.onRefreshing(doScroll);
-
 		if (getShowIndicatorInternal()) {
 			updateIndicatorViewsVisibility();
 		}
@@ -214,9 +207,6 @@ public abstract class PullToRefreshAdapterViewBase<T extends AbsListView> extend
 		super.onReleaseToRefresh();
 		if (getShowIndicatorInternal()) {
 			switch (getCurrentMode()) {
-				case PULL_FROM_END:
-					mIndicatorIvBottom.releaseToRefresh();
-					break;
 				case PULL_FROM_START:
 					mIndicatorIvTop.releaseToRefresh();
 					break;
@@ -227,7 +217,6 @@ public abstract class PullToRefreshAdapterViewBase<T extends AbsListView> extend
 	@Override
 	protected void onReset() {
 		super.onReset();
-
 		if (getShowIndicatorInternal()) {
 			updateIndicatorViewsVisibility();
 		}
@@ -258,7 +247,6 @@ public abstract class PullToRefreshAdapterViewBase<T extends AbsListView> extend
 	@Override
 	protected void updateUIForMode() {
 		super.updateUIForMode();
-
 		// Check Indicator Views consistent with new Mode
 		if (getShowIndicatorInternal()) {
 			addIndicatorViews();
@@ -284,17 +272,7 @@ public abstract class PullToRefreshAdapterViewBase<T extends AbsListView> extend
 			refreshableViewWrapper.removeView(mIndicatorIvTop);
 			mIndicatorIvTop = null;
 		}
-
-		if (mode.showFooterLoadingLayout() && null == mIndicatorIvBottom) {
-			// If the mode can pull down, and we don't have one set already
-			mIndicatorIvBottom = new IndicatorLayout(getContext(), Mode.PULL_FROM_END);
-			FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-					ViewGroup.LayoutParams.WRAP_CONTENT);
-			params.rightMargin = getResources().getDimensionPixelSize(R.dimen.indicator_right_padding);
-			params.gravity = Gravity.BOTTOM | Gravity.RIGHT;
-			refreshableViewWrapper.addView(mIndicatorIvBottom, params);
-
-		} else if (!mode.showFooterLoadingLayout() && null != mIndicatorIvBottom) {
+		 if ( null != mIndicatorIvBottom) {
 			// If we can't pull down, but have a View then remove it
 			refreshableViewWrapper.removeView(mIndicatorIvBottom);
 			mIndicatorIvBottom = null;

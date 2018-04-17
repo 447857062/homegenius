@@ -62,19 +62,17 @@ public abstract class BaseDevice {
     /**
      * 设备cookie
      */
-    protected List<DeviceCookieItem> cookies = new ArrayList<DeviceCookieItem>();
+    protected List<DeviceCookieItem> cookies = new ArrayList<>();
     /**
      * 设备成员
      */
-    protected List<DeviceMemberItem> members = new ArrayList<DeviceMemberItem>();
+    protected List<DeviceMemberItem> members = new ArrayList<>();
     /**
      * 固件升级信息
      */
     protected DeviceUpgradeInfo upgradeInfo;
 
     public static final int MSG_DUMMY = 0;
-    public static final int MSG_ONLINE_STATUS = 1000;
-
     public abstract int processMqttMsg(String topic, MqttMessage message);
     public String getProductKey() {
         return productKey;

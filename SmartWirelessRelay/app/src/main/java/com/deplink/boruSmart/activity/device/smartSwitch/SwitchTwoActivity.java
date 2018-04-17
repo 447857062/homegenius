@@ -13,6 +13,7 @@ import com.deplink.boruSmart.Protocol.json.OpResult;
 import com.deplink.boruSmart.activity.personal.login.LoginActivity;
 import com.deplink.boruSmart.constant.AppConstant;
 import com.deplink.boruSmart.manager.connect.local.tcp.LocalConnectmanager;
+import com.deplink.boruSmart.manager.device.DeviceManager;
 import com.deplink.boruSmart.manager.device.smartswitch.SmartSwitchListener;
 import com.deplink.boruSmart.manager.device.smartswitch.SmartSwitchManager;
 import com.deplink.boruSmart.util.NetUtil;
@@ -41,6 +42,9 @@ public class SwitchTwoActivity extends Activity implements View.OnClickListener,
     private EventCallback ec;
     private boolean isUserLogin;
     private TitleLayout layout_title;
+    private Button button_all_switch_open;
+    private boolean isStartFromExperience;
+    private DeviceManager mDeviceManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,13 +57,20 @@ public class SwitchTwoActivity extends Activity implements View.OnClickListener,
     @Override
     protected void onResume() {
         super.onResume();
+        isStartFromExperience = mDeviceManager.isStartFromExperience();
         isUserLogin= Perfence.getBooleanPerfence(AppConstant.USER_LOGIN);
-        switch_one_open = mSmartSwitchManager.getCurrentSelectSmartDevice().isSwitch_one_open();
-        switch_two_open = mSmartSwitchManager.getCurrentSelectSmartDevice().isSwitch_two_open();
+        if(isStartFromExperience){
+            switch_one_open = false;
+            switch_two_open = false;
+        }else{
+            mSmartSwitchManager.querySwitchStatus("query");
+            switch_one_open = mSmartSwitchManager.getCurrentSelectSmartDevice().isSwitch_one_open();
+            switch_two_open = mSmartSwitchManager.getCurrentSelectSmartDevice().isSwitch_two_open();
+        }
         setSwitchImageviewBackground();
         mSmartSwitchManager.addSmartSwitchListener(this);
         manager.addEventCallback(ec);
-        mSmartSwitchManager.querySwitchStatus("query");
+
     }
 
     @Override
@@ -74,19 +85,14 @@ public class SwitchTwoActivity extends Activity implements View.OnClickListener,
         Log.i(TAG, "switch_one_open=" + switch_one_open);
         Log.i(TAG, "switch_two_open=" + switch_two_open);
         if (switch_one_open) {
-            button_switch_left.setBackgroundResource(R.drawable.roadswitchlefton);
+            button_switch_left.setBackgroundResource(R.drawable.threewayswitch_on);
         } else {
-            button_switch_left.setBackgroundResource(R.color.transparent);
+            button_switch_left.setBackgroundResource(R.drawable.threewayswitch_onoff);
         }
         if (switch_two_open) {
-            button_switch_right.setBackgroundResource(R.drawable.roadswitchrighton);
+            button_switch_right.setBackgroundResource(R.drawable.threewayswitch_on);
         } else {
-            button_switch_right.setBackgroundResource(R.color.transparent);
-        }
-        if(switch_one_open&&switch_two_open){
-            button_all_switch.setBackgroundResource(R.drawable.noallswitch);
-        }else{
-            button_all_switch.setBackgroundResource(R.drawable.allswitch);
+            button_switch_right.setBackgroundResource(R.drawable.threewayswitch_onoff);
         }
     }
 
@@ -94,6 +100,7 @@ public class SwitchTwoActivity extends Activity implements View.OnClickListener,
         button_switch_right.setOnClickListener(this);
         button_switch_left.setOnClickListener(this);
         button_all_switch.setOnClickListener(this);
+        button_all_switch_open.setOnClickListener(this);
     }
 
     private void initDatas() {
@@ -107,14 +114,21 @@ public class SwitchTwoActivity extends Activity implements View.OnClickListener,
         layout_title.setEditTextClickListener(new TitleLayout.EditTextClickListener() {
             @Override
             public void onEditTextPressed() {
-                Intent intent = new Intent(SwitchTwoActivity.this, EditActivity.class);
-                intent.putExtra("switchType", "二路开关");
+                Intent intent = new Intent(SwitchTwoActivity.this, EditSwitchActivity.class);
+                intent.putExtra("switchType", "智能二路开关");
                 startActivity(intent);
             }
         });
+        layout_title.setBackResource(R.color.switch_page_background);
+        layout_title.setLineDirverVisiable(false);
+        layout_title.setBackImageResource(R.drawable.whitereturn);
+        layout_title.setEditTextWhiteColor();
+        layout_title.setTitleTextWhiteColor();
         mSmartSwitchManager = SmartSwitchManager.getInstance();
         mSmartSwitchManager.InitSmartSwitchManager(this);
         mSmartSwitchManager.addSmartSwitchListener(this);
+        mDeviceManager=DeviceManager.getInstance();
+        mDeviceManager.InitDeviceManager(this);
         DeplinkSDK.initSDK(getApplicationContext(), Perfence.SDK_APP_KEY);
         manager = DeplinkSDK.getSDKManager();
         ec = new EventCallback() {
@@ -214,67 +228,115 @@ public class SwitchTwoActivity extends Activity implements View.OnClickListener,
     }
 
     private void initViews() {
-        button_switch_left = (Button) findViewById(R.id.button_switch_left);
-        button_switch_right = (Button) findViewById(R.id.button_switch_right);
-        button_all_switch = (Button) findViewById(R.id.button_all_switch);
-        layout_title= (TitleLayout) findViewById(R.id.layout_title);
+        button_switch_left = findViewById(R.id.button_switch_left);
+        button_switch_right = findViewById(R.id.button_switch_right);
+        button_all_switch = findViewById(R.id.button_all_switch);
+        layout_title= findViewById(R.id.layout_title);
+        button_all_switch_open= findViewById(R.id.button_all_switch_open);
 
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-
             case R.id.button_all_switch:
-                if(NetUtil.isNetAvailable(this)){
-                    if(!isUserLogin && !LocalConnectmanager.getInstance().isLocalconnectAvailable()){
-                        Ftoast.create(this).setText("本地连接不可用,需要登录后才能操作").show();
-                    }else{
-                        if (switch_one_open||switch_two_open) {
-                            mSmartSwitchManager.setSwitchCommand("close_all");
-                        } else {
-                            mSmartSwitchManager.setSwitchCommand("open_all");
+                if(isStartFromExperience){
+                    switch_one_open=false;
+                    switch_two_open=false;
+                    setSwitchImageviewBackground();
+
+                }else{
+                    if(NetUtil.isNetAvailable(this)){
+                        if(!isUserLogin && !LocalConnectmanager.getInstance().isLocalconnectAvailable()){
+                            Ftoast.create(this).setText("本地连接不可用,需要登录后才能操作").show();
+                        }else{
+                            if (switch_one_open||switch_two_open) {
+                                mSmartSwitchManager.setSwitchCommand("close_all");
+                            } else {
+                                mSmartSwitchManager.setSwitchCommand("open_all");
+                            }
                         }
                     }
+                    else{
+                        Ftoast.create(this).setText("网络连接不正常").show();
+                    }
                 }
-                else{
-                    Ftoast.create(this).setText("网络连接不正常").show();
-                }
+
 
                 break;
-            case R.id.button_switch_left:
-                if(NetUtil.isNetAvailable(this)){
-                    if(!isUserLogin && !LocalConnectmanager.getInstance().isLocalconnectAvailable()){
-                        Ftoast.create(this).setText("本地连接不可用,需要登录后才能操作").show();
-                    }else{
-                        Log.i(TAG, "switch_one_open=" + switch_one_open);
-                        if (switch_one_open) {
-                            mSmartSwitchManager.setSwitchCommand("close1");
-                        } else {
-                            mSmartSwitchManager.setSwitchCommand("open1");
+            case R.id.button_all_switch_open:
+                if(isStartFromExperience){
+                    switch_one_open=true;
+                    switch_two_open=true;
+                    setSwitchImageviewBackground();
+
+                }else{
+                    if(NetUtil.isNetAvailable(this)){
+                        if(!isUserLogin && !LocalConnectmanager.getInstance().isLocalconnectAvailable()){
+                            Ftoast.create(this).setText("本地连接不可用,需要登录后才能操作").show();
+                        }else{
+                            mSmartSwitchManager.setSwitchCommand("open_all");
                         }
+                    }else{
+                        Ftoast.create(this).setText("网络连接不正常").show();
                     }
                 }
-                else{
-                    Ftoast.create(this).setText("网络连接不正常").show();
+                break;
+            case R.id.button_switch_left:
+                if(isStartFromExperience){
+                    if(switch_one_open){
+                        switch_one_open=false;
+                    }else{
+                        switch_one_open=true;
+                    }
+
+                    setSwitchImageviewBackground();
+
+                }else{
+                    if(NetUtil.isNetAvailable(this)){
+                        if(!isUserLogin && !LocalConnectmanager.getInstance().isLocalconnectAvailable()){
+                            Ftoast.create(this).setText("本地连接不可用,需要登录后才能操作").show();
+                        }else{
+                            Log.i(TAG, "switch_one_open=" + switch_one_open);
+                            if (switch_one_open) {
+                                mSmartSwitchManager.setSwitchCommand("close1");
+                            } else {
+                                mSmartSwitchManager.setSwitchCommand("open1");
+                            }
+                        }
+                    }
+                    else{
+                        Ftoast.create(this).setText("网络连接不正常").show();
+                    }
                 }
+
 
                 break;
             case R.id.button_switch_right:
-                if(NetUtil.isNetAvailable(this)){
-                    if(!isUserLogin && !LocalConnectmanager.getInstance().isLocalconnectAvailable()){
-                        Ftoast.create(this).setText("本地连接不可用,需要登录后才能操作").show();
+                if(isStartFromExperience){
+                    if(switch_two_open){
+                        switch_two_open=false;
                     }else{
-                        if (switch_two_open) {
-                            mSmartSwitchManager.setSwitchCommand("close2");
-                        } else {
-                            mSmartSwitchManager.setSwitchCommand("open2");
+                        switch_two_open=true;
+                    }
+                    setSwitchImageviewBackground();
+                }else{
+                    if(NetUtil.isNetAvailable(this)){
+                        if(!isUserLogin && !LocalConnectmanager.getInstance().isLocalconnectAvailable()){
+                            Ftoast.create(this).setText("本地连接不可用,需要登录后才能操作").show();
+                        }else{
+                            if (switch_two_open) {
+                                mSmartSwitchManager.setSwitchCommand("close2");
+                            } else {
+                                mSmartSwitchManager.setSwitchCommand("open2");
+                            }
                         }
                     }
+                    else{
+                        Ftoast.create(this).setText("网络连接不正常").show();
+                    }
                 }
-                else{
-                    Ftoast.create(this).setText("网络连接不正常").show();
-                }
+
 
 
                 break;

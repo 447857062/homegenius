@@ -26,7 +26,7 @@ import com.deplink.boruSmart.Protocol.json.qrcode.QrcodeSmartDevice;
 import com.deplink.boruSmart.activity.device.adapter.GetwaySelectListAdapter;
 import com.deplink.boruSmart.activity.device.adapter.RemoteControlSelectListAdapter;
 import com.deplink.boruSmart.activity.device.getway.wifi.ScanWifiListActivity;
-import com.deplink.boruSmart.activity.device.remoteControl.airContorl.add.AirconditionChooseBandActivity;
+import com.deplink.boruSmart.activity.device.remoteControl.add.ChooseBandActivity;
 import com.deplink.boruSmart.activity.device.remoteControl.topBox.AddTopBoxActivity;
 import com.deplink.boruSmart.activity.device.remoteControl.tv.AddTvDeviceActivity;
 import com.deplink.boruSmart.activity.personal.login.LoginActivity;
@@ -129,21 +129,21 @@ public class AddDeviceNameActivity extends Activity implements View.OnClickListe
     }
 
     private void initViews() {
-        layout_title = (TitleLayout) findViewById(R.id.layout_title);
-        button_add_device_sure = (Button) findViewById(R.id.button_add_device_sure);
-        edittext_add_device_input_name = (EditText) findViewById(R.id.edittext_add_device_input_name);
-        textview_select_remotecontrol_name = (TextView) findViewById(R.id.textview_select_remotecontrol_name);
-        textview_select_room_name = (TextView) findViewById(R.id.textview_select_room_name);
-        textview_select_getway_name = (TextView) findViewById(R.id.textview_select_getway_name);
-        layout_getway_select = (RelativeLayout) findViewById(R.id.layout_getway_select);
-        layout_getway_list = (RelativeLayout) findViewById(R.id.layout_getway_list);
-        layout_room_select = (RelativeLayout) findViewById(R.id.layout_room_select);
-        layout_remotecontrol_list = (RelativeLayout) findViewById(R.id.layout_remotecontrol_list);
-        layout_remotecontrol_select = (RelativeLayout) findViewById(R.id.layout_remotecontrol_select);
-        listview_select_getway = (ListView) findViewById(R.id.listview_select_getway);
-        listview_select_remotecontrol = (ListView) findViewById(R.id.listview_select_remotecontrol);
-        imageview_getway_arror_right = (ImageView) findViewById(R.id.imageview_getway_arror_right);
-        imageview_remotecontrol_arror_right = (ImageView) findViewById(R.id.imageview_remotecontrol_arror_right);
+        layout_title = findViewById(R.id.layout_title);
+        button_add_device_sure = findViewById(R.id.button_add_device_sure);
+        edittext_add_device_input_name = findViewById(R.id.edittext_add_device_input_name);
+        textview_select_remotecontrol_name = findViewById(R.id.textview_select_remotecontrol_name);
+        textview_select_room_name = findViewById(R.id.textview_select_room_name);
+        textview_select_getway_name = findViewById(R.id.textview_select_getway_name);
+        layout_getway_select = findViewById(R.id.layout_getway_select);
+        layout_getway_list = findViewById(R.id.layout_getway_list);
+        layout_room_select = findViewById(R.id.layout_room_select);
+        layout_remotecontrol_list = findViewById(R.id.layout_remotecontrol_list);
+        layout_remotecontrol_select = findViewById(R.id.layout_remotecontrol_select);
+        listview_select_getway = findViewById(R.id.listview_select_getway);
+        listview_select_remotecontrol = findViewById(R.id.listview_select_remotecontrol);
+        imageview_getway_arror_right = findViewById(R.id.imageview_getway_arror_right);
+        imageview_remotecontrol_arror_right = findViewById(R.id.imageview_remotecontrol_arror_right);
     }
 
     private void initDatas() {
@@ -484,7 +484,7 @@ public class AddDeviceNameActivity extends Activity implements View.OnClickListe
                                     public void onClick(View v) {
                                         RemoteControlManager.getInstance().setmSelectRemoteControlDevice(addDevice);
                                         RemoteControlManager.getInstance().setCurrentActionIsAddactionQuickLearn(true);
-                                        startActivity(new Intent(AddDeviceNameActivity.this, AirconditionChooseBandActivity.class));
+                                        startActivity(new Intent(AddDeviceNameActivity.this, ChooseBandActivity.class));
                                     }
                                 }).setNegativeButton("跳过", new View.OnClickListener() {
                             @Override
@@ -696,12 +696,14 @@ public class AddDeviceNameActivity extends Activity implements View.OnClickListe
         manager.addEventCallback(ec);
         isUserLogin = Perfence.getBooleanPerfence(AppConstant.USER_LOGIN);
         mDeviceManager.addDeviceListener(mDeviceListener);
+        mGetwayManager.addGetwayListener(this);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         mDeviceManager.removeDeviceListener(mDeviceListener);
+        mGetwayManager.removeGetwayListener(this);
         manager.removeEventCallback(ec);
     }
 

@@ -13,7 +13,6 @@
 package com.deplink.sdk.android.sdk.mqtt;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.deplink.sdk.android.R;
 import com.deplink.sdk.android.sdk.interfaces.MqttListener;
@@ -70,7 +69,7 @@ public class MqttCallbackHandler implements MqttCallback {
     String[] args = new String[2];
     args[0] = new String(message.getPayload());
     args[1] = topic;
-    Log.i(TAG,"message arrived ="+args[0]);
+   // Log.i(TAG,"message arrived ="+args[0]);
     //get the string from strings.xml and format
     String messageString = context.getString(R.string.messageRecieved, (Object[]) args);
     //update client history

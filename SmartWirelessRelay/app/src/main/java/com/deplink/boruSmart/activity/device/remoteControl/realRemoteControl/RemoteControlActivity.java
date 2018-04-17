@@ -402,24 +402,23 @@ public class RemoteControlActivity extends Activity implements View.OnClickListe
     }
 
     private void initViews() {
-        button_delete_device = (TextView) findViewById(R.id.button_delete_device);
-        textview_select_room_name = (TextView) findViewById(R.id.textview_select_room_name);
-        layout_getway_list = (RelativeLayout) findViewById(R.id.layout_getway_list);
-        textview_select_getway_name = (TextView) findViewById(R.id.textview_select_getway_name);
-        layout_getway = (RelativeLayout) findViewById(R.id.layout_getway);
-        layout_select_room = (RelativeLayout) findViewById(R.id.layout_select_room);
-        listview_select_getway = (ListView) findViewById(R.id.listview_select_getway);
-        imageview_getway_arror_right = (ImageView) findViewById(R.id.imageview_getway_arror_right);
-        edittext_input_devie_name = (ClearEditText) findViewById(R.id.edittext_input_devie_name);
-        layout_device_share = (RelativeLayout) findViewById(R.id.layout_device_share);
-        layout_title = (TitleLayout) findViewById(R.id.layout_title);
-        gatwaygif = (ImageView) findViewById(R.id.gatwaygif);
+        button_delete_device = findViewById(R.id.button_delete_device);
+        textview_select_room_name = findViewById(R.id.textview_select_room_name);
+        layout_getway_list = findViewById(R.id.layout_getway_list);
+        textview_select_getway_name = findViewById(R.id.textview_select_getway_name);
+        layout_getway = findViewById(R.id.layout_getway);
+        layout_select_room = findViewById(R.id.layout_select_room);
+        listview_select_getway = findViewById(R.id.listview_select_getway);
+        imageview_getway_arror_right = findViewById(R.id.imageview_getway_arror_right);
+        edittext_input_devie_name = findViewById(R.id.edittext_input_devie_name);
+        layout_device_share = findViewById(R.id.layout_device_share);
+        layout_title = findViewById(R.id.layout_title);
+        gatwaygif = findViewById(R.id.gatwaygif);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-
             case R.id.layout_device_share:
                 Intent inentShareDevice = new Intent(this, ShareDeviceActivity.class);
                 inentShareDevice.putExtra("devicetype", DeviceTypeConstant.TYPE.TYPE_REMOTECONTROL);
@@ -434,11 +433,8 @@ public class RemoteControlActivity extends Activity implements View.OnClickListe
                     }else{
                         startActivity(new Intent(RemoteControlActivity.this, LoginActivity.class));
                     }
-
                 }
-
                 break;
-
             case R.id.button_delete_device:
                 new AlertDialog(RemoteControlActivity.this).builder().setTitle("删除设备")
                         .setMsg("确认删除设备")

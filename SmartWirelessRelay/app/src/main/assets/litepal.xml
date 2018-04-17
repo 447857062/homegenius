@@ -5,7 +5,7 @@
        称.db,例如下面的例子的结果为生成一个userinf.db的数据库。例：
         <dbname value="userinf" ></dbname>
     -->
-    <dbname value="smarthome"></dbname>
+    <dbname value="smarthome"/>
     <!--
         这里是数据库的版本，就像我们使用SqliteOpenHelper建立数据库一样，第一次建
         立数据库需要给数据库一个版本。如果想更新数据库的设置，只要在此基础上加1就可

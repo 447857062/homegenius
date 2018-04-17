@@ -2,7 +2,7 @@ package com.deplink.boruSmart.activity.device;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.LayoutRes;
+import android.support.design.widget.AppBarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.deplink.boruSmart.Protocol.json.device.SmartDev;
@@ -51,6 +52,7 @@ public class AddDeviceQRcodeActivity extends AppCompatActivity implements Adapte
     private SDKManager manager;
     private EventCallback ec;
     private boolean isUserLogin;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +60,7 @@ public class AddDeviceQRcodeActivity extends AppCompatActivity implements Adapte
         initViews();
         initDatas();
         initEvents();
+        setToolBarReplaceActionBar();
     }
 
     private void initEvents() {
@@ -69,7 +72,10 @@ public class AddDeviceQRcodeActivity extends AppCompatActivity implements Adapte
         mGridView = (GridView) findViewById(R.id.gridview_add_device_type);
         imageview_scan_device = (ImageView) findViewById(R.id.imageview_scan_device);
         image_back = (FrameLayout) findViewById(R.id.image_back);
+        imageview_return = (ImageView) findViewById(R.id.imageview_return);
+        textview_add_device = (TextView) findViewById(R.id.textview_add_device);
     }
+
     private void initDatas() {
         mSmartLockManager = SmartLockManager.getInstance();
         mSmartLockManager.InitSmartLockManager(this);
@@ -108,6 +114,7 @@ public class AddDeviceQRcodeActivity extends AppCompatActivity implements Adapte
             public void onFailure(SDKAction action, Throwable throwable) {
 
             }
+
             @Override
             public void connectionLost(Throwable throwable) {
                 super.connectionLost(throwable);
@@ -129,13 +136,46 @@ public class AddDeviceQRcodeActivity extends AppCompatActivity implements Adapte
             }
         };
     }
+
+    private ImageView imageview_return;
+    private TextView textview_add_device;
+
+    /**
+     * 用toolBar替换ActionBar
+     */
+    private void setToolBarReplaceActionBar() {
+        final Toolbar toolbar;
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        AppBarLayout app_bar_layout = (AppBarLayout) findViewById(R.id.app_bar_layout);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationIcon(null);
+        app_bar_layout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                if (Math.abs(verticalOffset) >= 480) {
+                    toolbar.setBackgroundColor(0xFFffffff);
+                    textview_add_device.setTextColor(0xFF333333);
+                    imageview_return.setImageDrawable(getResources().getDrawable(R.drawable.back_button));
+                } else {
+                    toolbar.setBackgroundResource(R.color.transparent);
+                    textview_add_device.setTextColor(0xFFffffff);
+                    imageview_return.setImageDrawable(getResources().getDrawable(R.drawable.white_return_button));
+
+                }
+            }
+        });
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
-        isUserLogin=Perfence.getBooleanPerfence(AppConstant.USER_LOGIN);
+        isUserLogin = Perfence.getBooleanPerfence(AppConstant.USER_LOGIN);
         manager.addEventCallback(ec);
     }
+
     public Toolbar mToolbarTb;
+
     @Override
     protected void onTitleChanged(CharSequence title, int color) {
         super.onTitleChanged(title, color);
@@ -143,16 +183,19 @@ public class AddDeviceQRcodeActivity extends AppCompatActivity implements Adapte
             mToolbarTb.setTitle(title);
         }
     }
+
     @Override
     protected void onPause() {
         super.onPause();
         manager.removeEventCallback(ec);
     }
+
     private String addDeviceType;
+
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Log.i(TAG, "onItemClick " + mDeviceTypes.get(position));
-        if(isUserLogin){
+        if (isUserLogin) {
             Intent intentQrcodeSn = new Intent(AddDeviceQRcodeActivity.this, CaptureActivity.class);
             intentQrcodeSn.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intentQrcodeSn.putExtra("requestType", REQUEST_CODE_DEVICE_QRCODE);
@@ -160,7 +203,7 @@ public class AddDeviceQRcodeActivity extends AppCompatActivity implements Adapte
             List<SmartDev> mRemotecontrol = new ArrayList<>();
             switch (mDeviceTypes.get(position)) {
                 case DeviceTypeConstant.TYPE.TYPE_SMART_GETWAY:
-                    addDeviceType=DeviceTypeConstant.TYPE.TYPE_SMART_GETWAY;
+                    addDeviceType = DeviceTypeConstant.TYPE.TYPE_SMART_GETWAY;
                     startActivityForResult(intentQrcodeSn, REQUEST_ADD_GETWAY_OR_ROUTER);
                     break;
                 case DeviceTypeConstant.TYPE.TYPE_REMOTECONTROL:
@@ -178,7 +221,7 @@ public class AddDeviceQRcodeActivity extends AppCompatActivity implements Adapte
                     }
                     break;
                 case DeviceTypeConstant.TYPE.TYPE_ROUTER:
-                    addDeviceType=DeviceTypeConstant.TYPE.TYPE_ROUTER;
+                    addDeviceType = DeviceTypeConstant.TYPE.TYPE_ROUTER;
                     startActivityForResult(intentQrcodeSn, REQUEST_ADD_GETWAY_OR_ROUTER);
                     break;
                 case DeviceTypeConstant.TYPE.TYPE_TV_REMOTECONTROL:
@@ -216,7 +259,7 @@ public class AddDeviceQRcodeActivity extends AppCompatActivity implements Adapte
                     startActivityForResult(intentQrcodeSn, REQUEST_CODE_DEVICE_QRCODE);
                     break;
             }
-        }else{
+        } else {
             startActivity(new Intent(AddDeviceQRcodeActivity.this, LoginActivity.class));
         }
     }
@@ -227,40 +270,18 @@ public class AddDeviceQRcodeActivity extends AppCompatActivity implements Adapte
      */
     public final static int REQUEST_ADD_INFRAED_UNIVERSAL_RC = 3;
     public final static int REQUEST_ADD_GETWAY_OR_ROUTER = 5;
-  //  public Context mContext;
-    @Override
-    public void setContentView(@LayoutRes int layoutResID) {
-        super.setContentView(layoutResID);
 
-        //mContext = this;
-
-       // mToolbarTb = (Toolbar) findViewById(R.id.tb_toolbar);
-      /*  if (mToolbarTb!=null) {
-            setSupportActionBar(mToolbarTb);
-            getSupportActionBar().setHomeButtonEnabled(true);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }*/
-    }
- /*   @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                break;
-        }
-        return super.onOptionsItemSelected(item);
-    }*/
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.imageview_scan_device:
-                if(isUserLogin){
+                if (isUserLogin) {
                     Intent intentQrcodeSn = new Intent();
                     intentQrcodeSn.setClass(AddDeviceQRcodeActivity.this, CaptureActivity.class);
                     intentQrcodeSn.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     intentQrcodeSn.putExtra("requestType", REQUEST_CODE_DEVICE_QRCODE);
                     startActivityForResult(intentQrcodeSn, REQUEST_CODE_DEVICE_QRCODE);
-                }else{
+                } else {
                     startActivity(new Intent(AddDeviceQRcodeActivity.this, LoginActivity.class));
                 }
 
@@ -271,6 +292,7 @@ public class AddDeviceQRcodeActivity extends AppCompatActivity implements Adapte
 
         }
     }
+
     //智能门锁设备扫码返回 {"org":"ismart","tp":"SMART_LOCK","ad":"00-12-4b-00-0b-26-c2-15","ver":"1"}
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -285,22 +307,19 @@ public class AddDeviceQRcodeActivity extends AppCompatActivity implements Adapte
                         intent.putExtra("currentAddDevice", qrCodeResult);
                         intent.putExtra("DeviceType", DeviceTypeConstant.TYPE.TYPE_LOCK);
                         startActivity(intent);
-                    } else if (qrCodeResult.length()==12) {//网关,路由器
+                    } else if (qrCodeResult.length() == 12) {//网关,路由器
                         intent.putExtra("currentAddDevice", qrCodeResult);
                         intent.putExtra("DeviceType", DeviceTypeConstant.TYPE.TYPE_SMART_GETWAY);
                         startActivity(intent);
-                    }
-                    else if (qrCodeResult.contains("YWLIGHTCONTROL")) {
+                    } else if (qrCodeResult.contains("YWLIGHTCONTROL")) {
                         intent.putExtra("currentAddDevice", qrCodeResult);
                         intent.putExtra("DeviceType", DeviceTypeConstant.TYPE.TYPE_LIGHT);
                         startActivity(intent);
-                    }
-                    else if (qrCodeResult.contains("IRMOTE_V2")) {
+                    } else if (qrCodeResult.contains("IRMOTE_V2")) {
                         intent.putExtra("currentAddDevice", qrCodeResult);
                         intent.putExtra("DeviceType", "IRMOTE_V2");
                         startActivity(intent);
-                    }
-                    else {
+                    } else {
                         Ftoast.create(this).setText("不支持的设备").setDuration(Toast.LENGTH_SHORT).show();
                     }
                     break;
@@ -313,9 +332,9 @@ public class AddDeviceQRcodeActivity extends AppCompatActivity implements Adapte
                 case REQUEST_ADD_GETWAY_OR_ROUTER:
                     //添加路由器,网关
                     intent.putExtra("currentAddDevice", qrCodeResult);
-                    if(addDeviceType!=null){
-                        intent.putExtra("DeviceType",addDeviceType);
-                    }else{
+                    if (addDeviceType != null) {
+                        intent.putExtra("DeviceType", addDeviceType);
+                    } else {
                         intent.putExtra("DeviceType", DeviceTypeConstant.TYPE.TYPE_GETWAY_OR_ROUTER);
                     }
                     startActivity(intent);

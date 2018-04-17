@@ -1,4 +1,4 @@
-package com.deplink.boruSmart.activity.device.remoteControl.airContorl.add;
+package com.deplink.boruSmart.activity.device.remoteControl.add;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -32,7 +32,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class AirconditionChooseBandActivity extends Activity implements AdapterView.OnItemClickListener {
+public class ChooseBandActivity extends Activity implements AdapterView.OnItemClickListener {
     private static final String TAG = "AirChooseBandActivity";
     private ListView listview_band;
     private SideBar sideBar;
@@ -115,24 +115,24 @@ public class AirconditionChooseBandActivity extends Activity implements AdapterV
         layout_title.setReturnClickListener(new TitleLayout.ReturnImageClickListener() {
             @Override
             public void onBackPressed() {
-                AirconditionChooseBandActivity.this.onBackPressed();
+                ChooseBandActivity.this.onBackPressed();
             }
         });
     }
 
     private void initViews() {
-        listview_band = (ListView) findViewById(R.id.listview_band);
-        edittext_band_name = (ClearEditText) findViewById(R.id.edittext_band_name);
-        sideBar = (SideBar) findViewById(R.id.sidrbar);
-        dialog = (TextView) findViewById(R.id.dialog);
-        layout_title= (TitleLayout) findViewById(R.id.layout_title);
+        listview_band = findViewById(R.id.listview_band);
+        edittext_band_name = findViewById(R.id.edittext_band_name);
+        sideBar = findViewById(R.id.sidrbar);
+        dialog = findViewById(R.id.dialog);
+        layout_title= findViewById(R.id.layout_title);
 
 
     }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Intent intent = new Intent(AirconditionChooseBandActivity.this, RemoteControlQuickLearnActivity.class);
+        Intent intent = new Intent(ChooseBandActivity.this, RemoteControlQuickLearnActivity.class);
         Log.i(TAG, "品牌是=" + SourceDateList.get(position).getName());
         intent.putExtra("bandname", SourceDateList.get(position).getName());
         intent.putExtra("type", "KT");

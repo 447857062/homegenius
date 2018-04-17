@@ -270,18 +270,15 @@ public class MqttClientAndroidService extends BroadcastReceiver implements IMqtt
      */
     private void doConnect() {
 
-        //System.out.println("doConnect----clientHandle------->"+clientHandle);
         if (clientHandle == null) {
             clientHandle = mqttService.getClient(serverURI, clientId, persistence);
         }
         String activityToken;
         activityToken = storeToken(connectToken);
-        //System.out.println("doConnect----connectToken------->"+connectToken);
         try {
             mqttService.connect(clientHandle, connectOptions, null, activityToken);
 
         } catch (MqttException e) {
-            //System.out.println("doConnect----error------->"+e.getMessage());
             IMqttActionListener listener = connectToken.getActionCallback();
             if (listener != null) {
                 listener.onFailure(connectToken, e);

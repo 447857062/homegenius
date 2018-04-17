@@ -14,42 +14,48 @@
         titlelayout:title_text="报警记录"
         android:layout_height="@dimen/title_bar_height"
         />
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+    <com.deplink.boruSmart.view.scrollview.MyScrollView
         android:layout_below="@+id/layout_title"
-        android:background="@color/page_background">
-        <ListView
-            android:id="@+id/list_alart_histroy"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/layout_room_content_margin_top"
-            android:divider="@null"
-            android:scrollbars="none" />
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
         <RelativeLayout
-            android:visibility="gone"
-            android:id="@+id/layout_no_alarm_recoed"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            >
-            <ImageView
-                android:layout_marginTop="50dp"
-                android:layout_centerHorizontal="true"
-                android:id="@+id/imageview_no_alarm_hitory"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/noalarmrecord" />
-            <TextView
-                android:id="@+id/textview_no_alarm_record"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            android:background="@color/page_background">
+            <com.deplink.boruSmart.view.scrollview.NonScrollableListView
+                android:id="@+id/list_alart_histroy"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/imageview_no_alarm_hitory"
-                android:gravity="center_horizontal"
-                android:layout_marginTop="15dp"
-                android:text="没有报警记录"
-                android:textColor="@color/room_type_text"
-                android:textSize="@dimen/text_size_small" />
+                android:layout_marginTop="@dimen/layout_room_content_margin_top"
+                android:divider="@null"
+                android:scrollbars="none" />
+            <RelativeLayout
+                android:visibility="gone"
+                android:id="@+id/layout_no_alarm_recoed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                >
+                <ImageView
+                    android:layout_marginTop="50dp"
+                    android:layout_centerHorizontal="true"
+                    android:id="@+id/imageview_no_alarm_hitory"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/noalarmrecord" />
+                <TextView
+                    android:id="@+id/textview_no_alarm_record"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/imageview_no_alarm_hitory"
+                    android:gravity="center_horizontal"
+                    android:layout_marginTop="15dp"
+                    android:text="没有报警记录"
+                    android:textColor="@color/room_type_text"
+                    android:textSize="@dimen/text_size_small" />
+            </RelativeLayout>
         </RelativeLayout>
-    </RelativeLayout>
+    </com.deplink.boruSmart.view.scrollview.MyScrollView>
+
 </RelativeLayout>

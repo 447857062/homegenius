@@ -2,13 +2,20 @@ package com.deplink.boruSmart.manager.device.doorbeel;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.util.Log;
 
 import com.deplink.boruSmart.Protocol.json.device.SmartDev;
+import com.deplink.boruSmart.Protocol.json.device.getway.GatwayDevice;
+import com.deplink.boruSmart.Protocol.json.device.lock.Record;
+import com.deplink.boruSmart.Protocol.json.device.router.Router;
+import com.deplink.boruSmart.activity.personal.login.LoginActivity;
+import com.deplink.boruSmart.constant.AppConstant;
 import com.deplink.boruSmart.util.JsonArrayParseUtil;
 import com.deplink.boruSmart.util.Perfence;
 import com.deplink.boruSmart.Protocol.json.Room;
+import com.deplink.boruSmart.view.toast.Ftoast;
 import com.deplink.sdk.android.sdk.homegenius.DeviceOperationResponse;
 import com.deplink.sdk.android.sdk.homegenius.Deviceprops;
 import com.deplink.sdk.android.sdk.json.homegenius.DoorBellItem;
@@ -107,8 +114,9 @@ public class DoorbeelManager {
     public void setPassword(String password) {
         this.password = password;
     }
-
+    private Context mContext;
     public void InitDoorbeelManager(Context context) {
+        this.mContext=context;
         if (cachedThreadPool == null) {
             cachedThreadPool = Executors.newCachedThreadPool();
         }
@@ -236,7 +244,6 @@ public class DoorbeelManager {
                     for (int i = 0; i < mDeviceListenerList.size(); i++) {
                         Log.i(TAG,"deleteDoorBellVisitor");
                         DeviceOperationResponse responseBody=response.body();
-                        boolean success;
                        if(responseBody.getStatus()!=null && responseBody.getStatus().equalsIgnoreCase("OK")){
                            mDeviceListenerList.get(i).responseDeleteRecordHistory(true);
                        }else{
@@ -244,6 +251,15 @@ public class DoorbeelManager {
                        }
 
                     }
+                }else if(response.code() == 403){
+                    Ftoast.create(mContext).setText("登录已过期,请重新登录").show();
+                    Perfence.setPerfence(AppConstant.USER_LOGIN, false);
+                    DataSupport.deleteAll(SmartDev.class);
+                    DataSupport.deleteAll(GatwayDevice.class);
+                    DataSupport.deleteAll(Room.class);
+                    DataSupport.deleteAll(Record.class);
+                    DataSupport.deleteAll(Router.class);
+                    mContext.startActivity(new Intent(mContext, LoginActivity.class));
                 }
             }
 

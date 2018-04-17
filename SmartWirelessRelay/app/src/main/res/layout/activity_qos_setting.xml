@@ -15,182 +15,187 @@
         titlelayout:edit_text="保存"
         android:layout_height="@dimen/title_bar_height"
         />
-    <RelativeLayout
+    <com.deplink.boruSmart.view.scrollview.MyScrollView
         android:layout_below="@+id/layout_title"
         android:background="@color/page_background"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <!--QOS开关-->
         <RelativeLayout
-
-            android:id="@+id/layout_qos_switch"
             android:layout_width="match_parent"
-            android:background="@color/white"
-            android:layout_height="@dimen/layout_item_content_height"
-            android:layout_marginTop="@dimen/layout_room_content_margin_top"
-            android:paddingLeft="@dimen/layout_content_margin_left_right">
-
+            android:layout_height="match_parent">
+            <!--QOS开关-->
             <RelativeLayout
+
+                android:id="@+id/layout_qos_switch"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingRight="@dimen/layout_content_margin_left_right">
+                android:background="@color/white"
+                android:layout_height="@dimen/layout_item_content_height"
+                android:layout_marginTop="@dimen/layout_room_content_margin_top"
+                android:paddingLeft="@dimen/layout_content_margin_left_right">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_centerVertical="true"
-                    android:text="QOS开关"
-                    android:textColor="@color/room_type_text"
-                    android:textSize="@dimen/text_size_small" />
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingRight="@dimen/layout_content_margin_left_right">
 
-                <CheckBox
-                    android:id="@+id/checkbox_qos_switch"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:button="@drawable/checkbox_wifi_selector" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:text="QOS开关"
+                        android:textColor="@color/room_type_text"
+                        android:textSize="@dimen/text_size_small" />
+
+                    <CheckBox
+                        android:id="@+id/checkbox_qos_switch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:button="@drawable/checkbox_wifi_selector" />
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/line_dirver_color" />
+
+
             </RelativeLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1px"
-                android:layout_alignParentBottom="true"
-                android:background="@color/line_dirver_color" />
-
-
-        </RelativeLayout>
-        <!--A-->
-        <RelativeLayout
-            android:visibility="gone"
-            android:id="@+id/layout_model_A"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/layout_item_content_height"
-            android:layout_below="@+id/layout_qos_switch"
-            android:layout_marginTop="@dimen/list_item_textview_margin_top"
-            android:background="@color/white"
-            android:clickable="true"
-            android:paddingLeft="@dimen/layout_content_margin_left_right">
-
+            <!--A-->
             <RelativeLayout
+                android:visibility="gone"
+                android:id="@+id/layout_model_A"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="@dimen/layout_item_content_height"
+                android:layout_below="@+id/layout_qos_switch"
+                android:layout_marginTop="@dimen/list_item_textview_margin_top"
+                android:background="@color/white"
+                android:clickable="true"
+                android:paddingLeft="@dimen/layout_content_margin_left_right">
 
-                <TextView
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_centerVertical="true"
-                    android:text="智能分配"
-                    android:textColor="@color/room_type_text"
-                    android:textSize="@dimen/text_size_small" />
+                    <TextView
 
-                <ImageView
-                    android:id="@+id/imageview_model_a"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="@dimen/layout_content_margin_left_right"
-                    android:src="@drawable/checkbox_style_imagelevel" />
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:text="智能分配"
+                        android:textColor="@color/room_type_text"
+                        android:textSize="@dimen/text_size_small" />
+
+                    <ImageView
+                        android:id="@+id/imageview_model_a"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="@dimen/layout_content_margin_left_right"
+                        android:src="@drawable/checkbox_style_imagelevel" />
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/line_dirver_color" />
+
             </RelativeLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1px"
-                android:layout_alignParentBottom="true"
-                android:background="@color/line_dirver_color" />
-
-        </RelativeLayout>
-        <!--B-->
-        <RelativeLayout
-            android:visibility="gone"
-            android:id="@+id/layout_model_B"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/layout_item_content_height"
-            android:layout_below="@+id/layout_model_A"
-            android:layout_marginTop="@dimen/list_item_textview_margin_top"
-            android:background="@color/white"
-            android:clickable="true"
-            android:paddingLeft="@dimen/layout_content_margin_left_right">
-
+            <!--B-->
             <RelativeLayout
+                android:visibility="gone"
+                android:id="@+id/layout_model_B"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="@dimen/layout_item_content_height"
+                android:layout_below="@+id/layout_model_A"
+                android:layout_marginTop="@dimen/list_item_textview_margin_top"
+                android:background="@color/white"
+                android:clickable="true"
+                android:paddingLeft="@dimen/layout_content_margin_left_right">
 
-                <TextView
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_centerVertical="true"
-                    android:text="上网优先"
-                    android:textColor="@color/room_type_text"
-                    android:textSize="@dimen/text_size_small" />
+                    <TextView
 
-                <ImageView
-                    android:id="@+id/imageview_model_b"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="@dimen/layout_content_margin_left_right"
-                    android:src="@drawable/checkbox_style_imagelevel" />
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:text="上网优先"
+                        android:textColor="@color/room_type_text"
+                        android:textSize="@dimen/text_size_small" />
+
+                    <ImageView
+                        android:id="@+id/imageview_model_b"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="@dimen/layout_content_margin_left_right"
+                        android:src="@drawable/checkbox_style_imagelevel" />
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/line_dirver_color" />
+
             </RelativeLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1px"
-                android:layout_alignParentBottom="true"
-                android:background="@color/line_dirver_color" />
-
-        </RelativeLayout>
-        <!--B-->
-        <RelativeLayout
-            android:visibility="gone"
-            android:id="@+id/layout_model_download"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/layout_item_content_height"
-            android:layout_below="@+id/layout_model_B"
-            android:layout_marginTop="@dimen/list_item_textview_margin_top"
-            android:background="@color/white"
-            android:clickable="true"
-            android:paddingLeft="@dimen/layout_content_margin_left_right">
-
+            <!--B-->
             <RelativeLayout
+                android:visibility="gone"
+                android:id="@+id/layout_model_download"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="@dimen/layout_item_content_height"
+                android:layout_below="@+id/layout_model_B"
+                android:layout_marginTop="@dimen/list_item_textview_margin_top"
+                android:background="@color/white"
+                android:clickable="true"
+                android:paddingLeft="@dimen/layout_content_margin_left_right">
 
-                <TextView
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_centerVertical="true"
-                    android:text="下载优先"
-                    android:textColor="@color/room_type_text"
-                    android:textSize="@dimen/text_size_small" />
+                    <TextView
 
-                <ImageView
-                    android:id="@+id/imageview_model_download"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="@dimen/layout_content_margin_left_right"
-                    android:src="@drawable/checkbox_style_imagelevel" />
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:text="下载优先"
+                        android:textColor="@color/room_type_text"
+                        android:textSize="@dimen/text_size_small" />
+
+                    <ImageView
+                        android:id="@+id/imageview_model_download"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="@dimen/layout_content_margin_left_right"
+                        android:src="@drawable/checkbox_style_imagelevel" />
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/line_dirver_color" />
+
             </RelativeLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1px"
-                android:layout_alignParentBottom="true"
-                android:background="@color/line_dirver_color" />
-
         </RelativeLayout>
-    </RelativeLayout>
+    </com.deplink.boruSmart.view.scrollview.MyScrollView>
+
 
 
 </RelativeLayout>

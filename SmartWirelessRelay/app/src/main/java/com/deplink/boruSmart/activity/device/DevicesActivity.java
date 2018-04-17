@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -15,11 +16,13 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.deplink.boruSmart.Protocol.json.Room;
 import com.deplink.boruSmart.Protocol.json.device.DeviceList;
 import com.deplink.boruSmart.Protocol.json.device.SmartDev;
 import com.deplink.boruSmart.Protocol.json.device.getway.GatwayDevice;
+import com.deplink.boruSmart.Protocol.json.device.lock.Record;
 import com.deplink.boruSmart.Protocol.json.device.router.Router;
 import com.deplink.boruSmart.Protocol.json.qrcode.QrcodeSmartDevice;
 import com.deplink.boruSmart.Protocol.packet.ellisdk.BasicPacket;
@@ -267,6 +270,7 @@ public class DevicesActivity extends Activity implements View.OnClickListener, G
         receverDoorbellMsg=false;
         manager.addEventCallback(ec);
         mDeviceManager.addDeviceListener(mDeviceListener);
+        mGetwayManager.addGetwayListener(this);
         mDeviceManager.startQueryStatu();
         mRemoteControlManager.addRemoteControlListener(mRemoteControlListener);
         setButtomBarImageResource();
@@ -318,11 +322,29 @@ public class DevicesActivity extends Activity implements View.OnClickListener, G
         stopTimer();
         manager.removeEventCallback(ec);
         mDeviceManager.removeDeviceListener(mDeviceListener);
+        mGetwayManager.removeGetwayListener(this);
         mDeviceManager.stopQueryStatu();
         mRemoteControlManager.removeRemoteControlListener(mRemoteControlListener);
         ellESDK.stopSearchDevs();
     }
+    /**
+     * 再按一次退出应用
+     */
+    private long exitTime = 0;
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
+            if ((System.currentTimeMillis() - exitTime) > 2000) {
+                Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
+                exitTime = System.currentTimeMillis();
+            } else {
+                AppManager.getAppManager().finishAllActivity();
+            }
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
     private void initDatas() {
         initManager();
         mDoorbeelManager = DoorbeelManager.getInstance();
@@ -485,6 +507,16 @@ public class DevicesActivity extends Activity implements View.OnClickListener, G
                 super.connectionLost(throwable);
                 isUserLogin = false;
                 Perfence.setPerfence(AppConstant.USER_LOGIN, false);
+                DataSupport.deleteAll(SmartDev.class);
+                DataSupport.deleteAll(GatwayDevice.class);
+                DataSupport.deleteAll(Room.class);
+                DataSupport.deleteAll(Record.class);
+                DataSupport.deleteAll(Router.class);
+                datasTop.clear();
+                datasBottom.clear();
+                mDeviceAdapter.setTopList(datasTop);
+                mDeviceAdapter.setBottomList(datasBottom);
+                mDeviceAdapter.notifyDataSetChanged();
                 new AlertDialog(DevicesActivity.this).builder().setTitle("账号异地登录")
                         .setMsg("当前账号已在其它设备上登录,是否重新登录")
                         .setPositiveButton("确认", new View.OnClickListener() {
@@ -556,25 +588,25 @@ public class DevicesActivity extends Activity implements View.OnClickListener, G
     }
 
     private void initViews() {
-        layout_home_page = (LinearLayout) findViewById(R.id.layout_home_page);
-        layout_devices = (LinearLayout) findViewById(R.id.layout_devices);
-        layout_rooms = (LinearLayout) findViewById(R.id.layout_rooms);
-        layout_personal_center = (LinearLayout) findViewById(R.id.layout_personal_center);
-        listview_devies = (PullToRefreshListView) findViewById(R.id.listview_devies);
-        imageview_add_device = (ImageView) findViewById(R.id.imageview_add_device);
-        layout_select_room_type = (LinearLayout) findViewById(R.id.layout_select_room_type);
-        imageview_devices = (ImageView) findViewById(R.id.imageview_devices);
-        layout_empty_view_scroll = (RelativeLayout) findViewById(R.id.layout_empty_view_scroll);
-        imageview_home_page = (ImageView) findViewById(R.id.imageview_home_page);
-        imageview_rooms = (ImageView) findViewById(R.id.imageview_rooms);
-        imageview_personal_center = (ImageView) findViewById(R.id.imageview_personal_center);
-        textview_home = (TextView) findViewById(R.id.textview_home);
-        textview_device = (TextView) findViewById(R.id.textview_device);
-        textview_room = (TextView) findViewById(R.id.textview_room);
-        textview_mine = (TextView) findViewById(R.id.textview_mine);
-        textview_room_name = (TextView) findViewById(R.id.textview_room_name);
-        button_add_device = (Button) findViewById(R.id.button_add_device);
-        layout_experience_center = (RelativeLayout) findViewById(R.id.layout_experience_center);
+        layout_home_page = findViewById(R.id.layout_home_page);
+        layout_devices = findViewById(R.id.layout_devices);
+        layout_rooms = findViewById(R.id.layout_rooms);
+        layout_personal_center = findViewById(R.id.layout_personal_center);
+        listview_devies = findViewById(R.id.listview_devies);
+        imageview_add_device = findViewById(R.id.imageview_add_device);
+        layout_select_room_type = findViewById(R.id.layout_select_room_type);
+        imageview_devices = findViewById(R.id.imageview_devices);
+        layout_empty_view_scroll = findViewById(R.id.layout_empty_view_scroll);
+        imageview_home_page = findViewById(R.id.imageview_home_page);
+        imageview_rooms = findViewById(R.id.imageview_rooms);
+        imageview_personal_center = findViewById(R.id.imageview_personal_center);
+        textview_home = findViewById(R.id.textview_home);
+        textview_device = findViewById(R.id.textview_device);
+        textview_room = findViewById(R.id.textview_room);
+        textview_mine = findViewById(R.id.textview_mine);
+        textview_room_name = findViewById(R.id.textview_room_name);
+        button_add_device = findViewById(R.id.button_add_device);
+        layout_experience_center = findViewById(R.id.layout_experience_center);
     }
 
     @Override
@@ -740,6 +772,8 @@ public class DevicesActivity extends Activity implements View.OnClickListener, G
             deviceType = DeviceTypeConstant.TYPE.TYPE_ROUTER;
             dev.setType(deviceType);
             Router router = new Router();
+            //路由器默认在线状态
+            dev.setStatus("在线");
             Log.i(TAG, "获取绑定的设备" + manager.getDeviceList().size());
             if (deviceName == null || deviceName.equals("")) {
                 dev.setName("路由器");

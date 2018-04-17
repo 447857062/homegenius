@@ -15,20 +15,25 @@
         titlelayout:edit_text="完成"
         android:layout_height="@dimen/title_bar_height"
         />
-    <RelativeLayout
+    <com.deplink.boruSmart.view.scrollview.MyScrollView
         android:layout_below="@+id/layout_title"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <com.deplink.boruSmart.view.edittext.ClearEditText
-            android:layout_marginTop="15dp"
-            android:id="@+id/edittext_update_nickname"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp"
-            android:textSize="@dimen/text_size_small"
-            android:textColor="@color/room_type_text"
-            android:singleLine="true"
-            android:background="@color/white"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/layout_item_content_height" />
-    </RelativeLayout>
+            android:layout_height="match_parent">
+            <com.deplink.boruSmart.view.edittext.ClearEditText
+                android:layout_marginTop="15dp"
+                android:id="@+id/edittext_update_nickname"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:textSize="@dimen/text_size_small"
+                android:textColor="@color/room_type_text"
+                android:singleLine="true"
+                android:background="@color/white"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/layout_item_content_height" />
+        </RelativeLayout>
+    </com.deplink.boruSmart.view.scrollview.MyScrollView>
+
 </RelativeLayout>

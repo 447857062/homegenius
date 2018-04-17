@@ -47,7 +47,6 @@ public class AddRommActivity extends AppCompatActivity implements View.OnClickLi
     private List<String> listTop = new ArrayList<>();
     private SDKManager manager;
     private EventCallback ec;
-    private RecyclerView mContentRv;
     private boolean isUserLogin;
     private ContentAdapterAddRoom mContentAdapter;
     @Override
@@ -126,7 +125,7 @@ public class AddRommActivity extends AppCompatActivity implements View.OnClickLi
         textview_add_room_complement = (TextView) findViewById(R.id.textview_add_room_complement);
         image_back = (ImageView) findViewById(R.id.image_back);
         edittext_room_name = (ClearEditText) findViewById(R.id.edittext_room_name);
-        mContentRv = (RecyclerView) findViewById(R.id.rv_content);
+        RecyclerView mContentRv = (RecyclerView) findViewById(R.id.rv_content);
         mContentRv.setLayoutManager(new LinearLayoutManager(this));
         mContentAdapter = new ContentAdapterAddRoom(this);
         mContentAdapter.setItemListener(new ContentAdapterAddRoom.onRecyclerItemClickerListener() {

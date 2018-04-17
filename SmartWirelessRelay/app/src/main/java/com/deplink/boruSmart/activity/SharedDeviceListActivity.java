@@ -10,7 +10,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 
 import com.deplink.boruSmart.Protocol.json.device.SmartDev;
@@ -30,6 +29,8 @@ import com.deplink.boruSmart.manager.device.smartswitch.SmartSwitchManager;
 import com.deplink.boruSmart.util.JsonArrayParseUtil;
 import com.deplink.boruSmart.util.WeakRefHandler;
 import com.deplink.boruSmart.view.combinationwidget.TitleLayout;
+import com.deplink.boruSmart.view.scrollview.MyScrollView;
+import com.deplink.boruSmart.view.scrollview.NonScrollableListView;
 
 import org.litepal.crud.DataSupport;
 
@@ -52,13 +53,13 @@ public class SharedDeviceListActivity extends Activity {
      */
     private List<SmartDev> datasBottom;
     private SharedDeviceListAdapter adapter;
-    private ListView shareddevices_list;
+    private NonScrollableListView shareddevices_list;
     private boolean isStartFromExperience;
     private DeviceManager mDeviceManager;
     private DeviceListener mDeviceListener;
     private RelativeLayout layout_empty_share_device;
     private ImageView refresh_image;
-
+    private MyScrollView myScrollView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,9 +86,20 @@ public class SharedDeviceListActivity extends Activity {
         querySmartDeviceShareInfo = false;
         mDeviceManager.addDeviceListener(mDeviceListener);
         if (!(getwayDevices.size() == 0 && smartDevices.size()==0)) {
+            refresh_image.setVisibility(View.VISIBLE);
             animationFadeIn = AnimationUtils.loadAnimation(this, R.anim.rotate_find_device);
             refresh_image.setAnimation(animationFadeIn);
         }
+     /*   myScrollView.setmOnScrollViewPull(new MyScrollView.OnScrollViewPull() {
+            @Override
+            public void onScrollViewPull(int offset) {
+                if(offset<0){
+                    animationFadeIn.cancel();
+                    refresh_image.setVisibility(View.GONE);
+                    refresh_image.setBackground(null);
+                }
+            }
+        });*/
     }
 
     private static final int MSG_UPDATE_SHARE_DEVS = 100;
@@ -238,9 +250,10 @@ public class SharedDeviceListActivity extends Activity {
     private boolean querySmartDeviceShareInfo = false;
 
     private void initViews() {
-        layout_title = (TitleLayout) findViewById(R.id.layout_title);
-        shareddevices_list = (ListView) findViewById(R.id.shareddevices_list);
-        layout_empty_share_device = (RelativeLayout) findViewById(R.id.layout_empty_share_device);
-        refresh_image = (ImageView) findViewById(R.id.refresh_image);
+        layout_title = findViewById(R.id.layout_title);
+        shareddevices_list = findViewById(R.id.shareddevices_list);
+        layout_empty_share_device = findViewById(R.id.layout_empty_share_device);
+        refresh_image = findViewById(R.id.refresh_image);
+        myScrollView = findViewById(R.id.myscrollview);
     }
 }

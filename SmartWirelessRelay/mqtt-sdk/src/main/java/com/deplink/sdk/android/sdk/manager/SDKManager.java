@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.util.Log;
 
-import com.deplink.sdk.android.sdk.DeplinkSDK;
 import com.deplink.sdk.android.sdk.EventCallback;
 import com.deplink.sdk.android.sdk.MqttConfig;
 import com.deplink.sdk.android.sdk.SDKAction;
@@ -203,7 +202,6 @@ public class SDKManager {
      * 清理
      */
     public void onDestroy() {
-        Log.d(DeplinkSDK.SDK_TAG, "--->SDKManager.onDestroy");
         MQTTController.getSingleton().onDestroy();
     }
 

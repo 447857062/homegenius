@@ -59,7 +59,6 @@ public class FlipLoadingLayout extends LoadingLayout {
 		if (null != imageDrawable) {
 			final int dHeight = imageDrawable.getIntrinsicHeight();
 			final int dWidth = imageDrawable.getIntrinsicWidth();
-
 			/**
 			 * We need to set the width/height of the ImageView so that it is
 			 * square with each side the size of the largest drawable dimension.
@@ -68,7 +67,6 @@ public class FlipLoadingLayout extends LoadingLayout {
 			ViewGroup.LayoutParams lp = mHeaderImage.getLayoutParams();
 			lp.width = lp.height = Math.max(dHeight, dWidth);
 			mHeaderImage.requestLayout();
-
 			/**
 			 * We now rotate the Drawable so that is at the correct rotation,
 			 * and is centered.
@@ -121,14 +119,6 @@ public class FlipLoadingLayout extends LoadingLayout {
 	private float getDrawableRotationAngle() {
 		float angle = 0f;
 		switch (mMode) {
-			case PULL_FROM_END:
-				if (mScrollDirection == Orientation.HORIZONTAL) {
-					angle = 90f;
-				} else {
-					angle = 180f;
-				}
-				break;
-
 			case PULL_FROM_START:
 				if (mScrollDirection == Orientation.HORIZONTAL) {
 					angle = 270f;

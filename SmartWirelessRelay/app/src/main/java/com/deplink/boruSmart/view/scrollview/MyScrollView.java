@@ -25,11 +25,16 @@ public class MyScrollView extends ScrollView {
     private boolean canPullDown = false;
     // 手指按下时记录是否可以继续上拉
     private boolean canPullUp = false;
+    private boolean canScroll=true;
 
 
     // 在手指滑动的过程中记录是否移动了布局
     private boolean isMoved = false;
 
+
+    public void setCanScroll(boolean canScroll) {
+        this.canScroll = canScroll;
+    }
 
     public MyScrollView(Context context) {
         super(context);
@@ -47,8 +52,6 @@ public class MyScrollView extends ScrollView {
             contentView = getChildAt(0);
         }
     }
-
-
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         super.onLayout(changed, l, t, r, b);
@@ -86,20 +89,16 @@ public class MyScrollView extends ScrollView {
                 anim.setDuration(ANIM_TIME);
                 contentView.startAnimation(anim);
 // 设置回到正常的布局位置
-                if(ev.getY()-startY>100){
-                    contentView.layout(originalRect.left, originalRect.top,
-                            originalRect.right, originalRect.bottom);
-                }
+                if(canScroll){
+                contentView.layout(originalRect.left, originalRect.top,
+                        originalRect.right, originalRect.bottom);
+                  }
 // 将标志位设回false
                 canPullDown = false;
                 canPullUp = false;
                 isMoved = false;
-
-
                 break;
             case MotionEvent.ACTION_MOVE:
-
-
 // 在移动的过程中， 既没有滚动到可以上拉的程度， 也没有滚动到可以下拉的程度
                 if (!canPullDown && !canPullUp) {
                     startY = ev.getY();
@@ -114,28 +113,33 @@ public class MyScrollView extends ScrollView {
                 boolean shouldMove = (canPullDown && deltaY > 0) // 可以下拉， 并且手指向下移动
                         || (canPullUp && deltaY < 0) // 可以上拉， 并且手指向上移动
                         || (canPullUp && canPullDown); // 既可以上拉也可以下拉（这种情况出现在ScrollView包裹的控件比ScrollView还小）
-                if (shouldMove && deltaY > 100) {
+                if (shouldMove && canScroll) {
 // 计算偏移量
                     int offset = (int) (deltaY * MOVE_FACTOR);
+                    if(mOnScrollViewPull!=null){
+                        mOnScrollViewPull.onScrollViewPull(offset);
+                    }
 // 随着手指的移动而移动布局
-
                     contentView.layout(originalRect.left,
                             originalRect.top + offset, originalRect.right,
                             originalRect.bottom + offset);
 
                     isMoved = true; // 记录移动了布局
                 }
-
-
                 break;
             default:
                 break;
         }
-
-
         return super.dispatchTouchEvent(ev);
     }
+    private OnScrollViewPull mOnScrollViewPull;
+    public interface OnScrollViewPull {
+        void onScrollViewPull(int offset);
+    }
 
+    public void setmOnScrollViewPull(OnScrollViewPull mOnScrollViewPull) {
+        this.mOnScrollViewPull = mOnScrollViewPull;
+    }
 
     /**
      * 判断是否滚动到顶部

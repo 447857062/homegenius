@@ -55,21 +55,21 @@
 
         <activity
             android:name="com.deplink.boruSmart.activity.homepage.SmartHomeMainActivity"
-            android:theme="@style/noAnimTheme"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/noAnimTheme" />
         <activity
             android:name="com.deplink.boruSmart.activity.device.smartlock.lockhistory.LockHistoryActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.deplink.boruSmart.activity.device.DevicesActivity"
-            android:launchMode="singleTop"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/noAnimTheme" />
         <activity
             android:name="com.deplink.boruSmart.activity.room.RoomActivity"
-            android:screenOrientation="portrait"
             android:launchMode="singleTask"
+            android:screenOrientation="portrait"
             android:theme="@style/Base.AppTheme" />
         <activity
             android:name="com.deplink.boruSmart.activity.personal.PersonalCenterActivity"
@@ -91,9 +91,9 @@
             android:screenOrientation="portrait" />
         <activity
             android:name="com.deplink.boruSmart.activity.room.AddRommActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/Base.AppTheme"
-            android:windowSoftInputMode="adjustPan|stateHidden"
-            android:screenOrientation="portrait" />
+            android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name="com.deplink.boruSmart.activity.room.ManageRoomActivity"
             android:launchMode="singleTop"
@@ -106,8 +106,8 @@
             android:screenOrientation="portrait" />
         <activity
             android:name="com.deplink.boruSmart.activity.device.AddDeviceQRcodeActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name="com.deplink.boruSmart.util.qrcode.qrcodecapture.CaptureActivity"
             android:screenOrientation="portrait" />
@@ -130,7 +130,7 @@
             android:name="com.deplink.boruSmart.activity.device.remoteControl.realRemoteControl.RemoteControlActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.deplink.boruSmart.activity.device.remoteControl.airContorl.add.AirconditionChooseBandActivity"
+            android:name="com.deplink.boruSmart.activity.device.remoteControl.add.ChooseBandActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.deplink.boruSmart.activity.device.remoteControl.RemoteControlQuickLearnActivity"
@@ -140,9 +140,6 @@
             android:screenOrientation="portrait" />
         <activity
             android:name="com.deplink.boruSmart.activity.device.getway.add.AddGetwayNotifyActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.deplink.boruSmart.activity.device.getway.add.QueryGetwaysActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.deplink.boruSmart.activity.personal.usrinfo.UserinfoActivity"
@@ -276,7 +273,7 @@
             android:name="com.deplink.boruSmart.activity.device.smartSwitch.SwitchFourActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.deplink.boruSmart.activity.device.smartSwitch.EditActivity"
+            android:name="com.deplink.boruSmart.activity.device.smartSwitch.EditSwitchActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.deplink.boruSmart.activity.device.doorbell.EditDoorbellActivity"
@@ -333,6 +330,10 @@
             </intent-filter>
         </activity>
         <activity android:name="com.deplink.boruSmart.activity.SharedDeviceListActivity" />
+        <activity
+            android:name="com.deplink.boruSmart.activity.personal.AboutUsActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name="com.deplink.boruSmart.activity.personal.login.BoraeulaActivity"></activity>
     </application>
 
 </manifest>

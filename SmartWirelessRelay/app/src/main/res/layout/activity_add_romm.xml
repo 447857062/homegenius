@@ -100,8 +100,10 @@
             android:textColor="@color/aircondition_mode"
             android:textSize="@dimen/text_size_small" />
         <android.support.v7.widget.RecyclerView
+            android:overScrollMode="never"
             android:layout_marginLeft="@dimen/layout_content_margin_left_right"
             android:layout_marginRight="@dimen/layout_content_margin_left_right"
+            android:layout_marginBottom="15dp"
             android:layout_below="@+id/textview_select_room_type"
             android:id="@+id/rv_content"
             android:layout_width="match_parent"

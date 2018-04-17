@@ -30,11 +30,10 @@ public class ContentAdapterAddRoom extends RecyclerView.Adapter<ContentAdapterAd
     public ContentAdapterAddRoom.ContentHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new ContentHolder(LayoutInflater.from(mContext).inflate(R.layout.item_simple_list_2, parent, false));
     }
-    private ContentAdapterAddRoom.ContentHolder  holder;
+
     @Override
     public void onBindViewHolder(ContentAdapterAddRoom.ContentHolder holder, int position) {
         holder.tv_title.setText("" + mRooms.get(position));
-        this.holder=holder;
         switch (mRooms.get(position)) {
             case RoomConstant.ROOMTYPE.TYPE_BED:
                 holder.layout_room_background.setBackgroundResource(R.drawable.roombedroom);

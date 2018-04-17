@@ -70,10 +70,8 @@ public class ClearEditText extends EditText implements
     public boolean onTouchEvent(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_UP) {
             if (getCompoundDrawables()[2] != null) {
-
                 boolean touchable = event.getX() > (getWidth() - getTotalPaddingRight())
                         && (event.getX() < ((getWidth() - getPaddingRight())));
-
                 if (touchable) {
                     this.setText("");
                 }

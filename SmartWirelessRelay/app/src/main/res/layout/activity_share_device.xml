@@ -16,12 +16,18 @@
         titlelayout:edit_text="添加"
         android:layout_height="@dimen/title_bar_height"
         />
-    <ListView
-        android:layout_marginTop="@dimen/layout_room_content_margin_top"
+    <com.deplink.boruSmart.view.scrollview.MyScrollView
+        android:layout_width="wrap_content"
         android:layout_below="@+id/layout_title"
-        android:id="@+id/listview_share_user"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:dividerHeight="@dimen/list_item_textview_margin_top"
-        android:divider="@null" />
+        android:layout_height="match_parent">
+        <com.deplink.boruSmart.view.scrollview.NonScrollableListView
+            android:layout_marginTop="@dimen/layout_room_content_margin_top"
+            android:id="@+id/listview_share_user"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="none"
+            android:overScrollMode="never"
+            android:dividerHeight="@dimen/list_item_textview_margin_top"
+            android:divider="@null" />
+    </com.deplink.boruSmart.view.scrollview.MyScrollView>
 </RelativeLayout>

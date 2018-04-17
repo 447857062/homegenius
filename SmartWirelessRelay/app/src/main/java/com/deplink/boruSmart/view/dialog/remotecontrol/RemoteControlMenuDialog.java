@@ -17,7 +17,7 @@ import android.widget.TextView;
 
 import com.deplink.boruSmart.util.Perfence;
 import com.deplink.boruSmart.activity.device.remoteControl.EditRemoteDevicesActivity;
-import com.deplink.boruSmart.activity.device.remoteControl.airContorl.add.AirconditionChooseBandActivity;
+import com.deplink.boruSmart.activity.device.remoteControl.add.ChooseBandActivity;
 import com.deplink.boruSmart.activity.device.remoteControl.topBox.AddTopBoxActivity;
 import com.deplink.boruSmart.activity.device.remoteControl.tv.AddTvDeviceActivity;
 import com.deplink.boruSmart.constant.DeviceTypeConstant;
@@ -112,7 +112,7 @@ public class RemoteControlMenuDialog extends Dialog implements View.OnClickListe
                 RemoteControlManager.getInstance().setCurrentActionIsAddDevice(false);
                 switch (currentType) {
                     case TYPE_AIRCONDITION:
-                        intent = new Intent(mContext, AirconditionChooseBandActivity.class);
+                        intent = new Intent(mContext, ChooseBandActivity.class);
                         intent.putExtra("type","KT");
                         mContext.startActivity(intent);
                         break;

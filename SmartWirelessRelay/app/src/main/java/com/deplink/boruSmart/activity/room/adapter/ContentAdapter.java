@@ -54,7 +54,7 @@ public class ContentAdapter  extends RecyclerView.Adapter<ContentAdapter.Content
             }
         }
         if(showDeviceNumber){
-            holder.tv_content.setText(""+onlineDeviceNumber+"/"+ deviceNumberTotal +"在线");
+            holder.tv_content.setText(""+onlineDeviceNumber+"/"+ deviceNumberTotal +" 在线");
         }else{
             holder.tv_content.setText("");
         }

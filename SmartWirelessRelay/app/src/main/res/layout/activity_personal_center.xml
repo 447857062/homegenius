@@ -11,7 +11,7 @@
         android:id="@+id/layout_title"
         android:layout_width="match_parent"
         titlelayout:edit_text_show="false"
-        titlelayout:return_image_show="true"
+        titlelayout:return_image_show="false"
         titlelayout:menu_image_show="false"
         titlelayout:title_text="我的"
         android:layout_height="@dimen/title_bar_height"

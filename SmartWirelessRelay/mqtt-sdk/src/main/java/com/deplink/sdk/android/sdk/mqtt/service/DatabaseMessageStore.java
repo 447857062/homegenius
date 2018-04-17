@@ -43,9 +43,6 @@ public class DatabaseMessageStore implements MessageStore {
 	// the database
 	private SQLiteDatabase db = null;
 
-	// a SQLiteOpenHelper specific for this database
-	private MQTTDatabaseHelper mqttDb = null;
-
 	// a place to send trace data
 	private MqttTraceHandler traceHandler = null;
 
@@ -142,7 +139,7 @@ public class DatabaseMessageStore implements MessageStore {
 		this.traceHandler = (MqttTraceHandler) service;
 
 		// Open message database
-		mqttDb = new MQTTDatabaseHelper(traceHandler, context);
+		MQTTDatabaseHelper mqttDb = new MQTTDatabaseHelper(traceHandler, context);
 
 		// Android documentation suggests that this perhaps
 		// could/should be done in another thread, but as the

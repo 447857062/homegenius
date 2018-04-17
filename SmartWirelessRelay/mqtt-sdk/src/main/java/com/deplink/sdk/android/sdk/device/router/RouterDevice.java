@@ -3,16 +3,8 @@ package com.deplink.sdk.android.sdk.device.router;
 import android.util.Log;
 
 import com.deplink.sdk.android.sdk.DeplinkSDK;
-import com.deplink.sdk.android.sdk.bean.CommonRes;
-import com.deplink.sdk.android.sdk.bean.DeviceCookieItem;
-import com.deplink.sdk.android.sdk.bean.DeviceCookieRes;
-import com.deplink.sdk.android.sdk.bean.DeviceProperty;
-import com.deplink.sdk.android.sdk.bean.DeviceUpgradeRes;
 import com.deplink.sdk.android.sdk.interfaces.SDKCoordinator;
-import com.deplink.sdk.android.sdk.json.DeviceControl;
-import com.deplink.sdk.android.sdk.json.DeviceImageUpgrade;
 import com.deplink.sdk.android.sdk.json.DeviceUpgradeReport;
-import com.deplink.sdk.android.sdk.json.DevicesOnlineRoot;
 import com.deplink.sdk.android.sdk.json.Lan;
 import com.deplink.sdk.android.sdk.json.PERFORMANCE;
 import com.deplink.sdk.android.sdk.json.Proto;
@@ -20,7 +12,6 @@ import com.deplink.sdk.android.sdk.json.Qos;
 import com.deplink.sdk.android.sdk.json.SSIDList;
 import com.deplink.sdk.android.sdk.json.Wifi;
 import com.deplink.sdk.android.sdk.mqtt.MQTTController;
-import com.deplink.sdk.android.sdk.rest.RestfulTools;
 import com.google.gson.Gson;
 
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
@@ -29,10 +20,6 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * Created by huqs on 2016/7/6.
@@ -79,33 +66,10 @@ public class RouterDevice extends BaseDevice {
     public static final int MSG_REPORT_ERROR = MSG_DUMMY + 5;
     private long currentReceivedDataTime = 0;
     private Proto proto;
-    private DevicesOnlineRoot mDevicesOnlineRoot;
     private List<SSIDList> wifiRelay = new ArrayList<>();
-    /**
-     * 上一次设备上传的流量
-     */
-    private long lastUploadData = 0;
-    /**
-     * 上一次设备下载的流量
-     */
-    private long lastDownloadData = 0;
-    /**
-     * 设备上行速率(bps)
-     */
-    private float uprate;
-    /**
-     * 设备下行速率(bps)
-     */
-    private float downrate;
     private SDKCoordinator mSDKCoordinator = null;
     private Lan lan;
     private Qos qos;
-    public float getUpRate() {
-        return uprate;
-    }
-    public float getDownRate() {
-        return downrate;
-    }
     public RouterDevice(SDKCoordinator coordinator) {
         mSDKCoordinator = coordinator;
     }
@@ -159,8 +123,6 @@ public class RouterDevice extends BaseDevice {
             }
         } else if (op.equalsIgnoreCase("DEVICES")) {
             if (method.equalsIgnoreCase("REPORT")) {
-                mDevicesOnlineRoot = gson.fromJson(xmlStr, DevicesOnlineRoot.class);
-                Log.i(TAG,"routerdevice DEVICES REPORT mDevicesOnlineRoot"+(mDevicesOnlineRoot!=null)+mDevicesOnlineRoot.toString());
                 mSDKCoordinator.notifyDeviceOpSuccess(RouterDevice.OP_GET_DEVICES, deviceKey);
             }
         } else if (op.equalsIgnoreCase("LAN")) {
@@ -194,10 +156,6 @@ public class RouterDevice extends BaseDevice {
         return wifi;
     }
 
-    public List<SSIDList> getWifiRelay() {
-        return wifiRelay;
-    }
-
     private void updateWifiRelay(PERFORMANCE content) {
         wifiRelay.clear();
         Log.i(TAG, "PERFORMANCE:getSSIDList().size" + content.getSSIDList().size());
@@ -219,12 +177,6 @@ public class RouterDevice extends BaseDevice {
     public Proto getProto() {
         return proto;
     }
-
-    public DevicesOnlineRoot getDevicesOnlineRoot() {
-        return mDevicesOnlineRoot;
-    }
-
-
     private PERFORMANCE performance;
 
     public PERFORMANCE getPerformance() {
@@ -250,239 +202,12 @@ public class RouterDevice extends BaseDevice {
         }
         long uploadBytesMath = Long.parseLong(uploadBytes);
         Log.i(TAG, uploadBytes + "uploadBytesMath=" + uploadBytesMath);
-        /**
-         *两次获取到的数据（PERFORMANCE）的时间差
-         */
-        long timeDif;
         if (currentReceivedDataTime == 0) {
             //说明是第一次收到反馈数据,不处理
             currentReceivedDataTime = System.currentTimeMillis();
         } else {
-            timeDif = System.currentTimeMillis() - currentReceivedDataTime;
             currentReceivedDataTime = System.currentTimeMillis();
-            Log.i(TAG, "下载总数=" + (float) (downloadBytesMath - lastDownloadData) / 1024 + "KB");
-            Log.i(TAG, "上传总数=" + (float) (downloadBytesMath - lastDownloadData) / 1024 + "KB");
-            downrate = (float) (Math.abs(downloadBytesMath - lastDownloadData)) / 1024 / ((float) timeDif / 1000);
-            uprate = (float) (Math.abs(uploadBytesMath - lastUploadData)) / 1024 / ((float) timeDif / 1000);
-
         }
-        lastDownloadData = downloadBytesMath;
-        lastUploadData = uploadBytesMath;
-    }
-    /**
-     * 获取升级信息
-     */
-    public void retrieveUpgradeInfo() {
-        RestfulTools.getSingleton().getDeviceUpgradeInfo(deviceKey, new Callback<DeviceUpgradeRes>() {
-            @Override
-            public void onResponse(Call<DeviceUpgradeRes> call, Response<DeviceUpgradeRes> response) {
-                switch (response.code()) {
-                    case 200:
-                        Log.i(TAG, "retrieveUpgradeInfo=" + response.body().toString() + "response.message()=" + response.message());
-                        if (null != response.body().getUpgrade_info()) {
-                            Log.i(TAG, "已获取版本升级信息");
-                            setUpgradeInfo(response.body().getUpgrade_info());
-                            notifySuccess(OP_LOAD_UPGRADEINFO);
-                        } else {
-                            Log.i(TAG, "版本升级信息为空");
-                            notifySuccess(OP_LOAD_UPGRADEINFONULL);
-                        }
-                        break;
-                }
-            }
-            @Override
-            public void onFailure(Call<DeviceUpgradeRes> call, Throwable t) {
-                String error = "读取设备升级信息名称失败";
-                Log.i(TAG, "读取设备升级信息名称失败 " + t.getMessage());
-                notifyFailure(OP_LOAD_UPGRADEINFO, error);
-            }
-        });
-    }
-
-    /**
-     * 获取设备cookie
-     */
-    public void retrieveDeviceCookie() {
-        RestfulTools.getSingleton().getDeviceCookie(deviceKey, null, null, new Callback<DeviceCookieRes>() {
-
-            @Override
-            public void onResponse(Call<DeviceCookieRes> call, Response<DeviceCookieRes> response) {
-                switch (response.code()) {
-                    case 200:
-                        List<DeviceCookieItem> result = response.body().getCookies();
-                        cookies.clear();
-                        for (DeviceCookieItem item : result) {
-                            cookies.add(item);
-                        }
-                        break;
-                }
-            }
-
-            @Override
-            public void onFailure(Call<DeviceCookieRes> call, Throwable t) {
-
-            }
-        });
-    }
-
-    /**
-     * 获取设备属性
-     */
-    public void retrieveDeviceProperty() {
-        RestfulTools.getSingleton().getDeviceProperty(deviceKey, new Callback<DeviceProperty>() {
-
-            @Override
-            public void onResponse(Call<DeviceProperty> call, Response<DeviceProperty> response) {
-                switch (response.code()) {
-                    case 200:
-                        DeviceProperty property = response.body();
-                        if (null != property && "ok".equals(property.getStatus())) {
-                            setAutoUpgrade("true".equals(property.isAuto_upgrade()));
-                            setName(property.getName());
-                        }
-                        break;
-                }
-            }
-
-            @Override
-            public void onFailure(Call<DeviceProperty> call, Throwable t) {
-
-            }
-        });
-    }
-
-    /**
-     * 修改自动升级选项
-     *
-     * @param auto
-     */
-    public void changeAutoUpgrade(final boolean auto) {
-        DeviceProperty item = new DeviceProperty();
-        item.setAuto_upgrade(auto);
-        RestfulTools.getSingleton().updateDeviceProperty(deviceKey, item, new Callback<CommonRes>() {
-            @Override
-            public void onResponse(Call<CommonRes> call, Response<CommonRes> response) {
-                switch (response.code()) {
-                    case 200:
-                        setAutoUpgrade(auto);
-                        notifySuccess(OP_CHANGE_AUTO_UPGRADE);
-                        break;
-                }
-            }
-
-            @Override
-            public void onFailure(Call<CommonRes> call, Throwable t) {
-                String error = "修改设备自动升级选项失败";
-                notifyFailure(OP_CHANGE_AUTO_UPGRADE, error);
-            }
-        });
-    }
-
-    /**
-     * 启动设备固件升级
-     */
-    public void startUpgrade() {
-        if (null == upgradeInfo) {
-            return;
-        }
-        DeviceImageUpgrade upgrade = new DeviceImageUpgrade();
-        upgrade.setOP("IMAGE");
-        upgrade.setMethod("UPGRADE");
-        upgrade.setSoftwareVersion(upgradeInfo.getVersion());
-        upgrade.setProductKey(upgradeInfo.getProduct_key());
-        upgrade.setProtocol(upgradeInfo.getProtocol());
-        upgrade.setImgUrl(upgradeInfo.getImg_url());
-        upgrade.setBakProtocol(upgradeInfo.getBak_protocol());
-        upgrade.setBakImgUrl(upgradeInfo.getBak_img_url());
-        upgrade.setFileLen(upgradeInfo.getFile_len());
-        upgrade.setMD5(upgradeInfo.getFile_md5());
-        // upgrade.setUpgradeTime(String.valueOf(upgradeInfo.getUpgrade_time()));
-        upgrade.setUpgradeTime("0");
-        // upgrade.setRandomTime(upgradeInfo.getRandom_time());
-        upgrade.setRandomTime(0);
-        upgrade.setType(0);
-        Gson gson = new Gson();
-        String content = gson.toJson(upgrade);
-        Log.d(DeplinkSDK.SDK_TAG, "--->write JSON: " + content);
-        MQTTController.getSingleton().publish(exclusive.getSub(), content, new MqttActionHandler(RouterDevice.OP_CHG_START_UPGRADE));
-    }
-
-    /**
-     * 要求设备上报
-     */
-    public void getReport() {
-        PERFORMANCE textContent = new PERFORMANCE();
-        textContent.setOP("QUERY");
-        textContent.setMethod("PERFORMANCE");
-        textContent.setTimestamp(System.currentTimeMillis() / 1000);
-        Gson gson = new Gson();
-        String text = gson.toJson(textContent);
-
-        MQTTController.getSingleton().publish(exclusive.getSub(), text, new MqttActionHandler(RouterDevice.OP_QUERY_REPORT));
-    }
-    /**
-     * 查询设备
-     */
-    public void queryDevices() {
-        PERFORMANCE textContent = new PERFORMANCE();
-        textContent.setOP("QUERY");
-        textContent.setMethod("DEVICES");
-        textContent.setTimestamp(System.currentTimeMillis() / 1000);
-        Gson gson = new Gson();
-        String text = gson.toJson(textContent);
-        MQTTController.getSingleton().publish(exclusive.getSub(), text, new MqttActionHandler(RouterDevice.OP_QUERY_DEVICES));
-    }
-
-    /**
-     * 重启设备
-     */
-    public void reboot() {
-        PERFORMANCE textContent = new PERFORMANCE();
-        textContent.setOP("REBOOT");
-        textContent.setTimestamp(System.currentTimeMillis() / 1000);
-        Gson gson = new Gson();
-        String text = gson.toJson(textContent);
-        MQTTController.getSingleton().publish(exclusive.getSub(), text, new MqttActionHandler(RouterDevice.OP_REBOOT));
-    }
-
-    /**
-     * 查询LAN
-     */
-    public void queryLan() {
-        Log.i(TAG, "queryLan");
-        PERFORMANCE textContent = new PERFORMANCE();
-        textContent.setTimestamp(System.currentTimeMillis() / 1000);
-        textContent.setOP("QUERY");
-        textContent.setMethod("LAN");
-        Gson gson = new Gson();
-        String text = gson.toJson(textContent);
-        MQTTController.getSingleton().publish(exclusive.getSub(), text, new MqttActionHandler(RouterDevice.OP_QUERY_LAN));
-    }
-
-    /**
-     * 查询WAN
-     */
-    public void queryWan() {
-        PERFORMANCE textContent = new PERFORMANCE();
-        textContent.setOP("QUERY");
-        textContent.setMethod("WAN");
-        textContent.setTimestamp(System.currentTimeMillis() / 1000);
-        Gson gson = new Gson();
-        String text = gson.toJson(textContent);
-        MQTTController.getSingleton().publish(exclusive.getSub(), text, new MqttActionHandler(RouterDevice.OP_QUERY_WAN));
-    }
-
-    /**
-     * 查询无线中继
-     */
-    public void queryWifiRelay() {
-        PERFORMANCE textContent = new PERFORMANCE();
-        textContent.setOP("QUERY");
-        textContent.setMethod("WIFIRELAY");
-        textContent.setTimestamp(System.currentTimeMillis() / 1000);
-        Gson gson = new Gson();
-        String text = gson.toJson(textContent);
-        MQTTController.getSingleton().publish(exclusive.getSub(), text, new MqttActionHandler(RouterDevice.OP_QUERY_WIFIRELAY));
     }
 
     /**
@@ -499,19 +224,6 @@ public class RouterDevice extends BaseDevice {
     }
 
     /**
-     * 查询Qos
-     */
-    public void queryQos() {
-        PERFORMANCE textContent = new PERFORMANCE();
-        textContent.setOP("QUERY");
-        textContent.setMethod("QOS");
-        textContent.setTimestamp(System.currentTimeMillis() / 1000);
-        Gson gson = new Gson();
-        String text = gson.toJson(textContent);
-        MQTTController.getSingleton().publish(exclusive.getSub(), text, new MqttActionHandler(RouterDevice.OP_QUERY_QOS));
-    }
-
-    /**
      * 设置wifi
      */
     public void setWifi(Wifi wifi) {
@@ -521,18 +233,6 @@ public class RouterDevice extends BaseDevice {
         Gson gson = new Gson();
         String text = gson.toJson(wifi);
         MQTTController.getSingleton().publish(exclusive.getSub(), text, new MqttActionHandler(RouterDevice.OP_SET_WIFI));
-    }
-
-    /**
-     * 设置黑名单列表，从列表中移除
-     */
-    public void setDeviceControl(DeviceControl control) {
-        control.setOP("DEVICES");
-        control.setMethod("CONTROL");
-        control.setTimestamp(System.currentTimeMillis() / 1000);
-        Gson gson = new Gson();
-        String text = gson.toJson(control);
-        MQTTController.getSingleton().publish(exclusive.getSub(), text, new MqttActionHandler(RouterDevice.OP_SET_DEVICE_CONTROL));
     }
 
     /**
@@ -587,7 +287,6 @@ public class RouterDevice extends BaseDevice {
         @Override
         public void onFailure(IMqttToken iMqttToken, Throwable throwable) {
             throwable.printStackTrace();
-            Log.d(DeplinkSDK.SDK_TAG, "--->Mqtt failure: " + throwable.getMessage());
             String error = "操作失败";
             notifyFailure(action, error);
         }

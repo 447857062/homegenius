@@ -28,7 +28,7 @@ public class DeviceAtRoomDialog extends Dialog implements View.OnClickListener ,
     private View view_device_menu;
     private List<String>mRoomTypes;
     private ListView listview_room_types;
-    private DeviceRoomTypeDialogAdapter mAdapter;
+
     public DeviceAtRoomDialog(Context context,List<String>roomTypes) {
         super(context, R.style.MakeSureDialog);
         mContext = context;
@@ -50,14 +50,14 @@ public class DeviceAtRoomDialog extends Dialog implements View.OnClickListener ,
     }
     private void initView() {
         view_device_menu=findViewById(R.id.view_device_menu);
-        listview_room_types= (ListView) findViewById(R.id.listview_room_types);
+        listview_room_types= findViewById(R.id.listview_room_types);
 
     }
 
 
     private void initEvent() {
         view_device_menu.setOnClickListener(this);
-        mAdapter=new DeviceRoomTypeDialogAdapter(mContext,mRoomTypes);
+        DeviceRoomTypeDialogAdapter mAdapter = new DeviceRoomTypeDialogAdapter(mContext, mRoomTypes);
         listview_room_types.setAdapter(mAdapter);
         listview_room_types.setOnItemClickListener(this);
     }

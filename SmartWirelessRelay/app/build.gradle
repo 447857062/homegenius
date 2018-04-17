@@ -45,6 +45,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
         }
+
     }
     productFlavors {
     }
@@ -93,7 +94,6 @@ dependencies {
     compile project(path: ':mqtt-sdk')
     compile project(':pullToRefresh')
     compile files('libs/BaiduLBS_Android.jar')
-    //compile name: 'SMSSDK-2.1.1', ext: 'aar'
     compile files('libs/SMSSDK-3.1.0.jar')
     compile files('libs/MobCommons-2017.1213.1552.jar')
     compile files('libs/MobTools-2017.1213.1552.jar')
@@ -107,6 +107,7 @@ dependencies {
     compile 'com.daimajia.numberprogressbar:library:1.4@aar'
     compile 'com.android.support:multidex:1.0.1'
     //dependencies
-    compile files('libs/MobCommons-2017.1213.1552.jar')
-    compile files('libs/MobTools-2017.1213.1552.jar')
+   compile files('libs/MobCommons-2017.1213.1552.jar')
+  compile files('libs/MobTools-2017.1213.1552.jar')
+    compile 'com.contrarywind:Android-PickerView:3.2.4'
 }

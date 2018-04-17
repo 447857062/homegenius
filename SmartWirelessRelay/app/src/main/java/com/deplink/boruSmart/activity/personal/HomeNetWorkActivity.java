@@ -2,22 +2,31 @@ package com.deplink.boruSmart.activity.personal;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 
+import com.deplink.boruSmart.Protocol.json.device.SmartDev;
 import com.deplink.boruSmart.Protocol.json.device.getway.GatwayDevice;
 import com.deplink.boruSmart.activity.device.getway.GetwayDeviceActivity;
 import com.deplink.boruSmart.activity.device.getway.adapter.HomeNetWorkAdapter;
+import com.deplink.boruSmart.activity.device.router.RouterMainActivity;
+import com.deplink.boruSmart.activity.personal.login.LoginActivity;
+import com.deplink.boruSmart.constant.AppConstant;
+import com.deplink.boruSmart.manager.device.DeviceManager;
 import com.deplink.boruSmart.manager.device.getway.GetwayManager;
 import com.deplink.boruSmart.manager.device.router.RouterManager;
-import com.deplink.boruSmart.Protocol.json.device.SmartDev;
-import com.deplink.boruSmart.activity.device.router.RouterMainActivity;
-import com.deplink.boruSmart.manager.device.DeviceManager;
+import com.deplink.boruSmart.util.Perfence;
 import com.deplink.boruSmart.view.combinationwidget.TitleLayout;
+import com.deplink.boruSmart.view.dialog.AlertDialog;
 import com.deplink.boruSmart.view.scrollview.NonScrollableListView;
+import com.deplink.sdk.android.sdk.DeplinkSDK;
+import com.deplink.sdk.android.sdk.EventCallback;
+import com.deplink.sdk.android.sdk.SDKAction;
+import com.deplink.sdk.android.sdk.manager.SDKManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +44,9 @@ public class HomeNetWorkActivity extends Activity implements  AdapterView.OnItem
     private GetwayManager getwayManager;
     private List<SmartDev> mRouterDevice;
     private TitleLayout layout_title;
+    private boolean isUserLogin;
+    private SDKManager manager;
+    private EventCallback ec;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,6 +72,50 @@ public class HomeNetWorkActivity extends Activity implements  AdapterView.OnItem
                 HomeNetWorkActivity.this.onBackPressed();
             }
         });
+        DeplinkSDK.initSDK(getApplicationContext(), Perfence.SDK_APP_KEY);
+        manager = DeplinkSDK.getSDKManager();
+        ec = new EventCallback() {
+
+            @Override
+            public void onSuccess(SDKAction action) {
+
+
+            }
+            @Override
+            public void onBindSuccess(SDKAction action, String devicekey) {
+            }
+
+            @Override
+            public void onGetImageSuccess(SDKAction action, final Bitmap bm) {
+
+
+            }
+
+
+            @Override
+            public void onFailure(SDKAction action, Throwable throwable) {
+
+            }
+            @Override
+            public void connectionLost(Throwable throwable) {
+                super.connectionLost(throwable);
+                Perfence.setPerfence(AppConstant.USER_LOGIN, false);
+                isUserLogin=false;
+                new AlertDialog(HomeNetWorkActivity.this).builder().setTitle("账号异地登录")
+                        .setMsg("当前账号已在其它设备上登录,是否重新登录")
+                        .setPositiveButton("确认", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                startActivity(new Intent(HomeNetWorkActivity.this, LoginActivity.class));
+                            }
+                        }).setNegativeButton("取消", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                }).show();
+            }
+        };
     }
 
     private void initEvents() {
@@ -70,17 +126,28 @@ public class HomeNetWorkActivity extends Activity implements  AdapterView.OnItem
     @Override
     protected void onResume() {
         super.onResume();
+        manager.addEventCallback(ec);
+        isUserLogin = Perfence.getBooleanPerfence(AppConstant.USER_LOGIN);
         mRouterDevice = RouterManager.getInstance().getAllRouterDevice();
         mGatwayDevices=getwayManager.getAllGetwayDevice();
         mAdapter.setTopList(mGatwayDevices);
         mAdapter.setBottomList(mRouterDevice);
         mAdapter.notifyDataSetChanged();
+        if(!isUserLogin){
+            Intent intent=new Intent(HomeNetWorkActivity.this, LoginActivity.class);
+            intent.putExtra("startfrom","userinfoactivity");
+            startActivity(intent);
+        }
     }
 
-
+    @Override
+    protected void onPause() {
+        super.onPause();
+        manager.removeEventCallback(ec);
+    }
     private void initViews() {
-        listviewNetworkDevices = (NonScrollableListView) findViewById(R.id.listview_getway_devices);
-        layout_title= (TitleLayout) findViewById(R.id.layout_title);
+        listviewNetworkDevices = findViewById(R.id.listview_getway_devices);
+        layout_title= findViewById(R.id.layout_title);
     }
 
     @Override

@@ -83,7 +83,6 @@ import java.util.Map;
 
     // Alarm details for the keepalive/ping mechanism
     private String alarmAction;
-    private String pingTopic;
     private PingSender pingSender;
 
     // Client handle, used for callbacks...
@@ -121,7 +120,7 @@ import java.util.Map;
         this.persistence = persistence;
         this.clientHandle = clientHandle;
         alarmAction = MqttServiceConstants.ALARM_INTENT_PREFIX + clientHandle;
-        pingTopic = MqttServiceConstants.PING_TOPIC_PREFIX + clientHandle;
+        String pingTopic = MqttServiceConstants.PING_TOPIC_PREFIX + clientHandle;
         pingSender = new PingSender();
     }
 
@@ -191,8 +190,6 @@ import java.util.Map;
                     this.attemptconnect(resultBundle, invocationContext);
                 }
             }
-//
-//
             Log.d(DeplinkSDK.SDK_TAG, "=========================>" + myClient.isConnected());
 
         } catch (Exception e) {
@@ -403,7 +400,6 @@ import java.util.Map;
                 storeSendDetails(topic, message, sendToken, invocationContext,
                         activityToken);
             } catch (Exception e) {
-                Log.e(DeplinkSDK.SDK_TAG, "--->publish exception: " + e.getMessage());
                 e.printStackTrace();
                 handleException(resultBundle, e);
             }
@@ -742,7 +738,7 @@ import java.util.Map;
     @Override
     public void messageArrived(String topic, MqttMessage message)
             throws Exception {
-        Log.i(TAG,"messageArrived message="+message);
+       // Log.i(TAG,"messageArrived message="+message);
         // we protect against the phone switching off
         // by requesting a wake lock - we request the minimum possible wake
         // lock - just enough to keep the CPU running until we've finished
@@ -850,7 +846,7 @@ import java.util.Map;
         @Override
         public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
             Log.d(DeplinkSDK.SDK_TAG, "====>mqtt onFailure msg:"+exception.getLocalizedMessage()+" code:"+((MqttException) exception).getReasonCode());
-            Throwable cause = ((MqttException) exception).getCause();
+            Throwable cause = exception.getCause();
             Log.d(DeplinkSDK.SDK_TAG, "====>mqtt onFailure cause:"+cause.getMessage());
             resultBundle.putString(MqttServiceConstants.CALLBACK_ERROR_MESSAGE,
                     exception.getLocalizedMessage());
@@ -888,17 +884,6 @@ import java.util.Map;
             // start the next keep alive period
             scheduleNextPing();
         }
-    }
-
-    public void ping() {
-        // Temporary ping mechanism...
-        try {
-            Log.d(DeplinkSDK.SDK_TAG, "--->ping...");
-            myClient.publish(pingTopic, new byte[]{0}, 1, false, null, null);
-        } catch (MqttException e) {
-            // ignore it?
-        }
-
     }
 
     public Debug getDebug() {

@@ -78,11 +78,6 @@ public abstract class LoadingLayout extends FrameLayout implements ILoadingLayou
 		mHeaderImagerefreshComplement = mInnerLayout.findViewById(R.id.mHeaderImagerefreshComplement);
 		FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) mInnerLayout.getLayoutParams();
 		switch (mode) {
-			case PULL_FROM_END:
-				lp.gravity = scrollDirection == Orientation.VERTICAL ? Gravity.TOP : Gravity.LEFT;
-				mPullLabel = context.getString(R.string.pull_to_refresh_from_bottom_pull_label);
-				mReleaseLabel = context.getString(R.string.pull_to_refresh_from_bottom_release_label);
-				break;
 			case PULL_FROM_START:
 			default:
 				lp.gravity = scrollDirection == Orientation.VERTICAL ? Gravity.BOTTOM : Gravity.RIGHT;
@@ -135,13 +130,6 @@ public abstract class LoadingLayout extends FrameLayout implements ILoadingLayou
 					imageDrawable = attrs.getDrawable(R.styleable.PullToRefresh_ptrDrawableStart);
 				} else if (attrs.hasValue(R.styleable.PullToRefresh_ptrDrawableTop)) {
 					imageDrawable = attrs.getDrawable(R.styleable.PullToRefresh_ptrDrawableTop);
-				}
-				break;
-			case PULL_FROM_END:
-				if (attrs.hasValue(R.styleable.PullToRefresh_ptrDrawableEnd)) {
-					imageDrawable = attrs.getDrawable(R.styleable.PullToRefresh_ptrDrawableEnd);
-				} else if (attrs.hasValue(R.styleable.PullToRefresh_ptrDrawableBottom)) {
-					imageDrawable = attrs.getDrawable(R.styleable.PullToRefresh_ptrDrawableBottom);
 				}
 				break;
 		}
@@ -206,9 +194,6 @@ public abstract class LoadingLayout extends FrameLayout implements ILoadingLayou
 	public final void refreshing() {
 		mHeaderImage.setVisibility(View.VISIBLE);
 		mHeaderImagerefreshComplement.setVisibility(View.GONE);
-		if (null != mHeaderText) {
-			//mHeaderText.setText(mRefreshingLabel);
-		}
 		if (mUseIntrinsicAnimation) {
 			((AnimationDrawable) mHeaderImage.getDrawable()).start();
 		} else {
@@ -234,11 +219,12 @@ public abstract class LoadingLayout extends FrameLayout implements ILoadingLayou
 		mHeaderImage.setVisibility(View.GONE);
 		if (mUseIntrinsicAnimation) {
 			((AnimationDrawable) mHeaderImage.getDrawable()).stop();
+
 		} else {
 			// Now call the callback
 			resetImpl();
 		}
-		mHeaderImagerefreshComplement.setVisibility(View.VISIBLE);
+
 		if (null != mSubHeaderText) {
 			if (TextUtils.isEmpty(mSubHeaderText.getText())) {
 				mSubHeaderText.setVisibility(View.GONE);

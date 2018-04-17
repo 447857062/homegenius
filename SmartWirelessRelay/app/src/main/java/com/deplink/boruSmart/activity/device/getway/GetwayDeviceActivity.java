@@ -141,10 +141,12 @@ public class GetwayDeviceActivity extends Activity implements View.OnClickListen
             edittext_input_devie_name.clearFocus();
             textview_select_room_name.setText("未选择");
         } else {
-            currentSelectDeviceName = mGetwayManager.getCurrentSelectGetwayDevice().getName();
-            edittext_input_devie_name.setText(currentSelectDeviceName);
-            edittext_input_devie_name.setSelection(currentSelectDeviceName.length());
-            edittext_input_devie_name.clearFocus();
+            if(mGetwayManager.getCurrentSelectGetwayDevice()!=null){
+                currentSelectDeviceName = mGetwayManager.getCurrentSelectGetwayDevice().getName();
+                edittext_input_devie_name.setText(currentSelectDeviceName);
+                edittext_input_devie_name.setSelection(currentSelectDeviceName.length());
+                edittext_input_devie_name.clearFocus();
+            }
             List<Room> rooms = mGetwayManager.getCurrentSelectGetwayDevice().getRoomList();
             if (rooms.size() == 1) {
                 textview_select_room_name.setText(rooms.get(0).getRoomName());
@@ -270,14 +272,14 @@ public class GetwayDeviceActivity extends Activity implements View.OnClickListen
     }
 
     private void initViews() {
-        button_delete_device = (TextView) findViewById(R.id.button_delete_device);
-        layout_config_wifi_getway = (RelativeLayout) findViewById(R.id.layout_config_wifi_getway);
-        layout_select_room = (RelativeLayout) findViewById(R.id.layout_select_room);
-        textview_select_room_name = (TextView) findViewById(R.id.textview_select_room_name);
-        edittext_input_devie_name = (ClearEditText) findViewById(R.id.edittext_input_devie_name);
-        layout_device_share = (RelativeLayout) findViewById(R.id.layout_device_share);
-        layout_title= (TitleLayout) findViewById(R.id.layout_title);
-        gatwaygif= (ImageView) findViewById(R.id.gatwaygif);
+        button_delete_device = findViewById(R.id.button_delete_device);
+        layout_config_wifi_getway = findViewById(R.id.layout_config_wifi_getway);
+        layout_select_room = findViewById(R.id.layout_select_room);
+        textview_select_room_name = findViewById(R.id.textview_select_room_name);
+        edittext_input_devie_name = findViewById(R.id.edittext_input_devie_name);
+        layout_device_share = findViewById(R.id.layout_device_share);
+        layout_title= findViewById(R.id.layout_title);
+        gatwaygif= findViewById(R.id.gatwaygif);
     }
     private boolean isOnActivityResult;
     @Override
@@ -293,6 +295,7 @@ public class GetwayDeviceActivity extends Activity implements View.OnClickListen
         }
         manager.addEventCallback(ec);
         mDeviceManager.addDeviceListener(mDeviceListener);
+        mGetwayManager.addGetwayListener(this);
         if (!isStartFromExperience) {
             deviceUid = mGetwayManager.getCurrentSelectGetwayDevice().getUid();
         }
@@ -314,6 +317,7 @@ public class GetwayDeviceActivity extends Activity implements View.OnClickListen
     protected void onPause() {
         super.onPause();
         mDeviceManager.removeDeviceListener(mDeviceListener);
+        mGetwayManager.removeGetwayListener(this);
         manager.removeEventCallback(ec);
     }
 
@@ -351,14 +355,9 @@ public class GetwayDeviceActivity extends Activity implements View.OnClickListen
 
                 break;
             case R.id.layout_config_wifi_getway:
-                if(NetUtil.isNetAvailable(this)){
                     Intent inent = new Intent(this, ScanWifiListActivity.class);
                     inent.putExtra("isShowSkipOption", false);
                     startActivity(inent);
-                }else{
-                    Ftoast.create(GetwayDeviceActivity.this).setText("无可用的网络连接").show();
-                }
-
                 break;
             case R.id.layout_device_share:
                 Intent inentShareDevice = new Intent(this, ShareDeviceActivity.class);
@@ -424,17 +423,14 @@ public class GetwayDeviceActivity extends Activity implements View.OnClickListen
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE_SELECT_DEVICE_IN_WHAT_ROOM && resultCode == RESULT_OK) {
-            String roomName = data.getStringExtra("roomName");
-            Log.i(TAG, "isStartFromExperience=" + isStartFromExperience);
-            if (!isStartFromExperience) {
-                room = RoomManager.getInstance().findRoom(roomName, true);
-                deviceUid = mGetwayManager.getCurrentSelectGetwayDevice().getUid();
-                mDeviceManager.alertDeviceHttp(deviceUid, room.getUid(), null, null);
-                action = "alertroom";
+        if(data!=null){
+            String  roomName = data.getStringExtra("roomName");
+            if (requestCode == REQUEST_CODE_SELECT_DEVICE_IN_WHAT_ROOM && resultCode == RESULT_OK) {
+                isOnActivityResult=true;
+                textview_select_room_name.setText(roomName);
             }
-            textview_select_room_name.setText(roomName);
         }
+
     }
 
     @Override

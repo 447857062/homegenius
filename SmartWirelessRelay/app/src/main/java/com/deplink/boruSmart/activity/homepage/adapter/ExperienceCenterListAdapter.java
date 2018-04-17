@@ -55,11 +55,11 @@ public class ExperienceCenterListAdapter extends BaseAdapter {
             viewHolder = new ViewHolder();
             convertView = LayoutInflater.from(mContext).inflate(
                     R.layout.experience_center_listitem, null);
-            viewHolder.image_device_type = (ImageView) convertView
+            viewHolder.image_device_type = convertView
                     .findViewById(R.id.image_device_type);
-            viewHolder.textview_device_name = (TextView) convertView
+            viewHolder.textview_device_name = convertView
                     .findViewById(R.id.textview_device_name);
-            viewHolder.iamgeview_setting = (ImageView) convertView
+            viewHolder.iamgeview_setting = convertView
                     .findViewById(R.id.iamgeview_setting);
             viewHolder.view_line = convertView
                     .findViewById(R.id.view_line);
@@ -76,13 +76,20 @@ public class ExperienceCenterListAdapter extends BaseAdapter {
                 viewHolder.image_device_type.setImageResource(R.drawable.routericon);
                 break;
             case DeviceTypeConstant.TYPE.TYPE_LOCK:
-            case "智能门锁":
                 viewHolder.image_device_type.setImageResource(R.drawable.doorlockicon);
                 break;
             case DeviceTypeConstant.TYPE.TYPE_MENLING:
                 viewHolder.image_device_type.setImageResource(R.drawable.doorbellicon);
                 break;
-            case DeviceTypeConstant.TYPE.TYPE_SWITCH:
+            case DeviceTypeConstant.TYPE_SWITCH_SUBTYPE.SUB_TYPE_SWITCH_ONEWAY:
+                break;
+            case DeviceTypeConstant.TYPE_SWITCH_SUBTYPE.SUB_TYPE_SWITCH_TWOWAY:
+                viewHolder.image_device_type.setImageResource(R.drawable.twoswitchicon);
+                break;
+            case DeviceTypeConstant.TYPE_SWITCH_SUBTYPE.SUB_TYPE_SWITCH_THREEWAY:
+                viewHolder.image_device_type.setImageResource(R.drawable.threeswitchicon);
+                break;
+            case DeviceTypeConstant.TYPE_SWITCH_SUBTYPE.SUB_TYPE_SWITCH_FOURWAY:
                 viewHolder.image_device_type.setImageResource(R.drawable.fourwayswitch);
                 break;
             case DeviceTypeConstant.TYPE.TYPE_REMOTECONTROL:

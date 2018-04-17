@@ -241,19 +241,19 @@ public class RouterSettingActivity extends Activity implements View.OnClickListe
     }
 
     private void initViews() {
-        layout_device_share = (RelativeLayout) findViewById(R.id.layout_device_share);
-        buttton_delete_router = (TextView) findViewById(R.id.buttton_delete_router);
-        layout_router_name_out = (RelativeLayout) findViewById(R.id.layout_router_name_out);
-        layout_room_select_out = (RelativeLayout) findViewById(R.id.layout_room_select_out);
-        layout_connect_type_select_out = (RelativeLayout) findViewById(R.id.layout_connect_type_select_out);
-        layout_wifi_setting_out = (RelativeLayout) findViewById(R.id.layout_wifi_setting_out);
-        layout_lan_setting_out = (RelativeLayout) findViewById(R.id.layout_lan_setting_out);
-        layout_QOS_setting_out = (RelativeLayout) findViewById(R.id.layout_QOS_setting_out);
-        layout_update_out = (RelativeLayout) findViewById(R.id.layout_update_out);
-        layout_reboot_out = (RelativeLayout) findViewById(R.id.layout_reboot_out);
-        textview_room_select_2 = (TextView) findViewById(R.id.textview_room_select_2);
-        textview_route_name_2 = (TextView) findViewById(R.id.textview_route_name_2);
-        layout_title= (TitleLayout) findViewById(R.id.layout_title);
+        layout_device_share = findViewById(R.id.layout_device_share);
+        buttton_delete_router = findViewById(R.id.buttton_delete_router);
+        layout_router_name_out = findViewById(R.id.layout_router_name_out);
+        layout_room_select_out = findViewById(R.id.layout_room_select_out);
+        layout_connect_type_select_out = findViewById(R.id.layout_connect_type_select_out);
+        layout_wifi_setting_out = findViewById(R.id.layout_wifi_setting_out);
+        layout_lan_setting_out = findViewById(R.id.layout_lan_setting_out);
+        layout_QOS_setting_out = findViewById(R.id.layout_QOS_setting_out);
+        layout_update_out = findViewById(R.id.layout_update_out);
+        layout_reboot_out = findViewById(R.id.layout_reboot_out);
+        textview_room_select_2 = findViewById(R.id.textview_room_select_2);
+        textview_route_name_2 = findViewById(R.id.textview_route_name_2);
+        layout_title= findViewById(R.id.layout_title);
     }
 
     private String action;
@@ -463,7 +463,6 @@ public class RouterSettingActivity extends Activity implements View.OnClickListe
      * 重启，使用本地接口
      */
     private void RebootLocal() {
-
         RestfulToolsRouter.getSingleton(RouterSettingActivity.this).rebootRouter(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
@@ -482,79 +481,87 @@ public class RouterSettingActivity extends Activity implements View.OnClickListe
      * （成功连接本地路由器后）选择上网方式
      */
     private void selectConnectType() {
-        RestfulToolsRouter.getSingleton(RouterSettingActivity.this).dynamicIp(new Callback<RouterResponse>() {
-            @Override
-            public void onResponse(Call<RouterResponse> call, Response<RouterResponse> response) {
-                int code = response.code();
-                if (code != 200) {
-                    String errorMsg = "";
-                    try {
-                        String text = response.errorBody().string();
-                        Gson gson = new Gson();
-                        ErrorResponse errorResponse;
-                        errorResponse = gson.fromJson(text, ErrorResponse.class);
-                        switch (errorResponse.getErrcode()) {
-                            case AppConstant.ERROR_CODE.OP_ERRCODE_BAD_TOKEN:
-                                text = AppConstant.ERROR_MSG.OP_ERRCODE_BAD_TOKEN;
-                                Ftoast.create(RouterSettingActivity.this).setText( "登录已失效").show();
-                                startActivity(new Intent(RouterSettingActivity.this, LoginActivity.class));
-                                return;
-                            case AppConstant.ERROR_CODE.OP_ERRCODE_BAD_ACCOUNT:
-                                errorMsg = AppConstant.ERROR_MSG.OP_ERRCODE_BAD_ACCOUNT;
-                                break;
-                            case AppConstant.ERROR_CODE.OP_ERRCODE_LOGIN_FAIL:
-                                errorMsg = AppConstant.ERROR_MSG.OP_ERRCODE_LOGIN_FAIL;
+        if(mDeviceManager.isStartFromExperience()){
+            Ftoast.create(RouterSettingActivity.this).setText( "动态IP设置成功，请设置wifi名字密码").show();
+            Intent intentWifiSetting = new Intent(RouterSettingActivity.this, WifiSetting24.class);
+            intentWifiSetting.putExtra(AppConstant.OPERATION_TYPE, AppConstant.OPERATION_TYPE_LOCAL);
+            startActivity(intentWifiSetting);
+        }else{
+            RestfulToolsRouter.getSingleton(RouterSettingActivity.this).dynamicIp(new Callback<RouterResponse>() {
+                @Override
+                public void onResponse(Call<RouterResponse> call, Response<RouterResponse> response) {
+                    int code = response.code();
+                    if (code != 200) {
+                        String errorMsg = "";
+                        try {
+                            String text = response.errorBody().string();
+                            Gson gson = new Gson();
+                            ErrorResponse errorResponse;
+                            errorResponse = gson.fromJson(text, ErrorResponse.class);
+                            switch (errorResponse.getErrcode()) {
+                                case AppConstant.ERROR_CODE.OP_ERRCODE_BAD_TOKEN:
+                                    text = AppConstant.ERROR_MSG.OP_ERRCODE_BAD_TOKEN;
+                                    Ftoast.create(RouterSettingActivity.this).setText( "登录已失效").show();
+                                    startActivity(new Intent(RouterSettingActivity.this, LoginActivity.class));
+                                    return;
+                                case AppConstant.ERROR_CODE.OP_ERRCODE_BAD_ACCOUNT:
+                                    errorMsg = AppConstant.ERROR_MSG.OP_ERRCODE_BAD_ACCOUNT;
+                                    break;
+                                case AppConstant.ERROR_CODE.OP_ERRCODE_LOGIN_FAIL:
+                                    errorMsg = AppConstant.ERROR_MSG.OP_ERRCODE_LOGIN_FAIL;
 
-                                break;
-                            case AppConstant.ERROR_CODE.OP_ERRCODE_NOT_FOUND:
-                                errorMsg = AppConstant.ERROR_MSG.OP_ERRCODE_NOT_FOUND;
+                                    break;
+                                case AppConstant.ERROR_CODE.OP_ERRCODE_NOT_FOUND:
+                                    errorMsg = AppConstant.ERROR_MSG.OP_ERRCODE_NOT_FOUND;
 
-                                break;
-                            case AppConstant.ERROR_CODE.OP_ERRCODE_LOGIN_FAIL_MAX:
-                                errorMsg = AppConstant.ERROR_MSG.OP_ERRCODE_LOGIN_FAIL_MAX;
+                                    break;
+                                case AppConstant.ERROR_CODE.OP_ERRCODE_LOGIN_FAIL_MAX:
+                                    errorMsg = AppConstant.ERROR_MSG.OP_ERRCODE_LOGIN_FAIL_MAX;
 
-                                break;
-                            case AppConstant.ERROR_CODE.OP_ERRCODE_CAPTCHA_INCORRECT:
-                                errorMsg = AppConstant.ERROR_MSG.OP_ERRCODE_CAPTCHA_INCORRECT;
+                                    break;
+                                case AppConstant.ERROR_CODE.OP_ERRCODE_CAPTCHA_INCORRECT:
+                                    errorMsg = AppConstant.ERROR_MSG.OP_ERRCODE_CAPTCHA_INCORRECT;
 
-                                break;
-                            case AppConstant.ERROR_CODE.OP_ERRCODE_PASSWORD_INCORRECT:
-                                errorMsg = AppConstant.ERROR_MSG.OP_ERRCODE_PASSWORD_INCORRECT;
+                                    break;
+                                case AppConstant.ERROR_CODE.OP_ERRCODE_PASSWORD_INCORRECT:
+                                    errorMsg = AppConstant.ERROR_MSG.OP_ERRCODE_PASSWORD_INCORRECT;
 
-                                break;
-                            case AppConstant.ERROR_CODE.OP_ERRCODE_PASSWORD_SHORT:
-                                errorMsg = AppConstant.ERROR_MSG.OP_ERRCODE_PASSWORD_SHORT;
+                                    break;
+                                case AppConstant.ERROR_CODE.OP_ERRCODE_PASSWORD_SHORT:
+                                    errorMsg = AppConstant.ERROR_MSG.OP_ERRCODE_PASSWORD_SHORT;
 
-                                break;
-                            case AppConstant.ERROR_CODE.OP_ERRCODE_BAD_ACCOUNT_INFO:
-                                errorMsg = AppConstant.ERROR_MSG.OP_ERRCODE_BAD_ACCOUNT_INFO;
+                                    break;
+                                case AppConstant.ERROR_CODE.OP_ERRCODE_BAD_ACCOUNT_INFO:
+                                    errorMsg = AppConstant.ERROR_MSG.OP_ERRCODE_BAD_ACCOUNT_INFO;
 
-                                break;
-                            case AppConstant.ERROR_CODE.OP_ERRCODE_DB_TRANSACTION_ERROR:
-                                errorMsg = AppConstant.ERROR_MSG.OP_ERRCODE_DB_TRANSACTION_ERROR;
-                                break;
-                            default:
-                                errorMsg = errorResponse.getMsg();
-                                break;
+                                    break;
+                                case AppConstant.ERROR_CODE.OP_ERRCODE_DB_TRANSACTION_ERROR:
+                                    errorMsg = AppConstant.ERROR_MSG.OP_ERRCODE_DB_TRANSACTION_ERROR;
+                                    break;
+                                default:
+                                    errorMsg = errorResponse.getMsg();
+                                    break;
 
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                        Ftoast.create(RouterSettingActivity.this).setText( "errorMsg").show();
+                    } else {
+                        Ftoast.create(RouterSettingActivity.this).setText( "动态IP设置成功，请设置wifi名字密码").show();
+                        Intent intentWifiSetting = new Intent(RouterSettingActivity.this, WifiSetting24.class);
+                        intentWifiSetting.putExtra(AppConstant.OPERATION_TYPE, AppConstant.OPERATION_TYPE_LOCAL);
+                        startActivity(intentWifiSetting);
                     }
-                    Ftoast.create(RouterSettingActivity.this).setText( "errorMsg").show();
-                } else {
-                    Ftoast.create(RouterSettingActivity.this).setText( "动态IP设置成功，请设置wifi名字密码").show();
-                    Intent intentWifiSetting = new Intent(RouterSettingActivity.this, WifiSetting24.class);
-                    intentWifiSetting.putExtra(AppConstant.OPERATION_TYPE, AppConstant.OPERATION_TYPE_LOCAL);
-                    startActivity(intentWifiSetting);
                 }
-            }
 
-            @Override
-            public void onFailure(Call<RouterResponse> call, Throwable t) {
+                @Override
+                public void onFailure(Call<RouterResponse> call, Throwable t) {
 
-            }
-        });
+                }
+            });
+        }
+
     }
 
     private static final int MSG_DELETE_ROUTER_FAIL = 100;

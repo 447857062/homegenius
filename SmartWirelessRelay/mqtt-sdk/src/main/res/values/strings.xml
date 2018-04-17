@@ -32,7 +32,7 @@
     <string name="qos0">0</string>
     <string name="qos1">1</string>
     <string name="qos2">2</string>
-    <string name="empty"></string>
+    <string name="empty"/>
     <string name="qos">QOS</string>
     <string name="retained">Retained</string>
     <string name="cleanSession">清理会话</string>

@@ -1,7 +1,6 @@
 package com.deplink.boruSmart.activity.personal.login;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,8 +11,8 @@ import android.text.TextWatcher;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -27,6 +26,7 @@ import com.deplink.boruSmart.util.Perfence;
 import com.deplink.boruSmart.util.StringValidatorUtil;
 import com.deplink.boruSmart.util.WeakRefHandler;
 import com.deplink.boruSmart.view.combinationwidget.TitleLayout;
+import com.deplink.boruSmart.view.edittext.ClearEditText;
 import com.deplink.boruSmart.view.toast.Ftoast;
 import com.deplink.sdk.android.sdk.DeplinkSDK;
 import com.deplink.sdk.android.sdk.EventCallback;
@@ -38,19 +38,17 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import cn.smssdk.EventHandler;
 import cn.smssdk.SMSSDK;
 import deplink.com.smartwirelessrelay.homegenius.EllESDK.R;
 
-public class RegistActivity extends Activity implements View.OnClickListener, View.OnFocusChangeListener {
+public class RegistActivity extends Activity implements View.OnClickListener {
     private static final String TAG = "RegistActivity";
     private View view_phonenumber_dirverline;
     private View view_password_dirverline;
     private View view_yanzhen_dirverline;
-    private EditText edittext_input_phone_number;
+    private ClearEditText edittext_input_phone_number;
     private EditText edittext_verification_code;
     private EditText edittext_input_password;
     private FrameLayout layout_eye;
@@ -84,25 +82,12 @@ public class RegistActivity extends Activity implements View.OnClickListener, Vi
     String phoneNumber;
     String password;
     private boolean isGetCaptche;
-    private void showInputmothed() {
-        Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
-                           public void run() {
-
-                               InputMethodManager inputManager =
-                                       (InputMethodManager) edittext_input_phone_number.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-                               inputManager.showSoftInput(edittext_input_phone_number, 0);
-                           }
-                       },
-                500);
-    }
     @Override
     protected void onResume() {
         super.onResume();
         button_SMS_verification_code.setBackgroundResource(R.drawable.get_vercode_button_disable_background);
         manager.addEventCallback(ec);
         edittext_input_password.setTransformationMethod(PasswordTransformationMethod.getInstance());
-        showInputmothed();
         if (StringValidatorUtil.isMobileNO(edittext_input_phone_number.getText().toString())
                 && edittext_input_password.getText().toString().length() >= 6
                 && edittext_verification_code.getText().toString().length()>=6
@@ -111,6 +96,7 @@ public class RegistActivity extends Activity implements View.OnClickListener, Vi
         } else {
             button_regist.setEnabled(false);
         }
+        view_phonenumber_dirverline.setBackgroundResource(R.color.huise);
     }
     private String username;
     @Override
@@ -135,7 +121,8 @@ public class RegistActivity extends Activity implements View.OnClickListener, Vi
         }
         if (support) {
             isGetCaptche = true;
-            SMSSDK.getVerificationCode(simCountryCode, username);
+            SMSSDK.getVerificationCode(simCountryCode, username/*,"14967877"*/);
+
             Toast.makeText(RegistActivity.this, "验证码已发送", Toast.LENGTH_SHORT).show();
             button_SMS_verification_code.setEnabled(false);
             time = Perfence.VERIFYCODE_TIME;
@@ -306,26 +293,63 @@ public class RegistActivity extends Activity implements View.OnClickListener, Vi
         }
     };
     private void initEvents() {
-        edittext_input_phone_number.setOnFocusChangeListener(this);
-        edittext_verification_code.setOnFocusChangeListener(this);
-        edittext_input_password.setOnFocusChangeListener(this);
+
         layout_eye.setOnClickListener(this);
         button_regist.setOnClickListener(this);
         button_SMS_verification_code.setOnClickListener(this);
+        edittext_input_phone_number.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                switch (motionEvent.getAction()){
+                    case MotionEvent.ACTION_DOWN:
+                        view_phonenumber_dirverline.setBackgroundResource(R.color.huise);
+                        view_password_dirverline.setBackgroundResource(R.color.line_dirver_color);
+                        view_yanzhen_dirverline.setBackgroundResource(R.color.line_dirver_color);
+                        break;
+                }
+                return false;
+            }
+        });
+        edittext_verification_code.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                switch (motionEvent.getAction()){
+                    case MotionEvent.ACTION_DOWN:
+                        view_phonenumber_dirverline.setBackgroundResource(R.color.line_dirver_color);
+                        view_password_dirverline.setBackgroundResource(R.color.line_dirver_color);
+                        view_yanzhen_dirverline.setBackgroundResource(R.color.huise);
+                        break;
+                }
+                return false;
+            }
+        });
+        edittext_input_password.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                switch (motionEvent.getAction()){
+                    case MotionEvent.ACTION_DOWN:
+                        view_phonenumber_dirverline.setBackgroundResource(R.color.line_dirver_color);
+                        view_password_dirverline.setBackgroundResource(R.color.huise);
+                        view_yanzhen_dirverline.setBackgroundResource(R.color.line_dirver_color);
+                        break;
+                }
+                return false;
+            }
+        });
     }
 
     private void initViews() {
-        layout_title= (TitleLayout) findViewById(R.id.layout_title);
+        layout_title= findViewById(R.id.layout_title);
         view_phonenumber_dirverline = findViewById(R.id.view_phonenumber_dirverline);
         view_password_dirverline = findViewById(R.id.view_password_dirverline);
         view_yanzhen_dirverline = findViewById(R.id.view_yanzhen_dirverline);
-        edittext_input_phone_number = (EditText) findViewById(R.id.edittext_input_phone_number);
-        edittext_verification_code = (EditText) findViewById(R.id.edittext_verification_code);
-        edittext_input_password = (EditText) findViewById(R.id.edittext_input_password);
-        layout_eye = (FrameLayout) findViewById(R.id.layout_eye);
-        imageview_eye = (ImageView) findViewById(R.id.imageview_eye);
-        button_regist = (Button) findViewById(R.id.button_regist);
-        button_SMS_verification_code = (TextView) findViewById(R.id.buton_get_verification_code);
+        edittext_input_phone_number = findViewById(R.id.edittext_input_phone_number);
+        edittext_verification_code = findViewById(R.id.edittext_verification_code);
+        edittext_input_password = findViewById(R.id.edittext_input_password);
+        layout_eye = findViewById(R.id.layout_eye);
+        imageview_eye = findViewById(R.id.imageview_eye);
+        button_regist = findViewById(R.id.button_regist);
+        button_SMS_verification_code = findViewById(R.id.buton_get_verification_code);
     }
 
     @Override
@@ -385,36 +409,4 @@ public class RegistActivity extends Activity implements View.OnClickListener, Vi
         }
     }
 
-    @Override
-    public void onFocusChange(View v, boolean hasFocus) {
-        switch (v.getId()) {
-            case R.id.edittext_input_phone_number:
-                if (hasFocus) {
-                    // 此处为得到焦点时的处理内容
-                    view_phonenumber_dirverline.setBackgroundResource(R.color.huise);
-                } else {
-                    // 此处为失去焦点时的处理内容
-                    view_phonenumber_dirverline.setBackgroundResource(R.color.line_dirver_color);
-                }
-                break;
-            case R.id.edittext_verification_code:
-                if (hasFocus) {
-                    // 此处为得到焦点时的处理内容
-                    view_yanzhen_dirverline.setBackgroundResource(R.color.huise);
-                } else {
-                    // 此处为失去焦点时的处理内容
-                    view_yanzhen_dirverline.setBackgroundResource(R.color.line_dirver_color);
-                }
-                break;
-            case R.id.edittext_input_password:
-                if (hasFocus) {
-                    // 此处为得到焦点时的处理内容
-                    view_password_dirverline.setBackgroundResource(R.color.huise);
-                } else {
-                    // 此处为失去焦点时的处理内容
-                    view_password_dirverline.setBackgroundResource(R.color.line_dirver_color);
-                }
-                break;
-        }
-    }
 }

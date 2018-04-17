@@ -203,11 +203,9 @@ public class LocalConnectmanager extends Binder implements UdpManagerGetIPLinten
             String tmfAlgorithm = TrustManagerFactory.getDefaultAlgorithm();
             TrustManagerFactory tmf = TrustManagerFactory.getInstance(tmfAlgorithm);
             tmf.init(keyStore);
-
             KeyManagerFactory kmf = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
             kmf.init(pKeyStore, null);
             pkcs12in.close();
-
             // Creating an SSLSocketFactory that uses our TrustManager
             SSLContext sslContext = SSLContext.getInstance("TLS");
             sslContext.init(kmf.getKeyManagers(), tmf.getTrustManagers(), null);
@@ -237,7 +235,6 @@ public class LocalConnectmanager extends Binder implements UdpManagerGetIPLinten
             initSocketing = false;
             e.printStackTrace();
         }
-
     }
 
     /**
@@ -287,7 +284,6 @@ public class LocalConnectmanager extends Binder implements UdpManagerGetIPLinten
         }
         return 0;
     }
-
     /**
      * 重新建立连接
      */

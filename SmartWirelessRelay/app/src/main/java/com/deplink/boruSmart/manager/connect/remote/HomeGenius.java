@@ -3,12 +3,11 @@ package com.deplink.boruSmart.manager.connect.remote;
 import android.util.Log;
 
 import com.deplink.boruSmart.Protocol.json.QueryOptions;
-import com.deplink.boruSmart.Protocol.json.qrcode.QrcodeSmartDevice;
 import com.deplink.boruSmart.Protocol.json.device.SmartDev;
 import com.deplink.boruSmart.Protocol.json.device.getway.GatwayDevice;
+import com.deplink.boruSmart.Protocol.json.qrcode.QrcodeSmartDevice;
 import com.deplink.boruSmart.Protocol.json.wifi.AP_CLIENT;
 import com.deplink.boruSmart.Protocol.json.wifi.Proto;
-import com.deplink.sdk.android.sdk.DeplinkSDK;
 import com.deplink.sdk.android.sdk.bean.DeviceUpgradeInfo;
 import com.deplink.sdk.android.sdk.device.router.RouterDevice;
 import com.deplink.sdk.android.sdk.json.DeviceControl;
@@ -59,6 +58,7 @@ public class HomeGenius {
     }
 
     public void bindSmartDevList(String topic, String userUuid, QrcodeSmartDevice smartDevice) {
+        Log.i(TAG,"bindSmartDevList:"+smartDevice.toString());
         QueryOptions queryCmd = new QueryOptions();
         queryCmd.setOP("SET");
         queryCmd.setMethod("DevList");
@@ -76,26 +76,6 @@ public class HomeGenius {
         queryCmd.setSmartDev(devs);
         Gson gson = new Gson();
         queryCmd.setSenderId(userUuid);
-        String text = gson.toJson(queryCmd);
-        MQTTController.getSingleton().publish(topic, text, new MqttActionHandler(""));
-    }
-
-    public void deleteSmartDevice(SmartDev currentSelectSmartDevice, String topic, String userUuid) {
-        QueryOptions queryCmd = new QueryOptions();
-        queryCmd.setOP("DELETE");
-        queryCmd.setMethod("DevList");
-        queryCmd.setSmartUid(currentSelectSmartDevice.getMac());
-        queryCmd.setTimestamp();
-        List<SmartDev> devs = new ArrayList<>();
-        //设备赋值
-        SmartDev dev = new SmartDev();
-        dev.setOrg(currentSelectSmartDevice.getOrg());
-        dev.setType(currentSelectSmartDevice.getType());
-        dev.setVer(currentSelectSmartDevice.getVer());
-        devs.add(dev);
-        queryCmd.setSmartDev(devs);
-        queryCmd.setSenderId(userUuid);
-        Gson gson = new Gson();
         String text = gson.toJson(queryCmd);
         MQTTController.getSingleton().publish(topic, text, new MqttActionHandler(""));
     }
@@ -447,7 +427,6 @@ public class HomeGenius {
         upgrade.setType(0);
         Gson gson = new Gson();
         String content = gson.toJson(upgrade);
-        Log.d(DeplinkSDK.SDK_TAG, "--->write JSON: " + content);
         MQTTController.getSingleton().publish(sub, content, new MqttActionHandler(RouterDevice.OP_CHG_START_UPGRADE));
     }
     /**
@@ -521,22 +500,16 @@ public class HomeGenius {
         MQTTController.getSingleton().publish(sub, text, new MqttActionHandler(RouterDevice.OP_QUERY_WIFI));
     }
     private class MqttActionHandler implements IMqttActionListener {
-        private String action;
-
         public MqttActionHandler(String action) {
-            this.action = action;
         }
 
         @Override
         public void onSuccess(IMqttToken iMqttToken) {
-            Log.i(DeplinkSDK.SDK_TAG, "--->Mqtt onSuccess: " + iMqttToken.toString());
         }
 
         @Override
         public void onFailure(IMqttToken iMqttToken, Throwable throwable) {
             throwable.printStackTrace();
-            Log.i(DeplinkSDK.SDK_TAG, "--->Mqtt failure: " + throwable.getMessage());
-            String error = "操作失败";
         }
     }
 }

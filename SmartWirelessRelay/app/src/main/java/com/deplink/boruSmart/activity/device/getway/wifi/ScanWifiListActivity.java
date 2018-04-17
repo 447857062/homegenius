@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.deplink.boruSmart.Protocol.json.OpResult;
 import com.deplink.boruSmart.Protocol.json.device.lock.SSIDList;
 import com.deplink.boruSmart.Protocol.json.wifi.AP_CLIENT;
+import com.deplink.boruSmart.activity.device.DevicesActivity;
 import com.deplink.boruSmart.activity.device.getway.adapter.WifiListAdapter;
 import com.deplink.boruSmart.activity.personal.login.LoginActivity;
 import com.deplink.boruSmart.constant.AppConstant;
@@ -57,6 +58,7 @@ public class ScanWifiListActivity extends Activity implements AdapterView.OnItem
     private DeviceListener mDeviceListener;
     private TextView textview_wifilist_no;
     private TitleLayout layout_title;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,10 +75,10 @@ public class ScanWifiListActivity extends Activity implements AdapterView.OnItem
     }
 
     private void initViews() {
-        listview_wifi_list = (ListView) findViewById(R.id.listview_wifi_list);
-        textview_reload_wifilist = (TextView) findViewById(R.id.textview_reload_wifilist);
-        textview_wifilist_no = (TextView) findViewById(R.id.textview_wifilist_no);
-        layout_title= (TitleLayout) findViewById(R.id.layout_title);
+        listview_wifi_list = findViewById(R.id.listview_wifi_list);
+        textview_reload_wifilist = findViewById(R.id.textview_reload_wifilist);
+        textview_wifilist_no = findViewById(R.id.textview_wifilist_no);
+        layout_title = findViewById(R.id.layout_title);
     }
 
     @Override
@@ -85,13 +87,16 @@ public class ScanWifiListActivity extends Activity implements AdapterView.OnItem
         isStartFromExperience = DeviceManager.getInstance().isStartFromExperience();
         manager.addEventCallback(ec);
         mDeviceManager.addDeviceListener(mDeviceListener);
+        mGetwayManager.addGetwayListener(this);
         queryWifiRelayList();
+        mHandler.sendEmptyMessageDelayed(MSG_GET_WIFILIST, 4000);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         manager.removeEventCallback(ec);
+        mGetwayManager.removeGetwayListener(this);
         mDeviceManager.removeDeviceListener(mDeviceListener);
     }
 
@@ -197,22 +202,23 @@ public class ScanWifiListActivity extends Activity implements AdapterView.OnItem
                     }
                 }).show();
             }
+
             @Override
             public void notifyHomeGeniusResponse(String result) {
                 super.notifyHomeGeniusResponse(result);
                 Gson gson = new Gson();
-                Log.i(TAG,"notifyHomeGeniusResponse"+result);
+                Log.i(TAG, "notifyHomeGeniusResponse" + result);
                 OpResult wifiListResult = gson.fromJson(result, OpResult.class);
                 if (wifiListResult.getOP().equalsIgnoreCase("REPORT") && wifiListResult.getMethod().equalsIgnoreCase("WIFIRELAY")) {
                     Message msg = Message.obtain();
                     msg.what = MSG_GET_WIFILIST;
                     msg.obj = wifiListResult.getSSIDList();
-                    Log.i(TAG,"wifi列表长度:"+wifiListResult.getSSIDList().size());
+                    Log.i(TAG, "wifi列表长度:" + wifiListResult.getSSIDList().size());
                     mHandler.sendMessage(msg);
-                }else if(wifiListResult.getOP().equalsIgnoreCase("REPORT")&& wifiListResult.getMethod().equalsIgnoreCase("WIFI")){
-                    if(wifiListResult.getResult()!=-1){
+                } else if (wifiListResult.getOP().equalsIgnoreCase("REPORT") && wifiListResult.getMethod().equalsIgnoreCase("WIFI")) {
+                    if (wifiListResult.getResult() != -1) {
                         mHandler.sendEmptyMessage(MSG_GET_WIFILIST_SET_RESULT);
-                    }else{
+                    } else {
                         Ftoast.create(ScanWifiListActivity.this).setText("设置wifi中继失败").show();
                     }
                 }
@@ -228,7 +234,9 @@ public class ScanWifiListActivity extends Activity implements AdapterView.OnItem
                 mHandler.sendMessage(msg);
             }
         };
+
     }
+
     private static final int MSG_GET_WIFILIST = 1;
     private static final int MSG_GET_WIFILIST_SET_RESULT = 2;
     private Handler.Callback mCallback = new Handler.Callback() {
@@ -237,30 +245,37 @@ public class ScanWifiListActivity extends Activity implements AdapterView.OnItem
             switch (msg.what) {
                 case MSG_GET_WIFILIST:
                     //更新一下中继器的在线离线状态,这里如果接受到数据证明是在线状态
-                    String statu=mGetwayManager.getCurrentSelectGetwayDevice().getStatus();
-                    if(statu==null || statu.equalsIgnoreCase("离线")){
-                        mGetwayManager.getCurrentSelectGetwayDevice().setStatus("在线");
-                        mGetwayManager.getCurrentSelectGetwayDevice().saveFast();
+                    if (mGetwayManager.getCurrentSelectGetwayDevice() != null) {
+                        String statu = mGetwayManager.getCurrentSelectGetwayDevice().getStatus();
+                        if (statu == null || statu.equalsIgnoreCase("离线")) {
+                            mGetwayManager.getCurrentSelectGetwayDevice().setStatus("在线");
+                            mGetwayManager.getCurrentSelectGetwayDevice().saveFast();
+                        }
                     }
                     textview_wifilist_no.setVisibility(View.GONE);
-                    mDatas.clear();
-                    mDatas.addAll((Collection<? extends SSIDList>) msg.obj);
-                    mWifiListAdapter.notifyDataSetChanged();
+                    if (msg.obj != null) {
+                        mDatas.clear();
+                        mDatas.addAll((Collection<? extends SSIDList>) msg.obj);
+                        mWifiListAdapter.notifyDataSetChanged();
+                    }
+
                     break;
                 case MSG_GET_WIFILIST_SET_RESULT:
                     Ftoast.create(ScanWifiListActivity.this).setText("设置wifi中继成功").show();
+                    startActivity(new Intent(ScanWifiListActivity.this, DevicesActivity.class));
                     break;
             }
             return true;
         }
     };
     private Handler mHandler = new WeakRefHandler(mCallback);
+
     @Override
     public void responseSetWifirelayResult(int result) {
         Log.i(TAG, "responseSetWifirelayResult=" + result);
-        if(result!=-1){
+        if (result != -1) {
             mHandler.sendEmptyMessage(MSG_GET_WIFILIST_SET_RESULT);
-        }else{
+        } else {
             Ftoast.create(ScanWifiListActivity.this).setText("设置wifi中继失败").show();
         }
 
@@ -276,6 +291,7 @@ public class ScanWifiListActivity extends Activity implements AdapterView.OnItem
     public void responseDeleteDeviceHttpResult(DeviceOperationResponse result) {
 
     }
+
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         final AP_CLIENT setCmd = new AP_CLIENT();
@@ -304,7 +320,7 @@ public class ScanWifiListActivity extends Activity implements AdapterView.OnItem
             }).show();
 
         } else {
-            if(NetUtil.isNetAvailable(ScanWifiListActivity.this)){
+            if (NetUtil.isNetAvailable(ScanWifiListActivity.this)) {
                 if (mDatas.get(position).getEncryption().equalsIgnoreCase("none")) {
                     setCmd.setApCliWPAPSK("");
                     mGetwayManager.setWifiRelay(setCmd);
@@ -325,7 +341,7 @@ public class ScanWifiListActivity extends Activity implements AdapterView.OnItem
                         }
                     }).show();
                 }
-            }else{
+            } else {
                 Ftoast.create(ScanWifiListActivity.this).setText("无可用的网络连接").show();
             }
 
@@ -339,11 +355,7 @@ public class ScanWifiListActivity extends Activity implements AdapterView.OnItem
                 onBackPressed();
                 break;
             case R.id.textview_reload_wifilist:
-                if(NetUtil.isNetAvailable(this)){
-                    queryWifiRelayList();
-                }else{
-                    Ftoast.create(ScanWifiListActivity.this).setText("无可用的网络连接").show();
-                }
+                queryWifiRelayList();
                 break;
         }
     }

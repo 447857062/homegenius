@@ -15,57 +15,69 @@
         titlelayout:edit_image_src="@drawable/menuicon"
         android:layout_height="@dimen/title_bar_height"
         />
-    <FrameLayout
-        android:id="@+id/layout_frame"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+    <com.deplink.boruSmart.view.scrollview.MyScrollView
         android:layout_below="@+id/layout_title"
-        android:layout_marginLeft="@dimen/layout_content_margin_left_right"
-        android:layout_marginRight="@dimen/layout_content_margin_left_right"
-        android:layout_marginTop="@dimen/layout_room_content_margin_top">
-
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
         <RelativeLayout
-            android:id="@+id/layout_no_vistor"
+
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical">
-            <ImageView
-                android:id="@+id/imageview_empty"
-                android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+            <FrameLayout
+                android:id="@+id/layout_frame"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:scaleType="centerInside"
-                android:src="@drawable/doorbellillustration" />
-            <ImageView
-                android:id="@+id/imageview_gif"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:scaleType="centerInside"
-                android:src="@drawable/doorbellgif" />
 
+                android:layout_marginLeft="@dimen/layout_content_margin_left_right"
+                android:layout_marginRight="@dimen/layout_content_margin_left_right"
+                android:layout_marginTop="@dimen/layout_room_content_margin_top">
+
+                <RelativeLayout
+                    android:id="@+id/layout_no_vistor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical">
+                    <ImageView
+                        android:id="@+id/imageview_empty"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/doorbellillustration" />
+                    <ImageView
+                        android:id="@+id/imageview_gif"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/doorbellgif" />
+
+                </RelativeLayout>
+
+                <ImageView
+                    android:id="@+id/imageview_visitor"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:visibility="gone" />
+            </FrameLayout>
+
+
+            <Button
+                android:id="@+id/button_opendoor"
+                android:layout_marginLeft="@dimen/layout_content_margin_left_right"
+                android:layout_marginRight="@dimen/layout_content_margin_left_right"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/add_doorbell_buttom_button_height"
+                android:layout_below="@+id/layout_frame"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/doorbell_mainview_button_margintop"
+                android:text="开门"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_small" />
         </RelativeLayout>
-
-        <ImageView
-            android:id="@+id/imageview_visitor"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="centerCrop"
-            android:visibility="gone" />
-    </FrameLayout>
+    </com.deplink.boruSmart.view.scrollview.MyScrollView>
 
 
-    <Button
-        android:id="@+id/button_opendoor"
-        android:layout_marginLeft="@dimen/layout_content_margin_left_right"
-        android:layout_marginRight="@dimen/layout_content_margin_left_right"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/add_doorbell_buttom_button_height"
-        android:layout_below="@+id/layout_frame"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/doorbell_mainview_button_margintop"
-        android:text="开门"
-        android:textColor="@color/white"
-        android:textSize="@dimen/text_size_small" />
 </RelativeLayout>

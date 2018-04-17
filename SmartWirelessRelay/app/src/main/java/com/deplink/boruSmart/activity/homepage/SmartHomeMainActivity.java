@@ -13,6 +13,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
@@ -33,6 +34,7 @@ import com.deplink.boruSmart.Protocol.json.Room;
 import com.deplink.boruSmart.Protocol.json.device.ExperienceCenterDevice;
 import com.deplink.boruSmart.Protocol.json.device.SmartDev;
 import com.deplink.boruSmart.Protocol.json.device.getway.GatwayDevice;
+import com.deplink.boruSmart.Protocol.json.device.lock.Record;
 import com.deplink.boruSmart.Protocol.json.device.router.Router;
 import com.deplink.boruSmart.Protocol.json.http.weather.HeWeather6;
 import com.deplink.boruSmart.Protocol.packet.ellisdk.BasicPacket;
@@ -188,6 +190,12 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
     private static final int MSG_GET_VIRTUAL_DEVS_HTTPS = 106;
     private static final int MSG_CHECK_DOORBELL_ONLINE_STATU = 0x03;
     private EllESDK ellESDK;
+    private Timer refreshTimer = null;
+    private TimerTask refreshTask = null;
+    private static final int TIME_DIFFERENCE_BETWEEN_MESSAGE_INTERVALS = 10000;
+    private SmartDev currentSmartDoorBell;
+    private String seachedDoorbellmac;
+    private boolean isRunSeachDoorbell=false;
     private Handler.Callback mCallback = new Handler.Callback() {
         @Override
         public boolean handleMessage(Message msg) {
@@ -244,12 +252,10 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
                     mRoomList.clear();
                     mRoomList.addAll(mRoomManager.queryRooms());
                     setRoomNormalLayout();
-                    Log.i(TAG, "mRoomList.size=" + mRoomList.size());
                     initRecentlyDeviceData();
                     mDeviceAdapter.notifyDataSetChanged();
                     ListViewUtil.setListViewHeight(layout_roomselect_changed_ype);
                     mRoomSelectTypeChangedAdapter.notifyDataSetChanged();
-
                     break;
                 case MSG_CHECK_DOORBELL_ONLINE_STATU:
                     if(currentSmartDoorBell!=null){
@@ -266,11 +272,6 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
         }
     };
     private Handler mHandler = new WeakRefHandler(mCallback);
-
-    @Override
-    public void onPointerCaptureChanged(boolean hasCapture) {
-
-    }
 
     public class MyLocationListener extends BDAbstractLocationListener {
         @Override
@@ -301,12 +302,6 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
         initDatas();
         initEvents();
     }
-    private Timer refreshTimer = null;
-    private TimerTask refreshTask = null;
-    private static final int TIME_DIFFERENCE_BETWEEN_MESSAGE_INTERVALS = 10000;
-    private SmartDev currentSmartDoorBell;
-    private String seachedDoorbellmac;
-    private boolean isRunSeachDoorbell=false;
     private void startTimer() {
         if (refreshTimer == null) {
             refreshTimer = new Timer();
@@ -621,6 +616,8 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
         } else if (deviceType.equalsIgnoreCase("LKRT")) {
             deviceType = DeviceTypeConstant.TYPE.TYPE_ROUTER;
             dev.setType(deviceType);
+            //路由器默认在线状态
+            dev.setStatus("在线");
             Router router = new Router();
             Log.i(TAG, "获取绑定的设备" + manager.getDeviceList().size());
             if (deviceName == null || deviceName.equals("")) {
@@ -833,23 +830,14 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
         });
         layout_roomselect_changed_ype.setAdapter(mRoomSelectTypeChangedAdapter);
         currentRecentDeviceShowStyle = Perfence.getPerfence(Perfence.HOMEPAGE_DEVICE_SHOW_STYLE);
-        mDeviceAdapter.setTopList(datasTop);
-        mDeviceAdapter.setBottomList(datasBottom);
-        mDeviceAdapter.notifyDataSetChanged();
-        scroll_inner_wrap.smoothScrollTo(0, 0);
-        mRoomSelectTypeChangedAdapter.setTopList(datasTop);
-        mRoomSelectTypeChangedAdapter.setBottomList(datasBottom);
-        mRoomSelectTypeChangedAdapter.notifyDataSetChanged();
-        if (currentRecentDeviceShowStyle.equals(Perfence.HOMEPAGE_DEVICE_SHOW_STYLE_NORMAL)) {
+        if (currentRecentDeviceShowStyle.equals(Perfence.HOMEPAGE_DEVICE_SHOW_STYLE_CHANGE)) {
+            layout_roomselect_normal.setVisibility(View.GONE);
+            layout_roomselect_changed_ype.setVisibility(View.VISIBLE);
+            scroll_inner_wrap.smoothScrollTo(0, 0);
+        }else {
             layout_roomselect_normal.setVisibility(View.VISIBLE);
             layout_roomselect_changed_ype.setVisibility(View.GONE);
-            scroll_inner_wrap.smoothScrollTo(0, 0);
-        } else if (currentRecentDeviceShowStyle.equals(Perfence.HOMEPAGE_DEVICE_SHOW_STYLE_CHANGE)) {
-            layout_roomselect_normal.setVisibility(View.GONE);
-            layout_roomselect_changed_ype.setVisibility(View.VISIBLE);
-        } else {
-            layout_roomselect_normal.setVisibility(View.GONE);
-            layout_roomselect_changed_ype.setVisibility(View.VISIBLE);
+            layout_roomselect_normal.smoothScrollTo(0, 0);
         }
         initDefaultTempaturePm25();
         if (isLogin) {
@@ -959,14 +947,13 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
                 break;
         }
     }
-
     private void setRoomNormalLayout() {
         int size = datasTop.size() + datasBottom.size();
-        int length = 92;
+        int length = 65;
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
         float density = dm.density;
-        int gridviewWidth = (int) (size * (length + 1) * density);
+        int gridviewWidth = (int) (size * (length + 15) * density);
         int itemWidth = (int) (length * density);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                 gridviewWidth, LinearLayout.LayoutParams.MATCH_PARENT);
@@ -986,29 +973,45 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
     }
 
     private void initDatas() {
-        Intent bindIntent = new Intent(SmartHomeMainActivity.this, LocalConnectService.class);
-        startService(bindIntent);
-        try {
-            bindService(bindIntent, connection, BIND_AUTO_CREATE);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        initConnectService();
         initManager();
+        initExperienceCenterDevice();
+        initMqttSdk();
         datasTop = new ArrayList<>();
         datasBottom = new ArrayList<>();
         mDeviceAdapter = new HomepageGridViewAdapter(this, datasTop, datasBottom);
         mRoomSelectTypeChangedAdapter = new HomepageRoomShowTypeChangedViewAdapter(this, datasTop, datasBottom);
-        mExperienceCenterDeviceList = new ArrayList<>();
-        ExperienceCenterDevice oneDevice = new ExperienceCenterDevice();
-        oneDevice.setDeviceName("智能门锁");
-        oneDevice.setOnline(true);
-        mExperienceCenterDeviceList.add(oneDevice);
-        oneDevice = new ExperienceCenterDevice();
-        oneDevice.setDeviceName("智能网关");
-        oneDevice.setOnline(true);
-        mExperienceCenterDeviceList.add(oneDevice);
-        mExperienceCenterListAdapter = new ExperienceCenterListAdapter(this, mExperienceCenterDeviceList, true);
-        listview_experience_center.setOnItemClickListener(mExperienceCenterListClickListener);
+        login();
+        initListener();
+        layout_roomselect_normal.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                switch (motionEvent.getAction()){
+                    case MotionEvent.ACTION_DOWN:
+                    case MotionEvent.ACTION_MOVE:
+                        scroll_inner_wrap.setCanScroll(false);
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        scroll_inner_wrap.setCanScroll(true);
+                        break;
+                }
+                return false;
+            }
+        });
+
+    }
+
+    private void login() {
+        String phoneNumber = Perfence.getPerfence(Perfence.PERFENCE_PHONE);
+        String password = Perfence.getPerfence(Perfence.USER_PASSWORD);
+        Log.i(TAG, "phoneNumber=" + phoneNumber + "password=" + password);
+        if (!password.equals("")) {
+            Perfence.setPerfence(AppConstant.USER_LOGIN, false);
+            manager.login(phoneNumber, password);
+        }
+    }
+
+    private void initMqttSdk() {
         DeplinkSDK.initSDK(getApplicationContext(), Perfence.SDK_APP_KEY);
         manager = DeplinkSDK.getSDKManager();
         ec = new EventCallback() {
@@ -1022,6 +1025,7 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
                         User user = manager.getUserInfo();
                         Perfence.setPerfence(Perfence.USER_PASSWORD, user.getPassword());
                         Perfence.setPerfence(Perfence.PERFENCE_PHONE, user.getName());
+                        Perfence.setPerfence(AppConstant.USER.USER_GETIMAGE_FROM_SERVICE,false);
                         Perfence.setPerfence(AppConstant.USER_LOGIN, true);
                         mRoomManager.updateRooms();
                         break;
@@ -1043,6 +1047,17 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
                 super.connectionLost(throwable);
                 Perfence.setPerfence(AppConstant.USER_LOGIN, false);
                 isLogin = false;
+                DataSupport.deleteAll(SmartDev.class);
+                DataSupport.deleteAll(GatwayDevice.class);
+                DataSupport.deleteAll(Room.class);
+                DataSupport.deleteAll(Record.class);
+                DataSupport.deleteAll(Router.class);
+                datasTop.clear();
+                datasBottom.clear();
+                mDeviceAdapter.setTopList(datasTop);
+                mDeviceAdapter.setBottomList(datasBottom);
+                mDeviceAdapter.notifyDataSetChanged();
+                mRoomSelectTypeChangedAdapter.notifyDataSetChanged();
                 new AlertDialog(SmartHomeMainActivity.this).builder().setTitle("账号异地登录")
                         .setMsg("当前账号已在其它设备上登录,是否重新登录")
                         .setPositiveButton("确认", new View.OnClickListener() {
@@ -1058,14 +1073,30 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
                 }).show();
             }
         };
-        String phoneNumber = Perfence.getPerfence(Perfence.PERFENCE_PHONE);
-        String password = Perfence.getPerfence(Perfence.USER_PASSWORD);
-        Log.i(TAG, "phoneNumber=" + phoneNumber + "password=" + password);
-        if (!password.equals("")) {
-            Perfence.setPerfence(AppConstant.USER_LOGIN, false);
-            manager.login(phoneNumber, password);
+    }
+
+    private void initExperienceCenterDevice() {
+        mExperienceCenterDeviceList = new ArrayList<>();
+        ExperienceCenterDevice oneDevice = new ExperienceCenterDevice();
+        oneDevice.setDeviceName("智能门锁");
+        oneDevice.setOnline(true);
+        mExperienceCenterDeviceList.add(oneDevice);
+        oneDevice = new ExperienceCenterDevice();
+        oneDevice.setDeviceName("智能网关");
+        oneDevice.setOnline(true);
+        mExperienceCenterDeviceList.add(oneDevice);
+        mExperienceCenterListAdapter = new ExperienceCenterListAdapter(this, mExperienceCenterDeviceList, true);
+        listview_experience_center.setOnItemClickListener(mExperienceCenterListClickListener);
+    }
+
+    private void initConnectService() {
+        Intent bindIntent = new Intent(SmartHomeMainActivity.this, LocalConnectService.class);
+        startService(bindIntent);
+        try {
+            bindService(bindIntent, connection, BIND_AUTO_CREATE);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        initListener();
     }
 
     private void initManager() {
@@ -1183,30 +1214,30 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
     }
 
     private void initViews() {
-        scroll_inner_wrap = (MyScrollView) findViewById(R.id.scroll_inner_wrap);
-        layout_devices = (LinearLayout) findViewById(R.id.layout_devices);
-        layout_rooms = (LinearLayout) findViewById(R.id.layout_rooms);
-        layout_personal_center = (LinearLayout) findViewById(R.id.layout_personal_center);
-        deviceGridView = (GridView) findViewById(R.id.grid);
-        listview_experience_center = (ListView) findViewById(R.id.listview_experience_center);
-        imageview_devices = (ImageView) findViewById(R.id.imageview_devices);
-        imageview_home_page = (ImageView) findViewById(R.id.imageview_home_page);
-        imageview_rooms = (ImageView) findViewById(R.id.imageview_rooms);
-        imageview_personal_center = (ImageView) findViewById(R.id.imageview_personal_center);
-        layout_experience_center_top = (RelativeLayout) findViewById(R.id.layout_experience_center_top);
-        textview_change_show_type = (FrameLayout) findViewById(R.id.textview_change_show_type);
-        textview_home = (TextView) findViewById(R.id.textview_home);
-        textview_device = (TextView) findViewById(R.id.textview_device);
-        textview_room = (TextView) findViewById(R.id.textview_room);
-        textview_mine = (TextView) findViewById(R.id.textview_mine);
-        textview_city = (TextView) findViewById(R.id.textview_city);
-        textview_tempature = (TextView) findViewById(R.id.textview_tempature);
-        textview_pm25 = (TextView) findViewById(R.id.textview_pm25);
-        layout_roomselect_normal = (HorizontalScrollView) findViewById(R.id.layout_roomselect_normal);
-        layout_roomselect_changed_ype = (NonScrollableListView) findViewById(R.id.layout_roomselect_changed_ype);
-        layout_weather = (RelativeLayout) findViewById(R.id.layout_weather);
-        empty_recently_device = (RelativeLayout) findViewById(R.id.empty_recently_device);
-        add_equiment = (ImageView) findViewById(R.id.add_equiment);
+        scroll_inner_wrap = findViewById(R.id.scroll_inner_wrap);
+        layout_devices = findViewById(R.id.layout_devices);
+        layout_rooms = findViewById(R.id.layout_rooms);
+        layout_personal_center = findViewById(R.id.layout_personal_center);
+        deviceGridView = findViewById(R.id.grid);
+        listview_experience_center = findViewById(R.id.listview_experience_center);
+        imageview_devices = findViewById(R.id.imageview_devices);
+        imageview_home_page = findViewById(R.id.imageview_home_page);
+        imageview_rooms = findViewById(R.id.imageview_rooms);
+        imageview_personal_center = findViewById(R.id.imageview_personal_center);
+        layout_experience_center_top = findViewById(R.id.layout_experience_center_top);
+        textview_change_show_type = findViewById(R.id.textview_change_show_type);
+        textview_home = findViewById(R.id.textview_home);
+        textview_device = findViewById(R.id.textview_device);
+        textview_room = findViewById(R.id.textview_room);
+        textview_mine = findViewById(R.id.textview_mine);
+        textview_city = findViewById(R.id.textview_city);
+        textview_tempature = findViewById(R.id.textview_tempature);
+        textview_pm25 = findViewById(R.id.textview_pm25);
+        layout_roomselect_normal = findViewById(R.id.layout_roomselect_normal);
+        layout_roomselect_changed_ype = findViewById(R.id.layout_roomselect_changed_ype);
+        layout_weather = findViewById(R.id.layout_weather);
+        empty_recently_device = findViewById(R.id.empty_recently_device);
+        add_equiment = findViewById(R.id.add_equiment);
     }
 
     @Override
@@ -1279,9 +1310,6 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
                     layout_roomselect_normal.setVisibility(View.VISIBLE);
                     layout_roomselect_changed_ype.setVisibility(View.GONE);
                     layout_roomselect_normal.smoothScrollTo(0, 0);
-                    mDeviceAdapter.setTopList(datasTop);
-                    mDeviceAdapter.setBottomList(datasBottom);
-                    mDeviceAdapter.notifyDataSetChanged();
                 }
                 break;
         }

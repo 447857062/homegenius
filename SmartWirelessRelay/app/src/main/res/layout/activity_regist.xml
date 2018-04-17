@@ -12,7 +12,7 @@
         titlelayout:edit_text_show="false"
         titlelayout:return_image_show="true"
         titlelayout:menu_image_show="false"
-        titlelayout:title_text="注册"
+        titlelayout:title_text="立即注册"
         android:layout_height="@dimen/title_bar_height"
         />
 
@@ -59,12 +59,13 @@
                     android:layout_centerVertical="true"
                     android:src="@drawable/accountnumbericon" />
 
-                <EditText
+                <com.deplink.boruSmart.view.edittext.ClearEditText
                     android:id="@+id/edittext_input_phone_number"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/input_layout_input_margin_left_image"
+                    android:maxLength="18"
                     android:layout_toRightOf="@+id/image_person"
                     android:background="@null"
                     android:gravity="center_vertical"
@@ -227,30 +228,4 @@
         android:text="注册"
         android:textColor="@color/white"
         android:textSize="@dimen/login_button_text_size" />
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="@dimen/text_user_protocal_margin_buttom"
-        android:gravity="center_horizontal">
-
-        <TextView
-            android:id="@+id/textview_i_read"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="我已阅读并同意"
-            android:textColor="@color/huise"
-            android:textSize="@dimen/text_size_smallest" />
-
-        <TextView
-            android:id="@+id/textview_protocal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/textview_i_read"
-            android:text="《智能家居协议条款》"
-            android:textColor="@color/room_type_text"
-            android:textSize="@dimen/text_size_smallest" />
-    </RelativeLayout>
 </RelativeLayout>

@@ -162,7 +162,7 @@
                     <TextView
                         android:id="@+id/textview_room_top_title"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="@dimen/layout_content_margin_left_right"
                         android:gravity="center_vertical"
@@ -203,6 +203,7 @@
                     android:layout_below="@+id/layout_room_top"
                     android:alpha="0.9"
                     android:background="@drawable/homepage_halfrectangle_buttom_background">
+
                     <HorizontalScrollView
                         android:id="@+id/layout_roomselect_normal"
                         android:layout_width="match_parent"
@@ -212,26 +213,26 @@
                         android:fadingEdge="none"
                         android:focusable="false"
                         android:overScrollMode="never"
-                        android:paddingLeft="@dimen/layout_content_margin_left_right"
-                        android:paddingRight="@dimen/layout_content_margin_left_right"
+                        android:layout_marginLeft="@dimen/layout_content_margin_left_right"
+                        android:layout_marginRight="@dimen/layout_content_margin_left_right"
                         android:scrollbars="none">
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="@dimen/homepage_room_type_margin_button"
-                            android:layout_marginTop="@dimen/homepage_room_type_margin_top"
+                            android:layout_gravity="center_vertical"
                             android:background="@color/transparent"
                             android:clickable="false"
                             android:fadingEdge="none"
                             android:focusable="false"
-                            android:gravity="center_vertical"
                             android:orientation="horizontal">
                             <GridView
                                 android:id="@+id/grid"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
                                 android:fadingEdge="none"
                                 android:gravity="center_vertical|left"
+                                android:horizontalSpacing="15dp"
                                 android:listSelector="@color/transparent"
                                 android:numColumns="auto_fit" />
                         </LinearLayout>
@@ -246,13 +247,14 @@
                         android:listSelector="@color/transparent"
                         android:overScrollMode="never"
                         android:visibility="gone" />
+
                     <include
                         android:id="@+id/empty_recently_device"
                         layout="@layout/empty_recently_device_layout"
                         android:layout_width="match_parent"
                         android:layout_height="75dp"
                         android:gravity="center_vertical|left"
-                        android:visibility="gone" />
+                         />
                 </RelativeLayout>
 
                 <RelativeLayout

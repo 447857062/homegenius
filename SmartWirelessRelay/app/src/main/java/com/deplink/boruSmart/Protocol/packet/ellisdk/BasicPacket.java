@@ -35,11 +35,6 @@ public class BasicPacket {
     //回调调用者
     public OnRecvListener listener;
 
-    //设定超时时间
-    private long idleTimeout = 800;
-    //设定重发次数
-    private long resendTimes = 8;
-
     //当前发送次数
     private long sendCount;
     //当前发送时间
@@ -236,7 +231,9 @@ public class BasicPacket {
      * @return
      */
     public boolean isTimeout() {
+        long resendTimes = 8;
         if (sendCount >= resendTimes) {
+            long idleTimeout = 800;
             if (Math.abs(PublicMethod.getTimeMs() - sendTime) > idleTimeout)
                 return true;
         }

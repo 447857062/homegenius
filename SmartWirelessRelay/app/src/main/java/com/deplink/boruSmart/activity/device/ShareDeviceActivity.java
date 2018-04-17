@@ -9,7 +9,6 @@ import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.deplink.boruSmart.Protocol.json.device.share.UserShareInfo;
@@ -25,6 +24,7 @@ import com.deplink.boruSmart.util.WeakRefHandler;
 import com.deplink.boruSmart.view.combinationwidget.TitleLayout;
 import com.deplink.boruSmart.view.dialog.AlertDialog;
 import com.deplink.boruSmart.view.dialog.InputAlertDialog;
+import com.deplink.boruSmart.view.scrollview.NonScrollableListView;
 import com.deplink.boruSmart.view.toast.Ftoast;
 import com.deplink.sdk.android.sdk.DeplinkSDK;
 import com.deplink.sdk.android.sdk.EventCallback;
@@ -43,7 +43,7 @@ import deplink.com.smartwirelessrelay.homegenius.EllESDK.R;
 
 public class ShareDeviceActivity extends Activity  {
     private static final String TAG = "ShareDeviceActivity";
-    private ListView listview_share_user;
+    private NonScrollableListView listview_share_user;
     private DeviceListener mDeviceListener;
     private DeviceManager mDeviceManager;
     private boolean isStartFromExperience;
@@ -170,6 +170,13 @@ public class ShareDeviceActivity extends Activity  {
             if (isUserLogin) {
                 mDeviceManager.readDeviceShareInfo(deviceuid);
             }
+        }else{
+            userInfos.clear();
+            UserShareInfo info=new UserShareInfo();
+            info.setUsername("体验设备");
+            info.setIssuper(1);
+            userInfos.add(info);
+            mAdapter.notifyDataSetChanged();
         }
     }
 
@@ -421,7 +428,7 @@ public class ShareDeviceActivity extends Activity  {
     }
 
     private void initViews() {
-        listview_share_user = (ListView) findViewById(R.id.listview_share_user);
-        layout_title= (TitleLayout) findViewById(R.id.layout_title);
+        listview_share_user = findViewById(R.id.listview_share_user);
+        layout_title= findViewById(R.id.layout_title);
     }
 }

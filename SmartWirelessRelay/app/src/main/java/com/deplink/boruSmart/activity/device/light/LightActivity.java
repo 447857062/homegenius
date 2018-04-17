@@ -55,7 +55,6 @@ public class LightActivity extends Activity implements View.OnClickListener, Sma
     private SDKManager manager;
     private EventCallback ec;
     private boolean isUserLogin;
-    private boolean isOnResume;
     private boolean isStartFromExperience;
     private SmartDev currentSelectLight;
     private TitleLayout layout_title;
@@ -77,11 +76,12 @@ public class LightActivity extends Activity implements View.OnClickListener, Sma
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 lightColorProgress = progress * 2;
-                Log.i(TAG, "lightColorProgress=" + lightColorProgress + "lightBrightnessProgress=" + lightBrightnessProgress);
                 if (isStartFromExperience) {
+                    Log.i(TAG,"lightColorProgress="+lightColorProgress);
                     button_switch_light.setBackgroundResource(R.drawable.lightyellowlight);
-                    float alpha = (float) (lightColorProgress / 200.0);
-                    imageview_switch_bg.setAlpha(alpha);
+                    if(lightColorProgress==0){
+                        button_switch_light.setBackgroundResource(R.drawable.lightwhitelight);
+                    }
                 }
             }
 
@@ -104,7 +104,6 @@ public class LightActivity extends Activity implements View.OnClickListener, Sma
                 if (isStartFromExperience) {
                     button_switch_light.setBackgroundResource(R.drawable.lightwhitelight);
                     float alpha = (float) (lightBrightnessProgress / 200.0);
-                    Log.i(TAG, "alpha=" + alpha);
                     imageview_switch_bg.setAlpha(alpha);
                 }
             }
@@ -195,19 +194,19 @@ public class LightActivity extends Activity implements View.OnClickListener, Sma
     }
 
     private void initViews() {
-        button_switch_light = (ImageView) findViewById(R.id.button_switch_light);
-        progressBarLightYellow = (SeekBar) findViewById(R.id.lightColorProgressBar);
-        progressBarLightWhite = (SeekBar) findViewById(R.id.progressBar_brightness);
-        imageview_lightyellow_reduce = (ImageView) findViewById(R.id.imageview_lightyellow_reduce);
-        imageview_lightyellow_plus = (ImageView) findViewById(R.id.imageview_lightyellow_plus);
-        imageview_lightwhite_reduce = (ImageView) findViewById(R.id.imageview_lightwhite_reduce);
-        imageview_lightwhite_plus = (ImageView) findViewById(R.id.imageview_lightwhite_plus);
-        iamgeview_switch = (ImageView) findViewById(R.id.iamgeview_switch);
-        textview_switch_tips = (TextView) findViewById(R.id.textview_switch_tips);
-        imageview_switch_bg = (ImageView) findViewById(R.id.imageview_switch_bg);
-        layout_brightness_control = (RelativeLayout) findViewById(R.id.layout_brightness_control);
-        layout_lightcolor_control = (RelativeLayout) findViewById(R.id.layout_lightcolor_control);
-        layout_title= (TitleLayout) findViewById(R.id.layout_title);
+        button_switch_light = findViewById(R.id.button_switch_light);
+        progressBarLightYellow = findViewById(R.id.lightColorProgressBar);
+        progressBarLightWhite = findViewById(R.id.progressBar_brightness);
+        imageview_lightyellow_reduce = findViewById(R.id.imageview_lightyellow_reduce);
+        imageview_lightyellow_plus = findViewById(R.id.imageview_lightyellow_plus);
+        imageview_lightwhite_reduce = findViewById(R.id.imageview_lightwhite_reduce);
+        imageview_lightwhite_plus = findViewById(R.id.imageview_lightwhite_plus);
+        iamgeview_switch = findViewById(R.id.iamgeview_switch);
+        textview_switch_tips = findViewById(R.id.textview_switch_tips);
+        imageview_switch_bg = findViewById(R.id.imageview_switch_bg);
+        layout_brightness_control = findViewById(R.id.layout_brightness_control);
+        layout_lightcolor_control = findViewById(R.id.layout_lightcolor_control);
+        layout_title= findViewById(R.id.layout_title);
     }
 
     @Override
@@ -231,7 +230,6 @@ public class LightActivity extends Activity implements View.OnClickListener, Sma
             layout_brightness_control.setVisibility(View.GONE);
         } else {
             currentSelectLight = mSmartLightManager.getCurrentSelectLight();
-
                 int usercount=currentSelectLight.getUserCount();
             usercount++;
                 currentSelectLight.setUserCount(usercount);
@@ -264,7 +262,6 @@ public class LightActivity extends Activity implements View.OnClickListener, Sma
                 }
             }
         }
-        isOnResume = true;
     }
 
     @Override
@@ -374,18 +371,20 @@ public class LightActivity extends Activity implements View.OnClickListener, Sma
                         button_switch_light.setBackgroundResource(R.drawable.lightyellowlight);
                         float alpha = (float) (resultObj.getYellow() / 200.0);
                         Log.i(TAG, "alpha=" + alpha);
-                        button_switch_light.setAlpha(alpha);
-                        if (isOnResume) {
-                            progressBarLightYellow.setProgress(resultObj.getYellow() / 2);
+                        if(alpha>1.0){
+                            alpha=1.0f;
                         }
+                        button_switch_light.setAlpha(alpha);
+                            progressBarLightYellow.setProgress(resultObj.getYellow() / 2);
                     }
                     if (resultObj != null && resultObj.getWhite() != 0) {
                         float alpha = (float) (resultObj.getWhite() / 200.0);
+                        if(alpha>1.0){
+                            alpha=1.0f;
+                        }
                         Log.i(TAG, "alpha=" + alpha);
                         imageview_switch_bg.setAlpha(alpha);
-                        if (isOnResume) {
                             progressBarLightWhite.setProgress(resultObj.getWhite() / 2);
-                        }
                     }
                     if (resultObj != null) {
                         if (resultObj.getOpen() == 1) {
@@ -415,7 +414,7 @@ public class LightActivity extends Activity implements View.OnClickListener, Sma
                             }
                         }
                     }
-                    isOnResume = false;
+
                     break;
             }
             return true;

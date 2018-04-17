@@ -135,12 +135,9 @@ public class ActionListener implements IMqttActionListener {
    */
   @Override
   public void onFailure(IMqttToken token, Throwable exception) {
-	  //System.out.println("onFailure----------->"+exception.getMessage());
-
     if(this.mqttListener != null ){
       this.mqttListener.onFailure(token,exception,action,clientHandle,this.topic);
     }
-
     switch (action) {
       case CONNECT :
         connect(exception);

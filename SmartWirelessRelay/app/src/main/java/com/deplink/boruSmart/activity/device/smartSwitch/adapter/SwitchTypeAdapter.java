@@ -46,13 +46,11 @@ public class SwitchTypeAdapter extends BaseAdapter {
         ViewHolder viewHolder;
         if (convertView == null) {
             viewHolder = new ViewHolder();
-
-
             convertView = LayoutInflater.from(mContext).inflate(
                     R.layout.switch_type_list_item, null);
-            viewHolder.textview_band_name = (TextView) convertView
+            viewHolder.textview_band_name = convertView
                     .findViewById(R.id.textview_band_name);
-            viewHolder.imageview_type = (ImageView) convertView
+            viewHolder.imageview_type = convertView
                     .findViewById(R.id.imageview_type);
             convertView.setTag(viewHolder);
         } else {
@@ -64,10 +62,10 @@ public class SwitchTypeAdapter extends BaseAdapter {
                 viewHolder.imageview_type.setImageResource(R.drawable.switchalltheway);
                 break;
             case DeviceTypeConstant.TYPE_SWITCH_SUBTYPE.SUB_TYPE_SWITCH_TWOWAY:
-                viewHolder.imageview_type.setImageResource(R.drawable.roadswitch);
+                viewHolder.imageview_type.setImageResource(R.drawable.twoswitchicon);
                 break;
             case DeviceTypeConstant.TYPE_SWITCH_SUBTYPE.SUB_TYPE_SWITCH_THREEWAY:
-                viewHolder.imageview_type.setImageResource(R.drawable.threewayswitch);
+                viewHolder.imageview_type.setImageResource(R.drawable.threeswitchicon);
                 break;
             case DeviceTypeConstant.TYPE_SWITCH_SUBTYPE.SUB_TYPE_SWITCH_FOURWAY:
                 viewHolder.imageview_type.setImageResource(R.drawable.fourwayswitch);

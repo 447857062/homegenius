@@ -19,7 +19,6 @@ import deplink.com.smartwirelessrelay.homegenius.EllESDK.R;
 public class AlertDialog {
 	private Context context;
 	private Dialog dialog;
-	private LinearLayout lLayout_bg;
 	private TextView txt_title;
 	private TextView txt_msg;
 	private Button btn_neg;
@@ -41,7 +40,7 @@ public class AlertDialog {
 	public AlertDialog builder() {
 		View view = LayoutInflater.from(context).inflate(
 				R.layout.view_alertdialog, null);
-		lLayout_bg = (LinearLayout) view.findViewById(R.id.lLayout_bg);
+		LinearLayout lLayout_bg = (LinearLayout) view.findViewById(R.id.lLayout_bg);
 		txt_title = (TextView) view.findViewById(R.id.txt_title);
 		txt_title.setVisibility(View.GONE);
 		txt_msg = (TextView) view.findViewById(R.id.txt_msg);

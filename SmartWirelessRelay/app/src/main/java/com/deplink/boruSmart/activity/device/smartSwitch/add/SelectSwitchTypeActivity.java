@@ -6,12 +6,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
-import android.widget.ListView;
 
 import com.deplink.boruSmart.activity.device.smartSwitch.adapter.SwitchTypeAdapter;
 import com.deplink.boruSmart.constant.DeviceTypeConstant;
 import com.deplink.boruSmart.manager.device.smartswitch.SmartSwitchManager;
 import com.deplink.boruSmart.util.qrcode.qrcodecapture.CaptureActivity;
+import com.deplink.boruSmart.view.scrollview.NonScrollableListView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +20,7 @@ import deplink.com.smartwirelessrelay.homegenius.EllESDK.R;
 
 public class SelectSwitchTypeActivity extends Activity implements View.OnClickListener,AdapterView.OnItemClickListener{
     private ImageView image_back;
-    private ListView listview_switch_type;
+    private NonScrollableListView listview_switch_type;
     private SwitchTypeAdapter mTypeAdapter;
     private List<String>typeNames;
     @Override
@@ -34,7 +34,7 @@ public class SelectSwitchTypeActivity extends Activity implements View.OnClickLi
 
     private void initDatas() {
         typeNames=new ArrayList<>();
-        typeNames.add(DeviceTypeConstant.TYPE_SWITCH_SUBTYPE.SUB_TYPE_SWITCH_ONEWAY);
+        //typeNames.add(DeviceTypeConstant.TYPE_SWITCH_SUBTYPE.SUB_TYPE_SWITCH_ONEWAY);
         typeNames.add(DeviceTypeConstant.TYPE_SWITCH_SUBTYPE.SUB_TYPE_SWITCH_TWOWAY);
         typeNames.add(DeviceTypeConstant.TYPE_SWITCH_SUBTYPE.SUB_TYPE_SWITCH_THREEWAY);
         typeNames.add(DeviceTypeConstant.TYPE_SWITCH_SUBTYPE.SUB_TYPE_SWITCH_FOURWAY);
@@ -48,8 +48,8 @@ public class SelectSwitchTypeActivity extends Activity implements View.OnClickLi
     }
 
     private void initViews() {
-        image_back= (ImageView) findViewById(R.id.image_back);
-        listview_switch_type= (ListView) findViewById(R.id.listview_switch_type);
+        image_back= findViewById(R.id.image_back);
+        listview_switch_type= findViewById(R.id.listview_switch_type);
     }
 
     @Override
