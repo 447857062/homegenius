@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 
 import com.deplink.boruSmart.Protocol.json.Room;
+import com.deplink.boruSmart.Protocol.json.device.Device;
 import com.deplink.boruSmart.Protocol.json.device.SmartDev;
 import com.deplink.boruSmart.Protocol.json.device.getway.GatwayDevice;
 import com.deplink.boruSmart.Protocol.packet.ellisdk.BasicPacket;
@@ -69,7 +70,7 @@ import deplink.com.smartwirelessrelay.homegenius.EllESDK.R;
 /**
  * 查看智能设备列表的界面
  */
-public class DeviceNumberActivity extends Activity implements EllE_Listener ,View.OnClickListener{
+public class DeviceNumberActivity extends Activity implements EllE_Listener, View.OnClickListener {
     private static final String TAG = "DeviceNumberActivity";
     private DeviceListAdapter mDeviceAdapter;
     /**
@@ -99,6 +100,7 @@ public class DeviceNumberActivity extends Activity implements EllE_Listener ,Vie
     private Button button_add_device;
     private RelativeLayout layout_experience_center;
     private RelativeLayout layout_empty_view_scroll;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -301,19 +303,21 @@ public class DeviceNumberActivity extends Activity implements EllE_Listener ,Vie
         }
     };
     private Handler mHandler = new WeakRefHandler(mCallback);
-
+    private List<Device> deviceList;
 
     private void updateListview() {
         //更新房间关联的设备,设备状态更新了
-        if(currentRoom.getUid()!=null){
+        if (currentRoom.getUid() != null) {
             currentRoom = DataSupport.where("Uid = ?", currentRoom.getUid()).findFirst(Room.class, true);
         }
         datasTop.clear();
         datasBottom.clear();
         datasTop.addAll(currentRoom.getmGetwayDevices());
         datasBottom.addAll(currentRoom.getmDevices());
-        mDeviceAdapter.setTopList(datasTop);
-        mDeviceAdapter.setBottomList(datasBottom);
+        deviceList.clear();
+        ;
+        deviceList.addAll(datasTop);
+        deviceList.addAll(datasBottom);
         listview_devies.setAdapter(mDeviceAdapter);
         mDeviceAdapter.notifyDataSetChanged();
         listview_devies.setEmptyView(layout_empty_view_scroll);
@@ -343,7 +347,7 @@ public class DeviceNumberActivity extends Activity implements EllE_Listener ,Vie
                 startActivity(new Intent(DeviceNumberActivity.this, ManageRoomActivity.class));
             }
         });
-        mDeviceListener=new DeviceListener() {
+        mDeviceListener = new DeviceListener() {
         };
         initManager();
         currentRoom = mRoomManager.getCurrentSelectedRoom();
@@ -353,7 +357,8 @@ public class DeviceNumberActivity extends Activity implements EllE_Listener ,Vie
         }
         datasTop = new ArrayList<>();
         datasBottom = new ArrayList<>();
-        mDeviceAdapter = new DeviceListAdapter(this, datasTop, datasBottom);
+        deviceList = new ArrayList<>();
+        mDeviceAdapter = new DeviceListAdapter(this, deviceList);
         initListViewItemClicklistener();
         ellESDK = EllESDK.getInstance();
         ellESDK.InitEllESDK(this, this);
@@ -365,69 +370,71 @@ public class DeviceNumberActivity extends Activity implements EllE_Listener ,Vie
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 DeviceManager.getInstance().setStartFromExperience(false);
-                if (datasTop.size() < (position + 1)) {
-                    //智能设备
-                    String deviceType = datasBottom.get(position - datasTop.size()).getType();
-                    Log.i(TAG, "智能设备类型=" + deviceType);
-                    mDeviceManager.setCurrentSelectSmartDevice(datasBottom.get(position - datasTop.size()));
-                    switch (deviceType) {
-                        case DeviceTypeConstant.TYPE.TYPE_LOCK:
-                            SmartLockManager.getInstance().setCurrentSelectLock(datasBottom.get(position - datasTop.size()));
-                            startActivity(new Intent(DeviceNumberActivity.this, SmartLockActivity.class));
-                            break;
-                        case DeviceTypeConstant.TYPE.TYPE_MENLING:
-                            DoorbeelManager.getInstance().setCurrentSelectedDoorbeel(datasBottom.get(position - datasTop.size()));
-                            startActivity(new Intent(DeviceNumberActivity.this, DoorbeelMainActivity.class));
-                            break;
-                        case "IRMOTE_V2":
-                        case DeviceTypeConstant.TYPE.TYPE_REMOTECONTROL:
-                            RemoteControlManager.getInstance().setmSelectRemoteControlDevice(datasBottom.get(position - datasTop.size()));
-                            startActivity(new Intent(DeviceNumberActivity.this, RemoteControlActivity.class));
-                            break;
-                        case DeviceTypeConstant.TYPE.TYPE_AIR_REMOTECONTROL:
-                            RemoteControlManager.getInstance().setmSelectRemoteControlDevice(datasBottom.get(position - datasTop.size()));
-                            startActivity(new Intent(DeviceNumberActivity.this, AirRemoteControlMianActivity.class));
-                            break;
-                        case DeviceTypeConstant.TYPE.TYPE_ROUTER:
-                            RouterManager.getInstance().setCurrentSelectedRouter(datasBottom.get(position - datasTop.size()));
-                            startActivity(new Intent(DeviceNumberActivity.this, RouterMainActivity.class));
-                            break;
-                        case DeviceTypeConstant.TYPE.TYPE_TV_REMOTECONTROL:
-                            RemoteControlManager.getInstance().setmSelectRemoteControlDevice(datasBottom.get(position - datasTop.size()));
-                            startActivity(new Intent(DeviceNumberActivity.this, TvMainActivity.class));
-                            break;
-                        case DeviceTypeConstant.TYPE.TYPE_TVBOX_REMOTECONTROL:
-                            RemoteControlManager.getInstance().setmSelectRemoteControlDevice(datasBottom.get(position - datasTop.size()));
-                            startActivity(new Intent(DeviceNumberActivity.this, TvBoxMainActivity.class));
-                            break;
-                        case DeviceTypeConstant.TYPE.TYPE_LIGHT:
-                            SmartLightManager.getInstance().setCurrentSelectLight(datasBottom.get(position - datasTop.size()));
-                            startActivity(new Intent(DeviceNumberActivity.this, LightActivity.class));
-                            break;
-                        case DeviceTypeConstant.TYPE.TYPE_SWITCH:
-                            SmartSwitchManager.getInstance().setCurrentSelectSmartDevice(datasBottom.get(position - datasTop.size()));
-                            String deviceSubType = datasBottom.get(position - datasTop.size()).getSubType();
-                            switch (deviceSubType) {
-                                case DeviceTypeConstant.TYPE_SWITCH_SUBTYPE.SUB_TYPE_SWITCH_ONEWAY:
-                                    startActivity(new Intent(DeviceNumberActivity.this, SwitchOneActivity.class));
-                                    break;
-                                case DeviceTypeConstant.TYPE_SWITCH_SUBTYPE.SUB_TYPE_SWITCH_TWOWAY:
-                                    startActivity(new Intent(DeviceNumberActivity.this, SwitchTwoActivity.class));
-                                    break;
-                                case DeviceTypeConstant.TYPE_SWITCH_SUBTYPE.SUB_TYPE_SWITCH_THREEWAY:
-                                    startActivity(new Intent(DeviceNumberActivity.this, SwitchThreeActivity.class));
-                                    break;
-                                case DeviceTypeConstant.TYPE_SWITCH_SUBTYPE.SUB_TYPE_SWITCH_FOURWAY:
-                                    startActivity(new Intent(DeviceNumberActivity.this, SwitchFourActivity.class));
-                                    break;
-                            }
-                            break;
-                    }
-                } else {
-                    //网关设备
-                    GetwayManager.getInstance().setCurrentSelectGetwayDevice(datasTop.get(position));
-                    startActivity(new Intent(DeviceNumberActivity.this, GetwayDeviceActivity.class));
+                //智能设备
+                String deviceType = deviceList.get(position).getType();
+                Log.i(TAG, "智能设备类型=" + deviceType);
+                if (!deviceType.equals(DeviceTypeConstant.TYPE.TYPE_SMART_GETWAY)) {
+                    mDeviceManager.setCurrentSelectSmartDevice((SmartDev) deviceList.get(position));
                 }
+                switch (deviceType) {
+                    case DeviceTypeConstant.TYPE.TYPE_LOCK:
+                        SmartLockManager.getInstance().setCurrentSelectLock((SmartDev) deviceList.get(position));
+                        startActivity(new Intent(DeviceNumberActivity.this, SmartLockActivity.class));
+                        break;
+                    case DeviceTypeConstant.TYPE.TYPE_MENLING:
+                        DoorbeelManager.getInstance().setCurrentSelectedDoorbeel((SmartDev) deviceList.get(position));
+                        startActivity(new Intent(DeviceNumberActivity.this, DoorbeelMainActivity.class));
+                        break;
+                    case "IRMOTE_V2":
+                    case DeviceTypeConstant.TYPE.TYPE_REMOTECONTROL:
+                        RemoteControlManager.getInstance().setmSelectRemoteControlDevice((SmartDev) deviceList.get(position));
+                        startActivity(new Intent(DeviceNumberActivity.this, RemoteControlActivity.class));
+                        break;
+                    case DeviceTypeConstant.TYPE.TYPE_AIR_REMOTECONTROL:
+                        RemoteControlManager.getInstance().setmSelectRemoteControlDevice((SmartDev) deviceList.get(position));
+                        startActivity(new Intent(DeviceNumberActivity.this, AirRemoteControlMianActivity.class));
+                        break;
+                    case DeviceTypeConstant.TYPE.TYPE_ROUTER:
+                        RouterManager.getInstance().setCurrentSelectedRouter((SmartDev) deviceList.get(position));
+                        startActivity(new Intent(DeviceNumberActivity.this, RouterMainActivity.class));
+                        break;
+                    case DeviceTypeConstant.TYPE.TYPE_TV_REMOTECONTROL:
+                        RemoteControlManager.getInstance().setmSelectRemoteControlDevice((SmartDev) deviceList.get(position));
+                        startActivity(new Intent(DeviceNumberActivity.this, TvMainActivity.class));
+                        break;
+                    case DeviceTypeConstant.TYPE.TYPE_TVBOX_REMOTECONTROL:
+                        RemoteControlManager.getInstance().setmSelectRemoteControlDevice((SmartDev) deviceList.get(position));
+                        startActivity(new Intent(DeviceNumberActivity.this, TvBoxMainActivity.class));
+                        break;
+                    case DeviceTypeConstant.TYPE.TYPE_LIGHT:
+                        SmartLightManager.getInstance().setCurrentSelectLight(datasBottom.get(position - datasTop.size()));
+                        startActivity(new Intent(DeviceNumberActivity.this, LightActivity.class));
+                        break;
+                    case DeviceTypeConstant.TYPE.TYPE_SMART_GETWAY:
+                        //网关设备
+                        GetwayManager.getInstance().setCurrentSelectGetwayDevice((GatwayDevice) deviceList.get(position));
+                        startActivity(new Intent(DeviceNumberActivity.this, GetwayDeviceActivity.class));
+                        break;
+                    case DeviceTypeConstant.TYPE.TYPE_SWITCH:
+                        SmartSwitchManager.getInstance().setCurrentSelectSmartDevice((SmartDev) deviceList.get(position));
+                        String deviceSubType = datasBottom.get(position - datasTop.size()).getSubType();
+                        switch (deviceSubType) {
+                            case DeviceTypeConstant.TYPE_SWITCH_SUBTYPE.SUB_TYPE_SWITCH_ONEWAY:
+                                startActivity(new Intent(DeviceNumberActivity.this, SwitchOneActivity.class));
+                                break;
+                            case DeviceTypeConstant.TYPE_SWITCH_SUBTYPE.SUB_TYPE_SWITCH_TWOWAY:
+                                startActivity(new Intent(DeviceNumberActivity.this, SwitchTwoActivity.class));
+                                break;
+                            case DeviceTypeConstant.TYPE_SWITCH_SUBTYPE.SUB_TYPE_SWITCH_THREEWAY:
+                                startActivity(new Intent(DeviceNumberActivity.this, SwitchThreeActivity.class));
+                                break;
+                            case DeviceTypeConstant.TYPE_SWITCH_SUBTYPE.SUB_TYPE_SWITCH_FOURWAY:
+                                startActivity(new Intent(DeviceNumberActivity.this, SwitchFourActivity.class));
+                                break;
+                        }
+                        break;
+                }
+
             }
         });
     }
@@ -486,7 +493,7 @@ public class DeviceNumberActivity extends Activity implements EllE_Listener ,Vie
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.layout_experience_center:
                 DeviceManager.getInstance().setExperCenterStartFromDevice(true);
                 startActivity(new Intent(this, ExperienceDevicesActivity.class));

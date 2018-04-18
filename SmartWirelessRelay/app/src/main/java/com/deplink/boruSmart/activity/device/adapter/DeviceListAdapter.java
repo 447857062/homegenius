@@ -1,7 +1,6 @@
 package com.deplink.boruSmart.activity.device.adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,9 +8,9 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.deplink.boruSmart.constant.DeviceTypeConstant;
+import com.deplink.boruSmart.Protocol.json.device.Device;
 import com.deplink.boruSmart.Protocol.json.device.SmartDev;
-import com.deplink.boruSmart.Protocol.json.device.getway.GatwayDevice;
+import com.deplink.boruSmart.constant.DeviceTypeConstant;
 
 import java.util.List;
 
@@ -19,91 +18,33 @@ import deplink.com.smartwirelessrelay.homegenius.EllESDK.R;
 
 public class DeviceListAdapter extends BaseAdapter {
     private static final String TAG = "DeviceListAdapter";
-    private List<GatwayDevice> listTop = null;
-    private List<SmartDev> listBottom = null;
+    private List<Device> mDeviceList = null;
     private Context mContext;
-    private final int TOP_ITEM = 0;
-    private int TopCount = 0;
-    public DeviceListAdapter(Context mContext, List<GatwayDevice> list,
-                             List<SmartDev> datasOther) {
+    public DeviceListAdapter(Context mContext,List<Device> deviceList) {
         this.mContext = mContext;
-        this.listTop = list;
-        this.listBottom = datasOther;
-        TopCount = listTop.size();
-    }
-    public void setTopList(List<GatwayDevice> list) {
-        this.listTop = list;
-        TopCount = listTop.size();
-    }
-
-    public void setBottomList(List<SmartDev> list) {
-        this.listBottom = list;
+        this.mDeviceList = deviceList;
     }
 
     @Override
     public int getCount() {
-        int count = 0;
-        if (listTop != null && listBottom != null) {
-            count = TopCount + listBottom.size();
-        }
-        if (listTop != null && listBottom == null) {
-            count = TopCount;
-        }
-        if (listBottom != null && listTop == null) {
-            count = listBottom.size();
-        }
-        return count;
+
+        return mDeviceList.size();
     }
 
     @Override
     public Object getItem(int position) {
-        if (position >= 0 && position < TopCount) {
-            return listTop.get(position);
-        }
-        if (position > TopCount) {
-            return listBottom.get(position - TopCount);
-        }
-        if (position <= 1) {
-            return null;
-        }
-        return null;
+
+        return mDeviceList.get(position);
     }
     @Override
     public long getItemId(int position) {
         return position;
     }
     @Override
-    public int getViewTypeCount() {
-        return 2;
-    }
-    @Override
-    public int getItemViewType(int position) {
-        int BOTTOM_ITEM = 1;
-        if (position < TopCount)
-            return TOP_ITEM;
-        else
-            return BOTTOM_ITEM;
-    }
-    @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder;
         if (convertView == null) {
             viewHolder = new ViewHolder();
-            if (getItemViewType(position) == TOP_ITEM) {
-                if(position==0){
-                    convertView = LayoutInflater.from(mContext).inflate(
-                            R.layout.devicelist_device_item_first, null);
-                }else{
-                    convertView = LayoutInflater.from(mContext).inflate(
-                            R.layout.devicelist_device_item, null);
-                }
-                viewHolder.textview_device_status = (TextView) convertView
-                        .findViewById(R.id.textview_device_status);
-                viewHolder.imageview_device_type = (ImageView) convertView
-                        .findViewById(R.id.imageview_device_type);
-                viewHolder.textview_device_name = (TextView) convertView
-                        .findViewById(R.id.textview_device_name);
-            } else {
                 if(position==0){
                     convertView = LayoutInflater.from(mContext).inflate(
                             R.layout.devicelist_smartdevice_item, null);
@@ -111,46 +52,21 @@ public class DeviceListAdapter extends BaseAdapter {
                     convertView = LayoutInflater.from(mContext).inflate(
                             R.layout.devicelist_smartdevice_item, null);
                 }
-                viewHolder.textview_device_status = (TextView) convertView
+                viewHolder.textview_device_status = convertView
                         .findViewById(R.id.textview_device_status);
-                viewHolder.textview_device_name = (TextView) convertView
+                viewHolder.textview_device_name = convertView
                         .findViewById(R.id.textview_device_name);
-                viewHolder.imageview_device_type = (ImageView) convertView
+                viewHolder.imageview_device_type = convertView
                         .findViewById(R.id.imageview_device_type);
-            }
+
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-        //智能网关
-        if (position < TopCount) {
-            String statu = listTop.get(position).getStatus();
-            Log.i(TAG,"设备列表适配器网关状态="+statu);
-            if (statu != null) {
-                switch (statu){
-                    case "on":
-                        statu = "在线";
-                        break;
-                    case "off":
-                        statu = "离线";
-                        break;
-                }
-            } else {
-                statu = "离线";
-            }
-            viewHolder.textview_device_status.setText(statu);
-            viewHolder.imageview_device_type.setImageResource(R.drawable.gatewayicon);
-            if(statu.equalsIgnoreCase("在线")){
-                viewHolder.textview_device_status.setTextColor(0xFF60a3f6);
-            }else{
-                viewHolder.textview_device_status.setTextColor(0xFF999999);
-            }
-            String deviceName = listTop.get(position).getName();
-            viewHolder.textview_device_name.setText(deviceName);
-        } else {
-            String deviceType = listBottom.get(position - TopCount).getType();
-            String deviceName = listBottom.get(position - TopCount).getName();
-            String deviceStatu = listBottom.get(position - TopCount).getStatus();
+
+            String deviceType = mDeviceList.get(position).getType();
+            String deviceName = mDeviceList.get(position).getName();
+            String deviceStatu = mDeviceList.get(position).getStatus();
             if (deviceStatu != null) {
                 switch (deviceStatu){
                     case "on":
@@ -178,7 +94,7 @@ public class DeviceListAdapter extends BaseAdapter {
             }
             viewHolder.textview_device_status.setText(deviceStatu);
             getDeviceTypeImage(viewHolder, deviceType, position);
-        }
+
         return convertView;
     }
     private void getDeviceTypeImage(ViewHolder viewHolder, String deviceType, int position) {
@@ -195,7 +111,7 @@ public class DeviceListAdapter extends BaseAdapter {
                 break;
            case DeviceTypeConstant.TYPE.TYPE_SWITCH:
                String deviceSubType;
-               deviceSubType = listBottom.get(position - TopCount).getSubType();
+               deviceSubType = ((SmartDev)mDeviceList.get(position)).getSubType();
                if(deviceSubType==null){
                    return;
                }
@@ -231,6 +147,9 @@ public class DeviceListAdapter extends BaseAdapter {
                 break;
             case  DeviceTypeConstant.TYPE.TYPE_LIGHT:
                 viewHolder.imageview_device_type.setImageResource(R.drawable.equipmentlight);
+                break;
+            case  DeviceTypeConstant.TYPE.TYPE_SMART_GETWAY:
+                viewHolder.imageview_device_type.setImageResource(R.drawable.gatewayicon);
                 break;
         }
     }
