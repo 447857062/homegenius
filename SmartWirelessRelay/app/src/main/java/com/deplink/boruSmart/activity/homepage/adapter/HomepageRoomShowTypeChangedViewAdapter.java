@@ -161,23 +161,16 @@ public class HomepageRoomShowTypeChangedViewAdapter extends BaseAdapter {
                 break;
         }
     }
-
-
-
     @Override
     public long getItemId(int position) {
         return position;
     }
-
-
     @Override
     public Object getItem(int position) {
-
         return mDeviceList.get(position);
     }
     @Override
     public int getCount() {
-
         return mDeviceList.size();
     }
 

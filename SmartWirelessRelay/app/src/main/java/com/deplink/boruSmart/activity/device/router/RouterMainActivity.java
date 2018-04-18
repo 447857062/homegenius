@@ -259,8 +259,7 @@ public class RouterMainActivity extends Activity implements View.OnClickListener
             mRouterManager.getCurrentSelectedRouter().setStatus("离线");
             ContentValues values = new ContentValues();
             values.put("Status", "离线");
-            final int affectColumn = DataSupport.updateAll(SmartDev.class, values, "Uid=?", mRouterManager.getCurrentSelectedRouter().getUid());
-            Log.i(TAG, "更新设备在线状态 :离线 affectColumn=" + affectColumn);
+            DataSupport.updateAll(SmartDev.class, values, "Uid=?", mRouterManager.getCurrentSelectedRouter().getUid());
             textview_cpu_use.setText("--");
             textview_memory_use.setText("--");
             textview_upload_speed.setText("--");
@@ -294,10 +293,9 @@ public class RouterMainActivity extends Activity implements View.OnClickListener
                         textview_show_query_device_result.setVisibility(View.VISIBLE);
                         iamgeview_no_connected_device.setImageResource(R.drawable.routeroffline);
                         textview_show_query_device_result.setText("路由器设备处于离线状态");
-                    }
-                    if (frame_blacklist_content.getVisibility() == View.VISIBLE) {
-                        layout_no_connected_device.setVisibility(View.VISIBLE);
+                    }else if (frame_blacklist_content.getVisibility() == View.VISIBLE) {
                         layout_no_blacklist.setVisibility(View.VISIBLE);
+                        textview_show_blacklist_device_result.setVisibility(View.VISIBLE);
                         iamgeview_no_blacklist.setImageResource(R.drawable.routeroffline);
                         textview_show_blacklist_device_result.setText("路由器设备处于离线状态");
                     }
@@ -331,12 +329,31 @@ public class RouterMainActivity extends Activity implements View.OnClickListener
         public void run() {
             if (frame_devicelist_content_content.getVisibility() == View.VISIBLE) {
                 layout_no_connected_device.setVisibility(View.VISIBLE);
-                textview_show_query_device_result.setVisibility(View.VISIBLE);
-                iamgeview_no_connected_device.setImageResource(R.drawable.routeroffline);
+                if(!deviceOnline){
+                    textview_show_query_device_result.setVisibility(View.VISIBLE);
+                    textview_show_query_device_result.setText("路由器设备处于离线状态");
+                    iamgeview_no_connected_device.setImageResource(R.drawable.routeroffline);
+                }
+                if(mConnectedDevices.size()==0){
+                    iamgeview_no_connected_device.setVisibility(View.VISIBLE);
+                    iamgeview_no_connected_device.setImageResource(R.drawable.router);
+                }else{
+                    iamgeview_no_connected_device.setVisibility(View.GONE);
+                }
             }
             if (frame_blacklist_content.getVisibility() == View.VISIBLE) {
                 layout_no_blacklist.setVisibility(View.VISIBLE);
-                textview_show_blacklist_device_result.setVisibility(View.VISIBLE);
+                if(!deviceOnline){
+                    textview_show_blacklist_device_result.setVisibility(View.VISIBLE);
+                    textview_show_blacklist_device_result.setText("路由器设备处于离线状态");
+                    iamgeview_no_blacklist.setImageResource(R.drawable.routeroffline);
+                }
+                if(mBlackListDatas.size()==0){
+                    iamgeview_no_blacklist.setVisibility(View.VISIBLE);
+                    iamgeview_no_blacklist.setImageResource(R.drawable.blacklist);
+                }else{
+                    iamgeview_no_blacklist.setVisibility(View.GONE);
+                }
             }
         }
     };
@@ -352,10 +369,11 @@ public class RouterMainActivity extends Activity implements View.OnClickListener
         layout_title.setEditImageClickListener(new TitleLayout.EditImageClickListener() {
             @Override
             public void onEditImagePressed() {
+
                 if (isStartFromExperience) {
                     startActivity(new Intent(RouterMainActivity.this, RouterSettingActivity.class));
                 } else {
-                    if (mRouterManager.getCurrentSelectedRouter().getStatus().equals("在线")) {
+                    if (deviceOnline) {
                         startActivity(new Intent(RouterMainActivity.this, RouterSettingActivity.class));
                     } else {
                         //本地配置先连路由器
@@ -774,8 +792,10 @@ public class RouterMainActivity extends Activity implements View.OnClickListener
         public void run() {
             Log.i(TAG, "connectStatus isConnectLocalRouter=" + isConnectLocalRouter);
             if (!isConnectLocalRouter) {
+                Ftoast.create(RouterMainActivity.this).setText("连接本地路由器失败,请连接本地路由器wifi后重试").show();
                 new InputAlertDialog(RouterMainActivity.this).builder()
                         .setEditTextHint("请输入wifi密码")
+                        .setTitle("连接本地路由器wifi")
                         .setPositiveButton("确认", new InputAlertDialog.onSureBtnClickListener() {
                             @Override
                             public void onSureBtnClicked(String result) {
@@ -786,7 +806,7 @@ public class RouterMainActivity extends Activity implements View.OnClickListener
                     public void onClick(View v) {
 
                     }
-                }).show();
+                }).setMsg("连接当前配置的路由器的wifi").show();
             }
         }
     };
@@ -796,9 +816,13 @@ public class RouterMainActivity extends Activity implements View.OnClickListener
      */
     private void checkRouter() {
         InputAlertDialog dialog = new InputAlertDialog(this);
+        dialog.builder();
+        dialog.setTitle("输入管理员密码");
+        dialog.setEditText("admin");
         dialog.setPositiveButton("确定", new InputAlertDialog.onSureBtnClickListener() {
             @Override
             public void onSureBtnClicked(String password) {
+                Log.i(TAG,"onSureBtnClicked password="+password);
                 if (!password.equals("")) {
                     showCheckRouterLoadingDialog();
                     isConnectLocalRouter = false;
@@ -808,9 +832,7 @@ public class RouterMainActivity extends Activity implements View.OnClickListener
                             Log.i(TAG, "checkRouter " + response.body().toString());
                             CheckResponse result = response.body();
                             String token = response.headers().get("Set-Cookie");
-                            int preferenceMode;
-                            preferenceMode = MODE_PRIVATE;
-                            SharedPreferences sp = getSharedPreferences("user", preferenceMode);
+                            SharedPreferences sp = getSharedPreferences("user", Perfence.MODE_PRIVATE);
                             SharedPreferences.Editor editor = sp.edit();
                             editor.putString("token", token);
                             editor.apply();
@@ -831,8 +853,12 @@ public class RouterMainActivity extends Activity implements View.OnClickListener
 
             }
         });
+        dialog.setNegativeButton("取消", new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
         dialog.show();
-        dialog.setTitle("输入管理员密码");
-        dialog.setEditTextHint("admin");
     }
 }

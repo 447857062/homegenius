@@ -410,7 +410,7 @@ public class RouterSettingActivity extends Activity implements View.OnClickListe
                                 if (!NetUtil.isNetAvailable(RouterSettingActivity.this)) {
                                     Ftoast.create(RouterSettingActivity.this).setText( "网络连接已断开").show();
                                 } else {
-                                    if (isUserLogin) {
+                                    if (isUserLogin && mRouterManager.getCurrentSelectedRouter().getStatus().equals("在线")) {
                                         if(channels!=null){
                                             mHomeGenius.reboot(channels);
                                         }

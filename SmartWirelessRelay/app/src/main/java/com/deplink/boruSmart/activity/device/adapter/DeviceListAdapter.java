@@ -24,16 +24,12 @@ public class DeviceListAdapter extends BaseAdapter {
         this.mContext = mContext;
         this.mDeviceList = deviceList;
     }
-
     @Override
     public int getCount() {
-
         return mDeviceList.size();
     }
-
     @Override
     public Object getItem(int position) {
-
         return mDeviceList.get(position);
     }
     @Override
@@ -47,7 +43,7 @@ public class DeviceListAdapter extends BaseAdapter {
             viewHolder = new ViewHolder();
                 if(position==0){
                     convertView = LayoutInflater.from(mContext).inflate(
-                            R.layout.devicelist_smartdevice_item, null);
+                            R.layout.devicelist_device_item_first, null);
                 }else{
                     convertView = LayoutInflater.from(mContext).inflate(
                             R.layout.devicelist_smartdevice_item, null);

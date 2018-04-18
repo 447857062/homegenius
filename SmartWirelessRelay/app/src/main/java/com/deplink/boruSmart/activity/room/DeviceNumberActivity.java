@@ -363,8 +363,6 @@ public class DeviceNumberActivity extends Activity implements EllE_Listener, Vie
         ellESDK = EllESDK.getInstance();
         ellESDK.InitEllESDK(this, this);
     }
-
-
     private void initListViewItemClicklistener() {
         listview_devies.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -434,7 +432,6 @@ public class DeviceNumberActivity extends Activity implements EllE_Listener, Vie
                         }
                         break;
                 }
-
             }
         });
     }
@@ -461,11 +458,9 @@ public class DeviceNumberActivity extends Activity implements EllE_Listener, Vie
             seachedDoorbellmac = seachedDoorbellmac.replaceAll("0x", "").trim();
             seachedDoorbellmac = seachedDoorbellmac.replaceAll(" ", "-");
         }
-
         Log.i(TAG, "onRecvEllEPacket" + seachedDoorbellmac);
         updateDoorbellStatu();
     }
-
     @Override
     public void searchDevCBS(long mac, byte type, byte ver) {
         Log.e(TAG, "mac:" + mac + "type:" + type + "ver:" + ver);
@@ -477,7 +472,6 @@ public class DeviceNumberActivity extends Activity implements EllE_Listener, Vie
         }
         updateDoorbellStatu();
     }
-
     private void updateDoorbellStatu() {
         if (currentSmartDoorBell != null) {
             if (seachedDoorbellmac != null && seachedDoorbellmac.equalsIgnoreCase(currentSmartDoorBell.getMac())) {
@@ -490,7 +484,6 @@ public class DeviceNumberActivity extends Activity implements EllE_Listener, Vie
             }
         }
     }
-
     @Override
     public void onClick(View view) {
         switch (view.getId()) {

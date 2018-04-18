@@ -89,6 +89,11 @@ public class InputAlertDialog {
         edittext_input.setHint(title);
         return this;
     }
+    public InputAlertDialog setEditText(String title) {
+        edittext_input.setText(title);
+        edittext_input.setSelection(title.length());
+        return this;
+    }
 
 
     public InputAlertDialog setCancelable(boolean cancel) {
@@ -136,9 +141,15 @@ public class InputAlertDialog {
     }
 
     private void setLayout() {
-        txt_title.setVisibility(View.VISIBLE);
-        btn_pos.setVisibility(View.VISIBLE);
-        btn_neg.setVisibility(View.VISIBLE);
+        if(txt_title!=null){
+            txt_title.setVisibility(View.VISIBLE);
+        }
+        if(btn_neg!=null){
+            btn_neg.setVisibility(View.VISIBLE);
+        }
+        if(btn_pos!=null){
+            btn_pos.setVisibility(View.VISIBLE);
+        }
     }
 
     public void show() {

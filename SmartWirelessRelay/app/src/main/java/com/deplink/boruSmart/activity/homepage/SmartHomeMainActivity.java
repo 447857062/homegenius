@@ -254,6 +254,9 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
                     mRoomList.addAll(mRoomManager.queryRooms());
                     setRoomNormalLayout();
                     initRecentlyDeviceData();
+                    while (deviceList.size() > 5) {
+                        deviceList.remove(deviceList.size()-1);
+                    }
                     mDeviceAdapter.notifyDataSetChanged();
                     ListViewUtil.setListViewHeight(layout_roomselect_changed_ype);
                     mRoomSelectTypeChangedAdapter.notifyDataSetChanged();
@@ -339,6 +342,9 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
                             }
                             virtualDeviceUpdate();
                             initRecentlyDeviceData();
+                            while (deviceList.size() > 5) {
+                                deviceList.remove(deviceList.size()-1);
+                            }
                             mDeviceAdapter.notifyDataSetChanged();
                             ListViewUtil.setListViewHeight(layout_roomselect_changed_ype);
                             mRoomSelectTypeChangedAdapter.notifyDataSetChanged();
@@ -421,7 +427,6 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
                             }
                         }
                     }
-
                     @Override
                     public void onFailure(Call<JsonObject> call, Throwable t) {
 
@@ -431,7 +436,6 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
             }
         }).start();
     }
-
     public void initWaetherData() {
         new Thread(new Runnable() {
             @Override
@@ -455,7 +459,6 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
                             }
                         }
                     }
-
                     @Override
                     public void onFailure(Call<JsonObject> call, Throwable t) {
 
@@ -807,6 +810,9 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
         deviceList.addAll(datasTop);
         deviceList.addAll(datasBottom);
         sortRecentUsedDevice(deviceList);
+        while (deviceList.size() > 5) {
+            deviceList.remove(deviceList.size()-1);
+        }
         mDeviceAdapter.notifyDataSetChanged();
         mRoomSelectTypeChangedAdapter.notifyDataSetChanged();
     }
@@ -828,7 +834,6 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
         deviceList.addAll(datasTop);
         deviceList.addAll(datasBottom);
         sortRecentUsedDevice(deviceList);
-        //之前的列表已经排序好了所以只要比较最后一个使用次数就行了
         while (deviceList.size() > 5) {
             deviceList.remove(deviceList.size()-1);
         }
@@ -1302,6 +1307,9 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
                 deviceList.addAll(datasTop);
                 deviceList.addAll(datasBottom);
                 sortRecentUsedDevice(deviceList);
+                while (deviceList.size() > 5) {
+                    deviceList.remove(deviceList.size()-1);
+                }
                 mDeviceAdapter.notifyDataSetChanged();
                 mRoomSelectTypeChangedAdapter.notifyDataSetChanged();
                 break;

@@ -115,13 +115,15 @@ public class EditRemoteDevicesActivity extends Activity implements View.OnClickL
         } else {
             deviceName = RemoteControlManager.getInstance().getmSelectRemoteControlDevice().getName();
             String realRcUid= RemoteControlManager.getInstance().getmSelectRemoteControlDevice().getRemotecontrolUid();
-            SmartDev realRc=DataSupport.where("Uid=?", realRcUid).findFirst(SmartDev.class,true);
-            List<Room> rooms = realRc.getRooms();
-            if (rooms.size() > 0) {
-                textview_select_room_name.setText(rooms.get(0).getRoomName());
-            } else {
-                textview_select_room_name.setText("未选择");
+            if(realRcUid!=null){
+                SmartDev realRc=DataSupport.where("Uid=?", realRcUid).findFirst(SmartDev.class,true);
+                List<Room> rooms = realRc.getRooms();
+                if (rooms.size() > 0) {
+                    textview_select_room_name.setText(rooms.get(0).getRoomName());
+                } else {
+                    textview_select_room_name.setText("未选择");
 
+                }
             }
             List<SmartDev> remoteControls = RemoteControlManager.getInstance().findRemotecontrolDevice();
             if (remoteControls.size() > 0) {
@@ -196,11 +198,9 @@ public class EditRemoteDevicesActivity extends Activity implements View.OnClickL
                 action="";
             }
         };
-
         mRemoteControlManager=RemoteControlManager.getInstance();
         mRemoteControlManager.InitRemoteControlManager(this);
     }
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -211,7 +211,6 @@ public class EditRemoteDevicesActivity extends Activity implements View.OnClickL
         if(!isStartFromExperience){
             deviceUid=mRemoteControlManager.getmSelectRemoteControlDevice().getUid();
         }
-
     }
 
     @Override
@@ -228,22 +227,18 @@ public class EditRemoteDevicesActivity extends Activity implements View.OnClickL
             @Override
             public void onSuccess(SDKAction action) {
             }
-
             @Override
             public void onBindSuccess(SDKAction action, String devicekey) {
             }
-
             @Override
             public void deviceOpSuccess(String op, String deviceKey) {
                 super.deviceOpSuccess(op, deviceKey);
 
             }
-
             @Override
             public void onFailure(SDKAction action, Throwable throwable) {
 
             }
-
             @Override
             public void connectionLost(Throwable throwable) {
                 super.connectionLost(throwable);
@@ -265,22 +260,20 @@ public class EditRemoteDevicesActivity extends Activity implements View.OnClickL
             }
         };
     }
-
     private void initViews() {
-        textview_select_remotecontrol_name = (TextView) findViewById(R.id.textview_select_remotecontrol_name);
-        button_delete_device = (TextView) findViewById(R.id.button_delete_device);
-        textview_select_room_name = (TextView) findViewById(R.id.textview_select_room_name);
-        layout_remotecontrol_select = (RelativeLayout) findViewById(R.id.layout_remotecontrol_select);
-        layout_remotecontrol_list = (RelativeLayout) findViewById(R.id.layout_remotecontrol_list);
-        imageview_remotecontrol_arror_right = (ImageView) findViewById(R.id.imageview_remotecontrol_arror_right);
-        listview_select_remotecontrol = (ListView) findViewById(R.id.listview_select_remotecontrol);
-        edittext_add_device_input_name = (ClearEditText) findViewById(R.id.edittext_add_device_input_name);
-        layout_title= (TitleLayout) findViewById(R.id.layout_title);
+        textview_select_remotecontrol_name = findViewById(R.id.textview_select_remotecontrol_name);
+        button_delete_device = findViewById(R.id.button_delete_device);
+        textview_select_room_name = findViewById(R.id.textview_select_room_name);
+        layout_remotecontrol_select = findViewById(R.id.layout_remotecontrol_select);
+        layout_remotecontrol_list = findViewById(R.id.layout_remotecontrol_list);
+        imageview_remotecontrol_arror_right = findViewById(R.id.imageview_remotecontrol_arror_right);
+        listview_select_remotecontrol = findViewById(R.id.listview_select_remotecontrol);
+        edittext_add_device_input_name = findViewById(R.id.edittext_add_device_input_name);
+        layout_title= findViewById(R.id.layout_title);
     }
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-
             case R.id.layout_remotecontrol_select:
                 if (layout_remotecontrol_list.getVisibility() == View.VISIBLE) {
                     layout_remotecontrol_list.setVisibility(View.GONE);

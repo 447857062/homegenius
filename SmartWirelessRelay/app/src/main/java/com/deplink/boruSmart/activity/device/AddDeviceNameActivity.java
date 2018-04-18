@@ -210,6 +210,7 @@ public class AddDeviceNameActivity extends Activity implements View.OnClickListe
     }
     private String titleString;
     private void setDeviceNameDefault() {
+        Log.i(TAG,"setDeviceNameDefault deviceType="+deviceType);
         switch (deviceType) {
             case DeviceTypeConstant.TYPE.TYPE_LOCK:
                 titleString="智能门锁";
@@ -635,10 +636,21 @@ public class AddDeviceNameActivity extends Activity implements View.OnClickListe
             if (deviceType.equals(DeviceTypeConstant.TYPE.TYPE_SMART_GETWAY)) {
                 layout_remotecontrol_select.setVisibility(View.GONE);
                 layout_getway_select.setVisibility(View.GONE);
-            } else if (deviceType.equalsIgnoreCase(DeviceTypeConstant.TYPE.TYPE_MENLING)) {
+            }
+            else if (deviceType.equalsIgnoreCase(DeviceTypeConstant.TYPE.TYPE_ROUTER)) {
                 layout_remotecontrol_select.setVisibility(View.GONE);
                 layout_getway_select.setVisibility(View.GONE);
-            } else {
+            }
+            else if (deviceType.equalsIgnoreCase(DeviceTypeConstant.TYPE.TYPE_GETWAY_OR_ROUTER)) {
+                layout_remotecontrol_select.setVisibility(View.GONE);
+                layout_getway_select.setVisibility(View.GONE);
+            }
+
+            else if (deviceType.equalsIgnoreCase(DeviceTypeConstant.TYPE.TYPE_MENLING)) {
+                layout_remotecontrol_select.setVisibility(View.GONE);
+                layout_getway_select.setVisibility(View.GONE);
+            }
+            else {
                 layout_remotecontrol_select.setVisibility(View.GONE);
                 layout_getway_select.setVisibility(View.VISIBLE);
                 if (mGetways.size() > 0) {
