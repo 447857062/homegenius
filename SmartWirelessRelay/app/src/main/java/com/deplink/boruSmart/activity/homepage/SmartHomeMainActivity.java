@@ -703,7 +703,6 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
         super.onResume();
         receverDoorbellMsg=false;
         isLogin = Perfence.getBooleanPerfence(AppConstant.USER_LOGIN);
-
         manager.addEventCallback(ec);
         mRoomList.clear();
         mRoomList.addAll(mRoomManager.queryRooms());
@@ -719,10 +718,9 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Log.i(TAG, "OnItemClickListener position=" + position);
                 mDeviceManager.setStartFromExperience(false);
-                if (datasTop.size() < (position + 1)) {
                     //智能设备
-                    String deviceType = datasBottom.get(position - datasTop.size()).getType();
-                    String deviceSubType = datasBottom.get(position - datasTop.size()).getSubType();
+                    String deviceType = deviceList.get(position).getType();
+
                     Log.i(TAG, "智能设备类型=" + deviceType);
                     mDeviceManager.setCurrentSelectSmartDevice(datasBottom.get(position - datasTop.size()));
                     switch (deviceType) {
@@ -730,6 +728,11 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
                             //设置当前选中的门锁设备
                             mSmartLockManager.setCurrentSelectLock(datasBottom.get(position - datasTop.size()));
                             startActivity(new Intent(SmartHomeMainActivity.this, SmartLockActivity.class));
+                            break;
+                        case DeviceTypeConstant.TYPE.TYPE_SMART_GETWAY:
+                            //网关设备
+                            GetwayManager.getInstance().setCurrentSelectGetwayDevice(datasTop.get(position));
+                            startActivity(new Intent(SmartHomeMainActivity.this, GetwayDeviceActivity.class));
                             break;
                         case "IRMOTE_V2":
                         case DeviceTypeConstant.TYPE.TYPE_REMOTECONTROL:
@@ -754,6 +757,7 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
                             break;
                         case DeviceTypeConstant.TYPE.TYPE_SWITCH:
                             SmartSwitchManager.getInstance().setCurrentSelectSmartDevice(datasBottom.get(position - datasTop.size()));
+                            String deviceSubType =((SmartDev) deviceList.get(position )).getSubType();
                             switch (deviceSubType) {
                                 case DeviceTypeConstant.TYPE_SWITCH_SUBTYPE.SUB_TYPE_SWITCH_ONEWAY:
                                     startActivity(new Intent(SmartHomeMainActivity.this, SwitchOneActivity.class));
@@ -778,11 +782,7 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
                             startActivity(new Intent(SmartHomeMainActivity.this, LightActivity.class));
                             break;
                     }
-                } else {
-                    //网关设备
-                    GetwayManager.getInstance().setCurrentSelectGetwayDevice(datasTop.get(position));
-                    startActivity(new Intent(SmartHomeMainActivity.this, GetwayDeviceActivity.class));
-                }
+
             }
         });
         layout_roomselect_changed_ype.setAdapter(mRoomSelectTypeChangedAdapter);
@@ -805,6 +805,7 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
         deviceList.clear();
         deviceList.addAll(datasTop);
         deviceList.addAll(datasBottom);
+        sortRecentUsedDevice(deviceList);
         mDeviceAdapter.notifyDataSetChanged();
         mRoomSelectTypeChangedAdapter.notifyDataSetChanged();
     }
@@ -1039,8 +1040,6 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
                 datasTop.clear();
                 datasBottom.clear();
                 deviceList.clear();
-                deviceList.addAll(datasTop);
-                deviceList.addAll(datasBottom);
                 mDeviceAdapter.notifyDataSetChanged();
                 mRoomSelectTypeChangedAdapter.notifyDataSetChanged();
                 new AlertDialog(SmartHomeMainActivity.this).builder().setTitle("账号异地登录")
@@ -1300,6 +1299,7 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
                 deviceList.clear();
                 deviceList.addAll(datasTop);
                 deviceList.addAll(datasBottom);
+                sortRecentUsedDevice(deviceList);
                 mDeviceAdapter.notifyDataSetChanged();
                 mRoomSelectTypeChangedAdapter.notifyDataSetChanged();
                 break;
