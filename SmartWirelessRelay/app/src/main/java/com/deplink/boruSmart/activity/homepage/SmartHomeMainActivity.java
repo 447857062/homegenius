@@ -31,6 +31,7 @@ import com.baidu.location.BDLocation;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.deplink.boruSmart.Protocol.json.Room;
+import com.deplink.boruSmart.Protocol.json.device.Device;
 import com.deplink.boruSmart.Protocol.json.device.ExperienceCenterDevice;
 import com.deplink.boruSmart.Protocol.json.device.SmartDev;
 import com.deplink.boruSmart.Protocol.json.device.getway.GatwayDevice;
@@ -693,53 +694,9 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
         }
         dev.save();
     }
-    /**
-     * 按照序号排序
-     */
-    public List<GatwayDevice> sortGatwayDevices(List<GatwayDevice> mGatwayDevices) {
-        Collections.sort(mGatwayDevices, new Comparator<GatwayDevice>() {
-            @Override
-            public int compare(GatwayDevice o1, GatwayDevice o2) {
-                //compareTo就是比较两个值，如果前者大于后者，返回1，等于返回0，小于返回-1
-                if (o1.getUseCount() == o2.getUseCount()) {
-                    return 0;
-                }
-                if (o1.getUseCount() > o2.getUseCount()) {
-                    return -1;
-                }
-                if (o1.getUseCount() < o2.getUseCount()) {
-                    return 1;
-                }
-                return 0;
-            }
-        });
-        return mGatwayDevices;
-    }
 
     private String currentRecentDeviceShowStyle;
 
-    /**
-     * 按照序号排序
-     */
-    public List<SmartDev> sortSmartDevices(List<SmartDev> mGatwayDevices) {
-        Collections.sort(mGatwayDevices, new Comparator<SmartDev>() {
-            @Override
-            public int compare(SmartDev o1, SmartDev o2) {
-                //compareTo就是比较两个值，如果前者大于后者，返回1，等于返回0，小于返回-1
-                if (o1.getUserCount() == o2.getUserCount()) {
-                    return 0;
-                }
-                if (o1.getUserCount() > o2.getUserCount()) {
-                    return -1;
-                }
-                if (o1.getUserCount() < o2.getUserCount()) {
-                    return 1;
-                }
-                return 0;
-            }
-        });
-        return mGatwayDevices;
-    }
     private boolean receverDoorbellMsg=false;
     @Override
     protected void onResume() {
@@ -844,6 +801,12 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
             mRoomManager.updateRooms();
         }
         startTimer();
+        setRoomNormalLayout();
+        deviceList.clear();
+        deviceList.addAll(datasTop);
+        deviceList.addAll(datasBottom);
+        mDeviceAdapter.notifyDataSetChanged();
+        mRoomSelectTypeChangedAdapter.notifyDataSetChanged();
     }
 
     private void initRecentlyDeviceData() {
@@ -859,20 +822,13 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
         for (int i = 0; i < mSmartDevs.size(); i++) {
             datasBottom.add(mSmartDevs.get(i));
         }
-        sortGatwayDevices(datasTop);
-        sortSmartDevices(datasBottom);
-        while (datasTop.size() + datasBottom.size() > 5) {
-            if (datasTop.size() > 0) {
-                if (datasTop.get(datasTop.size() - 1).getUseCount() > datasBottom.get(datasBottom.size() - 1).getUserCount()) {
-                    datasBottom.remove(datasBottom.size() - 1);
-                } else {
-                    datasTop.remove(datasTop.size() - 1);
-                }
-            } else {
-                if (datasBottom.size() > 5) {
-                    datasBottom.remove(datasBottom.size() - 1);
-                }
-            }
+        deviceList.clear();
+        deviceList.addAll(datasTop);
+        deviceList.addAll(datasBottom);
+        sortRecentUsedDevice(deviceList);
+        //之前的列表已经排序好了所以只要比较最后一个使用次数就行了
+        while (deviceList.size() > 5) {
+            deviceList.remove(deviceList.size()-1);
         }
         currentRecentDeviceShowStyle = Perfence.getPerfence(Perfence.HOMEPAGE_DEVICE_SHOW_STYLE);
         if (datasTop.size() + datasBottom.size() == 0) {
@@ -883,6 +839,33 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
             empty_recently_device.setVisibility(View.GONE);
         }
         setRoomNormalLayout();
+    }
+
+    private List<Device> sortRecentUsedDevice(List<Device>deviceList) {
+        Collections.sort(deviceList, new Comparator<Device>() {
+            @Override
+            public int compare(Device o1, Device o2) {
+                if (o1.getUserCount() == o2.getUserCount()) {
+                    if(o1.getType().equalsIgnoreCase(DeviceTypeConstant.TYPE.TYPE_SMART_GETWAY)
+                            && o2.getType().equalsIgnoreCase(DeviceTypeConstant.TYPE.TYPE_SMART_GETWAY
+                    )){
+                        return 0;
+                    }else if(o1.getType().equalsIgnoreCase(DeviceTypeConstant.TYPE.TYPE_SMART_GETWAY)
+                            && !o2.getType().equalsIgnoreCase(DeviceTypeConstant.TYPE.TYPE_SMART_GETWAY)){
+                        return -1;
+                    }
+                    return 1;
+                }
+                if (o1.getUserCount() > o2.getUserCount()) {
+                    return -1;
+                }
+                if (o1.getUserCount() < o2.getUserCount()) {
+                    return 1;
+                }
+                return 0;
+            }
+        });
+        return deviceList;
     }
 
     private void initDefaultTempaturePm25() {
@@ -971,7 +954,7 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
         manager.removeEventCallback(ec);
         manager.onDestroy();
     }
-
+    private List<Device>deviceList;
     private void initDatas() {
         initConnectService();
         initManager();
@@ -979,8 +962,9 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
         initMqttSdk();
         datasTop = new ArrayList<>();
         datasBottom = new ArrayList<>();
-        mDeviceAdapter = new HomepageGridViewAdapter(this, datasTop, datasBottom);
-        mRoomSelectTypeChangedAdapter = new HomepageRoomShowTypeChangedViewAdapter(this, datasTop, datasBottom);
+        deviceList=new ArrayList<>();
+        mDeviceAdapter = new HomepageGridViewAdapter(this,deviceList);
+        mRoomSelectTypeChangedAdapter = new HomepageRoomShowTypeChangedViewAdapter(this,deviceList);
         login();
         initListener();
         layout_roomselect_normal.setOnTouchListener(new View.OnTouchListener() {
@@ -1054,8 +1038,9 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
                 DataSupport.deleteAll(Router.class);
                 datasTop.clear();
                 datasBottom.clear();
-                mDeviceAdapter.setTopList(datasTop);
-                mDeviceAdapter.setBottomList(datasBottom);
+                deviceList.clear();
+                deviceList.addAll(datasTop);
+                deviceList.addAll(datasBottom);
                 mDeviceAdapter.notifyDataSetChanged();
                 mRoomSelectTypeChangedAdapter.notifyDataSetChanged();
                 new AlertDialog(SmartHomeMainActivity.this).builder().setTitle("账号异地登录")
@@ -1245,7 +1230,6 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
         super.onPause();
         mRoomManager.removeRoomListener(mRoomListener);
         mDeviceManager.removeDeviceListener(mDeviceListener);
-        mDeviceManager.stopQueryStatu();
         mRemoteControlManager.removeRemoteControlListener(mRemoteControlListener);
         manager.removeEventCallback(ec);
         stopTimer();
@@ -1272,6 +1256,7 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
                 Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
                 exitTime = System.currentTimeMillis();
             } else {
+                mDeviceManager.stopQueryStatu();
                 AppManager.getAppManager().finishAllActivity();
             }
             return true;
@@ -1311,6 +1296,12 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
                     layout_roomselect_changed_ype.setVisibility(View.GONE);
                     layout_roomselect_normal.smoothScrollTo(0, 0);
                 }
+                setRoomNormalLayout();
+                deviceList.clear();
+                deviceList.addAll(datasTop);
+                deviceList.addAll(datasBottom);
+                mDeviceAdapter.notifyDataSetChanged();
+                mRoomSelectTypeChangedAdapter.notifyDataSetChanged();
                 break;
         }
     }

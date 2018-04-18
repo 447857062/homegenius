@@ -15,96 +15,103 @@
         titlelayout:title_text="WIFi设置"
         android:layout_height="@dimen/title_bar_height"
         />
-    <RelativeLayout
+    <com.deplink.boruSmart.view.scrollview.MyScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/layout_title"
+        android:scrollbars="none"
         android:background="@color/page_background">
-        <!--2.4G WIFI设置-->
         <RelativeLayout
-            android:id="@+id/layout_wifi_24"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/layout_item_content_height"
-            android:layout_marginTop="@dimen/layout_room_content_margin_top"
+            android:layout_height="match_parent"
+            >
+            <!--2.4G WIFI设置-->
+            <RelativeLayout
+                android:id="@+id/layout_wifi_24"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/layout_item_content_height"
+                android:layout_marginTop="@dimen/layout_room_content_margin_top"
 
-            android:background="@drawable/button_delete_background"
-            android:paddingLeft="@dimen/layout_content_margin_left_right"
-            android:paddingRight="@dimen/layout_content_margin_left_right">
+                android:background="@drawable/button_delete_background"
+                android:paddingLeft="@dimen/layout_content_margin_left_right"
+                android:paddingRight="@dimen/layout_content_margin_left_right">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:text="2.4G WIFI设置"
-                android:textColor="@color/room_type_text"
-                android:textSize="@dimen/text_size_small" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="2.4G WIFI设置"
+                    android:textColor="@color/room_type_text"
+                    android:textSize="@dimen/text_size_small" />
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:src="@drawable/gotoicon" />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/gotoicon" />
 
 
+            </RelativeLayout>
+
+            <!--访客WIFI设置-->
+            <RelativeLayout
+                android:id="@+id/layout_wifi_custom"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/layout_item_content_height"
+                android:layout_below="@+id/layout_wifi_24"
+                android:layout_marginTop="@dimen/list_item_textview_margin_top"
+                android:background="@drawable/button_delete_background"
+                android:paddingLeft="@dimen/layout_content_margin_left_right"
+                android:paddingRight="@dimen/layout_content_margin_left_right">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="访客WIFI设置"
+                    android:textColor="@color/room_type_text"
+                    android:textSize="@dimen/text_size_small" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/gotoicon" />
+
+
+            </RelativeLayout>
+            <!--信号强度设置-->
+            <RelativeLayout
+                android:id="@+id/layout_signal_strength"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/layout_item_content_height"
+                android:layout_below="@+id/layout_wifi_custom"
+                android:layout_marginTop="@dimen/list_item_textview_margin_top"
+                android:background="@drawable/button_delete_background"
+                android:paddingLeft="@dimen/layout_content_margin_left_right"
+                android:paddingRight="@dimen/layout_content_margin_left_right">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="信号强度设置"
+                    android:textColor="@color/room_type_text"
+                    android:textSize="@dimen/text_size_small" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/gotoicon" />
+
+
+            </RelativeLayout>
         </RelativeLayout>
+    </com.deplink.boruSmart.view.scrollview.MyScrollView>
 
-        <!--访客WIFI设置-->
-        <RelativeLayout
-            android:id="@+id/layout_wifi_custom"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/layout_item_content_height"
-            android:layout_below="@+id/layout_wifi_24"
-            android:layout_marginTop="@dimen/list_item_textview_margin_top"
-            android:background="@drawable/button_delete_background"
-            android:paddingLeft="@dimen/layout_content_margin_left_right"
-            android:paddingRight="@dimen/layout_content_margin_left_right">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:text="访客WIFI设置"
-                android:textColor="@color/room_type_text"
-                android:textSize="@dimen/text_size_small" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:src="@drawable/gotoicon" />
-
-
-        </RelativeLayout>
-        <!--信号强度设置-->
-        <RelativeLayout
-            android:id="@+id/layout_signal_strength"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/layout_item_content_height"
-            android:layout_below="@+id/layout_wifi_custom"
-            android:layout_marginTop="@dimen/list_item_textview_margin_top"
-            android:background="@drawable/button_delete_background"
-            android:paddingLeft="@dimen/layout_content_margin_left_right"
-            android:paddingRight="@dimen/layout_content_margin_left_right">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:text="信号强度设置"
-                android:textColor="@color/room_type_text"
-                android:textSize="@dimen/text_size_small" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:src="@drawable/gotoicon" />
-
-
-        </RelativeLayout>
-    </RelativeLayout>
 
 </RelativeLayout>

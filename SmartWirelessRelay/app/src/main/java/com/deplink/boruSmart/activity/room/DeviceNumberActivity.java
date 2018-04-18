@@ -255,7 +255,6 @@ public class DeviceNumberActivity extends Activity implements EllE_Listener ,Vie
         super.onResume();
         isStartFromExperience = mDeviceManager.isStartFromExperience();
         mDeviceManager.addDeviceListener(mDeviceListener);
-        mDeviceManager.startQueryStatu();
         initListener();
         queryDeviceStatu();
         updateListview();
@@ -326,7 +325,6 @@ public class DeviceNumberActivity extends Activity implements EllE_Listener ,Vie
         super.onPause();
         manager.removeEventCallback(ec);
         mDeviceManager.removeDeviceListener(mDeviceListener);
-        mDeviceManager.stopQueryStatu();
         ellESDK.stopSearchDevs();
         stopTimer();
     }

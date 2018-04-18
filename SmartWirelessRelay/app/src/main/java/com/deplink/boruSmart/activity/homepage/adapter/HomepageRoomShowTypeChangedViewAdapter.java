@@ -9,8 +9,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.deplink.boruSmart.Protocol.json.device.Device;
 import com.deplink.boruSmart.Protocol.json.device.SmartDev;
-import com.deplink.boruSmart.Protocol.json.device.getway.GatwayDevice;
 import com.deplink.boruSmart.constant.DeviceTypeConstant;
 
 import java.util.List;
@@ -23,23 +23,10 @@ import deplink.com.smartwirelessrelay.homegenius.EllESDK.R;
 
 public class HomepageRoomShowTypeChangedViewAdapter extends BaseAdapter {
     private Context mContext;
-    private List<GatwayDevice> listTop = null;
-    private List<SmartDev> listBottom = null;
-    private final int TOP_ITEM = 0;
-    private int TopCount = 0;
-    public HomepageRoomShowTypeChangedViewAdapter(Context mContext,List<GatwayDevice> list, List<SmartDev> datasOther) {
+    private List<Device> mDeviceList = null;
+    public HomepageRoomShowTypeChangedViewAdapter(Context mContext, List<Device> deviceList) {
         this.mContext = mContext;
-        listTop = list;
-        this.listBottom = datasOther;
-        TopCount = listTop.size();
-    }
-    public void setTopList(List<GatwayDevice> list) {
-        this.listTop = list;
-        TopCount = listTop.size();
-    }
-
-    public void setBottomList(List<SmartDev> list) {
-        this.listBottom = list;
+        this.mDeviceList = deviceList;
     }
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -48,24 +35,24 @@ public class HomepageRoomShowTypeChangedViewAdapter extends BaseAdapter {
             viewHolder = new ViewHolder();
             convertView = LayoutInflater.from(mContext).inflate(
                     R.layout.homepage_roomchanged_item, null);
-            viewHolder.textview_room_item = (TextView) convertView
+            viewHolder.textview_room_item = convertView
                     .findViewById(R.id.textview_room_item);
-            viewHolder.textview_device_status = (TextView) convertView
+            viewHolder.textview_device_status = convertView
                     .findViewById(R.id.textview_device_status);
-            viewHolder.imageview_room_type = (ImageView) convertView
+            viewHolder.imageview_room_type = convertView
                     .findViewById(R.id.imageview_room_type);
             viewHolder.view_line = convertView
                     .findViewById(R.id.view_line);
-            viewHolder.layout_root = (RelativeLayout) convertView
+            viewHolder.layout_root = convertView
                     .findViewById(R.id.layout_root);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
         //智能网关
-            if (position < TopCount) {
+            if (mDeviceList.get(position).getType().equalsIgnoreCase(DeviceTypeConstant.TYPE.TYPE_SMART_GETWAY)) {
                 viewHolder.imageview_room_type.setImageResource(R.drawable.gatewayicon);
-                String statu = listTop.get(position).getStatus();
+                String statu = mDeviceList.get(position).getStatus();
                 if (statu != null) {
                     switch (statu) {
                         case "on":
@@ -84,13 +71,13 @@ public class HomepageRoomShowTypeChangedViewAdapter extends BaseAdapter {
                 } else {
                     viewHolder.textview_device_status.setTextColor(0xFF999999);
                 }
-                String deviceName = listTop.get(position).getName();
+                String deviceName =mDeviceList.get(position).getName();
                 viewHolder.textview_room_item.setText(deviceName);
 
             } else {
-                String deviceType = listBottom.get(position - TopCount).getType();
-                String deviceName = listBottom.get(position - TopCount).getName();
-                String deviceStatu = listBottom.get(position - TopCount).getStatus();
+                String deviceType = mDeviceList.get(position).getType();
+                String deviceName = mDeviceList.get(position).getName();
+                String deviceStatu =mDeviceList.get(position).getStatus();
                 if (deviceStatu != null) {
                     switch (deviceStatu) {
                         case "on":
@@ -135,7 +122,7 @@ public class HomepageRoomShowTypeChangedViewAdapter extends BaseAdapter {
                 break;
             case DeviceTypeConstant.TYPE.TYPE_SWITCH:
                 String deviceSubType;
-                deviceSubType = listBottom.get(position - TopCount).getSubType();
+                deviceSubType = ((SmartDev)mDeviceList.get(position)).getSubType();
                 if (deviceSubType == null) {
                     return;
                 }
@@ -176,19 +163,7 @@ public class HomepageRoomShowTypeChangedViewAdapter extends BaseAdapter {
     }
 
 
-    @Override
-    public int getViewTypeCount() {
-        return 2;
-    }
 
-    @Override
-    public int getItemViewType(int position) {
-        int BOTTOM_ITEM = 1;
-        if (position < TopCount)
-            return TOP_ITEM;
-        else
-            return BOTTOM_ITEM;
-    }
     @Override
     public long getItemId(int position) {
         return position;
@@ -197,30 +172,13 @@ public class HomepageRoomShowTypeChangedViewAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int position) {
-        if (position >= 0 && position < TopCount) {
-            return listTop.get(position);
-        }
-        if (position > TopCount) {
-            return listBottom.get(position - TopCount);
-        }
-        if (position <= 1) {
-            return null;
-        }
-        return null;
+
+        return mDeviceList.get(position);
     }
     @Override
     public int getCount() {
-        int count = 0;
-        if (listTop != null && listBottom != null) {
-            count = TopCount + listBottom.size();
-        }
-        if (listTop != null && listBottom == null) {
-            count = TopCount;
-        }
-        if (listBottom != null && listTop == null) {
-            count = listBottom.size();
-        }
-        return count;
+
+        return mDeviceList.size();
     }
 
     final static class ViewHolder {

@@ -271,7 +271,6 @@ public class DevicesActivity extends Activity implements View.OnClickListener, G
         manager.addEventCallback(ec);
         mDeviceManager.addDeviceListener(mDeviceListener);
         mGetwayManager.addGetwayListener(this);
-        mDeviceManager.startQueryStatu();
         mRemoteControlManager.addRemoteControlListener(mRemoteControlListener);
         setButtomBarImageResource();
         isUserLogin = Perfence.getBooleanPerfence(AppConstant.USER_LOGIN);
@@ -323,7 +322,6 @@ public class DevicesActivity extends Activity implements View.OnClickListener, G
         manager.removeEventCallback(ec);
         mDeviceManager.removeDeviceListener(mDeviceListener);
         mGetwayManager.removeGetwayListener(this);
-        mDeviceManager.stopQueryStatu();
         mRemoteControlManager.removeRemoteControlListener(mRemoteControlListener);
         ellESDK.stopSearchDevs();
     }

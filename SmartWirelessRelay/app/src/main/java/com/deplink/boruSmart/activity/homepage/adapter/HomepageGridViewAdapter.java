@@ -8,8 +8,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.deplink.boruSmart.Protocol.json.device.Device;
 import com.deplink.boruSmart.Protocol.json.device.SmartDev;
-import com.deplink.boruSmart.Protocol.json.device.getway.GatwayDevice;
 import com.deplink.boruSmart.constant.DeviceTypeConstant;
 
 import java.util.List;
@@ -22,26 +22,13 @@ import deplink.com.smartwirelessrelay.homegenius.EllESDK.R;
 
 public class HomepageGridViewAdapter extends BaseAdapter {
     private Context mContext;
-    private List<GatwayDevice> listTop = null;
-    private List<SmartDev> listBottom = null;
-    private final int TOP_ITEM = 0;
-    private int TopCount = 0;
+    private List<Device> mDeviceList = null;
 
-    public HomepageGridViewAdapter(Context mContext, List<GatwayDevice> list, List<SmartDev> datasOther) {
+    public HomepageGridViewAdapter(Context mContext, List<Device> deviceList) {
         this.mContext = mContext;
-        listTop = list;
-        this.listBottom = datasOther;
-        TopCount = listTop.size();
+        this.mDeviceList = deviceList;
     }
 
-    public void setTopList(List<GatwayDevice> list) {
-        this.listTop = list;
-        TopCount = listTop.size();
-    }
-
-    public void setBottomList(List<SmartDev> list) {
-        this.listBottom = list;
-    }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -59,13 +46,13 @@ public class HomepageGridViewAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) convertView.getTag();
         }
         //智能网关
-        if (position < TopCount) {
+        if (mDeviceList.get(position).getType().equalsIgnoreCase(DeviceTypeConstant.TYPE.TYPE_SMART_GETWAY)) {
             viewHolder.imageview_device_type.setImageResource(R.drawable.gatewayicon);
-            String deviceName = listTop.get(position).getName();
+            String deviceName = mDeviceList.get(position).getName();
             viewHolder.textview_device_name.setText(deviceName);
         } else {
-            String deviceType = listBottom.get(position - TopCount).getType();
-            String deviceName = listBottom.get(position - TopCount).getName();
+            String deviceType =mDeviceList.get(position).getType();
+            String deviceName = mDeviceList.get(position).getName();
             if ("SMART_LOCK".equals(deviceType)) {
                 deviceType = DeviceTypeConstant.TYPE.TYPE_LOCK;
             }
@@ -87,16 +74,8 @@ public class HomepageGridViewAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int position) {
-        if (position >= 0 && position < TopCount) {
-            return listTop.get(position);
-        }
-        if (position > TopCount) {
-            return listBottom.get(position - TopCount);
-        }
-        if (position <= 1) {
-            return null;
-        }
-        return null;
+
+        return mDeviceList.get(position);
     }
 
     @Override
@@ -104,28 +83,10 @@ public class HomepageGridViewAdapter extends BaseAdapter {
         return 2;
     }
 
-    @Override
-    public int getItemViewType(int position) {
-        int BOTTOM_ITEM = 1;
-        if (position < TopCount)
-            return TOP_ITEM;
-        else
-            return BOTTOM_ITEM;
-    }
 
     @Override
     public int getCount() {
-        int count = 0;
-        if (listTop != null && listBottom != null) {
-            count = TopCount + listBottom.size();
-        }
-        if (listTop != null && listBottom == null) {
-            count = TopCount;
-        }
-        if (listBottom != null && listTop == null) {
-            count = listBottom.size();
-        }
-        return count;
+      return mDeviceList.size();
     }
 
     private void getDeviceTypeImage(ViewHolder viewHolder, String deviceType, int position) {
@@ -142,7 +103,7 @@ public class HomepageGridViewAdapter extends BaseAdapter {
                 break;
             case DeviceTypeConstant.TYPE.TYPE_SWITCH:
                 String deviceSubType;
-                deviceSubType = listBottom.get(position - TopCount).getSubType();
+                deviceSubType =((SmartDev) mDeviceList.get(position)).getSubType();
                 if (deviceSubType == null) {
                     return;
                 }

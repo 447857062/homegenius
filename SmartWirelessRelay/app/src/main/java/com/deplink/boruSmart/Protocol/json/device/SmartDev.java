@@ -1,34 +1,21 @@
 package com.deplink.boruSmart.Protocol.json.device;
 
+import com.deplink.boruSmart.Protocol.json.Room;
 import com.deplink.boruSmart.Protocol.json.device.getway.GatwayDevice;
 import com.deplink.boruSmart.Protocol.json.device.lock.alertreport.Info;
 import com.deplink.boruSmart.Protocol.json.device.router.Router;
-import com.deplink.boruSmart.Protocol.json.Room;
 
 import org.litepal.annotation.Column;
-import org.litepal.crud.DataSupport;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Administrator on 2017/10/30.
  */
-public class SmartDev extends DataSupport implements Serializable {
-    @Column(unique = true, nullable = false)
-    private String Uid;
-    private String CtrUid;
-    private String Type;
+public class SmartDev extends Device {
     /*设备类型子类型，比如开关，下面又会分1,2,3，4,路开关*/
     private String subType;
-    private String Status;
-    private String Org;
-    private String Ver;
-    private String sn;
-    private String Mac;
-    private String name;
-    private String bindLocal;
     /*绑定的网关*/
     private GatwayDevice getwayDevice;
     private String bindLockUid;
@@ -57,15 +44,9 @@ public class SmartDev extends DataSupport implements Serializable {
     private int lightIsOpen;
     private int whiteValue;
     private int yellowValue;
-    private int userCount;
 
-    public int getUserCount() {
-        return userCount;
-    }
 
-    public void setUserCount(int userCount) {
-        this.userCount = userCount;
-    }
+
 
     public int getLightIsOpen() {
         return lightIsOpen;
@@ -120,33 +101,12 @@ public class SmartDev extends DataSupport implements Serializable {
         SmartUid = smartUid;
     }
 
-    public String getMac() {
-        return Mac;
-    }
 
-    public void setMac(String mac) {
-        this.Mac = mac;
-    }
-
-    public String getSn() {
-        return sn;
-    }
-
-    public void setSn(String sn) {
-        this.sn = sn;
-    }
 
     public Router getRouter() {
         return router;
     }
 
-    public String getBindLocal() {
-        return bindLocal;
-    }
-
-    public void setBindLocal(String bindLocal) {
-        this.bindLocal = bindLocal;
-    }
 
     public void setRouter(Router router) {
         this.router = router;
@@ -235,13 +195,6 @@ public class SmartDev extends DataSupport implements Serializable {
     }
 
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public List<Room> getRooms() {
         return rooms;
@@ -251,53 +204,6 @@ public class SmartDev extends DataSupport implements Serializable {
         this.rooms = rooms;
     }
 
-    public String getOrg() {
-        return Org;
-    }
-
-    public void setOrg(String org) {
-        Org = org;
-    }
-
-    public String getUid() {
-        return Uid;
-    }
-
-    public void setUid(String uid) {
-        Uid = uid;
-    }
-
-    public String getCtrUid() {
-        return CtrUid;
-    }
-
-    public void setCtrUid(String ctrUid) {
-        CtrUid = ctrUid;
-    }
-
-    public String getType() {
-        return Type;
-    }
-
-    public void setType(String type) {
-        Type = type;
-    }
-
-    public String getStatus() {
-        return Status;
-    }
-
-    public void setStatus(String status) {
-        Status = status;
-    }
-
-    public String getVer() {
-        return Ver;
-    }
-
-    public void setVer(String ver) {
-        Ver = ver;
-    }
 
     public String getKey_codes() {
         return key_codes;
@@ -310,17 +216,7 @@ public class SmartDev extends DataSupport implements Serializable {
     @Override
     public String toString() {
         return "SmartDev{" +
-                "Uid='" + Uid + '\'' +
-                ", CtrUid='" + CtrUid + '\'' +
-                ", Type='" + Type + '\'' +
                 ", subType='" + subType + '\'' +
-                ", Status='" + Status + '\'' +
-                ", Org='" + Org + '\'' +
-                ", Ver='" + Ver + '\'' +
-                ", sn='" + sn + '\'' +
-                ", Mac='" + Mac + '\'' +
-                ", name='" + name + '\'' +
-                ", bindLocal='" + bindLocal + '\'' +
                 ", getwayDevice=" + getwayDevice +
                 ", switch_one_open=" + switch_one_open +
                 ", switch_two_open=" + switch_two_open +

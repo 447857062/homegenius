@@ -171,10 +171,14 @@ public class DeviceManager implements LocalConnecteListener {
     }
 
     public void startQueryStatu() {
-        mDevicesStatus = new HashMap<>();
-        startTimer();
+        if(mDevicesStatus==null){
+            mDevicesStatus = new HashMap<>();
+        }
+        if(!timertaskIsScheduled){
+            startTimer();
+        }
     }
-
+    private boolean timertaskIsScheduled;
     public void stopQueryStatu() {
         mDevicesStatus = null;
         stopTimer();
@@ -228,6 +232,7 @@ public class DeviceManager implements LocalConnecteListener {
     private static final int TIME_DIFFERENCE_BETWEEN_MESSAGE_INTERVALS = 10000;
 
     private void stopTimer() {
+        timertaskIsScheduled=false;
         if (refreshTask != null) {
             refreshTask.cancel();
             refreshTask = null;
@@ -239,6 +244,7 @@ public class DeviceManager implements LocalConnecteListener {
     }
 
     private void startTimer() {
+        timertaskIsScheduled=true;
         Log.i(TAG, "startTimer");
         if (refreshTimer == null) {
             refreshTimer = new Timer();
@@ -652,6 +658,7 @@ public class DeviceManager implements LocalConnecteListener {
         if (manager == null) {
             initMqttCallback();
         }
+        timertaskIsScheduled=false;
         userName = Perfence.getPerfence(Perfence.PERFENCE_PHONE);
         mLocalConnectmanager.addLocalConnectListener(this);
         packet = new GeneralPacket(mContext);

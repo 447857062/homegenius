@@ -29,7 +29,6 @@ import com.deplink.boruSmart.manager.device.smartswitch.SmartSwitchManager;
 import com.deplink.boruSmart.util.JsonArrayParseUtil;
 import com.deplink.boruSmart.util.WeakRefHandler;
 import com.deplink.boruSmart.view.combinationwidget.TitleLayout;
-import com.deplink.boruSmart.view.scrollview.MyScrollView;
 import com.deplink.boruSmart.view.scrollview.NonScrollableListView;
 
 import org.litepal.crud.DataSupport;
@@ -59,7 +58,7 @@ public class SharedDeviceListActivity extends Activity {
     private DeviceListener mDeviceListener;
     private RelativeLayout layout_empty_share_device;
     private ImageView refresh_image;
-    private MyScrollView myScrollView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -254,6 +253,5 @@ public class SharedDeviceListActivity extends Activity {
         shareddevices_list = findViewById(R.id.shareddevices_list);
         layout_empty_share_device = findViewById(R.id.layout_empty_share_device);
         refresh_image = findViewById(R.id.refresh_image);
-        myScrollView = findViewById(R.id.myscrollview);
     }
 }

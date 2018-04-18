@@ -288,9 +288,9 @@ public class GetwayDeviceActivity extends Activity implements View.OnClickListen
         isUserLogin = Perfence.getBooleanPerfence(AppConstant.USER_LOGIN);
         isStartFromExperience = mDeviceManager.isStartFromExperience();
         if(!isStartFromExperience){
-            int usercount=mGetwayManager.getCurrentSelectGetwayDevice().getUseCount();
+            int usercount=mGetwayManager.getCurrentSelectGetwayDevice().getUserCount();
             usercount++;
-            mGetwayManager.getCurrentSelectGetwayDevice().setUseCount(usercount);
+            mGetwayManager.getCurrentSelectGetwayDevice().setUserCount(usercount);
             mGetwayManager.getCurrentSelectGetwayDevice().save();
         }
         manager.addEventCallback(ec);

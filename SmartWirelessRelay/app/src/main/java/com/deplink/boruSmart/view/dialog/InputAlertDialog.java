@@ -44,17 +44,17 @@ public class InputAlertDialog {
     public InputAlertDialog builder() {
         View view = LayoutInflater.from(context).inflate(
                 R.layout.view_input_alertdialog, null);
-        lLayout_bg = (LinearLayout) view.findViewById(R.id.lLayout_bg);
-        txt_title = (TextView) view.findViewById(R.id.txt_title);
-        textview_edittext_header = (TextView) view.findViewById(R.id.textview_edittext_header);
-        edittext_input = (EditText) view.findViewById(R.id.edittext_input);
-        textview_msg = (TextView) view.findViewById(R.id.textview_msg);
-        layout_input = (RelativeLayout) view.findViewById(R.id.layout_input);
+        lLayout_bg = view.findViewById(R.id.lLayout_bg);
+        txt_title = view.findViewById(R.id.txt_title);
+        textview_edittext_header = view.findViewById(R.id.textview_edittext_header);
+        edittext_input = view.findViewById(R.id.edittext_input);
+        textview_msg = view.findViewById(R.id.textview_msg);
+        layout_input = view.findViewById(R.id.layout_input);
         textview_msg.setVisibility(View.GONE);
         txt_title.setVisibility(View.GONE);
-        btn_neg = (Button) view.findViewById(R.id.btn_neg);
+        btn_neg = view.findViewById(R.id.btn_neg);
         btn_neg.setVisibility(View.GONE);
-        btn_pos = (Button) view.findViewById(R.id.btn_pos);
+        btn_pos = view.findViewById(R.id.btn_pos);
         btn_pos.setVisibility(View.GONE);
         dialog = new Dialog(context, R.style.MakeSureDialog);
         dialog.setContentView(view);
@@ -80,7 +80,6 @@ public class InputAlertDialog {
     }
 
     public InputAlertDialog setEditTextHeader(String title) {
-
         textview_edittext_header.setText(title);
 
         return this;
