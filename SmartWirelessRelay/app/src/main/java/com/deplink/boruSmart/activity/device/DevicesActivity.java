@@ -276,6 +276,7 @@ public class DevicesActivity extends Activity implements View.OnClickListener, G
         setButtomBarImageResource();
         isUserLogin = Perfence.getBooleanPerfence(AppConstant.USER_LOGIN);
         if (isUserLogin) {
+            mDeviceManager.startQueryStatu();
             mDeviceManager.queryDeviceListHttp();
             mRoomManager.queryRooms();
         }
@@ -358,6 +359,7 @@ public class DevicesActivity extends Activity implements View.OnClickListener, G
         listview_devies.getRefreshableView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                mDeviceManager.stopQueryStatu();
                 position-=1;
                 Log.i(TAG, "OnItemClickListener position=" + position);
                 mDeviceManager.setStartFromExperience(false);

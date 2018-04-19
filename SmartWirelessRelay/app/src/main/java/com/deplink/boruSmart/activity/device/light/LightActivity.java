@@ -36,8 +36,20 @@ import deplink.com.smartwirelessrelay.homegenius.EllESDK.R;
 
 public class LightActivity extends Activity implements View.OnClickListener, SmartLightListener {
     private static final String TAG = "LightActivity";
+    /**
+     * 中间的灯泡切换白色黄色灯泡背景
+     */
     private ImageView button_switch_light;
+    /**
+     * 关闭状态:中间灯泡后面的一个空心圆形背景
+     * 打开状态:实心白色背景
+     */
+    private ImageView iamgeview_switch;
+    /**
+     * 白色光晕的图片,白光亮度调节
+     */
     private ImageView imageview_switch_bg;
+
     private SmartLightManager mSmartLightManager;
     private boolean switchStatus;
     private SeekBar progressBarLightYellow;
@@ -48,7 +60,7 @@ public class LightActivity extends Activity implements View.OnClickListener, Sma
     private ImageView imageview_lightyellow_plus;
     private ImageView imageview_lightwhite_reduce;
     private ImageView imageview_lightwhite_plus;
-    private ImageView iamgeview_switch;
+
     private TextView textview_switch_tips;
     private RelativeLayout layout_lightcolor_control;
     private RelativeLayout layout_brightness_control;
@@ -58,6 +70,7 @@ public class LightActivity extends Activity implements View.OnClickListener, Sma
     private boolean isStartFromExperience;
     private SmartDev currentSelectLight;
     private TitleLayout layout_title;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,6 +79,7 @@ public class LightActivity extends Activity implements View.OnClickListener, Sma
         initDatas();
         initEvents();
     }
+
     private void initEvents() {
         button_switch_light.setOnClickListener(this);
         imageview_lightyellow_reduce.setOnClickListener(this);
@@ -77,9 +91,9 @@ public class LightActivity extends Activity implements View.OnClickListener, Sma
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 lightColorProgress = progress * 2;
                 if (isStartFromExperience) {
-                    Log.i(TAG,"lightColorProgress="+lightColorProgress);
+                    Log.i(TAG, "lightColorProgress=" + lightColorProgress);
                     button_switch_light.setBackgroundResource(R.drawable.lightyellowlight);
-                    if(lightColorProgress==0){
+                    if (lightColorProgress == 0) {
                         button_switch_light.setBackgroundResource(R.drawable.lightwhitelight);
                     }
                 }
@@ -112,6 +126,7 @@ public class LightActivity extends Activity implements View.OnClickListener, Sma
             public void onStartTrackingTouch(SeekBar seekBar) {
 
             }
+
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 if (!isStartFromExperience) {
@@ -120,6 +135,7 @@ public class LightActivity extends Activity implements View.OnClickListener, Sma
             }
         });
     }
+
     private void initDatas() {
         layout_title.setBackImageResource(R.drawable.whitereturn);
         layout_title.setTitleTextWhiteColor();
@@ -145,6 +161,7 @@ public class LightActivity extends Activity implements View.OnClickListener, Sma
             @Override
             public void onSuccess(SDKAction action) {
             }
+
             @Override
             public void onBindSuccess(SDKAction action, String devicekey) {
             }
@@ -154,7 +171,7 @@ public class LightActivity extends Activity implements View.OnClickListener, Sma
                 super.notifyHomeGeniusResponse(result);
                 Gson gson = new Gson();
                 QueryOptions resultObj = gson.fromJson(result, QueryOptions.class);
-                Log.i(TAG,TAG+"notifyHomeGeniusResponse");
+                Log.i(TAG, TAG + "notifyHomeGeniusResponse");
                 if (resultObj.getOP().equalsIgnoreCase("REPORT") && resultObj.getMethod().equalsIgnoreCase("YWLIGHTCONTROL")) {
                     Message msg = Message.obtain();
                     msg.obj = resultObj;
@@ -162,6 +179,7 @@ public class LightActivity extends Activity implements View.OnClickListener, Sma
                     mHandler.sendMessage(msg);
                 }
             }
+
             @Override
             public void deviceOpSuccess(String op, String deviceKey) {
                 super.deviceOpSuccess(op, deviceKey);
@@ -206,7 +224,7 @@ public class LightActivity extends Activity implements View.OnClickListener, Sma
         imageview_switch_bg = findViewById(R.id.imageview_switch_bg);
         layout_brightness_control = findViewById(R.id.layout_brightness_control);
         layout_lightcolor_control = findViewById(R.id.layout_lightcolor_control);
-        layout_title= findViewById(R.id.layout_title);
+        layout_title = findViewById(R.id.layout_title);
     }
 
     @Override
@@ -230,10 +248,10 @@ public class LightActivity extends Activity implements View.OnClickListener, Sma
             layout_brightness_control.setVisibility(View.GONE);
         } else {
             currentSelectLight = mSmartLightManager.getCurrentSelectLight();
-                int usercount=currentSelectLight.getUserCount();
+            int usercount = currentSelectLight.getUserCount();
             usercount++;
-                currentSelectLight.setUserCount(usercount);
-                currentSelectLight.save();
+            currentSelectLight.setUserCount(usercount);
+            currentSelectLight.save();
 
             mSmartLightManager.queryLightStatus();
             mSmartLightManager.addSmartLightListener(this);
@@ -270,6 +288,7 @@ public class LightActivity extends Activity implements View.OnClickListener, Sma
         manager.removeEventCallback(ec);
         mSmartLightManager.removeSmartLightListener(this);
     }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -337,10 +356,10 @@ public class LightActivity extends Activity implements View.OnClickListener, Sma
                         layout_brightness_control.setVisibility(View.VISIBLE);
                     }
                 } else {
-                    if(NetUtil.isNetAvailable(this)){
-                        if(!isUserLogin && !LocalConnectmanager.getInstance().isLocalconnectAvailable()){
+                    if (NetUtil.isNetAvailable(this)) {
+                        if (!isUserLogin && !LocalConnectmanager.getInstance().isLocalconnectAvailable()) {
                             Ftoast.create(LightActivity.this).setText("本地连接不可用,需要登录后才能操作").show();
-                        }else{
+                        } else {
                             if (switchStatus) {
                                 switchStatus = false;
                                 mSmartLightManager.setSmartLightSwitch("close");
@@ -349,8 +368,7 @@ public class LightActivity extends Activity implements View.OnClickListener, Sma
                                 mSmartLightManager.setSmartLightSwitch("open");
                             }
                         }
-                    }
-                    else{
+                    } else {
                         Ftoast.create(LightActivity.this).setText("网络连接不正常").show();
                     }
                 }
@@ -366,51 +384,56 @@ public class LightActivity extends Activity implements View.OnClickListener, Sma
             switch (msg.what) {
                 case MSG_GET_LIGHT_RESULT:
                     QueryOptions resultObj = (QueryOptions) msg.obj;
-                    button_switch_light.setBackgroundResource(R.drawable.lightwhitelight);
-                    if (resultObj != null && resultObj.getYellow() != 0) {
-                        button_switch_light.setBackgroundResource(R.drawable.lightyellowlight);
-                        float alpha = (float) (resultObj.getYellow() / 200.0);
-                        Log.i(TAG, "alpha=" + alpha);
-                        if(alpha>1.0){
-                            alpha=1.0f;
-                        }
-                        button_switch_light.setAlpha(alpha);
-                            progressBarLightYellow.setProgress(resultObj.getYellow() / 2);
-                    }
-                    if (resultObj != null && resultObj.getWhite() != 0) {
-                        float alpha = (float) (resultObj.getWhite() / 200.0);
-                        if(alpha>1.0){
-                            alpha=1.0f;
-                        }
-                        Log.i(TAG, "alpha=" + alpha);
-                        imageview_switch_bg.setAlpha(alpha);
-                            progressBarLightWhite.setProgress(resultObj.getWhite() / 2);
-                    }
-                    if (resultObj != null) {
-                        if (resultObj.getOpen() == 1) {
-                            iamgeview_switch.setBackgroundResource(R.drawable.radius110_bg_white_background);
-                            imageview_switch_bg.setBackgroundResource(R.drawable.lightglowoutside);
-                            textview_switch_tips.setText("点击关闭");
-                            layout_lightcolor_control.setVisibility(View.VISIBLE);
-                            layout_brightness_control.setVisibility(View.VISIBLE);
-                            if (currentSelectLight != null) {
-                                currentSelectLight.setLightIsOpen(1);
-                                currentSelectLight.setStatus("在线");
-                                currentSelectLight.saveFast();
+                    Log.i(TAG,"resultObj="+resultObj.toString());
+                    if(resultObj.getMethod().equals("YWLIGHTCONTROL")){
+                        if (resultObj != null && resultObj.getYellow() != 0) {
+                            button_switch_light.setBackgroundResource(R.drawable.lightyellowlight);
+                            float alpha = (float) (resultObj.getYellow() / 200.0);
+                            Log.i(TAG, "alpha=" + alpha);
+                            if (alpha > 1.0) {
+                                alpha = 1.0f;
                             }
-                        } else if (resultObj.getOpen() == 2) {
-                            iamgeview_switch.setBackgroundResource(R.drawable.ovel_110_bg);
-                            imageview_switch_bg.setBackgroundResource(R.color.room_type_text);
-                            textview_switch_tips.setText("点击开启");
+                            button_switch_light.setAlpha(alpha);
+
+                            progressBarLightYellow.setProgress(resultObj.getYellow() / 2);
+                        }else{
                             button_switch_light.setBackgroundResource(R.drawable.lightwhitelight);
-                            layout_lightcolor_control.setVisibility(View.GONE);
-                            layout_brightness_control.setVisibility(View.GONE);
-                            if (currentSelectLight != null) {
-                                currentSelectLight.setLightIsOpen(2);
-                                currentSelectLight.setWhiteValue(resultObj.getWhite());
-                                currentSelectLight.setYellowValue(resultObj.getYellow());
-                                currentSelectLight.setStatus("在线");
-                                currentSelectLight.saveFast();
+                        }
+                        if (resultObj != null && resultObj.getWhite() != 0) {
+                            float alpha = (float) (resultObj.getWhite() / 200.0);
+                            if (alpha > 1.0) {
+                                alpha = 1.0f;
+                            }
+                            Log.i(TAG, "alpha=" + alpha);
+                            imageview_switch_bg.setAlpha(alpha);
+                            progressBarLightWhite.setProgress(resultObj.getWhite() / 2);
+                        }
+                        if (resultObj != null) {
+                            if (resultObj.getOpen() == 1) {
+                                iamgeview_switch.setBackgroundResource(R.drawable.radius110_bg_white_background);
+                                imageview_switch_bg.setBackgroundResource(R.drawable.lightglowoutside);
+                                textview_switch_tips.setText("点击关闭");
+                                layout_lightcolor_control.setVisibility(View.VISIBLE);
+                                layout_brightness_control.setVisibility(View.VISIBLE);
+                                if (currentSelectLight != null) {
+                                    currentSelectLight.setLightIsOpen(1);
+                                    currentSelectLight.setStatus("在线");
+                                    currentSelectLight.saveFast();
+                                }
+                            } else if (resultObj.getOpen() == 2) {
+                                iamgeview_switch.setBackgroundResource(R.drawable.ovel_110_bg);
+                                imageview_switch_bg.setBackgroundResource(R.color.room_type_text);
+                                textview_switch_tips.setText("点击开启");
+                                button_switch_light.setBackgroundResource(R.drawable.lightwhitelight);
+                                layout_lightcolor_control.setVisibility(View.GONE);
+                                layout_brightness_control.setVisibility(View.GONE);
+                                if (currentSelectLight != null) {
+                                    currentSelectLight.setLightIsOpen(2);
+                                    currentSelectLight.setWhiteValue(resultObj.getWhite());
+                                    currentSelectLight.setYellowValue(resultObj.getYellow());
+                                    currentSelectLight.setStatus("在线");
+                                    currentSelectLight.saveFast();
+                                }
                             }
                         }
                     }
@@ -421,6 +444,7 @@ public class LightActivity extends Activity implements View.OnClickListener, Sma
         }
     };
     private Handler mHandler = new WeakRefHandler(mCallback);
+
     @Override
     public void responseSetResult(String result) {
         Log.i(TAG, "responseSetResult=" + result);

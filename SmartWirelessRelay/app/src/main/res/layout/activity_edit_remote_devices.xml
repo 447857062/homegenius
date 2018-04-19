@@ -110,7 +110,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
-                    android:text="遥控器："
+                    android:text="智能红外遥控器："
                     android:textColor="@color/room_type_text"
                     android:textSize="@dimen/text_size_small" />
 
@@ -121,7 +121,7 @@
                     android:layout_centerVertical="true"
                     android:layout_toRightOf="@+id/textview_remotecontrol_name"
                     android:gravity="center_vertical"
-                    android:text="未设置遥控器"
+                    android:text="未设置遥控器(需要设置智能红外遥控器才能使用虚拟遥控器)"
                     android:textColor="@color/room_type_text"
                     android:textSize="@dimen/text_size_small" />
 

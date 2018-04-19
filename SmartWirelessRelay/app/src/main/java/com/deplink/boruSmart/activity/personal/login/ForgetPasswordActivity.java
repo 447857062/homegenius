@@ -32,6 +32,7 @@ import com.deplink.boruSmart.view.toast.Ftoast;
 import com.deplink.sdk.android.sdk.DeplinkSDK;
 import com.deplink.sdk.android.sdk.EventCallback;
 import com.deplink.sdk.android.sdk.SDKAction;
+import com.deplink.sdk.android.sdk.bean.User;
 import com.deplink.sdk.android.sdk.manager.SDKManager;
 
 import org.json.JSONException;
@@ -40,6 +41,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import cn.smssdk.DefaultOnSendMessageHandler;
 import cn.smssdk.EventHandler;
 import cn.smssdk.SMSSDK;
 import deplink.com.smartwirelessrelay.homegenius.EllESDK.R;
@@ -153,11 +155,18 @@ public class ForgetPasswordActivity extends Activity implements View.OnClickList
             public void onSuccess(SDKAction action) {
                 switch (action) {
                     case RESET_PASSWORD:
+
                         Perfence.setPerfence(Perfence.USER_PASSWORD, newPassword);
                         manager.login(Perfence.getPerfence(Perfence.PERFENCE_PHONE), newPassword);
                         Ftoast.create(ForgetPasswordActivity.this).setText("重置密码成功").show();
                         break;
                     case LOGIN:
+                        Perfence.setPerfence(AppConstant.PERFENCE_BIND_APP_UUID, manager.getUserInfo().getUuid());
+                        User user = manager.getUserInfo();
+                        Perfence.setPerfence(Perfence.USER_PASSWORD, user.getPassword());
+                        Perfence.setPerfence(Perfence.PERFENCE_PHONE, user.getName());
+                        Perfence.setPerfence(AppConstant.USER.USER_GETIMAGE_FROM_SERVICE,false);
+                        Perfence.setPerfence(AppConstant.USER_LOGIN, true);
                         startActivity(new Intent(ForgetPasswordActivity.this, SmartHomeMainActivity.class));
                         break;
                 }
@@ -358,7 +367,7 @@ public class ForgetPasswordActivity extends Activity implements View.OnClickList
         }
         if (support) {
             isGetCaptche = true;
-            SMSSDK.getVerificationCode(simCountryCode, username);
+            SMSSDK.getVerificationCode(simCountryCode, username,"14967877",new DefaultOnSendMessageHandler());
             Toast.makeText(ForgetPasswordActivity.this, "验证码已发送", Toast.LENGTH_SHORT).show();
             buton_get_verification_code.setEnabled(false);
             time = Perfence.VERIFYCODE_TIME;

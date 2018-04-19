@@ -232,7 +232,7 @@ public class LocalConnectmanager extends Binder implements UdpManagerGetIPLinten
                 getIn();
             }
         } catch (Exception e) {
-            initSocketing = false;
+            resetSslSocket();
             e.printStackTrace();
         }
     }

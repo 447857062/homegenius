@@ -339,14 +339,12 @@ public class DeviceManager implements LocalConnecteListener {
                     }
                 }
             }
-
             @Override
             public void onFailure(Call<String> call, Throwable t) {
 
             }
         });
     }
-
     public void addDeviceHttp(DeviceAddBody device) {
         if (userName.equals("")) {
             return;
@@ -958,7 +956,6 @@ public class DeviceManager implements LocalConnecteListener {
     public void OnGetQueryresult(String result) {
         //返回查询结果：设备列表
         Log.i(TAG, "返回查询结果：设备列表=" + result);
-        //TODO
         //保存智能锁设备的DevUid
         Gson gson = new Gson();
         if (result.contains("DevList")) {
@@ -986,7 +983,12 @@ public class DeviceManager implements LocalConnecteListener {
                 if (type.getCommand().equalsIgnoreCase(SmartLockConstant.CMD.QUERY)) {
                     if (type.getSmartUid() != null) {
                         if (mDevicesStatus != null) {
-                            mDevicesStatus.put(type.getSmartUid(), "在线");
+                          if(type.getResult()!=-1){
+                              mDevicesStatus.put(type.getSmartUid(), "在线");
+                          }else{
+                              mDevicesStatus.put(type.getSmartUid(), "在线");
+                          }
+
                         }
 
                     }

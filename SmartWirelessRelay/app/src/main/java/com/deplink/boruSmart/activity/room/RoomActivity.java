@@ -321,9 +321,6 @@ public class RoomActivity extends AppCompatActivity implements View.OnClickListe
             isRoomOrdinalNumberChanged = true;
             return true;
         }
-
-
-
         /**
          * 谷歌官方文档说明如下：
          * 这个看了一下主要是做左右拖动的回调
@@ -336,7 +333,6 @@ public class RoomActivity extends AppCompatActivity implements View.OnClickListe
         public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
             //暂不处理
         }
-
 
 
         /**
@@ -365,6 +361,7 @@ public class RoomActivity extends AppCompatActivity implements View.OnClickListe
             //return true后，可以实现长按拖动排序和拖动动画了
             return true;
         }
+
     };
 
     @Override

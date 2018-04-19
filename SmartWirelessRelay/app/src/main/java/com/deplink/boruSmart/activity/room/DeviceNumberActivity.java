@@ -367,7 +367,8 @@ public class DeviceNumberActivity extends Activity implements EllE_Listener, Vie
         listview_devies.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                DeviceManager.getInstance().setStartFromExperience(false);
+                mDeviceManager.stopQueryStatu();
+                mDeviceManager.setStartFromExperience(false);
                 //智能设备
                 String deviceType = deviceList.get(position).getType();
                 Log.i(TAG, "智能设备类型=" + deviceType);

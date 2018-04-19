@@ -39,6 +39,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import cn.smssdk.DefaultOnSendMessageHandler;
 import cn.smssdk.EventHandler;
 import cn.smssdk.SMSSDK;
 import deplink.com.smartwirelessrelay.homegenius.EllESDK.R;
@@ -121,8 +122,7 @@ public class RegistActivity extends Activity implements View.OnClickListener {
         }
         if (support) {
             isGetCaptche = true;
-            SMSSDK.getVerificationCode(simCountryCode, username/*,"14967877"*/);
-
+            SMSSDK.getVerificationCode(simCountryCode, username,"5853169",new DefaultOnSendMessageHandler());
             Toast.makeText(RegistActivity.this, "验证码已发送", Toast.LENGTH_SHORT).show();
             button_SMS_verification_code.setEnabled(false);
             time = Perfence.VERIFYCODE_TIME;

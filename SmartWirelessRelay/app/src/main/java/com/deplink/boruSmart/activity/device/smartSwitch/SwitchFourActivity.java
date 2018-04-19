@@ -470,68 +470,72 @@ public class SwitchFourActivity extends Activity implements View.OnClickListener
                 Gson gson = new Gson();
                 OpResult mOpResult = gson.fromJson(result, OpResult.class);
                 String  mSwitchStatus=mOpResult.getSwitchStatus();
-                String[] sourceStrArray = mSwitchStatus.split(" ",4);
-                if(sourceStrArray[0].equals("01")){
-                    switch_one_open=true;
-                }else if(sourceStrArray[0].equals("02")){
-                    switch_one_open=false;
+                if(mSwitchStatus!=null){
+                    String[] sourceStrArray = mSwitchStatus.split(" ",4);
+                    if(sourceStrArray[0].equals("01")){
+                        switch_one_open=true;
+                    }else if(sourceStrArray[0].equals("02")){
+                        switch_one_open=false;
+                    }
+                    mSmartSwitchManager.getCurrentSelectSmartDevice().setSwitch_one_open(switch_one_open);
+                    if(sourceStrArray[1].equals("01")){
+                        switch_two_open=true;
+                    }else if(sourceStrArray[1].equals("02")){
+                        switch_two_open=false;
+                    }
+                    mSmartSwitchManager.getCurrentSelectSmartDevice().setSwitch_two_open(switch_two_open);
+                    if(sourceStrArray[2].equals("01")){
+                        switch_three_open=true;
+                    }else if(sourceStrArray[2].equals("02")){
+                        switch_three_open=false;
+                    }
+                    mSmartSwitchManager.getCurrentSelectSmartDevice().setSwitch_three_open(switch_three_open);
+                    if(sourceStrArray[3].equals("01")){
+                        switch_four_open=true;
+                    }else if(sourceStrArray[3].equals("02")){
+                        switch_four_open=false;
+                    }
+                    mSmartSwitchManager.getCurrentSelectSmartDevice().setSwitch_four_open(switch_four_open);
+                    switch (mOpResult.getCommand()) {
+                        case "close1":
+                            switch_one_open = false;
+                            mSmartSwitchManager.getCurrentSelectSmartDevice().setSwitch_one_open(switch_one_open);
+                            break;
+                        case "close2":
+                            switch_two_open = false;
+                            mSmartSwitchManager.getCurrentSelectSmartDevice().setSwitch_two_open(switch_two_open);
+                            break;
+                        case "close3":
+                            switch_three_open = false;
+                            mSmartSwitchManager.getCurrentSelectSmartDevice().setSwitch_three_open(switch_three_open);
+                            break;
+                        case "close4":
+                            switch_four_open = false;
+                            mSmartSwitchManager.getCurrentSelectSmartDevice().setSwitch_four_open(switch_four_open);
+                            break;
+                        case "open1":
+                            switch_one_open = true;
+                            mSmartSwitchManager.getCurrentSelectSmartDevice().setSwitch_one_open(switch_one_open);
+                            break;
+                        case "open2":
+                            switch_two_open = true;
+                            mSmartSwitchManager.getCurrentSelectSmartDevice().setSwitch_two_open(switch_two_open);
+                            break;
+                        case "open3":
+                            switch_three_open = true;
+                            mSmartSwitchManager.getCurrentSelectSmartDevice().setSwitch_three_open(switch_three_open);
+                            break;
+                        case "open4":
+                            switch_four_open = true;
+                            mSmartSwitchManager.getCurrentSelectSmartDevice().setSwitch_four_open(switch_four_open);
+                            break;
+                    }
+                    setSwitchImageviewBackground();
+                    mSmartSwitchManager.getCurrentSelectSmartDevice().setStatus("在线");
+                    mSmartSwitchManager.getCurrentSelectSmartDevice().saveFast();
                 }
-                mSmartSwitchManager.getCurrentSelectSmartDevice().setSwitch_one_open(switch_one_open);
-                if(sourceStrArray[1].equals("01")){
-                    switch_two_open=true;
-                }else if(sourceStrArray[1].equals("02")){
-                    switch_two_open=false;
-                }
-                mSmartSwitchManager.getCurrentSelectSmartDevice().setSwitch_two_open(switch_two_open);
-                if(sourceStrArray[2].equals("01")){
-                    switch_three_open=true;
-                }else if(sourceStrArray[2].equals("02")){
-                    switch_three_open=false;
-                }
-                mSmartSwitchManager.getCurrentSelectSmartDevice().setSwitch_three_open(switch_three_open);
-                if(sourceStrArray[3].equals("01")){
-                    switch_four_open=true;
-                }else if(sourceStrArray[3].equals("02")){
-                    switch_four_open=false;
-                }
-                mSmartSwitchManager.getCurrentSelectSmartDevice().setSwitch_four_open(switch_four_open);
-                switch (mOpResult.getCommand()) {
-                    case "close1":
-                        switch_one_open = false;
-                        mSmartSwitchManager.getCurrentSelectSmartDevice().setSwitch_one_open(switch_one_open);
-                        break;
-                    case "close2":
-                        switch_two_open = false;
-                        mSmartSwitchManager.getCurrentSelectSmartDevice().setSwitch_two_open(switch_two_open);
-                        break;
-                    case "close3":
-                        switch_three_open = false;
-                        mSmartSwitchManager.getCurrentSelectSmartDevice().setSwitch_three_open(switch_three_open);
-                        break;
-                    case "close4":
-                        switch_four_open = false;
-                        mSmartSwitchManager.getCurrentSelectSmartDevice().setSwitch_four_open(switch_four_open);
-                        break;
-                    case "open1":
-                        switch_one_open = true;
-                        mSmartSwitchManager.getCurrentSelectSmartDevice().setSwitch_one_open(switch_one_open);
-                        break;
-                    case "open2":
-                        switch_two_open = true;
-                        mSmartSwitchManager.getCurrentSelectSmartDevice().setSwitch_two_open(switch_two_open);
-                        break;
-                    case "open3":
-                        switch_three_open = true;
-                        mSmartSwitchManager.getCurrentSelectSmartDevice().setSwitch_three_open(switch_three_open);
-                        break;
-                    case "open4":
-                        switch_four_open = true;
-                        mSmartSwitchManager.getCurrentSelectSmartDevice().setSwitch_four_open(switch_four_open);
-                        break;
-                }
-                setSwitchImageviewBackground();
-                mSmartSwitchManager.getCurrentSelectSmartDevice().setStatus("在线");
-                mSmartSwitchManager.getCurrentSelectSmartDevice().saveFast();
+
+
             }
         });
 

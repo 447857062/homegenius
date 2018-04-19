@@ -65,7 +65,8 @@ public class RemoteControlManager extends DeviceManager {
     private SmartDev mSelectRemoteControlDevice;
     private int currentLearnByHandKeyName;
     private String currentLearnByHandTypeName;
-    private static String uuid ;
+    private static String uuid;
+
     public String getCurrentLearnByHandTypeName() {
         return currentLearnByHandTypeName;
     }
@@ -81,6 +82,7 @@ public class RemoteControlManager extends DeviceManager {
     public void setCurrentLearnByHandKeyName(int currentLearnByHandKeyName) {
         this.currentLearnByHandKeyName = currentLearnByHandKeyName;
     }
+
     private boolean currentActionIsAddactionQuickLearn;
 
     public boolean isCurrentActionIsAddactionQuickLearn() {
@@ -125,14 +127,17 @@ public class RemoteControlManager extends DeviceManager {
      * @return
      */
     public List<SmartDev> findRemotecontrolDevice() {
-        return DataSupport.where("Uid = ?", mSelectRemoteControlDevice.getRemotecontrolUid()).find(SmartDev.class);
+        if (mSelectRemoteControlDevice.getRemotecontrolUid() != null) {
+            return DataSupport.where("Uid = ?", mSelectRemoteControlDevice.getRemotecontrolUid()).find(SmartDev.class);
+        }
+        return null;
     }
 
     public static synchronized RemoteControlManager getInstance() {
         if (instance == null) {
             instance = new RemoteControlManager();
         }
-        uuid= Perfence.getPerfence(AppConstant.PERFENCE_BIND_APP_UUID);
+        uuid = Perfence.getPerfence(AppConstant.PERFENCE_BIND_APP_UUID);
         return instance;
     }
 
@@ -199,10 +204,10 @@ public class RemoteControlManager extends DeviceManager {
             });
         } else {
             List<GatwayDevice> devices = DataSupport.findAll(GatwayDevice.class);
-            for(int i=0;i<devices.size();i++){
-                if(devices.get(i).getTopic()!=null && !devices.get(i).getTopic().equals("")){
+            for (int i = 0; i < devices.size(); i++) {
+                if (devices.get(i).getTopic() != null && !devices.get(i).getTopic().equals("")) {
                     Log.i(TAG, "device.getTopic()=" + devices.get(i).getTopic());
-                    if(devices.get(i).getStatus().equalsIgnoreCase("on")||devices.get(i).getStatus().equalsIgnoreCase("在线")){
+                    if (devices.get(i).getStatus().equalsIgnoreCase("on") || devices.get(i).getStatus().equalsIgnoreCase("在线")) {
                         mHomeGenius.study(mSelectRemoteControlDevice, devices.get(i).getTopic(), uuid);
                     }
 
@@ -229,9 +234,9 @@ public class RemoteControlManager extends DeviceManager {
             });
         } else {
             List<GatwayDevice> devices = DataSupport.findAll(GatwayDevice.class);
-            for(int i=0;i<devices.size();i++){
-                if(devices.get(i).getTopic()!=null && !devices.get(i).getTopic().equals("")){
-                    if(devices.get(i).getStatus().equalsIgnoreCase("on")||devices.get(i).getStatus().equalsIgnoreCase("在线")){
+            for (int i = 0; i < devices.size(); i++) {
+                if (devices.get(i).getTopic() != null && !devices.get(i).getTopic().equals("")) {
+                    if (devices.get(i).getStatus().equalsIgnoreCase("on") || devices.get(i).getStatus().equalsIgnoreCase("在线")) {
                         Log.i(TAG, "device.getTopic()=" + devices.get(i).getTopic());
                         mHomeGenius.stopStudy(mSelectRemoteControlDevice, devices.get(i).getTopic(), uuid);
                     }
@@ -264,7 +269,7 @@ public class RemoteControlManager extends DeviceManager {
             if (device == null) {
                 device = DataSupport.where("Status = ?", "在线").findFirst(GatwayDevice.class);
             }
-            if(device==null){
+            if (device == null) {
                 device = DataSupport.findFirst(GatwayDevice.class);
             }
             if (device != null) {
@@ -301,10 +306,10 @@ public class RemoteControlManager extends DeviceManager {
             });
         } else {
             List<GatwayDevice> devices = DataSupport.findAll(GatwayDevice.class);
-            for(int i=0;i<devices.size();i++){
-                if(devices.get(i).getTopic()!=null && !devices.get(i).getTopic().equals("")){
+            for (int i = 0; i < devices.size(); i++) {
+                if (devices.get(i).getTopic() != null && !devices.get(i).getTopic().equals("")) {
                     Log.i(TAG, "device.getTopic()=" + devices.get(i).getTopic());
-                    if(devices.get(i).getStatus().equalsIgnoreCase("on")||devices.get(i).getStatus().equalsIgnoreCase("在线")){
+                    if (devices.get(i).getStatus().equalsIgnoreCase("on") || devices.get(i).getStatus().equalsIgnoreCase("在线")) {
                         mHomeGenius.sendData(mSelectRemoteControlDevice, devices.get(i).getTopic(), uuid, data);
                     }
                 }
@@ -331,7 +336,7 @@ public class RemoteControlManager extends DeviceManager {
                     for (int i = 0; i < mRemoteControlListenerList.size(); i++) {
                         mRemoteControlListenerList.get(i).responseDeleteVirtualDevice(response.body());
                     }
-                }else if(response.code() == 403){
+                } else if (response.code() == 403) {
                     Ftoast.create(mContext).setText("登录已过期,请重新登录").show();
                     Perfence.setPerfence(AppConstant.USER_LOGIN, false);
                     DataSupport.deleteAll(SmartDev.class);
@@ -514,13 +519,13 @@ public class RemoteControlManager extends DeviceManager {
         OpResult type = gson.fromJson(result, OpResult.class);
         if (type != null && type.getOP().equalsIgnoreCase("REPORT")) {
             if ((type.getMethod().equalsIgnoreCase("IrmoteV2"))) {
-                Log.i(TAG,"遥控器返回数据="+result);
+                Log.i(TAG, "遥控器返回数据=" + result);
                 switch (type.getCommand()) {
                     case SmartLockConstant.CMD.QUERY:
                         for (int i = 0; i < mRemoteControlListenerList.size(); i++) {
-                            if(type.getResult()!=-1){
+                            if (type.getResult() != -1) {
                                 mRemoteControlListenerList.get(i).responseOnlineStatu("在线");
-                            }else{
+                            } else {
                                 mRemoteControlListenerList.get(i).responseOnlineStatu("离线");
                             }
                         }

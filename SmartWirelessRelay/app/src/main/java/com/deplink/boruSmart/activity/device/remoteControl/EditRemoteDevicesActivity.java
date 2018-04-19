@@ -126,7 +126,7 @@ public class EditRemoteDevicesActivity extends Activity implements View.OnClickL
                 }
             }
             List<SmartDev> remoteControls = RemoteControlManager.getInstance().findRemotecontrolDevice();
-            if (remoteControls.size() > 0) {
+            if (remoteControls!=null && remoteControls.size() > 0) {
                 textview_select_remotecontrol_name.setText(remoteControls.get(0).getName());
             } else {
                 textview_select_remotecontrol_name.setText("未设置物理遥控器");

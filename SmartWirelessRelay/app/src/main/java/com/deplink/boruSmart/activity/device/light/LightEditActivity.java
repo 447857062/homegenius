@@ -113,7 +113,7 @@ public class LightEditActivity extends Activity implements View.OnClickListener 
             deviceUid= mSmartLightManager.getCurrentSelectLight().getUid();
             SmartDev smartDev = DataSupport.where("Uid=?",deviceUid).findFirst(SmartDev.class, true);
             if (!isOnActivityResult) {
-                if (mSmartLightManager.getCurrentSelectLight().getRooms().size() == 1) {
+                if (mSmartLightManager.getCurrentSelectLight().getRooms().size() >= 1) {
                     textview_select_room_name.setText(smartDev.getRooms().get(0).getRoomName());
                 } else {
                     textview_select_room_name.setText("未选择");

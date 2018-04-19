@@ -34,13 +34,17 @@ public class SmartLightManager extends DeviceManager {
      */
     private static SmartLightManager instance;
     private SmartDev currentSelectLight;
+
     private SmartLightManager() {
 
     }
+
     public SmartDev getCurrentSelectLight() {
         return currentSelectLight;
     }
-    private static String uuid ;
+
+    private static String uuid;
+
     public void setCurrentSelectLight(SmartDev currentSelectLight) {
         this.currentSelectLight = currentSelectLight;
     }
@@ -111,10 +115,10 @@ public class SmartLightManager extends DeviceManager {
             });
         } else {
             List<GatwayDevice> devices = DataSupport.findAll(GatwayDevice.class);
-            for(int i=0;i<devices.size();i++){
-                if(devices.get(i).getTopic()!=null && !devices.get(i).getTopic().equals("")){
+            for (int i = 0; i < devices.size(); i++) {
+                if (devices.get(i).getTopic() != null && !devices.get(i).getTopic().equals("")) {
                     Log.i(TAG, "device.getTopic()=" + devices.get(i).getTopic());
-                    if(devices.get(i).getStatus().equalsIgnoreCase("on")||devices.get(i).getStatus().equalsIgnoreCase("在线")){
+                    if (devices.get(i).getStatus().equalsIgnoreCase("on") || devices.get(i).getStatus().equalsIgnoreCase("在线")) {
                         mHomeGenius.setSmartLightSwitch(currentSelectLight, devices.get(i).getTopic(), uuid, cmd);
                     }
 
@@ -143,10 +147,10 @@ public class SmartLightManager extends DeviceManager {
             });
         } else {
             List<GatwayDevice> devices = DataSupport.findAll(GatwayDevice.class);
-            for(int i=0;i<devices.size();i++){
-                if(devices.get(i).getTopic()!=null && !devices.get(i).getTopic().equals("")){
+            for (int i = 0; i < devices.size(); i++) {
+                if (devices.get(i).getTopic() != null && !devices.get(i).getTopic().equals("")) {
                     Log.i(TAG, "device.getTopic()=" + devices.get(i).getTopic());
-                    if(devices.get(i).getStatus().equalsIgnoreCase("on")||devices.get(i).getStatus().equalsIgnoreCase("在线")){
+                    if (devices.get(i).getStatus().equalsIgnoreCase("on") || devices.get(i).getStatus().equalsIgnoreCase("在线")) {
                         mHomeGenius.setSmartLightParamas(currentSelectLight, devices.get(i).getTopic(), uuid, cmd, yellow, white);
                     }
 
@@ -174,8 +178,8 @@ public class SmartLightManager extends DeviceManager {
             });
         } else {
             List<GatwayDevice> devices = DataSupport.findAll(GatwayDevice.class);
-            for(int i=0;i<devices.size();i++){
-                if(devices.get(i).getTopic()!=null && !devices.get(i).getTopic().equals("")){
+            for (int i = 0; i < devices.size(); i++) {
+                if (devices.get(i).getTopic() != null && !devices.get(i).getTopic().equals("")) {
                     Log.i(TAG, "device.getTopic()=" + devices.get(i).getTopic());
                     mHomeGenius.queryLightStatus(currentSelectLight, devices.get(i).getTopic(), uuid);
                 }
@@ -226,7 +230,7 @@ public class SmartLightManager extends DeviceManager {
         }
         smartDev.setRooms(rooms);
         smartDev.setName(deviceName);
-         smartDev.save();
+        smartDev.save();
     }
 
     public boolean updateSmartDeviceName(String deviceUid, String deviceName) {
@@ -248,12 +252,14 @@ public class SmartLightManager extends DeviceManager {
             rooms.add(room);
         } else {
             rooms.addAll(RoomManager.getInstance().getmRooms());
-            Log.i(TAG, "房间列表大小" + rooms.size());
-        }
-        smartDev.setRooms(rooms);
-       smartDev.save();
-    }
 
+        }
+        Log.i(TAG, "房间列表大小" + rooms.size()+"房间名称:"+rooms.get(0).getRoomName());
+        smartDev.setRooms(rooms);
+        //重新关联房间
+        setCurrentSelectLight(smartDev);
+        smartDev.save();
+    }
 
 
     @Override

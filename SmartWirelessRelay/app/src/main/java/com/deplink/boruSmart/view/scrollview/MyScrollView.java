@@ -61,8 +61,6 @@ public class MyScrollView extends ScrollView {
         originalRect.set(contentView.getLeft(), contentView.getTop(),
                 contentView.getRight(), contentView.getBottom() + 30);
     }
-
-
     /**
      * 在触摸事件中, 处理上拉和下拉的逻辑
      */

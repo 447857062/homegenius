@@ -27,25 +27,17 @@
         android:text="我的房间(长按可排序)"
         android:textColor="@color/aircondition_mode"
         android:textSize="@dimen/text_size_small" />
-    <com.deplink.boruSmart.view.scrollview.MyScrollView
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_marginTop="15dp"
-        android:layout_above="@+id/layout_buttom_bar"
-        android:layout_below="@+id/textview_option_explan"
-        android:overScrollMode="never"
-        android:scrollbars="none">
-
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv_content"
+                android:layout_marginTop="15dp"
+                android:layout_above="@+id/layout_buttom_bar"
+                android:layout_below="@+id/textview_option_explan"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="@dimen/layout_content_margin_left_right"
                 android:layout_marginRight="@dimen/layout_content_margin_left_right"
                 android:overScrollMode="never" />
 
-
-    </com.deplink.boruSmart.view.scrollview.MyScrollView>
     <RelativeLayout
         android:id="@+id/layout_buttom_bar"
         android:layout_width="match_parent"
