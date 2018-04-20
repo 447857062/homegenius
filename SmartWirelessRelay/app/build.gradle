@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 26
-    buildToolsVersion '26.0.0'
+    buildToolsVersion '26.0.2'
     defaultConfig {
         applicationId 'com.deplink.boruSmart'
         ndk {
@@ -18,7 +18,7 @@ android {
             disable "ResourceType"
         }
         minSdkVersion 16
-        targetSdkVersion 25
+        targetSdkVersion 26
         versionCode 100
         versionName '1.0.0'
         // Enabling multidex support.
