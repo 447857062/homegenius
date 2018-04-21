@@ -890,7 +890,6 @@ public class DeviceManager implements LocalConnecteListener {
         Log.i(TAG, "查找所有的智能设备,设备个数=" + smartDevices.size());
         return smartDevices;
     }
-
     /**
      * 删除数据库中的一个智能设备
      */
@@ -899,7 +898,6 @@ public class DeviceManager implements LocalConnecteListener {
         Log.i(TAG, "删除一个智能设备，删除影响的行数=" + affectcolumn);
         return affectcolumn;
     }
-
     /**
      * 解除绑定
      * 解除绑定后根据返回结果更新数据库

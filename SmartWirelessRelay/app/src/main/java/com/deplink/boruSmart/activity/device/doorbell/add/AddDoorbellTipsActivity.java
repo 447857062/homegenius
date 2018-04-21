@@ -67,8 +67,8 @@ public class AddDoorbellTipsActivity extends Activity implements View.OnClickLis
     }
 
     private void initViews() {
-        button_next_step = (Button) findViewById(R.id.button_next_step);
-        layout_title = (TitleLayout) findViewById(R.id.layout_title);
+        button_next_step = findViewById(R.id.button_next_step);
+        layout_title = findViewById(R.id.layout_title);
     }
 
     @Override
@@ -79,7 +79,7 @@ public class AddDoorbellTipsActivity extends Activity implements View.OnClickLis
                     ellESDK.startSearchDevs();
                 }else{
                     if(mDoorbeelManager.isConfigWifi()){
-                        Ftoast.create(AddDoorbellTipsActivity.this).setText("门铃网络已配置,现在重启门邻设备").show();
+                        Ftoast.create(AddDoorbellTipsActivity.this).setText("门铃网络已配置,现在重启门铃设备").show();
                         Intent intent = new Intent(AddDoorbellTipsActivity.this, EditDoorbellActivity.class);
                         startActivity(intent);
                         AddDoorbellTipsActivity.this.finish();
@@ -88,14 +88,11 @@ public class AddDoorbellTipsActivity extends Activity implements View.OnClickLis
                 break;
         }
     }
-
     String account;
     String password;
     @Override
     public void onRecvEllEPacket(BasicPacket packet) {
-
     }
-
     public void onDoneClick(final long mac, final byte type, final byte ver) {
         if (account.length() > 0 && password.length() > 0) {
             Log.i(TAG, "onDoneClick setDevWiFiConfigWithMac mac=" + mac + "type=" + type + "ver=" + ver);

@@ -27,7 +27,6 @@ public class DoorbellLargeImage extends Activity implements View.OnClickListener
 
     private void initEvents() {
     }
-
     private void initDatas() {
         mDoorbeelManager = DoorbeelManager.getInstance();
         mDoorbeelManager.InitDoorbeelManager(this);
@@ -43,7 +42,6 @@ public class DoorbellLargeImage extends Activity implements View.OnClickListener
             mDoorbeelManager.getDoorbellVistorImage(filename, 0);
         }
     }
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -55,9 +53,8 @@ public class DoorbellLargeImage extends Activity implements View.OnClickListener
         mDoorbeelManager.removeDeviceListener(mDoorBellListener);
     }
     private void initViews() {
-        image_snap= (ImageView) findViewById(R.id.image_snap);
+        image_snap= findViewById(R.id.image_snap);
     }
-
     @Override
     public void onClick(View view) {
         switch (view.getId()){

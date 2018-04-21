@@ -11,8 +11,8 @@ android {
             // 还可以添加 'x86', 'x86_64', 'mips', 'mips64'
         }
         manifestPlaceholders = [
-                XG_ACCESS_ID :"2100268783",
-                XG_ACCESS_KEY:"AX1YG22J85XI",
+                XG_ACCESS_ID :"2100282544",
+                XG_ACCESS_KEY:"APF739F52PFA",
         ]
         lintOptions {
             disable "ResourceType"

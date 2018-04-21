@@ -212,14 +212,12 @@ public class EditRemoteDevicesActivity extends Activity implements View.OnClickL
             deviceUid=mRemoteControlManager.getmSelectRemoteControlDevice().getUid();
         }
     }
-
     @Override
     protected void onPause() {
         super.onPause();
         mRemoteControlManager.removeRemoteControlListener(mRemoteControlListener);
         manager.removeEventCallback(ec);
     }
-
     private void initMqttCallback() {
         DeplinkSDK.initSDK(getApplicationContext(), Perfence.SDK_APP_KEY);
         manager = DeplinkSDK.getSDKManager();

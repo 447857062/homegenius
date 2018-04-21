@@ -133,7 +133,6 @@ public class LoginActivity extends Activity implements View.OnClickListener{
                         Perfence.setPerfence(Perfence.PERFENCE_PHONE, user.getName());
                         Perfence.setPerfence(AppConstant.USER_LOGIN, true);
                         startActivity(new Intent(LoginActivity.this, SmartHomeMainActivity.class));
-                        LoginActivity.this.finish();
                         String uuid = manager.getUserInfo().getUuid();
                         Log.i(TAG, "点击登录 onSuccess login uuid=" + uuid);
                         if (!uuid.equalsIgnoreCase("")) {
@@ -151,6 +150,8 @@ public class LoginActivity extends Activity implements View.OnClickListener{
                             });
                             XGPushManager.enableService(LoginActivity.this, true);
                         }
+                        LoginActivity.this.finish();
+
                         break;
                     default:
                         break;
@@ -240,7 +241,6 @@ public class LoginActivity extends Activity implements View.OnClickListener{
         layout_title = findViewById(R.id.layout_title);
         layout_title.setBackImageResource(R.drawable.notloggedinicon);
     }
-
     /**
      * 设置密文明文之间切换
      */
@@ -282,7 +282,6 @@ public class LoginActivity extends Activity implements View.OnClickListener{
                 } else {
                     Ftoast.create(LoginActivity.this).setText("网络连接不可用").show();
                 }
-
                 break;
             case R.id.textview_forget_password:
                 startActivity(new Intent(LoginActivity.this, ForgetPasswordActivity.class));

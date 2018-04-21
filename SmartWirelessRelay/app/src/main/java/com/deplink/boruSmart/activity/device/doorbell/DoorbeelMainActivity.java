@@ -348,25 +348,19 @@ public class DoorbeelMainActivity extends Activity implements View.OnClickListen
         animationFadeHold.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
-
             }
-
             @Override
             public void onAnimationEnd(Animation animation) {
                 imageview_gif.startAnimation(animationFadeIn);
             }
-
             @Override
             public void onAnimationRepeat(Animation animation) {
-
             }
         });
         imageview_gif.startAnimation(animationFadeIn);
     }
-
     private PushMessage pushMessage;
     private DeviceManager mDeviceManager;
-
     @Override
     protected void onPause() {
         super.onPause();
@@ -391,7 +385,6 @@ public class DoorbeelMainActivity extends Activity implements View.OnClickListen
     private String savedManagePassword;
     private String selfUserId;
     private SmartDev lockDevice;
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -415,10 +408,8 @@ public class DoorbeelMainActivity extends Activity implements View.OnClickListen
                     savedManagePassword = lockDevice.getLockPassword();
                     mSmartLockManager.setCurrentSelectLock(lockDevice);
                     mSmartLockManager.setSmartLockParmars(SmartLockConstant.OPEN_LOCK, selfUserId, savedManagePassword, null, null);
-
                 }
                 break;
-
         }
     }
 
@@ -438,9 +429,7 @@ public class DoorbeelMainActivity extends Activity implements View.OnClickListen
 
     @Override
     public void responseQueryResult(String result) {
-
     }
-
     @Override
     public void responseSetResult(String result) {
         Message msg = Message.obtain();
@@ -450,14 +439,9 @@ public class DoorbeelMainActivity extends Activity implements View.OnClickListen
             mHandler.sendMessage(msg);
         }
     }
-
-
-
     @Override
     public void responseLockStatu(int RecondNum, int LockStatus) {
-
     }
-
     @Override
     public void responseUserIdInfo(UserIdInfo userIdInfo) {
         Log.i(TAG, "userIdInfo=" + userIdInfo.toString());

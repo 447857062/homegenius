@@ -96,6 +96,8 @@ import com.deplink.sdk.android.sdk.manager.SDKManager;
 import com.deplink.sdk.android.sdk.rest.RestfulToolsWeather;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.tencent.android.tpush.XGIOperateCallback;
+import com.tencent.android.tpush.XGPushManager;
 
 import org.litepal.crud.DataSupport;
 
@@ -998,7 +1000,6 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
         String password = Perfence.getPerfence(Perfence.USER_PASSWORD);
         Log.i(TAG, "phoneNumber=" + phoneNumber + "password=" + password);
         if (!password.equals("")) {
-            Perfence.setPerfence(AppConstant.USER_LOGIN, false);
             manager.login(phoneNumber, password);
         }
     }
@@ -1012,7 +1013,8 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
                 switch (action) {
                     case LOGIN:
                         manager.connectMQTT(SmartHomeMainActivity.this);
-                        Log.i(TAG, "login mqtt success uuid=" + manager.getUserInfo().getUuid());
+                        String uuid = manager.getUserInfo().getUuid();
+                        Log.i(TAG, "login mqtt success uuid=" + uuid);
                         Perfence.setPerfence(AppConstant.PERFENCE_BIND_APP_UUID, manager.getUserInfo().getUuid());
                         User user = manager.getUserInfo();
                         Perfence.setPerfence(Perfence.USER_PASSWORD, user.getPassword());
@@ -1020,6 +1022,21 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
                         Perfence.setPerfence(AppConstant.USER.USER_GETIMAGE_FROM_SERVICE,false);
                         Perfence.setPerfence(AppConstant.USER_LOGIN, true);
                         mRoomManager.updateRooms();
+                        Log.i(TAG, "点击登录 onSuccess login uuid=" + uuid);
+                        if (!uuid.equalsIgnoreCase("")) {
+                            Log.i("TPush", "注册uuid：" + uuid);
+                            XGPushManager.registerPush(getApplicationContext(), uuid, new XGIOperateCallback() {
+                                @Override
+                                public void onSuccess(Object data, int flag) {
+                                    Log.i("TPush", "注册成功，设备token为：" + data);
+                                }
+                                @Override
+                                public void onFail(Object data, int errCode, String msg) {
+                                    Log.i("TPush", "注册失败，错误码：" + errCode + ",错误信息：" + msg);
+                                }
+                            });
+                            XGPushManager.enableService(SmartHomeMainActivity.this, true);
+                        }
                         break;
                 }
             }
