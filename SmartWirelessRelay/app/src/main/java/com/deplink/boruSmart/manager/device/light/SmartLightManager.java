@@ -118,7 +118,10 @@ public class SmartLightManager extends DeviceManager {
             for (int i = 0; i < devices.size(); i++) {
                 if (devices.get(i).getTopic() != null && !devices.get(i).getTopic().equals("")) {
                     Log.i(TAG, "device.getTopic()=" + devices.get(i).getTopic());
-                    if (devices.get(i).getStatus().equalsIgnoreCase("on") || devices.get(i).getStatus().equalsIgnoreCase("在线")) {
+
+                    if (devices.get(i).getStatus()!=null &&
+                            (devices.get(i).getStatus().equalsIgnoreCase("on")
+                                    || devices.get(i).getStatus().equalsIgnoreCase("在线"))) {
                         mHomeGenius.setSmartLightSwitch(currentSelectLight, devices.get(i).getTopic(), uuid, cmd);
                     }
 

@@ -82,6 +82,7 @@ public class AddDoorbellTipsActivity extends Activity implements View.OnClickLis
                         Ftoast.create(AddDoorbellTipsActivity.this).setText("门铃网络已配置,现在重启门邻设备").show();
                         Intent intent = new Intent(AddDoorbellTipsActivity.this, EditDoorbellActivity.class);
                         startActivity(intent);
+                        AddDoorbellTipsActivity.this.finish();
                     }
                 }
                 break;
