@@ -50,10 +50,10 @@ public class WifipasswordInputActivity extends Activity implements View.OnClickL
     }
 
     private void initViews() {
-        button_next_step = (Button) findViewById(R.id.button_next_step);
-        textview_wifi_name = (TextView) findViewById(R.id.textview_wifi_name);
-        layout_title= (TitleLayout) findViewById(R.id.layout_title);
-        edittext_wifi_password= (ClearEditText) findViewById(R.id.edittext_wifi_password);
+        button_next_step = findViewById(R.id.button_next_step);
+        textview_wifi_name = findViewById(R.id.textview_wifi_name);
+        layout_title= findViewById(R.id.layout_title);
+        edittext_wifi_password= findViewById(R.id.edittext_wifi_password);
     }
 
     @Override

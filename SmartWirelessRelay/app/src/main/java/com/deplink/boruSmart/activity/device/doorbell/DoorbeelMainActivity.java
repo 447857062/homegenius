@@ -379,11 +379,11 @@ public class DoorbeelMainActivity extends Activity implements View.OnClickListen
     }
 
     private void initViews() {
-        layout_title = (TitleLayout) findViewById(R.id.layout_title);
-        button_opendoor = (Button) findViewById(R.id.button_opendoor);
-        layout_no_vistor = (RelativeLayout) findViewById(R.id.layout_no_vistor);
-        imageview_visitor = (ImageView) findViewById(R.id.imageview_visitor);
-        imageview_gif = (ImageView) findViewById(R.id.imageview_gif);
+        layout_title = findViewById(R.id.layout_title);
+        button_opendoor = findViewById(R.id.button_opendoor);
+        layout_no_vistor = findViewById(R.id.layout_no_vistor);
+        imageview_visitor = findViewById(R.id.imageview_visitor);
+        imageview_gif = findViewById(R.id.imageview_gif);
     }
 
     private DoorbeelMenuDialog doorbeelMenuDialog;

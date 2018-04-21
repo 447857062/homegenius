@@ -128,7 +128,7 @@ public class EditDoorbellActivity extends Activity implements View.OnClickListen
                         @Override
                         public void run() {
                             if (wifiData != null) {
-                                textview_select_getway_name.setText("当前配置的WIFI:" + wifiData.ssid);
+                                textview_select_getway_name.setText("当前配置的WiFi:" + wifiData.ssid);
                             }
                         }
                     }, 0);
