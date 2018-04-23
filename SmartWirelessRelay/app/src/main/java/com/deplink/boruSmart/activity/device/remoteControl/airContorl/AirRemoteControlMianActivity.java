@@ -95,7 +95,6 @@ public class AirRemoteControlMianActivity extends Activity implements View.OnCli
         super.onResume();
         isStartFromExperience = DeviceManager.getInstance().isStartFromExperience();
         initKeylearnStatus();
-        initImageViewKeyBackground();
         initKeyCodeData();
         layout_title.setEditTextVisiable(false);
         if(!isStartFromExperience){
@@ -104,16 +103,23 @@ public class AirRemoteControlMianActivity extends Activity implements View.OnCli
             mRemoteControlManager.getmSelectRemoteControlDevice().setUserCount(usercount);
             mRemoteControlManager.getmSelectRemoteControlDevice().save();
         }
+        initImageViewKeyBackground();
     }
 
     /**
      * 初始化按键的背景，学习过和未学习的按键背景不一样，点击效果也不一样
      */
     private void initImageViewKeyBackground() {
-        currentMode = mAirconditionInitKeyValue.getMode();
-        wind = mAirconditionInitKeyValue.getWind();
+        if(isStartFromExperience){
+            currentMode=0x05;
+            wind=0x04;
+            directionAuto=0x01;
+        }else{
+            currentMode = mAirconditionInitKeyValue.getMode();
+            wind = mAirconditionInitKeyValue.getWind();
+            directionAuto = mAirconditionInitKeyValue.getDirectionAuto();
+        }
         directionHand = mAirconditionInitKeyValue.getDirectionHand();
-        directionAuto = mAirconditionInitKeyValue.getDirectionAuto();
         tempature = mAirconditionInitKeyValue.getTempature();
         power = mAirconditionInitKeyValue.getKeyPower();
         final Animation animationFadeIn= AnimationUtils.loadAnimation(this, R.anim.fade_in);
