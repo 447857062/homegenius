@@ -65,7 +65,6 @@
                 android:layout_below="@+id/imageview_power"
                 android:layout_marginTop="@dimen/list_item_textview_margin_top"
                 android:gravity="center_horizontal|center_vertical"
-                android:text="开/关"
                 android:textColor="@color/room_type_text"
                 android:textSize="@dimen/text_size_small" />
         </RelativeLayout>

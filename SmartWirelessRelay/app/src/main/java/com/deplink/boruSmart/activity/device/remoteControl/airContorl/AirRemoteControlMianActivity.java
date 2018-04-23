@@ -713,7 +713,6 @@ public class AirRemoteControlMianActivity extends Activity implements View.OnCli
                             }
                             break;
                     }
-
                     startActivity(new Intent(this, LearnByHandActivity.class));
                 } else {
                     if (key_tempature_reduce) {
@@ -737,7 +736,6 @@ public class AirRemoteControlMianActivity extends Activity implements View.OnCli
                                             if (data_key_tempature_cold_16 != null) {
                                                 mRemoteControlManager.sendData(data_key_tempature_cold_16);
                                             } else {
-
                                                 mRemoteControlManager.sendData(DataExchange.dbBytesToString(data));
                                             }
                                             break;
@@ -1655,7 +1653,8 @@ public class AirRemoteControlMianActivity extends Activity implements View.OnCli
             textview_wind_direction.setTextColor(getResources().getColor(R.color.room_type_text));
             textview_temperature.setTextColor(0xFF60a3f6);
             textview_tempature_unit.setTextColor(0xFF60a3f6);
-            textview_power.setTextColor(getResources().getColor(R.color.room_type_text));
+            textview_power.setTextColor(getResources().getColor(R.color.delete_button));
+            textview_power.setText("关闭");
             final Animation animationFadeIn= AnimationUtils.loadAnimation(this, R.anim.fade_in);
             final Animation animationFadeOut= AnimationUtils.loadAnimation(this, R.anim.fade_out);
             final Animation animationFadeHold= AnimationUtils.loadAnimation(this, R.anim.fade_hold);
@@ -1716,6 +1715,7 @@ public class AirRemoteControlMianActivity extends Activity implements View.OnCli
             textview_wind_speed.setTextColor(getResources().getColor(R.color.line_clolor));
             textview_wind_direction.setTextColor(getResources().getColor(R.color.line_clolor));
             textview_power.setTextColor(getResources().getColor(R.color.title_blue_bg));
+            textview_power.setText("开启");
             textview_temperature.setTextColor(0xFF999999);
             textview_tempature_unit.setTextColor(0xFF999999);
             gatwaygif.setAnimation(null);
