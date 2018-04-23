@@ -97,12 +97,9 @@ public class LightActivity extends Activity implements View.OnClickListener, Sma
                     button_switch_light.setAlpha(alpha);
                 }
             }
-
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-
             }
-
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 if (!isStartFromExperience) {
@@ -422,7 +419,6 @@ public class LightActivity extends Activity implements View.OnClickListener, Sma
                                 currentSelectLight.setStatus("在线");
                                 currentSelectLight.saveFast();
                             }
-                            button_switch_light.setAlpha(1.0f);
                         } else if (resultObj.getOpen() == 2) {
                             button_switch_light.setAlpha(0.0f);
                             iamgeview_switch.setBackgroundResource(R.drawable.offlight);

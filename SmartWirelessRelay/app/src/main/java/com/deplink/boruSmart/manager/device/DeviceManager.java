@@ -155,7 +155,7 @@ public class DeviceManager implements LocalConnecteListener {
             instance = new DeviceManager();
         }
         uuid = Perfence.getPerfence(AppConstant.PERFENCE_BIND_APP_UUID);
-
+        userName = Perfence.getPerfence(Perfence.PERFENCE_PHONE);
         return instance;
     }
 
@@ -302,7 +302,8 @@ public class DeviceManager implements LocalConnecteListener {
      * 查询设备列表
      */
     public void queryDeviceListHttp() {
-        Log.i(TAG, "queryDeviceListHttp");
+        userName = Perfence.getPerfence(Perfence.PERFENCE_PHONE);
+        Log.i(TAG, "queryDeviceListHttp"+"userName:"+userName);
         if (userName.equals("")) {
             return;
         }
@@ -390,9 +391,6 @@ public class DeviceManager implements LocalConnecteListener {
                             e.printStackTrace();
                         }
                     }
-
-
-
                 }
             }
 
@@ -657,7 +655,6 @@ public class DeviceManager implements LocalConnecteListener {
             initMqttCallback();
         }
         timertaskIsScheduled=false;
-        userName = Perfence.getPerfence(Perfence.PERFENCE_PHONE);
         mLocalConnectmanager.addLocalConnectListener(this);
         packet = new GeneralPacket(mContext);
         cachedThreadPool = Executors.newCachedThreadPool();
