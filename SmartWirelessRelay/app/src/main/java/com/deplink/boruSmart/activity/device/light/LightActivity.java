@@ -93,10 +93,6 @@ public class LightActivity extends Activity implements View.OnClickListener, Sma
                 if (isStartFromExperience) {
                     Log.i(TAG, "lightColorProgress=" + lightColorProgress);
                     button_switch_light.setBackgroundResource(R.drawable.lightyellowlight);
-                    if (lightColorProgress == 0) {
-                        button_switch_light.setBackgroundResource(R.drawable.lightwhitelight);
-
-                    }
                     float alpha = (float) (lightColorProgress / 200.0);
                     button_switch_light.setAlpha(alpha);
                 }
@@ -119,11 +115,6 @@ public class LightActivity extends Activity implements View.OnClickListener, Sma
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 lightBrightnessProgress = progress * 2;
                 if (isStartFromExperience) {
-                    if (lightColorProgress == 0) {
-                        button_switch_light.setAlpha(1.0f);
-
-                    }
-                    button_switch_light.setBackgroundResource(R.drawable.lightwhitelight);
                     float alpha = (float) (lightBrightnessProgress / 200.0);
                     imageview_switch_bg.setAlpha(alpha);
                 }
@@ -183,7 +174,7 @@ public class LightActivity extends Activity implements View.OnClickListener, Sma
                     Message msg = Message.obtain();
                     msg.obj = resultObj;
                     msg.what = MSG_GET_LIGHT_RESULT;
-                    if(!isStartFromExperience){
+                    if (!isStartFromExperience) {
                         mHandler.sendMessage(msg);
                     }
                 }
@@ -248,13 +239,17 @@ public class LightActivity extends Activity implements View.OnClickListener, Sma
         isUserLogin = Perfence.getBooleanPerfence(AppConstant.USER_LOGIN);
         isStartFromExperience = DeviceManager.getInstance().isStartFromExperience();
         manager.addEventCallback(ec);
+        if (progressBarLightWhite.getProgress() == 0) {
+            imageview_switch_bg.setAlpha(0.0f);
+        }
         if (isStartFromExperience) {
-            iamgeview_switch.setBackgroundResource(R.drawable.ovel_110_bg);
+            iamgeview_switch.setBackgroundResource(R.drawable.offlight);
             imageview_switch_bg.setBackgroundResource(R.color.room_type_text);
             textview_switch_tips.setText("点击开启");
             button_switch_light.setBackgroundResource(R.drawable.lightwhitelight);
             layout_lightcolor_control.setVisibility(View.GONE);
             layout_brightness_control.setVisibility(View.GONE);
+
         } else {
             currentSelectLight = mSmartLightManager.getCurrentSelectLight();
             int usercount = currentSelectLight.getUserCount();
@@ -267,7 +262,7 @@ public class LightActivity extends Activity implements View.OnClickListener, Sma
             //读取保存在数据库中的状态
             if (currentSelectLight != null) {
                 if (currentSelectLight.getLightIsOpen() == 1) {
-                    iamgeview_switch.setBackgroundResource(R.drawable.radius110_bg_white_background);
+                    iamgeview_switch.setBackgroundResource(R.drawable.onlight);
                     imageview_switch_bg.setBackgroundResource(R.drawable.lightglowoutside);
                     textview_switch_tips.setText("点击关闭");
                     layout_lightcolor_control.setVisibility(View.VISIBLE);
@@ -280,10 +275,9 @@ public class LightActivity extends Activity implements View.OnClickListener, Sma
                     button_switch_light.setAlpha(alpha2);
                     progressBarLightYellow.setProgress(currentSelectLight.getYellowValue() / 2);
                 } else {
-                    iamgeview_switch.setBackgroundResource(R.drawable.ovel_110_bg);
+                    iamgeview_switch.setBackgroundResource(R.drawable.offlight);
                     imageview_switch_bg.setBackgroundResource(R.color.room_type_text);
                     textview_switch_tips.setText("点击开启");
-                    button_switch_light.setBackgroundResource(R.drawable.lightwhitelight);
                     layout_lightcolor_control.setVisibility(View.GONE);
                     layout_brightness_control.setVisibility(View.GONE);
                 }
@@ -348,21 +342,24 @@ public class LightActivity extends Activity implements View.OnClickListener, Sma
 
                 break;
             case R.id.button_switch_light:
+                Log.i(TAG,"switchStatus="+switchStatus+"isStartFromExperience="+isStartFromExperience);
                 if (isStartFromExperience) {
                     if (switchStatus) {
                         switchStatus = false;
-                        iamgeview_switch.setBackgroundResource(R.drawable.ovel_110_bg);
+                        iamgeview_switch.setBackgroundResource(R.drawable.offlight);
                         imageview_switch_bg.setBackgroundResource(R.color.room_type_text);
                         textview_switch_tips.setText("点击开启");
                         layout_lightcolor_control.setVisibility(View.GONE);
                         layout_brightness_control.setVisibility(View.GONE);
+                        button_switch_light.setAlpha(0.0f);
                     } else {
                         switchStatus = true;
-                        iamgeview_switch.setBackgroundResource(R.drawable.radius110_bg_white_background);
+                        iamgeview_switch.setBackgroundResource(R.drawable.onlight);
                         imageview_switch_bg.setBackgroundResource(R.drawable.lightglowoutside);
                         textview_switch_tips.setText("点击关闭");
                         layout_lightcolor_control.setVisibility(View.VISIBLE);
                         layout_brightness_control.setVisibility(View.VISIBLE);
+                        button_switch_light.setAlpha(1.0f);
                     }
                 } else {
                     if (NetUtil.isNetAvailable(this)) {
@@ -393,8 +390,8 @@ public class LightActivity extends Activity implements View.OnClickListener, Sma
             switch (msg.what) {
                 case MSG_GET_LIGHT_RESULT:
                     QueryOptions resultObj = (QueryOptions) msg.obj;
-                    Log.i(TAG,"resultObj="+resultObj.toString());
-                    if(resultObj.getMethod().equals("YWLIGHTCONTROL")){
+                    Log.i(TAG, "resultObj=" + resultObj.toString());
+                    if (resultObj.getMethod().equals("YWLIGHTCONTROL")) {
                         if (resultObj.getYellow() != 0) {
                             button_switch_light.setBackgroundResource(R.drawable.lightyellowlight);
                             float alpha = (float) (resultObj.getYellow() / 200.0);
@@ -403,11 +400,7 @@ public class LightActivity extends Activity implements View.OnClickListener, Sma
                                 alpha = 1.0f;
                             }
                             button_switch_light.setAlpha(alpha);
-
                             progressBarLightYellow.setProgress(resultObj.getYellow() / 2);
-                        }else{
-                            button_switch_light.setBackgroundResource(R.drawable.lightwhitelight);
-                            button_switch_light.setAlpha(1.0f);
                         }
                         if (resultObj.getWhite() != 0) {
                             float alpha = (float) (resultObj.getWhite() / 200.0);
@@ -419,7 +412,7 @@ public class LightActivity extends Activity implements View.OnClickListener, Sma
                             progressBarLightWhite.setProgress(resultObj.getWhite() / 2);
                         }
                         if (resultObj.getOpen() == 1) {
-                            iamgeview_switch.setBackgroundResource(R.drawable.radius110_bg_white_background);
+                            iamgeview_switch.setBackgroundResource(R.drawable.onlight);
                             imageview_switch_bg.setBackgroundResource(R.drawable.lightglowoutside);
                             textview_switch_tips.setText("点击关闭");
                             layout_lightcolor_control.setVisibility(View.VISIBLE);
@@ -429,11 +422,12 @@ public class LightActivity extends Activity implements View.OnClickListener, Sma
                                 currentSelectLight.setStatus("在线");
                                 currentSelectLight.saveFast();
                             }
+                            button_switch_light.setAlpha(1.0f);
                         } else if (resultObj.getOpen() == 2) {
-                            iamgeview_switch.setBackgroundResource(R.drawable.ovel_110_bg);
+                            button_switch_light.setAlpha(0.0f);
+                            iamgeview_switch.setBackgroundResource(R.drawable.offlight);
                             imageview_switch_bg.setBackgroundResource(R.color.room_type_text);
                             textview_switch_tips.setText("点击开启");
-                            button_switch_light.setBackgroundResource(R.drawable.lightwhitelight);
                             layout_lightcolor_control.setVisibility(View.GONE);
                             layout_brightness_control.setVisibility(View.GONE);
                             if (currentSelectLight != null) {
@@ -461,7 +455,7 @@ public class LightActivity extends Activity implements View.OnClickListener, Sma
         Message msg = Message.obtain();
         msg.obj = resultObj;
         msg.what = MSG_GET_LIGHT_RESULT;
-        if(!isStartFromExperience){
+        if (!isStartFromExperience) {
             mHandler.sendMessage(msg);
         }
     }

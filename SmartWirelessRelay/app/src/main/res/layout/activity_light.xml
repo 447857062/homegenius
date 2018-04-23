@@ -39,10 +39,10 @@
             >
             <ImageView
                 android:id="@+id/iamgeview_switch"
-                android:layout_width="221dp"
-                android:layout_height="221dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:background="@drawable/ovel_110_bg"
+                android:background="@drawable/offlight"
                 android:scaleType="centerInside" />
 
             <ImageView

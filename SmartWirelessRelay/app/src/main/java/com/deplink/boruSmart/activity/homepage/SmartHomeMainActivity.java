@@ -466,7 +466,6 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
 
                     }
                 }, city);
-
             }
         }).start();
     }
