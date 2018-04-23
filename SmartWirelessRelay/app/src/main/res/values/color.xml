@@ -30,11 +30,14 @@
     <color name="possible_result_points">#c0ffbd21</color> <!-- Android standard ICS color -->
     <color name="result_text">#ff000000</color>
     <color name="title_blue_bg">#FF60a3f6</color>
+
     <color name="input_alert_dialog_stroke"> #4d82c5</color>
     <color name="input_alert_dialog_content"> #cccccc</color>
     <color name="room_type_text">#333333</color>
     <color name="line_dirver_color">#DDDDDD</color>
     <color name="white">#ffffff</color>
+    <color name="seekbar_bg">#5c5c5c</color>
+    <color name="seekbar_progress">#f8c618</color>
     <color name="huise">#FF999999</color>
     <color name="pressed_button_background">#5692dd</color>
     <color name="delete_button_background">#e5e5e5</color>

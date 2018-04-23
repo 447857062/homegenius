@@ -144,7 +144,7 @@
                 android:max="100"
                 android:maxHeight="9dp"
                 android:minHeight="9dp"
-                android:progressDrawable="@drawable/progressbar_horizontal"
+                android:progressDrawable="@drawable/progressbar_white_horizontal"
                 android:thumb="@drawable/seekbar_horiz_thumb_background"
                 android:thumbOffset="0dp" />
 
