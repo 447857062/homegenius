@@ -171,14 +171,16 @@ public class DeviceManager implements LocalConnecteListener {
     }
 
     public void startQueryStatu() {
-        if(mDevicesStatus==null){
+        if (mDevicesStatus == null) {
             mDevicesStatus = new HashMap<>();
         }
-        if(!timertaskIsScheduled){
+        if (!timertaskIsScheduled) {
             startTimer();
         }
     }
+
     private boolean timertaskIsScheduled;
+
     public void stopQueryStatu() {
         mDevicesStatus = null;
         stopTimer();
@@ -232,7 +234,7 @@ public class DeviceManager implements LocalConnecteListener {
     private static final int TIME_DIFFERENCE_BETWEEN_MESSAGE_INTERVALS = 10000;
 
     private void stopTimer() {
-        timertaskIsScheduled=false;
+        timertaskIsScheduled = false;
         if (refreshTask != null) {
             refreshTask.cancel();
             refreshTask = null;
@@ -244,11 +246,9 @@ public class DeviceManager implements LocalConnecteListener {
     }
 
     private void startTimer() {
-        timertaskIsScheduled=true;
+        timertaskIsScheduled = true;
         Log.i(TAG, "startTimer");
-        if (refreshTimer == null) {
-            refreshTimer = new Timer();
-        }
+
         if (refreshTask == null) {
             refreshTask = new TimerTask() {
                 @Override
@@ -291,6 +291,9 @@ public class DeviceManager implements LocalConnecteListener {
         if (refreshTimer != null) {
             //10秒钟发一次查询的命令
             try {
+                refreshTimer.cancel();
+                refreshTimer = null;
+                refreshTimer = new Timer();
                 refreshTimer.schedule(refreshTask, 0, TIME_DIFFERENCE_BETWEEN_MESSAGE_INTERVALS);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -303,7 +306,7 @@ public class DeviceManager implements LocalConnecteListener {
      */
     public void queryDeviceListHttp() {
         userName = Perfence.getPerfence(Perfence.PERFENCE_PHONE);
-        Log.i(TAG, "queryDeviceListHttp"+"userName:"+userName);
+        Log.i(TAG, "queryDeviceListHttp" + "userName:" + userName);
         if (userName.equals("")) {
             return;
         }
@@ -340,12 +343,14 @@ public class DeviceManager implements LocalConnecteListener {
                     }
                 }
             }
+
             @Override
             public void onFailure(Call<String> call, Throwable t) {
 
             }
         });
     }
+
     public void addDeviceHttp(DeviceAddBody device) {
         if (userName.equals("")) {
             return;
@@ -372,10 +377,10 @@ public class DeviceManager implements LocalConnecteListener {
                 } else if (response.code() == 403) {
                     if (response.errorBody() != null) {
                         try {
-                            String errorString=response.errorBody().string();
+                            String errorString = response.errorBody().string();
                             Log.i(TAG, "" + errorString);
-                           ErrorBody errorBody= gson.fromJson(errorString, ErrorBody.class);
-                            if(errorBody.getMsg().equalsIgnoreCase("token invalid or expired, please login")){
+                            ErrorBody errorBody = gson.fromJson(errorString, ErrorBody.class);
+                            if (errorBody.getMsg().equalsIgnoreCase("token invalid or expired, please login")) {
                                 Ftoast.create(mContext).setText("登录已过期,请重新登录").show();
                                 Perfence.setPerfence(AppConstant.USER_LOGIN, false);
                                 DataSupport.deleteAll(SmartDev.class);
@@ -384,7 +389,7 @@ public class DeviceManager implements LocalConnecteListener {
                                 DataSupport.deleteAll(Record.class);
                                 DataSupport.deleteAll(Router.class);
                                 mContext.startActivity(new Intent(mContext, LoginActivity.class));
-                            }else{
+                            } else {
                                 Ftoast.create(mContext).setText("没有授权,请让第一次添加此设备的用户给你授权").show();
                             }
                         } catch (IOException e) {
@@ -445,7 +450,7 @@ public class DeviceManager implements LocalConnecteListener {
                     for (int i = 0; i < mDeviceListenerList.size(); i++) {
                         mDeviceListenerList.get(i).responseDeleteDeviceHttpResult(response.body());
                     }
-                }else if(response.code() ==403){
+                } else if (response.code() == 403) {
                     Ftoast.create(mContext).setText("登录已过期,请重新登录").show();
                     Perfence.setPerfence(AppConstant.USER_LOGIN, false);
                     DataSupport.deleteAll(SmartDev.class);
@@ -500,7 +505,7 @@ public class DeviceManager implements LocalConnecteListener {
                         Log.i(TAG, "alert device:" + mDeviceListenerList.get(i).toString());
                         mDeviceListenerList.get(i).responseAlertDeviceHttpResult(response.body());
                     }
-                }else if(response.code() == 403){
+                } else if (response.code() == 403) {
                     Ftoast.create(mContext).setText("登录已过期,请重新登录").show();
                     Perfence.setPerfence(AppConstant.USER_LOGIN, false);
                     DataSupport.deleteAll(SmartDev.class);
@@ -654,7 +659,7 @@ public class DeviceManager implements LocalConnecteListener {
         if (manager == null) {
             initMqttCallback();
         }
-        timertaskIsScheduled=false;
+        timertaskIsScheduled = false;
         mLocalConnectmanager.addLocalConnectListener(this);
         packet = new GeneralPacket(mContext);
         cachedThreadPool = Executors.newCachedThreadPool();
@@ -887,6 +892,7 @@ public class DeviceManager implements LocalConnecteListener {
         Log.i(TAG, "查找所有的智能设备,设备个数=" + smartDevices.size());
         return smartDevices;
     }
+
     /**
      * 删除数据库中的一个智能设备
      */
@@ -895,6 +901,7 @@ public class DeviceManager implements LocalConnecteListener {
         Log.i(TAG, "删除一个智能设备，删除影响的行数=" + affectcolumn);
         return affectcolumn;
     }
+
     /**
      * 解除绑定
      * 解除绑定后根据返回结果更新数据库
@@ -978,11 +985,11 @@ public class DeviceManager implements LocalConnecteListener {
                 if (type.getCommand().equalsIgnoreCase(SmartLockConstant.CMD.QUERY)) {
                     if (type.getSmartUid() != null) {
                         if (mDevicesStatus != null) {
-                          if(type.getResult()!=-1){
-                              mDevicesStatus.put(type.getSmartUid(), "在线");
-                          }else{
-                              mDevicesStatus.put(type.getSmartUid(), "在线");
-                          }
+                            if (type.getResult() != -1) {
+                                mDevicesStatus.put(type.getSmartUid(), "在线");
+                            } else {
+                                mDevicesStatus.put(type.getSmartUid(), "在线");
+                            }
 
                         }
 
@@ -1010,6 +1017,7 @@ public class DeviceManager implements LocalConnecteListener {
             }
         }
     }
+
     @Override
     public void OnGetSetresult(String result) {
         Gson gson = new Gson();
@@ -1026,7 +1034,7 @@ public class DeviceManager implements LocalConnecteListener {
                     }
 
                 }
-            }else if(type.getMethod().equalsIgnoreCase("YWLIGHTCONTROL")){
+            } else if (type.getMethod().equalsIgnoreCase("YWLIGHTCONTROL")) {
                 if (type.getCommand().equalsIgnoreCase(SmartLockConstant.CMD.QUERY)) {
                     if (type.getSmartUid() != null) {
                         if (mDevicesStatus != null) {
@@ -1057,9 +1065,11 @@ public class DeviceManager implements LocalConnecteListener {
             }
         }
     }
+
     @Override
     public void onSetWifiRelayResult(String result) {
     }
+
     @Override
     public void onGetalarmRecord(List<Info> alarmList) {
     }

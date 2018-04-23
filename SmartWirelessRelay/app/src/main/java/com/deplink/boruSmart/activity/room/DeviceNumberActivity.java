@@ -180,23 +180,26 @@ public class DeviceNumberActivity extends Activity implements EllE_Listener, Vie
                     mHandler.post(new Runnable() {
                         @Override
                         public void run() {
-                            for (int i = 0; i < datasTop.size(); i++) {
-                                if ((mDeviceManager.getmDevicesStatus().get(datasTop.get(i).getUid()) != null)) {
-                                    datasTop.get(i).setStatus(mDeviceManager.getmDevicesStatus().get(datasTop.get(i).getUid()));
-                                    datasTop.get(i).saveFast();
+                            if(mDeviceManager.getmDevicesStatus()!=null ){
+                                for (int i = 0; i < datasTop.size(); i++) {
+                                    if ((mDeviceManager.getmDevicesStatus().get(datasTop.get(i).getUid()) != null)) {
+                                        datasTop.get(i).setStatus(mDeviceManager.getmDevicesStatus().get(datasTop.get(i).getUid()));
+                                        datasTop.get(i).saveFast();
+                                    }
                                 }
+                                for (int i = 0; i < datasBottom.size(); i++) {
+                                    if ((mDeviceManager.getmDevicesStatus().get(datasBottom.get(i).getMac()) != null)) {
+                                        datasBottom.get(i).setStatus(mDeviceManager.getmDevicesStatus().get(datasBottom.get(i).getMac()));
+                                        datasBottom.get(i).saveFast();
+                                    }
+                                    if (datasBottom.get(i).getType().equalsIgnoreCase(DeviceTypeConstant.TYPE.TYPE_MENLING)) {
+                                        currentSmartDoorBell = datasBottom.get(i);
+                                    }
+                                }
+                                virtualDeviceUpdate();
+                                updateListview();
                             }
-                            for (int i = 0; i < datasBottom.size(); i++) {
-                                if ((mDeviceManager.getmDevicesStatus().get(datasBottom.get(i).getMac()) != null)) {
-                                    datasBottom.get(i).setStatus(mDeviceManager.getmDevicesStatus().get(datasBottom.get(i).getMac()));
-                                    datasBottom.get(i).saveFast();
-                                }
-                                if (datasBottom.get(i).getType().equalsIgnoreCase(DeviceTypeConstant.TYPE.TYPE_MENLING)) {
-                                    currentSmartDoorBell = datasBottom.get(i);
-                                }
-                            }
-                            virtualDeviceUpdate();
-                            updateListview();
+
                         }
                     });
                 }
