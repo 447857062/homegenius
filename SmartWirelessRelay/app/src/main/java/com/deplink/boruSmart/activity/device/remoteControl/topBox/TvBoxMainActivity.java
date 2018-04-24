@@ -166,7 +166,7 @@ public class TvBoxMainActivity extends Activity implements View.OnClickListener 
         if (key_power) {
             imageview_power.setBackgroundResource(R.drawable.button_power_learned);
         } else {
-            imageview_power.setBackgroundResource(R.drawable.button_power_notlearn);
+            imageview_power.setBackgroundResource(R.drawable.button_power_notlearn_tv_ptv);
         }
         if (key_ch_reduce) {
             imageview_ch_reduce.setBackgroundResource(R.drawable.button_learn_ch_reduce_learned);
@@ -411,7 +411,6 @@ public class TvBoxMainActivity extends Activity implements View.OnClickListener 
         layout_title_control_number = findViewById(R.id.layout_title_control_number);
         layout_control_base = findViewById(R.id.layout_control_base);
         layout_control_number = findViewById(R.id.layout_control_number);
-        imageview_power = findViewById(R.id.imageview_power);
         imageview_center = findViewById(R.id.imageview_center);
         imageview_power = findViewById(R.id.imageview_power);
         imageview_left = findViewById(R.id.imageview_left);
@@ -444,7 +443,6 @@ public class TvBoxMainActivity extends Activity implements View.OnClickListener 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-
             case R.id.imageview_power:
                 if (isLearnByHand) {
                     mRemoteControlManager.setCurrentLearnByHandKeyName(TvBoxNameConstant.KEYNAME.KEYNAME_POWER);

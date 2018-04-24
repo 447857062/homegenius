@@ -180,7 +180,7 @@ public class TvMainActivity extends Activity implements View.OnClickListener {
         if (key_power) {
             imageview_power.setBackgroundResource(R.drawable.button_power_learned);
         } else {
-            imageview_power.setBackgroundResource(R.drawable.button_power_notlearn);
+            imageview_power.setBackgroundResource(R.drawable.button_power_notlearn_tv_ptv);
         }
         if (key_ch_reduce) {
             imageview_ch_reduce.setBackgroundResource(R.drawable.button_learn_ch_reduce_learned);
@@ -445,7 +445,6 @@ public class TvMainActivity extends Activity implements View.OnClickListener {
         layout_control_number = findViewById(R.id.layout_control_number);
         textview_control_base = findViewById(R.id.textview_control_base);
         textview_control_number = findViewById(R.id.textview_control_number);
-        imageview_power = findViewById(R.id.imageview_power);
         imageview_center = findViewById(R.id.imageview_center);
         imageview_power = findViewById(R.id.imageview_power);
         imageview_left = findViewById(R.id.imageview_left);

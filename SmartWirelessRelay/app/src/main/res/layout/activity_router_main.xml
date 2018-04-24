@@ -322,6 +322,7 @@
                         <ImageView
                             android:layout_marginTop="50dp"
                             android:layout_centerHorizontal="true"
+                            android:layout_alignParentTop="true"
                             android:id="@+id/iamgeview_no_connected_device"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -345,22 +346,25 @@
                         android:scrollbars="none"
                         android:divider="@null" />
                 </FrameLayout>
+
                 <FrameLayout
                     android:id="@+id/frame_blacklist_content"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
+
                     <RelativeLayout
                         android:id="@+id/layout_no_blacklist"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:visibility="gone">
+
                         <ImageView
-                            android:layout_marginTop="50dp"
                             android:id="@+id/iamgeview_no_blacklist"
                             android:layout_width="wrap_content"
-                            android:layout_centerHorizontal="true"
                             android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="50dp"
                             android:scaleType="centerInside" />
 
                         <TextView
@@ -377,11 +381,11 @@
 
                     <com.deplink.boruSmart.view.listview.swipemenulistview.SwipeMenuListView
                         android:id="@+id/listview_black_list"
-                        android:overScrollMode="never"
-                        android:scrollbars="none"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:divider="@null" />
+                        android:divider="@null"
+                        android:overScrollMode="never"
+                        android:scrollbars="none" />
                 </FrameLayout>
             </FrameLayout>
 
