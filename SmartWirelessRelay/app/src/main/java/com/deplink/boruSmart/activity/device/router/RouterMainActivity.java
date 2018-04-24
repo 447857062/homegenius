@@ -336,7 +336,7 @@ public class RouterMainActivity extends Activity implements View.OnClickListener
                 }
                 if(mConnectedDevices.size()==0){
                     iamgeview_no_connected_device.setVisibility(View.VISIBLE);
-                    iamgeview_no_connected_device.setImageResource(R.drawable.router);
+                    iamgeview_no_connected_device.setImageResource(R.drawable.routeroffline);
                 }else{
                     iamgeview_no_connected_device.setVisibility(View.GONE);
                 }

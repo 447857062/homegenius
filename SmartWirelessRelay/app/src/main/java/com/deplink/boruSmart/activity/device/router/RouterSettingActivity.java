@@ -17,6 +17,7 @@ import com.deplink.boruSmart.activity.device.DevicesActivity;
 import com.deplink.boruSmart.activity.device.SelectRommActivity;
 import com.deplink.boruSmart.activity.device.ShareDeviceActivity;
 import com.deplink.boruSmart.activity.device.router.connectType.DialConnectActivity;
+import com.deplink.boruSmart.activity.device.router.connectType.DynamicsActivity;
 import com.deplink.boruSmart.activity.device.router.connectType.StaticConnectActivity;
 import com.deplink.boruSmart.activity.device.router.connectType.WirelessRelayActivity;
 import com.deplink.boruSmart.activity.device.router.firmwareupdate.FirmwareUpdateActivity;
@@ -483,7 +484,7 @@ public class RouterSettingActivity extends Activity implements View.OnClickListe
     private void selectConnectType() {
         if(mDeviceManager.isStartFromExperience()){
             Ftoast.create(RouterSettingActivity.this).setText( "动态IP设置成功，请设置wifi名字密码").show();
-            Intent intentWifiSetting = new Intent(RouterSettingActivity.this, WifiSetting24.class);
+            Intent intentWifiSetting = new Intent(RouterSettingActivity.this, DynamicsActivity.class);
             intentWifiSetting.putExtra(AppConstant.OPERATION_TYPE, AppConstant.OPERATION_TYPE_LOCAL);
             startActivity(intentWifiSetting);
         }else{

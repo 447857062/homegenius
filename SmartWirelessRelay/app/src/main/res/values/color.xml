@@ -34,6 +34,7 @@
     <color name="input_alert_dialog_stroke"> #4d82c5</color>
     <color name="input_alert_dialog_content"> #cccccc</color>
     <color name="room_type_text">#333333</color>
+    <color name="titlelayout_edit_text_color">#666666</color>
     <color name="line_dirver_color">#DDDDDD</color>
     <color name="white">#ffffff</color>
     <color name="seekbar_bg">#5c5c5c</color>

@@ -12,7 +12,7 @@
         titlelayout:return_image_show="true"
         titlelayout:menu_image_show="false"
         titlelayout:title_text="2.4G信号强度设置"
-        titlelayout:edit_text="2.保存"
+        titlelayout:edit_text="保存"
         android:layout_height="@dimen/title_bar_height"
         />
     <RelativeLayout
