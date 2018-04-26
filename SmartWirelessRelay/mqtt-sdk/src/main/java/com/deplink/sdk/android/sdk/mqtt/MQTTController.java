@@ -310,6 +310,7 @@ public class MQTTController implements MqttListener {
     @Override
     public void connectionLost(Throwable cause) {
         Log.d(DeplinkSDK.SDK_TAG, "MQTT connection lost, cause: " + cause);
+        mContext.sendBroadcast(new Intent("com.deplink.boruSmart.broadcastreceiver.FORCE_OFFLINE"));
         mSDKCoordinator.MQTTConnectionLost(cause);
     }
 

@@ -1,7 +1,6 @@
 package com.deplink.boruSmart.activity.device.remoteControl;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -17,9 +16,7 @@ import com.deplink.boruSmart.Protocol.json.device.remotecontrol.TvKeyCode;
 import com.deplink.boruSmart.Protocol.json.device.remotecontrol.TvKeyLearnStatu;
 import com.deplink.boruSmart.Protocol.json.device.remotecontrol.TvboxKeyCode;
 import com.deplink.boruSmart.Protocol.json.device.remotecontrol.TvboxLearnStatu;
-import com.deplink.boruSmart.activity.personal.login.LoginActivity;
 import com.deplink.boruSmart.constant.AirKeyNameConstant;
-import com.deplink.boruSmart.constant.AppConstant;
 import com.deplink.boruSmart.constant.DeviceTypeConstant;
 import com.deplink.boruSmart.constant.TvBoxNameConstant;
 import com.deplink.boruSmart.constant.TvKeyNameConstant;
@@ -28,7 +25,6 @@ import com.deplink.boruSmart.manager.device.remoteControl.RemoteControlListener;
 import com.deplink.boruSmart.manager.device.remoteControl.RemoteControlManager;
 import com.deplink.boruSmart.util.Perfence;
 import com.deplink.boruSmart.util.WeakRefHandler;
-import com.deplink.boruSmart.view.dialog.AlertDialog;
 import com.deplink.boruSmart.view.toast.Ftoast;
 import com.deplink.sdk.android.sdk.DeplinkSDK;
 import com.deplink.sdk.android.sdk.EventCallback;
@@ -1284,20 +1280,7 @@ public class LearnByHandActivity extends Activity implements View.OnClickListene
             @Override
             public void connectionLost(Throwable throwable) {
                 super.connectionLost(throwable);
-                Perfence.setPerfence(AppConstant.USER_LOGIN, false);
-                new AlertDialog(LearnByHandActivity.this).builder().setTitle("账号异地登录")
-                        .setMsg("当前账号已在其它设备上登录,是否重新登录")
-                        .setPositiveButton("确认", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                startActivity(new Intent(LearnByHandActivity.this, LoginActivity.class));
-                            }
-                        }).setNegativeButton("取消", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
 
-                    }
-                }).show();
             }
         };
     }

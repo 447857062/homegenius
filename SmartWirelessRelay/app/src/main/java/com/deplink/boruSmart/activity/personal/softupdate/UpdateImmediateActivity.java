@@ -11,8 +11,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.deplink.boruSmart.activity.personal.login.LoginActivity;
-import com.deplink.boruSmart.constant.AppConstant;
 import com.deplink.boruSmart.util.APKVersionCodeUtils;
 import com.deplink.boruSmart.util.Perfence;
 import com.deplink.boruSmart.util.WeakRefHandler;
@@ -105,20 +103,7 @@ public class UpdateImmediateActivity extends Activity implements View.OnClickLis
             @Override
             public void connectionLost(Throwable throwable) {
                 super.connectionLost(throwable);
-                Perfence.setPerfence(AppConstant.USER_LOGIN, false);
-                new AlertDialog(UpdateImmediateActivity.this).builder().setTitle("账号异地登录")
-                        .setMsg("当前账号已在其它设备上登录,是否重新登录")
-                        .setPositiveButton("确认", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                startActivity(new Intent(UpdateImmediateActivity.this, LoginActivity.class));
-                            }
-                        }).setNegativeButton("取消", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
 
-                    }
-                }).show();
             }
         };
 

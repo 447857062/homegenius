@@ -621,7 +621,6 @@ import java.util.Map;
     @Override
     public void connectionLost(Throwable why) {
         service.traceDebug(TAG, "connectionLost(" + why.getMessage() + ")");
-
         // we protect against the phone switching off
         // by requesting a wake lock - we request the minimum possible wake
         // lock - just enough to keep the CPU running until we've finished
@@ -652,17 +651,15 @@ import java.util.Map;
         Bundle resultBundle = new Bundle();
         resultBundle.putString(MqttServiceConstants.CALLBACK_ACTION,
                 MqttServiceConstants.ON_CONNECTION_LOST_ACTION);
-        if (why != null) {
-            resultBundle.putString(MqttServiceConstants.CALLBACK_ERROR_MESSAGE,
-                    why.getMessage());
-            if (why instanceof MqttException) {
-                resultBundle.putInt(MqttServiceConstants.CALLBACK_ERROR_NUMBER,
-                        ((MqttException) why).getReasonCode());
-            }
-            resultBundle.putString(
-                    MqttServiceConstants.CALLBACK_EXCEPTION_STACK,
-                    Log.getStackTraceString(why));
+        resultBundle.putString(MqttServiceConstants.CALLBACK_ERROR_MESSAGE,
+                why.getMessage());
+        if (why instanceof MqttException) {
+            resultBundle.putInt(MqttServiceConstants.CALLBACK_ERROR_NUMBER,
+                    ((MqttException) why).getReasonCode());
         }
+        resultBundle.putString(
+                MqttServiceConstants.CALLBACK_EXCEPTION_STACK,
+                Log.getStackTraceString(why));
         service.callbackToActivity(clientHandle, Status.OK, resultBundle);
 
         // we're finished - if the phone is switched off, it's okay for the CPU

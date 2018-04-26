@@ -53,6 +53,7 @@ public class AlertDialog {
 		img_line.setVisibility(View.GONE);
 
 		dialog = new Dialog(context, R.style.MakeSureDialog);
+
 		dialog.setContentView(view);
 		lLayout_bg.setLayoutParams(new FrameLayout.LayoutParams((int) (display
 				.getWidth() * 0.85), LayoutParams.WRAP_CONTENT));
@@ -167,6 +168,7 @@ public class AlertDialog {
 
 	public void show() {
 		setLayout();
+		dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
 		dialog.show();
 	}
 }

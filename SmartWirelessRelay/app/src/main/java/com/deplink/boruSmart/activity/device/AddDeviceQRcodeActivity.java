@@ -26,7 +26,6 @@ import com.deplink.boruSmart.manager.device.remoteControl.RemoteControlManager;
 import com.deplink.boruSmart.manager.device.smartlock.SmartLockManager;
 import com.deplink.boruSmart.util.Perfence;
 import com.deplink.boruSmart.util.qrcode.qrcodecapture.CaptureActivity;
-import com.deplink.boruSmart.view.dialog.AlertDialog;
 import com.deplink.boruSmart.view.toast.Ftoast;
 import com.deplink.sdk.android.sdk.DeplinkSDK;
 import com.deplink.sdk.android.sdk.EventCallback;
@@ -119,20 +118,6 @@ public class AddDeviceQRcodeActivity extends AppCompatActivity implements Adapte
             public void connectionLost(Throwable throwable) {
                 super.connectionLost(throwable);
                 isUserLogin = false;
-                Perfence.setPerfence(AppConstant.USER_LOGIN, false);
-                new AlertDialog(AddDeviceQRcodeActivity.this).builder().setTitle("账号异地登录")
-                        .setMsg("当前账号已在其它设备上登录,是否重新登录")
-                        .setPositiveButton("确认", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                startActivity(new Intent(AddDeviceQRcodeActivity.this, LoginActivity.class));
-                            }
-                        }).setNegativeButton("取消", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                    }
-                }).show();
             }
         };
     }

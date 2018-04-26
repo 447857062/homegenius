@@ -31,7 +31,6 @@ import com.deplink.boruSmart.util.NetUtil;
 import com.deplink.boruSmart.util.Perfence;
 import com.deplink.boruSmart.util.WeakRefHandler;
 import com.deplink.boruSmart.view.combinationwidget.TitleLayout;
-import com.deplink.boruSmart.view.dialog.AlertDialog;
 import com.deplink.boruSmart.view.toast.Ftoast;
 import com.deplink.sdk.android.sdk.DeplinkSDK;
 import com.deplink.sdk.android.sdk.EventCallback;
@@ -134,20 +133,7 @@ public class RoomActivity extends AppCompatActivity implements View.OnClickListe
             public void connectionLost(Throwable throwable) {
                 super.connectionLost(throwable);
                 isUserLogin = false;
-                Perfence.setPerfence(AppConstant.USER_LOGIN, false);
-                new AlertDialog(RoomActivity.this).builder().setTitle("账号异地登录")
-                        .setMsg("当前账号已在其它设备上登录,是否重新登录")
-                        .setPositiveButton("确认", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                startActivity(new Intent(RoomActivity.this, LoginActivity.class));
-                            }
-                        }).setNegativeButton("取消", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
 
-                    }
-                }).show();
             }
         };
     }

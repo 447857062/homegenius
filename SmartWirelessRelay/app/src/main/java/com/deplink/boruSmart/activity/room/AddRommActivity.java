@@ -14,7 +14,6 @@ import android.widget.Toast;
 
 import com.deplink.boruSmart.Protocol.json.Room;
 import com.deplink.boruSmart.activity.device.SelectRommActivity;
-import com.deplink.boruSmart.activity.personal.login.LoginActivity;
 import com.deplink.boruSmart.activity.room.adapter.ContentAdapterAddRoom;
 import com.deplink.boruSmart.constant.AppConstant;
 import com.deplink.boruSmart.constant.RoomConstant;
@@ -23,7 +22,6 @@ import com.deplink.boruSmart.manager.room.RoomManager;
 import com.deplink.boruSmart.util.NetUtil;
 import com.deplink.boruSmart.util.Perfence;
 import com.deplink.boruSmart.util.WeakRefHandler;
-import com.deplink.boruSmart.view.dialog.AlertDialog;
 import com.deplink.boruSmart.view.edittext.ClearEditText;
 import com.deplink.boruSmart.view.toast.Ftoast;
 import com.deplink.sdk.android.sdk.DeplinkSDK;
@@ -163,21 +161,9 @@ public class AddRommActivity extends AppCompatActivity implements View.OnClickLi
                     }
                     break;
                 case MSG_SHOW_CONNECT_LOST:
-                    Perfence.setPerfence(AppConstant.USER_LOGIN, false);
-                    isUserLogin=false;
-                    new AlertDialog(AddRommActivity.this).builder().setTitle("账号异地登录")
-                            .setMsg("当前账号已在其它设备上登录,是否重新登录")
-                            .setPositiveButton("确认", new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    startActivity(new Intent(AddRommActivity.this, LoginActivity.class));
-                                }
-                            }).setNegativeButton("取消", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
 
-                        }
-                    }).show();
+                    isUserLogin=false;
+
                     break;
             }
             return true;

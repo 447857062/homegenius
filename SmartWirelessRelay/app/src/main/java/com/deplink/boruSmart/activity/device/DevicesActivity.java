@@ -23,7 +23,6 @@ import com.deplink.boruSmart.Protocol.json.device.Device;
 import com.deplink.boruSmart.Protocol.json.device.DeviceList;
 import com.deplink.boruSmart.Protocol.json.device.SmartDev;
 import com.deplink.boruSmart.Protocol.json.device.getway.GatwayDevice;
-import com.deplink.boruSmart.Protocol.json.device.lock.Record;
 import com.deplink.boruSmart.Protocol.json.device.router.Router;
 import com.deplink.boruSmart.Protocol.json.qrcode.QrcodeSmartDevice;
 import com.deplink.boruSmart.Protocol.packet.ellisdk.BasicPacket;
@@ -46,7 +45,6 @@ import com.deplink.boruSmart.activity.device.smartlock.SmartLockActivity;
 import com.deplink.boruSmart.activity.homepage.SmartHomeMainActivity;
 import com.deplink.boruSmart.activity.personal.PersonalCenterActivity;
 import com.deplink.boruSmart.activity.personal.experienceCenter.ExperienceDevicesActivity;
-import com.deplink.boruSmart.activity.personal.login.LoginActivity;
 import com.deplink.boruSmart.activity.room.RoomActivity;
 import com.deplink.boruSmart.application.AppManager;
 import com.deplink.boruSmart.constant.AppConstant;
@@ -66,7 +64,6 @@ import com.deplink.boruSmart.manager.room.RoomManager;
 import com.deplink.boruSmart.util.DataExchange;
 import com.deplink.boruSmart.util.Perfence;
 import com.deplink.boruSmart.util.WeakRefHandler;
-import com.deplink.boruSmart.view.dialog.AlertDialog;
 import com.deplink.boruSmart.view.dialog.devices.DeviceAtRoomDialog;
 import com.deplink.sdk.android.sdk.DeplinkSDK;
 import com.deplink.sdk.android.sdk.EventCallback;
@@ -511,31 +508,13 @@ public class DevicesActivity extends Activity implements View.OnClickListener, G
             public void connectionLost(Throwable throwable) {
                 super.connectionLost(throwable);
                 isUserLogin = false;
-                Perfence.setPerfence(AppConstant.USER_LOGIN, false);
-                DataSupport.deleteAll(SmartDev.class);
-                DataSupport.deleteAll(GatwayDevice.class);
-                DataSupport.deleteAll(Room.class);
-                DataSupport.deleteAll(Record.class);
-                DataSupport.deleteAll(Router.class);
                 datasTop.clear();
                 datasBottom.clear();
                 deviceList.clear();
                 deviceList.addAll(datasTop);
                 deviceList.addAll(datasBottom);
                 mDeviceAdapter.notifyDataSetChanged();
-                new AlertDialog(DevicesActivity.this).builder().setTitle("账号异地登录")
-                        .setMsg("当前账号已在其它设备上登录,是否重新登录")
-                        .setPositiveButton("确认", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                startActivity(new Intent(DevicesActivity.this, LoginActivity.class));
-                            }
-                        }).setNegativeButton("取消", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
 
-                    }
-                }).show();
             }
         };
     }

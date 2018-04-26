@@ -16,7 +16,6 @@ import com.deplink.boruSmart.Protocol.json.device.lock.LockHistorys;
 import com.deplink.boruSmart.Protocol.json.device.lock.Record;
 import com.deplink.boruSmart.Protocol.json.device.lock.UserIdInfo;
 import com.deplink.boruSmart.activity.device.smartlock.userid.UpdateSmartLockUserIdActivity;
-import com.deplink.boruSmart.activity.personal.login.LoginActivity;
 import com.deplink.boruSmart.constant.AppConstant;
 import com.deplink.boruSmart.constant.SmartLockConstant;
 import com.deplink.boruSmart.manager.connect.local.tcp.LocalConnectmanager;
@@ -27,7 +26,6 @@ import com.deplink.boruSmart.util.DateUtil;
 import com.deplink.boruSmart.util.Perfence;
 import com.deplink.boruSmart.util.WeakRefHandler;
 import com.deplink.boruSmart.view.combinationwidget.TitleLayout;
-import com.deplink.boruSmart.view.dialog.AlertDialog;
 import com.deplink.boruSmart.view.toast.Ftoast;
 import com.deplink.sdk.android.sdk.DeplinkSDK;
 import com.deplink.sdk.android.sdk.EventCallback;
@@ -181,21 +179,9 @@ public class LockHistoryActivity extends Activity implements SmartLockListener {
             @Override
             public void connectionLost(Throwable throwable) {
                 super.connectionLost(throwable);
-                Perfence.setPerfence(AppConstant.USER_LOGIN, false);
-                isLogin = false;
-                new AlertDialog(LockHistoryActivity.this).builder().setTitle("账号异地登录")
-                        .setMsg("当前账号已在其它设备上登录,是否重新登录")
-                        .setPositiveButton("确认", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                startActivity(new Intent(LockHistoryActivity.this, LoginActivity.class));
-                            }
-                        }).setNegativeButton("取消", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
 
-                    }
-                }).show();
+                isLogin = false;
+
             }
         };
     }

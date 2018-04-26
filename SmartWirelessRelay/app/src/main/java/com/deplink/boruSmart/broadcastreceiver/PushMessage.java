@@ -1,4 +1,4 @@
-package com.deplink.boruSmart.broadcast;
+package com.deplink.boruSmart.broadcastreceiver;
 
 import android.os.Parcel;
 import android.os.Parcelable;

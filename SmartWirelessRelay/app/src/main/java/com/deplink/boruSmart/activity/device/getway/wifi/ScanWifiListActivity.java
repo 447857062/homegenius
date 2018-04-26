@@ -15,8 +15,6 @@ import com.deplink.boruSmart.Protocol.json.device.lock.SSIDList;
 import com.deplink.boruSmart.Protocol.json.wifi.AP_CLIENT;
 import com.deplink.boruSmart.activity.device.DevicesActivity;
 import com.deplink.boruSmart.activity.device.getway.adapter.WifiListAdapter;
-import com.deplink.boruSmart.activity.personal.login.LoginActivity;
-import com.deplink.boruSmart.constant.AppConstant;
 import com.deplink.boruSmart.manager.device.DeviceListener;
 import com.deplink.boruSmart.manager.device.DeviceManager;
 import com.deplink.boruSmart.manager.device.getway.GetwayListener;
@@ -25,7 +23,6 @@ import com.deplink.boruSmart.util.NetUtil;
 import com.deplink.boruSmart.util.Perfence;
 import com.deplink.boruSmart.util.WeakRefHandler;
 import com.deplink.boruSmart.view.combinationwidget.TitleLayout;
-import com.deplink.boruSmart.view.dialog.AlertDialog;
 import com.deplink.boruSmart.view.dialog.InputAlertDialog;
 import com.deplink.boruSmart.view.scrollview.NonScrollableListView;
 import com.deplink.boruSmart.view.toast.Ftoast;
@@ -187,20 +184,7 @@ public class ScanWifiListActivity extends Activity implements AdapterView.OnItem
             @Override
             public void connectionLost(Throwable throwable) {
                 super.connectionLost(throwable);
-                Perfence.setPerfence(AppConstant.USER_LOGIN, false);
-                new AlertDialog(ScanWifiListActivity.this).builder().setTitle("账号异地登录")
-                        .setMsg("当前账号已在其它设备上登录,是否重新登录")
-                        .setPositiveButton("确认", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                startActivity(new Intent(ScanWifiListActivity.this, LoginActivity.class));
-                            }
-                        }).setNegativeButton("取消", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
 
-                    }
-                }).show();
             }
 
             @Override

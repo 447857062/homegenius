@@ -22,7 +22,6 @@ import com.deplink.boruSmart.activity.device.smartlock.alarmhistory.AlarmHistory
 import com.deplink.boruSmart.activity.device.smartlock.lockhistory.LockHistoryActivity;
 import com.deplink.boruSmart.activity.homepage.SmartHomeMainActivity;
 import com.deplink.boruSmart.activity.personal.experienceCenter.ExperienceDevicesActivity;
-import com.deplink.boruSmart.activity.personal.login.LoginActivity;
 import com.deplink.boruSmart.constant.AppConstant;
 import com.deplink.boruSmart.constant.SmartLockConstant;
 import com.deplink.boruSmart.manager.connect.local.tcp.LocalConnectmanager;
@@ -203,21 +202,9 @@ public class SmartLockActivity extends Activity implements View.OnClickListener,
             @Override
             public void connectionLost(Throwable throwable) {
                 super.connectionLost(throwable);
-                Perfence.setPerfence(AppConstant.USER_LOGIN, false);
-                isLogin = false;
-                new AlertDialog(SmartLockActivity.this).builder().setTitle("账号异地登录")
-                        .setMsg("当前账号已在其它设备上登录,是否重新登录")
-                        .setPositiveButton("确认", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                startActivity(new Intent(SmartLockActivity.this, LoginActivity.class));
-                            }
-                        }).setNegativeButton("取消", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
 
-                    }
-                }).show();
+                isLogin = false;
+
             }
         };
         final Animation animationFadeIn= AnimationUtils.loadAnimation(this, R.anim.fade_in);

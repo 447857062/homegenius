@@ -13,6 +13,7 @@
 package com.deplink.sdk.android.sdk.mqtt;
 
 import android.content.Context;
+import android.os.Build;
 import android.text.Html;
 import android.text.Spanned;
 
@@ -115,7 +116,9 @@ public class Connection {
     String timestamp = context.getString(R.string.timestamp, args);
     history.add(action + timestamp);
 
-    notifyListeners(new PropertyChangeEvent(this, ActivityConstants.historyProperty, null, null));
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.CUPCAKE) {
+      notifyListeners(new PropertyChangeEvent(this, ActivityConstants.historyProperty, null, null));
+    }
   }
 
   /**
@@ -154,7 +157,9 @@ public class Connection {
    */
   public void changeConnectionStatus(ConnectionStatus connectionStatus) {
     status = connectionStatus;
-    notifyListeners((new PropertyChangeEvent(this, ActivityConstants.ConnectionStatusProperty, null, null)));
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.CUPCAKE) {
+      notifyListeners((new PropertyChangeEvent(this, ActivityConstants.ConnectionStatusProperty, null, null)));
+    }
   }
 
   /**
@@ -300,7 +305,9 @@ public class Connection {
   {
     for (PropertyChangeListener listener : listeners)
     {
-      listener.propertyChange(propertyChangeEvent);
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.CUPCAKE) {
+        listener.propertyChange(propertyChangeEvent);
+      }
     }
   }
 }

@@ -8,6 +8,7 @@ public class AppConstant {
     public static final String LOCATION_RECEIVED = "location_received";
     public static final String TEMPATURE_VALUE = "tempature";
     public static final String PM25_VALUE = "pm25";
+    public static final String FORCE_OFFLINE_ACIION = "com.deplink.boruSmart.broadcastreceiver.FORCE_OFFLINE";
 
     public interface DEVICE {
         String CURRENT_DEVICE_KEY = "CURRENT_DEVICE_KEY";

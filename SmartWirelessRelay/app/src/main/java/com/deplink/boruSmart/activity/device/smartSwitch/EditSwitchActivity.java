@@ -169,20 +169,7 @@ public class EditSwitchActivity extends Activity implements View.OnClickListener
             public void connectionLost(Throwable throwable) {
                 super.connectionLost(throwable);
                 isLogin = false;
-                Perfence.setPerfence(AppConstant.USER_LOGIN, false);
-                new AlertDialog(EditSwitchActivity.this).builder().setTitle("账号异地登录")
-                        .setMsg("当前账号已在其它设备上登录,是否重新登录")
-                        .setPositiveButton("确认", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                startActivity(new Intent(EditSwitchActivity.this, LoginActivity.class));
-                            }
-                        }).setNegativeButton("取消", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
 
-                    }
-                }).show();
             }
         };
         mDeviceListener = new DeviceListener() {

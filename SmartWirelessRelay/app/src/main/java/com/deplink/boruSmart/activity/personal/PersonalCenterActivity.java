@@ -33,7 +33,6 @@ import com.deplink.boruSmart.util.APKVersionCodeUtils;
 import com.deplink.boruSmart.util.Perfence;
 import com.deplink.boruSmart.util.WeakRefHandler;
 import com.deplink.boruSmart.view.combinationwidget.TitleLayout;
-import com.deplink.boruSmart.view.dialog.AlertDialog;
 import com.deplink.boruSmart.view.imageview.CircleImageView;
 import com.deplink.boruSmart.view.toast.Ftoast;
 import com.deplink.sdk.android.sdk.DeplinkSDK;
@@ -240,23 +239,11 @@ public class PersonalCenterActivity extends Activity implements View.OnClickList
         public boolean handleMessage(Message msg) {
             switch (msg.what){
                 case MSG_SHOW_CONNECT_LOST:
-                    Perfence.setPerfence(AppConstant.USER_LOGIN, false);
+
                     isUserLogin=false;
                     user_nickname.setText("请登录");
                     user_head_portrait.setImageDrawable(ContextCompat.getDrawable(PersonalCenterActivity.this,R.drawable.defaultavatar));
-                    new AlertDialog(PersonalCenterActivity.this).builder().setTitle("账号异地登录")
-                            .setMsg("当前账号已在其它设备上登录,是否重新登录")
-                            .setPositiveButton("确认", new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    startActivity(new Intent(PersonalCenterActivity.this, LoginActivity.class));
-                                }
-                            }).setNegativeButton("取消", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
 
-                        }
-                    }).show();
                     break;
             }
             return true;

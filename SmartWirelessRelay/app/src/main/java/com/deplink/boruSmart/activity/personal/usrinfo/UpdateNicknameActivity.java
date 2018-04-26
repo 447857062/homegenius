@@ -1,16 +1,12 @@
 package com.deplink.boruSmart.activity.personal.usrinfo;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 
-import com.deplink.boruSmart.activity.personal.login.LoginActivity;
-import com.deplink.boruSmart.util.Perfence;
 import com.deplink.boruSmart.constant.AppConstant;
+import com.deplink.boruSmart.util.Perfence;
 import com.deplink.boruSmart.view.combinationwidget.TitleLayout;
-import com.deplink.boruSmart.view.dialog.AlertDialog;
 import com.deplink.boruSmart.view.edittext.ClearEditText;
 import com.deplink.sdk.android.sdk.DeplinkSDK;
 import com.deplink.sdk.android.sdk.EventCallback;
@@ -94,20 +90,7 @@ public class UpdateNicknameActivity extends Activity  {
             public void connectionLost(Throwable throwable) {
                 super.connectionLost(throwable);
                 isUserLogin=false;
-                Perfence.setPerfence(AppConstant.USER_LOGIN, false);
-                new AlertDialog(UpdateNicknameActivity.this).builder().setTitle("账号异地登录")
-                        .setMsg("当前账号已在其它设备上登录,是否重新登录")
-                        .setPositiveButton("确认", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                startActivity(new Intent(UpdateNicknameActivity.this, LoginActivity.class));
-                            }
-                        }).setNegativeButton("取消", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
 
-                    }
-                }).show();
             }
         };
     }

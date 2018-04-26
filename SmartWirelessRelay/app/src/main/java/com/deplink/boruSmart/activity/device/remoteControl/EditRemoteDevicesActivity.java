@@ -16,7 +16,6 @@ import com.deplink.boruSmart.Protocol.json.device.SmartDev;
 import com.deplink.boruSmart.activity.device.DevicesActivity;
 import com.deplink.boruSmart.activity.device.adapter.RemoteControlSelectListAdapter;
 import com.deplink.boruSmart.activity.personal.experienceCenter.ExperienceDevicesActivity;
-import com.deplink.boruSmart.activity.personal.login.LoginActivity;
 import com.deplink.boruSmart.constant.AppConstant;
 import com.deplink.boruSmart.manager.device.DeviceManager;
 import com.deplink.boruSmart.manager.device.remoteControl.RemoteControlListener;
@@ -241,20 +240,7 @@ public class EditRemoteDevicesActivity extends Activity implements View.OnClickL
             public void connectionLost(Throwable throwable) {
                 super.connectionLost(throwable);
                 isUserLogin = false;
-                Perfence.setPerfence(AppConstant.USER_LOGIN, false);
-                new AlertDialog(EditRemoteDevicesActivity.this).builder().setTitle("账号异地登录")
-                        .setMsg("当前账号已在其它设备上登录,是否重新登录")
-                        .setPositiveButton("确认", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                startActivity(new Intent(EditRemoteDevicesActivity.this, LoginActivity.class));
-                            }
-                        }).setNegativeButton("取消", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
 
-                    }
-                }).show();
             }
         };
     }

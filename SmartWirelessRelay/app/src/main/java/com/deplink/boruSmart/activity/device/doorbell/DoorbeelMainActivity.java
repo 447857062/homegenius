@@ -1,7 +1,6 @@
 package com.deplink.boruSmart.activity.device.doorbell;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -25,8 +24,7 @@ import com.deplink.boruSmart.Protocol.json.OpResult;
 import com.deplink.boruSmart.Protocol.json.device.SmartDev;
 import com.deplink.boruSmart.Protocol.json.device.lock.UserIdInfo;
 import com.deplink.boruSmart.Protocol.json.device.lock.UserIdPairs;
-import com.deplink.boruSmart.activity.personal.login.LoginActivity;
-import com.deplink.boruSmart.broadcast.PushMessage;
+import com.deplink.boruSmart.broadcastreceiver.PushMessage;
 import com.deplink.boruSmart.constant.AppConstant;
 import com.deplink.boruSmart.constant.SmartLockConstant;
 import com.deplink.boruSmart.manager.device.DeviceListener;
@@ -38,7 +36,6 @@ import com.deplink.boruSmart.manager.device.smartlock.SmartLockManager;
 import com.deplink.boruSmart.util.Perfence;
 import com.deplink.boruSmart.util.WeakRefHandler;
 import com.deplink.boruSmart.view.combinationwidget.TitleLayout;
-import com.deplink.boruSmart.view.dialog.AlertDialog;
 import com.deplink.boruSmart.view.dialog.doorbeel.DoorbeelMenuDialog;
 import com.deplink.boruSmart.view.toast.Ftoast;
 import com.deplink.sdk.android.sdk.DeplinkSDK;
@@ -182,20 +179,7 @@ public class DoorbeelMainActivity extends Activity implements View.OnClickListen
             public void connectionLost(Throwable throwable) {
                 super.connectionLost(throwable);
                 isUserLogin=false;
-                Perfence.setPerfence(AppConstant.USER_LOGIN, false);
-                new AlertDialog(DoorbeelMainActivity.this).builder().setTitle("账号异地登录")
-                        .setMsg("当前账号已在其它设备上登录,是否重新登录")
-                        .setPositiveButton("确认", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                startActivity(new Intent(DoorbeelMainActivity.this, LoginActivity.class));
-                            }
-                        }).setNegativeButton("取消", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
 
-                    }
-                }).show();
             }
         };
     }

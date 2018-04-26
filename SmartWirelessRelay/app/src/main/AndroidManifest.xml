@@ -334,7 +334,16 @@
         <activity
             android:name="com.deplink.boruSmart.activity.personal.AboutUsActivity"
             android:screenOrientation="portrait" />
-        <activity android:name="com.deplink.boruSmart.activity.personal.login.BoraeulaActivity"></activity>
+        <activity android:name="com.deplink.boruSmart.activity.personal.login.BoraeulaActivity" />
+
+        <receiver android:name="com.deplink.boruSmart.broadcastreceiver.ForceofflineReceiver"
+            >
+            <intent-filter>
+                <action android:name="com.deplink.boruSmart.broadcastreceiver.FORCE_OFFLINE">
+
+                </action>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>
