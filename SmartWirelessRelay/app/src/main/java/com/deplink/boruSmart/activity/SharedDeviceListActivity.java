@@ -1,7 +1,6 @@
 package com.deplink.boruSmart.activity;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -156,7 +155,7 @@ public class SharedDeviceListActivity extends Activity {
         shareddevices_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                Intent inentShareDevice = new Intent(SharedDeviceListActivity.this, ShareDeviceActivity.class);
+                String deviceTypedata;
                 String deviceUid;
                 if (datasTop.size() < (position + 1)) {
                     switch (datasBottom.get(position - datasTop.size()).getType()) {
@@ -179,19 +178,18 @@ public class SharedDeviceListActivity extends Activity {
                             RouterManager.getInstance().setCurrentSelectedRouter(datasBottom.get(position - datasTop.size()));
                             break;
                     }
-                    inentShareDevice.putExtra("devicetype", datasBottom.get(position - datasTop.size()).getType());
+
+                    deviceTypedata=""+datasBottom.get(position - datasTop.size()).getType();
                     deviceUid = datasBottom.get(position - datasTop.size()).getUid();
                 } else {
                     GetwayManager.getInstance().setCurrentSelectGetwayDevice(datasTop.get(position));
-                    inentShareDevice.putExtra("devicetype", DeviceTypeConstant.TYPE.TYPE_SMART_GETWAY);
+                    deviceTypedata=DeviceTypeConstant.TYPE.TYPE_SMART_GETWAY;
                     deviceUid = datasTop.get(position).getUid();
                 }
                 if (isStartFromExperience) {
-                    startActivity(inentShareDevice);
+                    ShareDeviceActivity.actionStart(SharedDeviceListActivity.this,deviceTypedata,deviceUid);
                 } else {
-                    inentShareDevice.putExtra("deviceuid", deviceUid);
-                    startActivity(inentShareDevice);
-
+                    ShareDeviceActivity.actionStart(SharedDeviceListActivity.this,deviceTypedata,deviceUid);
                 }
             }
         });

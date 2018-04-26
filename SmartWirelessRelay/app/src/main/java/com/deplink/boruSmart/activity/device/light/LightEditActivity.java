@@ -339,15 +339,14 @@ public class LightEditActivity extends Activity implements View.OnClickListener 
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.layout_device_share:
-                Intent inentShareDevice = new Intent(this, ShareDeviceActivity.class);
-                inentShareDevice.putExtra("devicetype", DeviceTypeConstant.TYPE.TYPE_LIGHT);
+                String devicetype=DeviceTypeConstant.TYPE.TYPE_LIGHT;
                 if(isStartFromExperience){
-                    startActivity(inentShareDevice);
+
+                    ShareDeviceActivity.actionStart(this,devicetype,null);
                 }else{
                     if(isLogin){
                         if (deviceUid != null) {
-                            inentShareDevice.putExtra("deviceuid", deviceUid);
-                            startActivity(inentShareDevice);
+                            ShareDeviceActivity.actionStart(this,devicetype,deviceUid);
                         }
                     }else{
                         startActivity(new Intent(LightEditActivity.this, LoginActivity.class));

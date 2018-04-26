@@ -397,15 +397,13 @@ public class EditDoorbellActivity extends Activity implements View.OnClickListen
                 }
                 break;
             case R.id.layout_device_share:
-                Intent inentShareDevice = new Intent(this, ShareDeviceActivity.class);
-                inentShareDevice.putExtra("devicetype", DeviceTypeConstant.TYPE.TYPE_MENLING);
+                String deviceType=DeviceTypeConstant.TYPE.TYPE_MENLING;
                 if (isStartFromExperience) {
-                    startActivity(inentShareDevice);
+                    ShareDeviceActivity.actionStart(this,deviceType,null);
                 } else {
                     if(isUserLogin){
                         if (deviceUid != null) {
-                            inentShareDevice.putExtra("deviceuid", deviceUid);
-                            startActivity(inentShareDevice);
+                            ShareDeviceActivity.actionStart(this,deviceType,deviceUid);
                         }
                     }else{
                         startActivity(new Intent(EditDoorbellActivity.this, LoginActivity.class));

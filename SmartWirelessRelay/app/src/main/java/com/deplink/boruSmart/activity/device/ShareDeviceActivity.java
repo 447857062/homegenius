@@ -1,6 +1,8 @@
 package com.deplink.boruSmart.activity.device;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
@@ -52,6 +54,16 @@ public class ShareDeviceActivity extends Activity  {
     private ShareDeviceListAdapter mAdapter;
     private List<UserShareInfo> userInfos;
     private TitleLayout layout_title;
+    public  static void actionStart(Context context,String deviceType,String deviceuid){
+        Intent intent=new Intent(context,ShareDeviceActivity.class);
+        if(deviceType!=null){
+            intent.putExtra("devicetype",deviceType);
+        }
+        if(deviceuid!=null){
+            intent.putExtra("deviceuid",deviceuid);
+        }
+        context.startActivity(intent);
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

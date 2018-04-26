@@ -347,15 +347,13 @@ public class GetwayDeviceActivity extends Activity implements View.OnClickListen
                     startActivity(inent);
                 break;
             case R.id.layout_device_share:
-                Intent inentShareDevice = new Intent(this, ShareDeviceActivity.class);
-                inentShareDevice.putExtra("devicetype", DeviceTypeConstant.TYPE.TYPE_SMART_GETWAY);
+                String devicetype=DeviceTypeConstant.TYPE.TYPE_SMART_GETWAY;
                 if(isStartFromExperience){
-                    startActivity(inentShareDevice);
+                    ShareDeviceActivity.actionStart(this,devicetype,null);
                 }else{
                     if(isUserLogin){
                         if (deviceUid != null) {
-                            inentShareDevice.putExtra("deviceuid", deviceUid);
-                            startActivity(inentShareDevice);
+                            ShareDeviceActivity.actionStart(this,devicetype,deviceUid);
                         }
                     }else{
                         startActivity(new Intent(GetwayDeviceActivity.this, LoginActivity.class));
