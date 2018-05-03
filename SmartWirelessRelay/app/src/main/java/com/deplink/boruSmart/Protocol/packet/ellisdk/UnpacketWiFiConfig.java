@@ -16,11 +16,11 @@ public class UnpacketWiFiConfig implements OnRecvListener {
     public int step;
     @Override
     public void OnRecvData( BasicPacket packet) {
-        Log.i(TAG,"UnpacketWiFiConfig");
         int ssidLen = 0;
         int pwdLen = 0;
         if (packet != null) {
             if (packet.fun == FunWiFiConfig) {
+                Log.i(TAG,"UnpacketWiFiConfig"+packet.xdata[0]);
                 switch (packet.xdata[0]) {
                     case 0x02:  //返回当前数据
                         ssidLen = packet.xdata[1];

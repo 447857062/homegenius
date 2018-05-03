@@ -15,10 +15,12 @@ import com.deplink.boruSmart.Protocol.packet.ellisdk.Handler_UiThread;
 import com.deplink.boruSmart.Protocol.packet.ellisdk.WIFIData;
 import com.deplink.boruSmart.activity.device.AddDeviceNameActivity;
 import com.deplink.boruSmart.activity.device.doorbell.EditDoorbellActivity;
+import com.deplink.boruSmart.constant.AppConstant;
 import com.deplink.boruSmart.constant.DeviceTypeConstant;
 import com.deplink.boruSmart.manager.device.DeviceManager;
 import com.deplink.boruSmart.manager.device.doorbeel.DoorbeelManager;
 import com.deplink.boruSmart.util.DataExchange;
+import com.deplink.boruSmart.util.Perfence;
 import com.deplink.boruSmart.view.combinationwidget.TitleLayout;
 import com.deplink.boruSmart.view.toast.Ftoast;
 
@@ -34,6 +36,7 @@ public class AddDoorbellTipsActivity extends Activity implements View.OnClickLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_doorbell_tips);
+        Perfence.setPerfence(AppConstant.ADDDOORBELLTIPSACTIVITY,true);
         initViews();
         initDatas();
         initEvents();
@@ -45,10 +48,15 @@ public class AddDoorbellTipsActivity extends Activity implements View.OnClickLis
         isStartFromExperience = DeviceManager.getInstance().isStartFromExperience();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Perfence.setPerfence(AppConstant.ADDDOORBELLTIPSACTIVITY,false);
+    }
+
     private void initEvents() {
         button_next_step.setOnClickListener(this);
     }
-
     EllESDK ellESDK;
 
     private void initDatas() {
@@ -65,7 +73,6 @@ public class AddDoorbellTipsActivity extends Activity implements View.OnClickLis
             }
         });
     }
-
     private void initViews() {
         button_next_step = findViewById(R.id.button_next_step);
         layout_title = findViewById(R.id.layout_title);
@@ -94,6 +101,7 @@ public class AddDoorbellTipsActivity extends Activity implements View.OnClickLis
     public void onRecvEllEPacket(BasicPacket packet) {
     }
     public void onDoneClick(final long mac, final byte type, final byte ver) {
+        Log.i(TAG,"account="+account+"password="+password);
         if (account.length() > 0 && password.length() > 0) {
             Log.i(TAG, "onDoneClick setDevWiFiConfigWithMac mac=" + mac + "type=" + type + "ver=" + ver);
             //设置wifi
@@ -109,11 +117,12 @@ public class AddDoorbellTipsActivity extends Activity implements View.OnClickLis
                             public void run() {
                                 EllESDK.getInstance().stopSearchDevs();
                                 if(mDoorbeelManager.isConfigWifi()){
-                                    Ftoast.create(AddDoorbellTipsActivity.this).setText("门铃网络已配置,现在重启门邻设备").show();
+                                    Ftoast.create(AddDoorbellTipsActivity.this).setText("门铃网络已配置,现在重启门铃设备").show();
                                     Intent intent = new Intent(AddDoorbellTipsActivity.this, EditDoorbellActivity.class);
                                     startActivity(intent);
                                 }else{
-                                    Ftoast.create(AddDoorbellTipsActivity.this).setText("门铃网络已配置,现在重启门邻设备,等手机连上网络后进行设备添加").show();
+                                    Ftoast.create(AddDoorbellTipsActivity.this).setText("门铃网络已配置,现在重启门铃设备,等手机连上网络后进行设备添加").show();
+
                                     Intent intent = new Intent(AddDoorbellTipsActivity.this, AddDeviceNameActivity.class);
                                     intent.putExtra("DeviceType", DeviceTypeConstant.TYPE.TYPE_MENLING);
                                     startActivity(intent);

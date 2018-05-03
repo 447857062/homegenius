@@ -1,10 +1,13 @@
 package com.deplink.sdk.android.sdk.rest;
 
+import android.util.Log;
+
 import com.google.gson.JsonObject;
 
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Retrofit;
@@ -27,13 +30,14 @@ public class RestfulToolsWeather {
 
         Retrofit.Builder builder = new Retrofit.Builder().baseUrl("https://free-api.heweather.com/")
                 .addConverterFactory(GsonConverterFactory.create());
-
-
         OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder();
         clientBuilder.connectTimeout(15 * 1000, TimeUnit.MILLISECONDS)
                 .readTimeout(20 * 1000, TimeUnit.MILLISECONDS);
-        OkHttpClient okClient = clientBuilder.build();
 
+        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        clientBuilder.addInterceptor(interceptor);
+        OkHttpClient okClient = clientBuilder.build();
         builder.client(okClient);
         Retrofit retrofit = builder.build();
         apiService = retrofit.create(RestfulServerWeather.class);
@@ -53,13 +57,13 @@ public class RestfulToolsWeather {
     public Call<JsonObject> getWeatherInfo(Callback<JsonObject> cll,String city) {
 
         Call<JsonObject> call = apiService.getWeatherInfo("https://free-api.heweather.com/s6/weather/now?",city, APIKEY);
+        Log.i(TAG,"cll != null="+(cll != null));
         if (cll != null) {
             call.enqueue(cll);
         }
         return call;
     }
     public Call<JsonObject> getWeatherPm25(Callback<JsonObject> cll,String city) {
-
         Call<JsonObject> call = apiService.getWeatherInfo("https://free-api.heweather.com/s6/air/now?",city, APIKEY);
         if (cll != null) {
             call.enqueue(cll);

@@ -353,14 +353,18 @@ public class EditDoorbellActivity extends Activity implements View.OnClickListen
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.button_delete_device:
-                new AlertDialog(EditDoorbellActivity.this).builder().setTitle("删除设备")
+                Log.i(TAG,"button_delete_device onclick");
+                new AlertDialog(EditDoorbellActivity.this)
+                        .builder()
+                        .setTitle("删除设备")
                         .setMsg("确认删除设备")
                         .setPositiveButton("确认", new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 mDeviceManager.deleteDeviceHttp();
                             }
-                        }).setNegativeButton("取消", new View.OnClickListener() {
+                        })
+                        .setNegativeButton("取消", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
 

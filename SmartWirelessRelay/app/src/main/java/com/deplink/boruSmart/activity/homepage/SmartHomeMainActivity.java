@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.support.v4.content.ContextCompat;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
@@ -35,7 +36,6 @@ import com.deplink.boruSmart.Protocol.json.device.Device;
 import com.deplink.boruSmart.Protocol.json.device.ExperienceCenterDevice;
 import com.deplink.boruSmart.Protocol.json.device.SmartDev;
 import com.deplink.boruSmart.Protocol.json.device.getway.GatwayDevice;
-import com.deplink.boruSmart.Protocol.json.device.lock.Record;
 import com.deplink.boruSmart.Protocol.json.device.router.Router;
 import com.deplink.boruSmart.Protocol.json.http.weather.HeWeather6;
 import com.deplink.boruSmart.Protocol.packet.ellisdk.BasicPacket;
@@ -61,7 +61,6 @@ import com.deplink.boruSmart.activity.homepage.adapter.HomepageGridViewAdapter;
 import com.deplink.boruSmart.activity.homepage.adapter.HomepageRoomShowTypeChangedViewAdapter;
 import com.deplink.boruSmart.activity.personal.PersonalCenterActivity;
 import com.deplink.boruSmart.activity.personal.experienceCenter.ExperienceDevicesActivity;
-import com.deplink.boruSmart.activity.personal.login.LoginActivity;
 import com.deplink.boruSmart.activity.room.RoomActivity;
 import com.deplink.boruSmart.application.AppManager;
 import com.deplink.boruSmart.constant.AppConstant;
@@ -83,7 +82,6 @@ import com.deplink.boruSmart.util.DataExchange;
 import com.deplink.boruSmart.util.ListViewUtil;
 import com.deplink.boruSmart.util.Perfence;
 import com.deplink.boruSmart.util.WeakRefHandler;
-import com.deplink.boruSmart.view.dialog.AlertDialog;
 import com.deplink.boruSmart.view.scrollview.MyScrollView;
 import com.deplink.boruSmart.view.scrollview.NonScrollableListView;
 import com.deplink.sdk.android.sdk.DeplinkSDK;
@@ -282,6 +280,7 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
     public class MyLocationListener extends BDAbstractLocationListener {
         @Override
         public void onReceiveLocation(BDLocation location) {
+
             //此处的BDLocation为定位结果信息类，通过它的各种get方法可获取定位相关的全部结果
             //以下只列举部分获取地址相关的结果信息
             //更多结果信息获取说明，请参照类参考中BDLocation类中的说明
@@ -289,6 +288,7 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
             // String country = location.getCountry();    //获取国家
             province = location.getProvince();    //获取省份
             city = location.getCity();    //获取城市
+            Log.i(TAG,"onReceiveLocation province="+province+"city="+city);
             if (city != null && province != null) {
                 if (!(city).equalsIgnoreCase(locationStr)) {
                     Perfence.setPerfence(AppConstant.LOCATION_RECEIVED, city);
@@ -439,12 +439,15 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
         }).start();
     }
     public void initWaetherData() {
+        Log.i(TAG,"initWaetherData");
         new Thread(new Runnable() {
             @Override
             public void run() {
                 RestfulToolsWeather.getSingleton().getWeatherInfo(new Callback<JsonObject>() {
                     @Override
                     public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                        Log.i(TAG,"response.code()="+response.code());
+                        Log.i(TAG,"call="+call.toString());
                         if (response.code() == 200) {
                             JsonObject jsonObjectGson = response.body();
                             Gson gson = new Gson();
@@ -463,7 +466,7 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
                     }
                     @Override
                     public void onFailure(Call<JsonObject> call, Throwable t) {
-
+                        Log.i(TAG, "获取天气数据onFailure=" + call.toString()+t.getMessage()+t.toString());
                     }
                 }, city);
             }
@@ -807,16 +810,16 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
         locationStr = Perfence.getPerfence(AppConstant.LOCATION_RECEIVED);
         tempature = Perfence.getPerfence(AppConstant.TEMPATURE_VALUE);
         pm25 = Perfence.getPerfence(AppConstant.PM25_VALUE);
-        if (locationStr != null && !locationStr.equals("")) {
+        if (!TextUtils.isEmpty(locationStr)) {
             textview_city.setText(locationStr);
             city=locationStr;
             initWaetherData();
             sendRequestWithHttpClient(city);
         }
-        if (tempature != null) {
+        if (!TextUtils.isEmpty(tempature)) {
             textview_tempature.setText(tempature);
         }
-        if (pm25 != null) {
+        if (!TextUtils.isEmpty(pm25)) {
             textview_pm25.setText(pm25);
         }
 
@@ -1011,6 +1014,7 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
             public void onSuccess(SDKAction action) {
                 switch (action) {
                     case LOGIN:
+                        isLogin=true;
                         manager.connectMQTT(SmartHomeMainActivity.this);
                         String uuid = manager.getUserInfo().getUuid();
                         Log.i(TAG, "login mqtt success uuid=" + uuid);

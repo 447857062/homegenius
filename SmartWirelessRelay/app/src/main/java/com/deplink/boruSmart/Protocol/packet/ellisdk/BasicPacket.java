@@ -175,7 +175,6 @@ public class BasicPacket {
         if (data[1] != (byte) 0x66 && data[1] != (byte) 0xaa)
             return -3;
         IPV4Util ipv4Util = new IPV4Util();
-
         if (PublicMethod.checkConnectionState(mContext) == 1) {   //如果是WiFi情况下，则判断ip地址
             if (ipv4Util.checkSameSegment(this.ip.getHostAddress(), PublicMethod.getLocalIP(mContext))) {
                 isLocal = true;
@@ -205,7 +204,7 @@ public class BasicPacket {
         xdataLen = DataExchange.bytesToInt(data, 33, 2);
         xdata = new byte[this.xdataLen];
         System.arraycopy(data, 37, xdata, 0, xdataLen);
-        Log.i(TAG,"解码 mac="+mac+"uuid="+uuid+"fun="+fun+"ver="+ver+"type="+type);
+        Log.i(TAG,"解码 mac="+mac+"uuid="+uuid+"fun="+fun+"ver="+ver+"type="+type+"xdata="+DataExchange.byteArrayToHexString(xdata));
         return 0;
     }
 

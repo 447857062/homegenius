@@ -22,18 +22,21 @@ import org.litepal.crud.DataSupport;
  */
 
 public class ForceofflineReceiver extends BroadcastReceiver {
+    private static  final String TAG="ForceofflineReceiver";
+    private boolean isAddDoorbeelDevice;
     @Override
     public void onReceive(final Context context, Intent intent) {
         String action=intent.getAction();
         if(action.equals(AppConstant.FORCE_OFFLINE_ACIION)){
+            isAddDoorbeelDevice=Perfence.getBooleanPerfence(AppConstant.ADDDOORBELLTIPSACTIVITY);
             Perfence.setPerfence(AppConstant.USER_LOGIN, false);
             DataSupport.deleteAll(SmartDev.class);
             DataSupport.deleteAll(GatwayDevice.class);
             DataSupport.deleteAll(Room.class);
             DataSupport.deleteAll(Record.class);
             DataSupport.deleteAll(Router.class);
-            new AlertDialog(context).builder().setTitle("账号异地登录")
-                    .setMsg("当前账号已在其它设备上登录,是否重新登录")
+            AlertDialog alertDialog= new AlertDialog(context).builder().setTitle("账号已退出登录")
+                    .setMsg("当前账号已退出登录,是否重新登录")
                     .setPositiveButton("确认", new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -42,11 +45,14 @@ public class ForceofflineReceiver extends BroadcastReceiver {
                             context.startActivity(intent);
                         }
                     }).setNegativeButton("取消", new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+                        @Override
+                        public void onClick(View v) {
 
-                }
-            }).show();
+                        }
+                    });
+            if(!isAddDoorbeelDevice){
+                alertDialog.showAsSystemAlert();
+            }
         }
 
     }

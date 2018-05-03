@@ -1,7 +1,12 @@
 package com.deplink.boruSmart.activity.device;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -52,6 +57,7 @@ import com.deplink.boruSmart.view.toast.Ftoast;
 import com.deplink.sdk.android.sdk.DeplinkSDK;
 import com.deplink.sdk.android.sdk.EventCallback;
 import com.deplink.sdk.android.sdk.SDKAction;
+import com.deplink.sdk.android.sdk.bean.User;
 import com.deplink.sdk.android.sdk.homegenius.DeviceAddBody;
 import com.deplink.sdk.android.sdk.homegenius.DeviceOperationResponse;
 import com.deplink.sdk.android.sdk.homegenius.VirtualDeviceAddBody;
@@ -111,10 +117,12 @@ public class AddDeviceNameActivity extends Activity implements View.OnClickListe
     private String topic;
     private DeviceListener mDeviceListener;
     private TitleLayout layout_title;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_device_name);
+        registerNetBroadcast(this);
         initViews();
         initDatas();
         initEvents();
@@ -207,62 +215,64 @@ public class AddDeviceNameActivity extends Activity implements View.OnClickListe
         mRouterManager = RouterManager.getInstance();
         mRouterManager.InitRouterManager();
     }
+
     private String titleString;
+
     private void setDeviceNameDefault() {
-        Log.i(TAG,"setDeviceNameDefault deviceType="+deviceType);
+        Log.i(TAG, "setDeviceNameDefault deviceType=" + deviceType);
         switch (deviceType) {
             case DeviceTypeConstant.TYPE.TYPE_LOCK:
-                titleString="智能门锁";
+                titleString = "智能门锁";
                 edittext_add_device_input_name.setText("智能门锁");
                 edittext_add_device_input_name.setSelection(4);
                 break;
             case "IRMOTE_V2":
-                titleString="智能遥控";
+                titleString = "智能遥控";
                 edittext_add_device_input_name.setText("智能遥控");
                 edittext_add_device_input_name.setSelection(4);
                 break;
             case DeviceTypeConstant.TYPE.TYPE_AIR_REMOTECONTROL:
-                titleString="智能空调遥控器";
+                titleString = "智能空调遥控器";
                 edittext_add_device_input_name.setText("智能空调遥控器");
                 edittext_add_device_input_name.setSelection(7);
                 break;
             case DeviceTypeConstant.TYPE.TYPE_TV_REMOTECONTROL:
-                titleString="智能电视遥控器";
+                titleString = "智能电视遥控器";
                 edittext_add_device_input_name.setText("智能电视遥控器");
                 edittext_add_device_input_name.setSelection(7);
                 break;
             case DeviceTypeConstant.TYPE.TYPE_TVBOX_REMOTECONTROL:
-                titleString="智能机顶盒遥控";
+                titleString = "智能机顶盒遥控";
                 edittext_add_device_input_name.setText("智能机顶盒遥控");
                 edittext_add_device_input_name.setSelection(7);
                 break;
             case DeviceTypeConstant.TYPE.TYPE_SWITCH:
-                titleString="智能开关";
+                titleString = "智能开关";
                 edittext_add_device_input_name.setText("智能开关");
                 edittext_add_device_input_name.setSelection(4);
                 break;
             case DeviceTypeConstant.TYPE.TYPE_MENLING:
-                titleString="智能门铃";
+                titleString = "智能门铃";
                 edittext_add_device_input_name.setText("智能门铃");
                 edittext_add_device_input_name.setSelection(4);
                 break;
             case DeviceTypeConstant.TYPE.TYPE_LIGHT:
-                titleString="智能灯泡";
+                titleString = "智能灯泡";
                 edittext_add_device_input_name.setText("智能灯泡");
                 edittext_add_device_input_name.setSelection(4);
                 break;
             case DeviceTypeConstant.TYPE.TYPE_GETWAY_OR_ROUTER:
-                titleString="智能网关/路由器";
+                titleString = "智能网关/路由器";
                 edittext_add_device_input_name.setText("智能网关/路由器");
                 edittext_add_device_input_name.setSelection(8);
                 break;
             case DeviceTypeConstant.TYPE.TYPE_SMART_GETWAY:
-                titleString="智能网关";
+                titleString = "智能网关";
                 edittext_add_device_input_name.setText("智能网关");
                 edittext_add_device_input_name.setSelection(4);
                 break;
             case DeviceTypeConstant.TYPE.TYPE_ROUTER:
-                titleString="路由器";
+                titleString = "路由器";
                 edittext_add_device_input_name.setText("路由器");
                 edittext_add_device_input_name.setSelection(3);
                 break;
@@ -301,7 +311,7 @@ public class AddDeviceNameActivity extends Activity implements View.OnClickListe
                 Log.i(TAG, responseBody.toString());
                 addDeviceUid = responseBody.getUid();
                 String deviceTypeHttp = responseBody.getDevice_type();
-                Log.i(TAG,"deviceTypeHttp="+deviceTypeHttp);
+                Log.i(TAG, "deviceTypeHttp=" + deviceTypeHttp);
                 SmartDev dbSmartDev = DataSupport.where("Uid = ?", addDeviceUid).findFirst(SmartDev.class);
                 if (dbSmartDev != null) {
                     Ftoast.create(AddDeviceNameActivity.this).setText("已添加过设备:" + dbSmartDev.getName() + "与待添加设备冲突,添加失败").setDuration(Toast.LENGTH_SHORT).show();
@@ -351,8 +361,8 @@ public class AddDeviceNameActivity extends Activity implements View.OnClickListe
                         if (LocalConnectmanager.getInstance().isLocalconnectAvailable()) {
                             mGetwayManager.bindDevice(addDeviceUid);
                         }
-                         String mac=responseBody.getMac();
-                        Log.i(TAG,"添加中继器,mac地址是:"+mac);
+                        String mac = responseBody.getMac();
+                        Log.i(TAG, "添加中继器,mac地址是:" + mac);
                         //提示连接
                         new AlertDialog(AddDeviceNameActivity.this).builder().setTitle("配置中继器")
                                 .setMsg("中继器上电,然后手机连接中继器产生的WiFi(中继器的WiFi名称是A6-XXXX," +
@@ -568,12 +578,37 @@ public class AddDeviceNameActivity extends Activity implements View.OnClickListe
             }
         };
     }
+
+    private void login() {
+        String phoneNumber = Perfence.getPerfence(Perfence.PERFENCE_PHONE);
+        String password = Perfence.getPerfence(Perfence.USER_PASSWORD);
+        Log.i(TAG, "phoneNumber=" + phoneNumber + "password=" + password);
+        if (!password.equals("")) {
+            manager.login(phoneNumber, password);
+        }
+    }
+
     private void initMqttCallback() {
         DeplinkSDK.initSDK(getApplicationContext(), Perfence.SDK_APP_KEY);
         manager = DeplinkSDK.getSDKManager();
         ec = new EventCallback() {
             @Override
             public void onSuccess(SDKAction action) {
+                switch (action) {
+                    case LOGIN:
+                        isUserLogin = true;
+                        manager.connectMQTT(AddDeviceNameActivity.this);
+                        String uuid = manager.getUserInfo().getUuid();
+                        Log.i(TAG, "login mqtt success uuid=" + uuid);
+                        Perfence.setPerfence(AppConstant.PERFENCE_BIND_APP_UUID, manager.getUserInfo().getUuid());
+                        User user = manager.getUserInfo();
+                        Perfence.setPerfence(Perfence.USER_PASSWORD, user.getPassword());
+                        Perfence.setPerfence(Perfence.PERFENCE_PHONE, user.getName());
+                        Perfence.setPerfence(AppConstant.USER.USER_GETIMAGE_FROM_SERVICE, false);
+                        Perfence.setPerfence(AppConstant.USER_LOGIN, true);
+
+                        break;
+                }
             }
 
             @Override
@@ -621,21 +656,16 @@ public class AddDeviceNameActivity extends Activity implements View.OnClickListe
             if (deviceType.equals(DeviceTypeConstant.TYPE.TYPE_SMART_GETWAY)) {
                 layout_remotecontrol_select.setVisibility(View.GONE);
                 layout_getway_select.setVisibility(View.GONE);
-            }
-            else if (deviceType.equalsIgnoreCase(DeviceTypeConstant.TYPE.TYPE_ROUTER)) {
+            } else if (deviceType.equalsIgnoreCase(DeviceTypeConstant.TYPE.TYPE_ROUTER)) {
                 layout_remotecontrol_select.setVisibility(View.GONE);
                 layout_getway_select.setVisibility(View.GONE);
-            }
-            else if (deviceType.equalsIgnoreCase(DeviceTypeConstant.TYPE.TYPE_GETWAY_OR_ROUTER)) {
+            } else if (deviceType.equalsIgnoreCase(DeviceTypeConstant.TYPE.TYPE_GETWAY_OR_ROUTER)) {
                 layout_remotecontrol_select.setVisibility(View.GONE);
                 layout_getway_select.setVisibility(View.GONE);
-            }
-
-            else if (deviceType.equalsIgnoreCase(DeviceTypeConstant.TYPE.TYPE_MENLING)) {
+            } else if (deviceType.equalsIgnoreCase(DeviceTypeConstant.TYPE.TYPE_MENLING)) {
                 layout_remotecontrol_select.setVisibility(View.GONE);
                 layout_getway_select.setVisibility(View.GONE);
-            }
-            else {
+            } else {
                 layout_remotecontrol_select.setVisibility(View.GONE);
                 layout_getway_select.setVisibility(View.VISIBLE);
                 if (mGetways.size() > 0) {
@@ -686,12 +716,54 @@ public class AddDeviceNameActivity extends Activity implements View.OnClickListe
         }
     };
     private Handler mHandler = new WeakRefHandler(mCallback);
+    /**
+     * 当前的网络情况
+     */
+    private int currentNetStatu = 4;
+    public static final int NET_TYPE_WIFI_CONNECTED = 0;
+    /**
+     * WIFI不可用
+     */
+    public static final int NET_TYPE_WIFI_DISCONNECTED = 4;
+    public void registerNetBroadcast(Context conext) {
+        //注册网络状态监听
+        IntentFilter filter = new IntentFilter();
+        filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+        conext.registerReceiver(broadCast, filter);
+    }
 
+    public void unRegisterNetBroadcast(Context conext) {
+        conext.unregisterReceiver(broadCast);
+    }
+    private AddDeviceNameActivity.NetBroadCast broadCast = new AddDeviceNameActivity.NetBroadCast();
+    class NetBroadCast extends BroadcastReceiver {
+        public final String ACTION = "android.net.conn.CONNECTIVITY_CHANGE";
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (ACTION.equals(intent.getAction())) {
+                Log.i(TAG, "网络连接变化");
+                ConnectivityManager manager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+                NetworkInfo activeInfo = manager.getActiveNetworkInfo();
+                if (activeInfo != null && NetUtil.isWiFiActive(context)) {
+                    if (NetUtil.isWiFiActive(context)) {
+                        currentNetStatu = NET_TYPE_WIFI_CONNECTED;
+                    } else {
+                        currentNetStatu = NET_TYPE_WIFI_DISCONNECTED;
+                    }
+                    if (currentNetStatu == NET_TYPE_WIFI_CONNECTED) {
+                        //重新连接
+                        login();
+                    }
+                }
+            }
+        }
+    }
     @Override
     protected void onResume() {
         super.onResume();
-        manager.addEventCallback(ec);
         isUserLogin = Perfence.getBooleanPerfence(AppConstant.USER_LOGIN);
+        manager.addEventCallback(ec);
+
         mDeviceManager.addDeviceListener(mDeviceListener);
         mGetwayManager.addGetwayListener(this);
     }
@@ -702,6 +774,12 @@ public class AddDeviceNameActivity extends Activity implements View.OnClickListe
         mDeviceManager.removeDeviceListener(mDeviceListener);
         mGetwayManager.removeGetwayListener(this);
         manager.removeEventCallback(ec);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unRegisterNetBroadcast(this);
     }
 
     private boolean isGetwayDeviceAddSuccess(DeviceList aDeviceList, String tempDeviceSn) {
@@ -731,9 +809,11 @@ public class AddDeviceNameActivity extends Activity implements View.OnClickListe
     @Override
     public void responseDeleteDeviceHttpResult(DeviceOperationResponse result) {
     }
+
     @Override
     public void responseSetWifirelayResult(int result) {
     }
+
     private boolean isSmartDeviceAddSuccess(DeviceList aDeviceList) {
         boolean result = false;
         for (int i = 0; i < aDeviceList.getSmartDev().size(); i++) {
@@ -775,7 +855,7 @@ public class AddDeviceNameActivity extends Activity implements View.OnClickListe
                             deviceName = "智能开关";
                         }
                         Log.i(TAG, "智能开关二维码=" + switchqrcode);
-                        currentAddDevice=switchqrcode;
+                        currentAddDevice = switchqrcode;
                         addSmartDevice(deviceAddBody, gson);
                         break;
                     case "IRMOTE_V2":
@@ -840,8 +920,8 @@ public class AddDeviceNameActivity extends Activity implements View.OnClickListe
                 break;
             case R.id.layout_room_select:
                 Intent intent = new Intent(this, SelectRommActivity.class);
-                intent.putExtra("DeviceType",deviceType);
-                intent.putExtra("currentAddDevice",currentAddDevice);
+                intent.putExtra("DeviceType", deviceType);
+                intent.putExtra("currentAddDevice", currentAddDevice);
                 startActivityForResult(intent, REQUEST_CODE_SELECT_DEVICE_IN_WHAT_ROOM);
                 break;
             case R.id.layout_getway_select:
@@ -888,32 +968,32 @@ public class AddDeviceNameActivity extends Activity implements View.OnClickListe
     private void addSmartDevice(DeviceAddBody deviceAddBody, Gson gson) {
         device = gson.fromJson(currentAddDevice, QrcodeSmartDevice.class);
         Log.i(TAG, "deviceType=" + deviceType + "device=" + (device != null));
-     switch (deviceType){
-         case DeviceTypeConstant.TYPE.TYPE_LIGHT:
-             if(!device.getTp().equalsIgnoreCase("YWLIGHTCONTROL")){
-                 Ftoast.create(this).setText("请选择正确的设备类型然后添加").setDuration(Toast.LENGTH_SHORT).show();
-                 return;
-             }
-             break;
-         case DeviceTypeConstant.TYPE.TYPE_LOCK:
-             if(!device.getTp().equalsIgnoreCase("SMART_LOCK")){
-                 Ftoast.create(this).setText("请选择正确的设备类型然后添加").setDuration(Toast.LENGTH_SHORT).show();
-                 return;
-             }
-             break;
-         case DeviceTypeConstant.TYPE.TYPE_SWITCH:
-             if(!device.getTp().equalsIgnoreCase("SmartWallSwitch4")){
-                 Ftoast.create(this).setText("请选择正确的设备类型然后添加").setDuration(Toast.LENGTH_SHORT).show();
-                 return;
-             }
-             break;
-         case DeviceTypeConstant.TYPE.TYPE_REMOTECONTROL:
-             if(!device.getTp().equalsIgnoreCase("IRMOTE_V2")){
-                 Ftoast.create(this).setText("请选择正确的设备类型然后添加").setDuration(Toast.LENGTH_SHORT).show();
-                 return;
-             }
-             break;
-     }
+        switch (deviceType) {
+            case DeviceTypeConstant.TYPE.TYPE_LIGHT:
+                if (!device.getTp().equalsIgnoreCase("YWLIGHTCONTROL")) {
+                    Ftoast.create(this).setText("请选择正确的设备类型然后添加").setDuration(Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                break;
+            case DeviceTypeConstant.TYPE.TYPE_LOCK:
+                if (!device.getTp().equalsIgnoreCase("SMART_LOCK")) {
+                    Ftoast.create(this).setText("请选择正确的设备类型然后添加").setDuration(Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                break;
+            case DeviceTypeConstant.TYPE.TYPE_SWITCH:
+                if (!device.getTp().equalsIgnoreCase("SmartWallSwitch4")) {
+                    Ftoast.create(this).setText("请选择正确的设备类型然后添加").setDuration(Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                break;
+            case DeviceTypeConstant.TYPE.TYPE_REMOTECONTROL:
+                if (!device.getTp().equalsIgnoreCase("IRMOTE_V2")) {
+                    Ftoast.create(this).setText("请选择正确的设备类型然后添加").setDuration(Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                break;
+        }
         device.setName(deviceName);
         deviceAddBody.setDevice_name(deviceName);
         if (mRoomManager.getCurrentSelectedRoom() != null) {
@@ -957,6 +1037,7 @@ public class AddDeviceNameActivity extends Activity implements View.OnClickListe
         deviceAddBody.setIrmote_mac(currentSelectRemotecontrol.getMac());
         mDeviceManager.addVirtualDeviceHttp(deviceAddBody);
     }
+
     /**
      * 添加网关路由器设备
      *
@@ -979,6 +1060,7 @@ public class AddDeviceNameActivity extends Activity implements View.OnClickListe
         }
         mDeviceManager.addDeviceHttp(deviceAddBody);
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
