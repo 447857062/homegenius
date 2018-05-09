@@ -16,7 +16,7 @@ import android.widget.Toast;
 
 import com.deplink.boruSmart.Protocol.json.device.SmartDev;
 import com.deplink.boruSmart.activity.device.adapter.AddDeviceTypeSelectAdapter;
-import com.deplink.boruSmart.activity.device.doorbell.add.WifipasswordInputActivity;
+import com.deplink.boruSmart.activity.device.doorbell.add.DoorBellConfigWifiTypeSelect;
 import com.deplink.boruSmart.activity.device.smartSwitch.add.SelectSwitchTypeActivity;
 import com.deplink.boruSmart.activity.personal.login.LoginActivity;
 import com.deplink.boruSmart.constant.AppConstant;
@@ -237,7 +237,7 @@ public class AddDeviceQRcodeActivity extends AppCompatActivity implements Adapte
                     break;
                 case DeviceTypeConstant.TYPE.TYPE_MENLING:
                     DoorbeelManager.getInstance().setConfigWifi(false);
-                    startActivity(new Intent(AddDeviceQRcodeActivity.this, WifipasswordInputActivity.class));
+                    startActivity(new Intent(AddDeviceQRcodeActivity.this, DoorBellConfigWifiTypeSelect.class));
                     break;
                 default:
                     //智能门锁，等没有在case中的设备

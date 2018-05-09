@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="deplink.com.smartwirelessrelay.homegenius.EllESDK">
+
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <!-- 这个权限用于进行网络定位 -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -24,7 +25,6 @@
     <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-
     <uses-permission android:name="android.permission.INTERACT_ACROSS_USERS_FULL" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
@@ -253,13 +253,11 @@
             android:name="com.deplink.boruSmart.activity.device.doorbell.add.AddDoorbellTipsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.deplink.boruSmart.activity.device.doorbell.add.WifipasswordInputActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name="com.deplink.boruSmart.activity.device.doorbell.add.ApModeActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.deplink.boruSmart.activity.device.doorbell.DoorbeelMainActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.deplink.boruSmart.activity.device.smartSwitch.SwitchOneActivity"
@@ -336,13 +334,37 @@
             android:screenOrientation="portrait" />
         <activity android:name="com.deplink.boruSmart.activity.personal.login.BoraeulaActivity" />
 
-        <receiver android:name="com.deplink.boruSmart.broadcastreceiver.ForceofflineReceiver"
-            >
+        <receiver android:name="com.deplink.boruSmart.broadcastreceiver.ForceofflineReceiver">
             <intent-filter>
-                <action android:name="com.deplink.boruSmart.broadcastreceiver.FORCE_OFFLINE">
-                </action>
+                <action android:name="com.deplink.boruSmart.broadcastreceiver.FORCE_OFFLINE" />
             </intent-filter>
         </receiver>
+
+        <activity android:name="com.deplink.boruSmart.activity.device.doorbell.add.DoorBellConfigWifiTypeSelect" />
+        <activity
+            android:name="com.deplink.boruSmart.activity.device.doorbell.add.ConnectApWifiActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeDoorBell" />
+        <activity
+            android:name="com.deplink.boruSmart.activity.device.doorbell.add.ConfigDoorBellWiFiActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeDoorBell" />
+        <activity
+            android:name="com.deplink.boruSmart.activity.device.doorbell.add.ConfigWifiJugeActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeDoorBell" />
+        <activity
+            android:name="com.deplink.boruSmart.activity.device.doorbell.add.ConnectNetWorkActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeDoorBell" />
+        <activity
+            android:name="com.deplink.boruSmart.activity.device.doorbell.add.PairingGuideOneActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeDoorBell" />
+        <activity
+            android:name="com.deplink.boruSmart.activity.device.doorbell.add.PairGuideTwoActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeDoorBell"></activity>
     </application>
 
 </manifest>

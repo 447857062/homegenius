@@ -11,8 +11,8 @@ android {
             // 还可以添加 'x86', 'x86_64', 'mips', 'mips64'
         }
         manifestPlaceholders = [
-                XG_ACCESS_ID :"2100282544",
-                XG_ACCESS_KEY:"APF739F52PFA",
+                XG_ACCESS_ID : "2100282544",
+                XG_ACCESS_KEY: "APF739F52PFA",
         ]
         lintOptions {
             disable "ResourceType"
@@ -83,13 +83,15 @@ dependencies {
     compile files('libs/zxing-javase-3.1.0.jar')
     compile files('libs/core-3.2.1.jar')
     //retrofit->resful api
-    compile 'com.squareup.retrofit2:retrofit:2.0.2'
-    compile 'com.squareup.retrofit2:converter-gson:2.0.2'
+    compile 'com.squareup.retrofit2:retrofit:2.1.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.1.0'
     compile 'io.reactivex.rxjava2:rxjava:2.1.0'
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
     //httpOk
-    compile 'com.squareup.okhttp3:okhttp:3.10.0'
-    compile 'com.squareup.okhttp3:logging-interceptor:3.10.0'
+    /* compile 'com.squareup.okhttp3:okhttp:3.2.0'
+        compile 'com.squareup.okhttp3:logging-interceptor:3.1.2'*/
+    /* compile 'com.squareup.okhttp3:okhttp:3.10.0'
+        compile 'com.squareup.okhttp3:logging-interceptor:3.10.0'*/
     compile 'com.github.ybq:Android-SpinKit:1.1.0'
     compile project(path: ':mqtt-sdk')
     compile project(':pullToRefresh')
@@ -108,4 +110,6 @@ dependencies {
     compile 'com.contrarywind:Android-PickerView:3.2.4'
     compile files('libs/MobCommons-2018.0409.1534.jar')
     compile files('libs/MobTools-2018.0408.1744.jar')
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile files('libs/volley.jar')
 }

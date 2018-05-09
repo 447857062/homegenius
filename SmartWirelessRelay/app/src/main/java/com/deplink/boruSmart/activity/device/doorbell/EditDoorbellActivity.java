@@ -22,10 +22,10 @@ import com.deplink.boruSmart.Protocol.packet.ellisdk.EllE_Listener;
 import com.deplink.boruSmart.Protocol.packet.ellisdk.Handler_Background;
 import com.deplink.boruSmart.Protocol.packet.ellisdk.Handler_UiThread;
 import com.deplink.boruSmart.Protocol.packet.ellisdk.WIFIData;
-import com.deplink.boruSmart.activity.device.SelectRommActivity;
 import com.deplink.boruSmart.activity.device.DevicesActivity;
+import com.deplink.boruSmart.activity.device.SelectRommActivity;
 import com.deplink.boruSmart.activity.device.ShareDeviceActivity;
-import com.deplink.boruSmart.activity.device.doorbell.add.WifipasswordInputActivity;
+import com.deplink.boruSmart.activity.device.doorbell.add.ApModeActivity;
 import com.deplink.boruSmart.activity.personal.login.LoginActivity;
 import com.deplink.boruSmart.constant.AppConstant;
 import com.deplink.boruSmart.constant.DeviceTypeConstant;
@@ -252,7 +252,7 @@ public class EditDoorbellActivity extends Activity implements View.OnClickListen
         layout_title.setReturnClickListener(new TitleLayout.ReturnImageClickListener() {
             @Override
             public void onBackPressed() {
-                EditDoorbellActivity.this.onBackPressed();
+                startActivity(new Intent(EditDoorbellActivity.this,DoorbeelMainActivity.class));
             }
         });
         layout_title.setEditTextClickListener(new TitleLayout.EditTextClickListener() {
@@ -280,6 +280,12 @@ public class EditDoorbellActivity extends Activity implements View.OnClickListen
             }
             textview_select_room_name.setText(roomName);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(EditDoorbellActivity.this,DoorbeelMainActivity.class));
     }
 
     private static final int REQUEST_CODE_SELECT_DEVICE_IN_WHAT_ROOM = 100;
@@ -373,7 +379,7 @@ public class EditDoorbellActivity extends Activity implements View.OnClickListen
                 break;
             case R.id.layout_getway_select:
                 mDoorbeelManager.setConfigWifi(true);
-                startActivity(new Intent(this, WifipasswordInputActivity.class));
+                startActivity(new Intent(this, ApModeActivity.class));
                 break;
             case R.id.layout_room_select:
                 if (isStartFromExperience) {

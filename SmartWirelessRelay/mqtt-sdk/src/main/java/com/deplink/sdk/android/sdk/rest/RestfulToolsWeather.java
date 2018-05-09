@@ -7,7 +7,6 @@ import com.google.gson.JsonObject;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
-import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Retrofit;
@@ -33,10 +32,9 @@ public class RestfulToolsWeather {
         OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder();
         clientBuilder.connectTimeout(15 * 1000, TimeUnit.MILLISECONDS)
                 .readTimeout(20 * 1000, TimeUnit.MILLISECONDS);
-
-        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+       /* HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-        clientBuilder.addInterceptor(interceptor);
+        clientBuilder.addInterceptor(interceptor);*/
         OkHttpClient okClient = clientBuilder.build();
         builder.client(okClient);
         Retrofit retrofit = builder.build();

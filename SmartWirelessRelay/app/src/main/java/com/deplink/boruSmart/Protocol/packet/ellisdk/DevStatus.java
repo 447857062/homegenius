@@ -123,6 +123,18 @@ public class DevStatus {
             }
         }
     }
+    public static void dealWiFiSsidListPacket(BasicPacket packet) {
+        UnpackWiFiList cell = new UnpackWiFiList();
+        cell.OnRecvData(packet);
+        if (cell.ssid != null) {
+            for (int i = 0; i < ssids.size(); i++) {
+                if (cell.ssid.equals(ssids.get(i)))
+                    return;
+            }
+            ssids.add(cell.ssid);
+        }
+
+    }
 
     public int delDevFromCommWithMac(long mac) {
         return devs.delDevFromCommWithMac(mac);
@@ -220,11 +232,12 @@ public class DevStatus {
                 dealDataBackPacket(packet);
                 break;
             case (byte) 0xee:  //wifi信息返回的包
-                //  dealWiFiSsidListPacket(packet);
+                 dealWiFiSsidListPacket(packet);
                 break;
             case (byte) 0xf0:  //
                 Log.i(TAG, "wifi config 返回的包");
                 break;
+
         }
         return 0;
     }
@@ -282,21 +295,22 @@ public class DevStatus {
         Log.i(TAG, "setDevWiFiConfigWithMac netStatus=" + netStatus);
         //设备存在，并且设备在线，发起读取设备WiFi的任务
         GeneralPacket packet = new GeneralPacket(mContext);
-        if (netStatus == OneDev.ConnTypeLocal) {
-            try {
-                rebootPacket = new GeneralPacket(InetAddress.getByName("255.255.255.255"), EllESDK_DEF.LocalConPort, mContext);
-            } catch (UnknownHostException e) {
-                e.printStackTrace();
-            }
-            packet.packWiFiConfigPacket(mac, type, ver, true, ssid, pwd, unpack);
-            rebootPacket.packRebootWiFiConfigPacket(mac, type, ver, true, unpack);
+       /* if (netStatus == OneDev.ConnTypeLocal) {
+
         } else if (netStatus == OneDev.ConnTypeRemote) {
             rebootPacket = new GeneralPacket(dev.remoteIP, dev.remotePort, mContext);
             packet.packWiFiConfigPacket(mac, type, ver, false, ssid, pwd, unpack);
             rebootPacket.packRebootWiFiConfigPacket(mac, type, ver, false, unpack);
         } else {
             return -1;
+        }*/
+        try {
+            rebootPacket = new GeneralPacket(InetAddress.getByName("255.255.255.255"), EllESDK_DEF.LocalConPort, mContext);
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
         }
+        packet.packWiFiConfigPacket(mac, type, ver, true, ssid, pwd, unpack);
+        rebootPacket.packRebootWiFiConfigPacket(mac, type, ver, true, unpack);
         udp.writeNet(packet);
         boolean isFinish = false;
         int count = 0;
@@ -329,7 +343,6 @@ public class DevStatus {
         }
         if (isSetOk) {
             udp.writeNet(rebootPacket);
-
             return 1;
         } else {
             return 0;

@@ -12,6 +12,7 @@ import com.deplink.boruSmart.Protocol.json.device.lock.Record;
 import com.deplink.boruSmart.Protocol.json.device.router.Router;
 import com.deplink.boruSmart.activity.personal.login.LoginActivity;
 import com.deplink.boruSmart.constant.AppConstant;
+import com.deplink.boruSmart.util.NetUtil;
 import com.deplink.boruSmart.util.Perfence;
 import com.deplink.boruSmart.view.dialog.AlertDialog;
 
@@ -29,31 +30,32 @@ public class ForceofflineReceiver extends BroadcastReceiver {
         String action=intent.getAction();
         if(action.equals(AppConstant.FORCE_OFFLINE_ACIION)){
             isAddDoorbeelDevice=Perfence.getBooleanPerfence(AppConstant.ADDDOORBELLTIPSACTIVITY);
-            Perfence.setPerfence(AppConstant.USER_LOGIN, false);
-            DataSupport.deleteAll(SmartDev.class);
-            DataSupport.deleteAll(GatwayDevice.class);
-            DataSupport.deleteAll(Room.class);
-            DataSupport.deleteAll(Record.class);
-            DataSupport.deleteAll(Router.class);
-            AlertDialog alertDialog= new AlertDialog(context).builder().setTitle("账号已退出登录")
-                    .setMsg("当前账号已退出登录,是否重新登录")
-                    .setPositiveButton("确认", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Intent intent=new Intent(context, LoginActivity.class);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            context.startActivity(intent);
-                        }
-                    }).setNegativeButton("取消", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
+            if(NetUtil.isNetAvailable(context)){
+                if(!isAddDoorbeelDevice){
+                    Perfence.setPerfence(AppConstant.USER_LOGIN, false);
+                    DataSupport.deleteAll(SmartDev.class);
+                    DataSupport.deleteAll(GatwayDevice.class);
+                    DataSupport.deleteAll(Room.class);
+                    DataSupport.deleteAll(Record.class);
+                    DataSupport.deleteAll(Router.class);
+                    AlertDialog alertDialog= new AlertDialog(context).builder().setTitle("账号已退出登录")
+                            .setMsg("当前账号已退出登录,是否重新登录")
+                            .setPositiveButton("确认", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Intent intent=new Intent(context, LoginActivity.class);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    context.startActivity(intent);
+                                }
+                            }).setNegativeButton("取消", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
 
-                        }
-                    });
-            if(!isAddDoorbeelDevice){
-                alertDialog.showAsSystemAlert();
+                                }
+                            });
+                    alertDialog.showAsSystemAlert();
+                }
             }
         }
-
     }
 }

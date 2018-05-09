@@ -123,6 +123,7 @@ public class DoorbeelMainActivity extends Activity implements View.OnClickListen
         initMqttCallback();
     }
 
+
     /**
      * 获取圆角位图的方法
      *

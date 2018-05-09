@@ -6,12 +6,16 @@ import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 import deplink.com.smartwirelessrelay.homegenius.EllESDK.R;
 
@@ -81,26 +85,33 @@ public class InputAlertDialog {
 
     public InputAlertDialog setEditTextHeader(String title) {
         textview_edittext_header.setText(title);
-
         return this;
     }
 
     public InputAlertDialog setEditTextHint(String title) {
         edittext_input.setHint(title);
+        edittext_input.requestFocus();
+        showInputmothed();
         return this;
     }
     public InputAlertDialog setEditText(String title) {
         edittext_input.setText(title);
         edittext_input.setSelection(title.length());
+
         return this;
     }
+    private void showInputmothed() {
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+                           public void run() {
 
-
-    public InputAlertDialog setCancelable(boolean cancel) {
-        dialog.setCancelable(cancel);
-        return this;
+                               InputMethodManager inputManager =
+                                       (InputMethodManager) edittext_input.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                               inputManager.showSoftInput(edittext_input, 0);
+                           }
+                       },
+                500);
     }
-
     public InputAlertDialog setPositiveButton(String text,
                                               final onSureBtnClickListener listener) {
         if ("".equals(text)) {
@@ -118,6 +129,7 @@ public class InputAlertDialog {
         });
         return this;
     }
+
     public interface onSureBtnClickListener {
         void onSureBtnClicked(String password);
     }
@@ -151,7 +163,6 @@ public class InputAlertDialog {
             btn_pos.setVisibility(View.VISIBLE);
         }
     }
-
     public void show() {
         setLayout();
         dialog.show();

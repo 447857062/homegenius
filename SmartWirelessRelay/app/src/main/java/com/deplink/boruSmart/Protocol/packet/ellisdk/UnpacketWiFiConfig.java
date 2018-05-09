@@ -3,6 +3,8 @@ package com.deplink.boruSmart.Protocol.packet.ellisdk;
 
 import android.util.Log;
 
+import com.deplink.boruSmart.util.DataExchange;
+
 
 /**
  * Created by benond on 2017/2/6.
@@ -21,6 +23,7 @@ public class UnpacketWiFiConfig implements OnRecvListener {
         if (packet != null) {
             if (packet.fun == FunWiFiConfig) {
                 Log.i(TAG,"UnpacketWiFiConfig"+packet.xdata[0]);
+                Log.i(TAG,"UnpacketWiFiConfig"+ DataExchange.byteArrayToHexString(packet.data));
                 switch (packet.xdata[0]) {
                     case 0x02:  //返回当前数据
                         ssidLen = packet.xdata[1];

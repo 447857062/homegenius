@@ -13,5 +13,5 @@ import retrofit2.http.Url;
 
 public interface RestfulServerWeather {
     @GET
-    Call<JsonObject> getWeatherInfo(@Url String url, @Query("location")String location, @Query("key")String key);
+    Call<JsonObject> getWeatherInfo(@Url String url, @Query("location") String location, @Query("key") String key);
 }

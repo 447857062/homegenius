@@ -27,6 +27,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.baidu.location.BDAbstractLocationListener;
 import com.baidu.location.BDLocation;
 import com.baidu.location.LocationClient;
@@ -91,9 +95,7 @@ import com.deplink.sdk.android.sdk.bean.User;
 import com.deplink.sdk.android.sdk.homegenius.DeviceOperationResponse;
 import com.deplink.sdk.android.sdk.homegenius.Deviceprops;
 import com.deplink.sdk.android.sdk.manager.SDKManager;
-import com.deplink.sdk.android.sdk.rest.RestfulToolsWeather;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.tencent.android.tpush.XGIOperateCallback;
 import com.tencent.android.tpush.XGPushManager;
 
@@ -108,9 +110,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import deplink.com.smartwirelessrelay.homegenius.EllESDK.R;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * 智能家居主页
@@ -405,7 +404,7 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
         new Thread(new Runnable() {
             @Override
             public void run() {
-                RestfulToolsWeather.getSingleton().getWeatherPm25(new Callback<JsonObject>() {
+                /*RestfulToolsWeather.getSingleton().getWeatherPm25(new Callback<JsonObject>() {
                     @Override
                     public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                         if (response.code() == 200) {
@@ -433,7 +432,8 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
                     public void onFailure(Call<JsonObject> call, Throwable t) {
 
                     }
-                }, city);
+                }, city);*/
+                getWeatherPm25(city);
 
             }
         }).start();
@@ -443,7 +443,8 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
         new Thread(new Runnable() {
             @Override
             public void run() {
-                RestfulToolsWeather.getSingleton().getWeatherInfo(new Callback<JsonObject>() {
+                getWeatherInfo(city);
+               /* RestfulToolsWeather.getSingleton().getWeatherInfo(new Callback<JsonObject>() {
                     @Override
                     public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                         Log.i(TAG,"response.code()="+response.code());
@@ -468,9 +469,92 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
                     public void onFailure(Call<JsonObject> call, Throwable t) {
                         Log.i(TAG, "获取天气数据onFailure=" + call.toString()+t.getMessage()+t.toString());
                     }
-                }, city);
+                }, city);*/
             }
         }).start();
+    }
+    RequestQueue requestQueue;
+    /**
+     * get
+     */
+    public void getWeatherInfo(String city){
+        //创建一个请求队列
+        requestQueue = Volley.newRequestQueue(SmartHomeMainActivity.this);
+        //创建一个请求
+        String url = "https://free-api.heweather.com/s6/weather/now?";
+        String APIKEY ="230fce30ce304b1ea5d964d5b854212d";
+        StringRequest stringRequest =new StringRequest(url+"&location="+city+"&key="+APIKEY, new com.android.volley.Response.Listener<String>() {
+            @Override
+            public void onResponse(String s) {
+                //正确接收数据回调
+                Log.i(TAG,"正确接收数据回调"+s);
+                    Gson gson = new Gson();
+                    HeWeather6 weatherObject = gson.fromJson(s, HeWeather6.class);
+                    Log.i(TAG, "获取天气数据=" + weatherObject.toString());
+                    if (!weatherObject.getInfoList().get(0).getStatus().equalsIgnoreCase("no more requests")) {
+                        if (!weatherObject.getInfoList().get(0).getNow().getTmp().equalsIgnoreCase(tempature)) {
+                            Perfence.setPerfence(AppConstant.TEMPATURE_VALUE, weatherObject.getInfoList().get(0).getNow().getTmp());
+                            Message message = new Message();
+                            message.what = MSG_SHOW_WEATHER_TEXT;
+                            message.obj = weatherObject.getInfoList().get(0).getNow().getTmp();
+                            mHandler.sendMessage(message);
+                        }
+                    }
+
+            }
+        }, new com.android.volley.Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                //异常后的监听数据
+                Log.i(TAG,"异常后的监听数据");
+            }
+        });
+        //将get请求添加到队列中
+        requestQueue.add(stringRequest);
+    }
+    /**
+     * get
+     */
+    public void getWeatherPm25(String city){
+        //创建一个请求队列
+        requestQueue = Volley.newRequestQueue(SmartHomeMainActivity.this);
+        //创建一个请求
+        String url = "https://free-api.heweather.com/s6/air/now?";
+        String APIKEY ="230fce30ce304b1ea5d964d5b854212d";
+        StringRequest stringRequest =new StringRequest(url+"&location="+city+"&key="+APIKEY, new com.android.volley.Response.Listener<String>() {
+            @Override
+            public void onResponse(String s) {
+                //正确接收数据回调
+                Log.i(TAG,"正确接收数据回调"+s);
+
+                    Gson gson = new Gson();
+                    Log.i(TAG, "weatherObject=" + s);
+                    HeWeather6 weatherObject = gson.fromJson(s, HeWeather6.class);
+                    try {
+                        //{"HeWeather6":[{"status":"no more requests"}]}
+                        if (!weatherObject.getInfoList().get(0).getStatus().equalsIgnoreCase("no more requests")) {
+                            if (!weatherObject.getInfoList().get(0).getAir_now_city().getPm25().equalsIgnoreCase(pm25)) {
+                                Perfence.setPerfence(AppConstant.PM25_VALUE, weatherObject.getInfoList().get(0).getAir_now_city().getPm25());
+                                Message message = new Message();
+                                message.what = MSG_SHOW_PM25_TEXT;
+                                message.obj = weatherObject.getInfoList().get(0).getAir_now_city().getPm25();
+                                mHandler.sendMessage(message);
+                            }
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
+        }, new com.android.volley.Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                //异常后的监听数据
+                Log.i(TAG,"异常后的监听数据");
+            }
+        });
+        //将get请求添加到队列中
+        requestQueue.add(stringRequest);
     }
     private void initListener() {
         ellESDK = EllESDK.getInstance();

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:titlelayout="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.deplink.boruSmart.activity.device.doorbell.add.ConnectApWifiActivity">
+    <com.deplink.boruSmart.view.combinationwidget.TitleLayout
+        android:id="@+id/layout_title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/title_bar_height"
+        titlelayout:edit_text_show="false"
+        titlelayout:menu_image_show="false"
+        titlelayout:return_image_show="true"
+        titlelayout:title_text="连接WiFi热点" />
+    <ImageView
+        android:layout_below="@+id/layout_title"
+        android:layout_marginTop="30dp"
+        android:id="@+id/imageview_config_ap_wifi"
+        android:src="@drawable/distribution_network_progress_bar"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <ImageView
+        android:layout_below="@+id/imageview_config_ap_wifi"
+        android:layout_marginTop="20dp"
+        android:id="@+id/imageview_config_ap_doorbell"
+        android:src="@drawable/distribution_network_doorbell_indoor_unit"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <ImageView
+        android:src="@drawable/connection_wifi_text"
+        android:layout_marginBottom="40dp"
+        android:layout_above="@+id/button_next_step"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <Button
+        android:id="@+id/button_next_step"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/add_doorbell_buttom_button_height"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/add_doorbell_buttom_button_marginbuttom"
+        android:layout_marginLeft="@dimen/input_layout_marginleft_right"
+        android:layout_marginRight="@dimen/input_layout_marginleft_right"
+        android:background="@drawable/login_button_enable_background"
+        android:text="连接热点"
+        android:gravity="center_horizontal|center_vertical"
+        android:textColor="@color/white"
+        android:textSize="16sp" />
+</RelativeLayout>

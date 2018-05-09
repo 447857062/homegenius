@@ -159,9 +159,10 @@ public class BasicPacket {
         data[len++] = 0;
 
         if (xdata.length > 0) {
+
             System.arraycopy(xdata, 0, data, len, xdata.length);
         }
-
+        Log.i(TAG,"xdata1"+DataExchange.byteArrayToHexString(data)+"fun="+devfun);
         return data.length;
     }
 

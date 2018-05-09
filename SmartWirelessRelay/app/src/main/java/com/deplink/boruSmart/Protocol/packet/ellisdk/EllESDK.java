@@ -53,11 +53,11 @@ public class EllESDK {//
     public int startSearchDevs() {
         Log.i(TAG, "startSearchDevs");
         //启动状态查询任务
-        //if (devStatus != null) {
+        if (devStatus != null) {
         devStatus.close();
         devStatus.startSearch();
         devStatus.open();
-        // }
+         }
         return 0;
     }
 
@@ -80,10 +80,6 @@ public class EllESDK {//
         return devStatus.getDevWiFiConfigWithMac(mac, type, ver);
     }
 
-    //添加需要通讯的设备进入队列
-    public int addDevToCommWithMac(long mac, byte type, byte ver) {
-        return devStatus.addDevWithMac(mac, type, ver);
-    }
     //内部用
     public static void findDeviceWithMac(long mac, byte type, byte ver) {
         elleListener.searchDevCBS(mac, type, ver);

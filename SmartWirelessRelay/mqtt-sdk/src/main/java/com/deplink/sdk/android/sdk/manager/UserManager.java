@@ -25,7 +25,6 @@ import org.eclipse.paho.client.mqttv3.IMqttToken;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.HashMap;
 
 import retrofit2.Call;
@@ -192,7 +191,11 @@ public class UserManager implements MqttListener {
             @Override
             public void onFailure(Call<UserSession> call, Throwable t) {
                 String error = "无法访问网络";
-                Log.i(TAG, "登录失败" + Arrays.toString(t.getStackTrace()));
+                StackTraceElement[] msgs=t.getStackTrace();
+                for(int i=0;i<msgs.length;i++){
+                    Log.i(TAG, "登录失败" + msgs[i].toString());
+                }
+
                 mSDKCoordinator.notifyFailure(SDKAction.LOGIN, error);
             }
         });

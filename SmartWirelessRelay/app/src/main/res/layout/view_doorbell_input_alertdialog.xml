@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/lLayout_bg"
+    android:layout_width="match_parent"
+    android:layout_height="195dp"
+    android:background="@drawable/radius4_white_background"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/txt_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="15dp"
+        android:gravity="center"
+        android:text="手动输入"
+        android:textColor="@color/huise"
+        android:textSize="18sp" />
+
+    <RelativeLayout
+        android:id="@+id/relativelayout_input"
+        android:layout_below="@+id/txt_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="15dp">
+
+        <RelativeLayout
+            android:id="@+id/layout_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:id="@+id/layout_input_inner"
+                android:layout_width="match_parent"
+                android:layout_height="44dp">
+                <TextView
+                    android:id="@+id/textview_edittext_header"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/layout_content_margin_left_right"
+                    android:layout_marginRight="@dimen/layout_content_margin_left_right"
+                    android:layout_marginTop="15dp"
+                    android:gravity="center_vertical"
+                    android:text="名称:"
+                    android:textSize="14sp" />
+
+                <com.deplink.boruSmart.view.edittext.ClearEditText
+                    android:id="@+id/edittext_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="请输入WiFi名称"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/textview_edittext_header"
+                    android:background="@null"
+                    android:gravity="center_vertical"
+                    android:singleLine="true"
+                    android:textSize="14sp" />
+            </RelativeLayout>
+
+            <View
+                android:id="@+id/view_line_dirver"
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_below="@+id/layout_input_inner"
+                android:background="@color/line_dirver_color" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/layout_input_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/layout_input">
+
+            <RelativeLayout
+                android:id="@+id/layout_input_password_inner"
+                android:layout_width="match_parent"
+                android:layout_height="44dp">
+
+                <TextView
+                    android:id="@+id/textview_edittext_password_header"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/layout_content_margin_left_right"
+                    android:layout_marginRight="@dimen/layout_content_margin_left_right"
+                    android:layout_marginTop="15dp"
+                    android:gravity="center_vertical"
+                    android:text="密码:"
+                    android:textSize="14sp" />
+
+                <com.deplink.boruSmart.view.edittext.ClearEditText
+                    android:id="@+id/edittext_input_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:hint="请输入WiFi密码"
+                    android:layout_toRightOf="@+id/textview_edittext_password_header"
+                    android:background="@null"
+                    android:gravity="center_vertical"
+                    android:singleLine="true"
+                    android:textSize="14sp" />
+            </RelativeLayout>
+
+            <View
+                android:id="@+id/view_line_dirver_password"
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_below="@+id/layout_input_password_inner"
+                android:background="@color/line_dirver_color" />
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_below="@+id/relativelayout_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="15dp"
+        android:weightSum="2"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/btn_neg"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_weight="1"
+            android:background="@drawable/button_white_background"
+            android:gravity="center_horizontal|center_vertical"
+            android:text="取消"
+            android:textColor="@color/title_blue_bg"
+            android:textSize="14sp" />
+
+        <Button
+            android:id="@+id/btn_pos"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/login_button_enable_background"
+            android:gravity="center_horizontal|center_vertical"
+            android:text="连接"
+            android:textColor="@color/white"
+            android:textSize="14sp" />
+    </LinearLayout>
+</RelativeLayout>

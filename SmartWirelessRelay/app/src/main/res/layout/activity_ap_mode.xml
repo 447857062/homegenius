@@ -22,11 +22,34 @@
         android:fitsSystemWindows="true">
 
         <ImageView
-            android:id="@+id/imageview_doorbell"
+            android:id="@+id/iamgeview_doorbell_step_tips"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/ap_progress_bar" />
+
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:scaleType="centerInside"
-            android:src="@drawable/doorbell" />
+            android:layout_below="@+id/iamgeview_doorbell_step_tips"
+            android:layout_marginTop="20dp">
+
+            <ImageView
+                android:id="@+id/imageview_doorbell"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scaleType="centerInside"
+                android:src="@drawable/ap_doorbell_indoor_unit" />
+
+            <ImageView
+                android:id="@+id/imageview_ap_gif"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal|bottom"
+                android:layout_marginBottom="44dp"
+                android:src="@drawable/ap_gif" />
+        </FrameLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -34,30 +57,25 @@
             android:layout_above="@+id/button_next_step"
             android:layout_marginBottom="@dimen/add_doorbell_buttom_button_marginbuttom">
 
-            <TextView
-                android:id="@+id/textview_info_1"
-                android:layout_width="match_parent"
+            <ImageView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:gravity="left"
-                android:paddingLeft="@dimen/add_doorbell_tips_textview_padding_left"
-                android:text="请长按按键3秒至蓝灯闪烁开启AP模式" />
-
-
+                android:src="@drawable/ap_text" />
         </RelativeLayout>
 
         <Button
             android:id="@+id/button_next_step"
             android:layout_width="match_parent"
-            android:layout_marginLeft="@dimen/input_layout_marginleft_right"
-            android:layout_marginRight="@dimen/input_layout_marginleft_right"
             android:layout_height="@dimen/add_doorbell_buttom_button_height"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="@dimen/add_doorbell_buttom_button_marginbuttom"
+            android:layout_marginLeft="@dimen/input_layout_marginleft_right"
+            android:layout_marginRight="@dimen/input_layout_marginleft_right"
             android:background="@drawable/login_button_enable_background"
             android:text="下一步"
             android:textColor="@color/white"
-            android:textSize="@dimen/text_size_small" />
+            android:textSize="16sp" />
     </RelativeLayout>
 </RelativeLayout>

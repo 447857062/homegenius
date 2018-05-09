@@ -146,23 +146,23 @@ public class AuthoriseDialog extends Dialog implements View.OnClickListener, Tex
 
     private void initView() {
 
-        edt_pwd = (SecurityPasswordEditText) findViewById(R.id.edt_pwd);
+        edt_pwd = findViewById(R.id.edt_pwd);
 
-        linelayout_select_auth_type = (RelativeLayout) findViewById(R.id.linelayout_select_auth_type);
-        linelayout_auth_type_time_limit = (RelativeLayout) findViewById(R.id.linelayout_auth_type_time_limit);
-        layout_content_one = (RelativeLayout) findViewById(R.id.layout_content_one);
-        layout_content_two = (RelativeLayout) findViewById(R.id.layout_content_two);
-        layout_content_three = (RelativeLayout) findViewById(R.id.layout_content_three);
+        linelayout_select_auth_type = findViewById(R.id.linelayout_select_auth_type);
+        linelayout_auth_type_time_limit = findViewById(R.id.linelayout_auth_type_time_limit);
+        layout_content_one = findViewById(R.id.layout_content_one);
+        layout_content_two = findViewById(R.id.layout_content_two);
+        layout_content_three = findViewById(R.id.layout_content_three);
 
-        textview_title = (TextView) findViewById(R.id.textview_title);
-        iamgeview_delete = (ImageView) findViewById(R.id.iamgeview_delete);
-        linelayout_auth_type_once = (RelativeLayout) findViewById(R.id.linelayout_auth_type_once);
-        linelayout_auth_type_permanent = (RelativeLayout) findViewById(R.id.linelayout_auth_type_permanent);
-        textview_current_auth_type = (TextView) findViewById(R.id.textview_current_auth_type);
-        linelayout_time_limit_2_hours = (RelativeLayout) findViewById(R.id.linelayout_time_limit_2_hours);
-        linelayout_time_limit_12_hours = (RelativeLayout) findViewById(R.id.linelayout_time_limit_12_hours);
-        linelayout_time_limit_custom = (RelativeLayout) findViewById(R.id.linelayout_time_limit_custom);
-        edittext_time_limit_custom = (EditText) findViewById(R.id.edittext_time_limit_custom);
+        textview_title = findViewById(R.id.textview_title);
+        iamgeview_delete = findViewById(R.id.iamgeview_delete);
+        linelayout_auth_type_once = findViewById(R.id.linelayout_auth_type_once);
+        linelayout_auth_type_permanent = findViewById(R.id.linelayout_auth_type_permanent);
+        textview_current_auth_type = findViewById(R.id.textview_current_auth_type);
+        linelayout_time_limit_2_hours = findViewById(R.id.linelayout_time_limit_2_hours);
+        linelayout_time_limit_12_hours = findViewById(R.id.linelayout_time_limit_12_hours);
+        linelayout_time_limit_custom = findViewById(R.id.linelayout_time_limit_custom);
+        edittext_time_limit_custom = findViewById(R.id.edittext_time_limit_custom);
         edittext_time_limit_custom.setOnEditorActionListener(this);
     }
 

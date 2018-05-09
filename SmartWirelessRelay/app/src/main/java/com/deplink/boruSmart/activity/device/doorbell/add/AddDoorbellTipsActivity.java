@@ -15,12 +15,10 @@ import com.deplink.boruSmart.Protocol.packet.ellisdk.Handler_UiThread;
 import com.deplink.boruSmart.Protocol.packet.ellisdk.WIFIData;
 import com.deplink.boruSmart.activity.device.AddDeviceNameActivity;
 import com.deplink.boruSmart.activity.device.doorbell.EditDoorbellActivity;
-import com.deplink.boruSmart.constant.AppConstant;
 import com.deplink.boruSmart.constant.DeviceTypeConstant;
 import com.deplink.boruSmart.manager.device.DeviceManager;
 import com.deplink.boruSmart.manager.device.doorbeel.DoorbeelManager;
 import com.deplink.boruSmart.util.DataExchange;
-import com.deplink.boruSmart.util.Perfence;
 import com.deplink.boruSmart.view.combinationwidget.TitleLayout;
 import com.deplink.boruSmart.view.toast.Ftoast;
 
@@ -36,7 +34,6 @@ public class AddDoorbellTipsActivity extends Activity implements View.OnClickLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_doorbell_tips);
-        Perfence.setPerfence(AppConstant.ADDDOORBELLTIPSACTIVITY,true);
         initViews();
         initDatas();
         initEvents();
@@ -46,12 +43,6 @@ public class AddDoorbellTipsActivity extends Activity implements View.OnClickLis
     protected void onResume() {
         super.onResume();
         isStartFromExperience = DeviceManager.getInstance().isStartFromExperience();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Perfence.setPerfence(AppConstant.ADDDOORBELLTIPSACTIVITY,false);
     }
 
     private void initEvents() {
@@ -122,7 +113,6 @@ public class AddDoorbellTipsActivity extends Activity implements View.OnClickLis
                                     startActivity(intent);
                                 }else{
                                     Ftoast.create(AddDoorbellTipsActivity.this).setText("门铃网络已配置,现在重启门铃设备,等手机连上网络后进行设备添加").show();
-
                                     Intent intent = new Intent(AddDoorbellTipsActivity.this, AddDeviceNameActivity.class);
                                     intent.putExtra("DeviceType", DeviceTypeConstant.TYPE.TYPE_MENLING);
                                     startActivity(intent);
@@ -130,14 +120,12 @@ public class AddDoorbellTipsActivity extends Activity implements View.OnClickLis
 
                             }
                         }, 0);
-
                     }
                 }
             });
 
         }
     }
-
     @Override
     public void searchDevCBS(long mac, byte type, byte ver) {
         Log.e(TAG, "mac:" + mac + "type:" + type + "ver:" + ver);

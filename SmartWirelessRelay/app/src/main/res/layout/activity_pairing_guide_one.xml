@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:titlelayout="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.deplink.boruSmart.activity.device.doorbell.add.PairingGuideOneActivity">
+
+    <com.deplink.boruSmart.view.combinationwidget.TitleLayout
+        android:id="@+id/layout_title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/title_bar_height"
+        titlelayout:edit_text_show="false"
+        titlelayout:menu_image_show="false"
+        titlelayout:return_image_show="true"
+        titlelayout:title_text="门铃配对指南" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/layout_title"
+        android:fitsSystemWindows="true">
+
+        <ImageView
+            android:layout_marginTop="30dp"
+            android:id="@+id/imageview_doorbell"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="centerInside"
+            android:src="@drawable/doorbell_combination"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="29dp"
+            android:src="@drawable/doorbell_pair_guide"
+            android:layout_above="@+id/button_next_step"
+            android:layout_centerHorizontal="true" />
+
+
+        <Button
+            android:id="@+id/button_next_step"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/add_doorbell_buttom_button_height"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="30dp"
+            android:layout_marginLeft="@dimen/input_layout_marginleft_right"
+            android:layout_marginRight="@dimen/input_layout_marginleft_right"
+            android:background="@drawable/login_button_enable_background"
+            android:text="下一页"
+            android:gravity="center_horizontal|center_vertical"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+    </RelativeLayout>
+</RelativeLayout>

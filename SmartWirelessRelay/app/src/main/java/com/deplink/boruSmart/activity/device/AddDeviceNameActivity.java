@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -51,7 +52,6 @@ import com.deplink.boruSmart.util.NetUtil;
 import com.deplink.boruSmart.util.Perfence;
 import com.deplink.boruSmart.util.StringValidatorUtil;
 import com.deplink.boruSmart.util.WeakRefHandler;
-import com.deplink.boruSmart.view.combinationwidget.TitleLayout;
 import com.deplink.boruSmart.view.dialog.AlertDialog;
 import com.deplink.boruSmart.view.toast.Ftoast;
 import com.deplink.sdk.android.sdk.DeplinkSDK;
@@ -116,8 +116,10 @@ public class AddDeviceNameActivity extends Activity implements View.OnClickListe
     private RouterManager mRouterManager;
     private String topic;
     private DeviceListener mDeviceListener;
-    private TitleLayout layout_title;
-
+    private ImageView imageview_doorbell_step;
+    private TextView textview_title;
+    private FrameLayout framelayout_back;
+    private FrameLayout framelayout_x;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -133,10 +135,14 @@ public class AddDeviceNameActivity extends Activity implements View.OnClickListe
         layout_getway_select.setOnClickListener(this);
         layout_room_select.setOnClickListener(this);
         layout_remotecontrol_select.setOnClickListener(this);
+        framelayout_back.setOnClickListener(this);
+        framelayout_x.setOnClickListener(this);
     }
 
     private void initViews() {
-        layout_title = findViewById(R.id.layout_title);
+        framelayout_back = findViewById(R.id.framelayout_back);
+        framelayout_x = findViewById(R.id.framelayout_x);
+        textview_title = findViewById(R.id.textview_title);
         button_add_device_sure = findViewById(R.id.button_add_device_sure);
         edittext_add_device_input_name = findViewById(R.id.edittext_add_device_input_name);
         textview_select_remotecontrol_name = findViewById(R.id.textview_select_remotecontrol_name);
@@ -151,6 +157,7 @@ public class AddDeviceNameActivity extends Activity implements View.OnClickListe
         listview_select_remotecontrol = findViewById(R.id.listview_select_remotecontrol);
         imageview_getway_arror_right = findViewById(R.id.imageview_getway_arror_right);
         imageview_remotecontrol_arror_right = findViewById(R.id.imageview_remotecontrol_arror_right);
+        imageview_doorbell_step = findViewById(R.id.imageview_doorbell_step);
     }
 
     private void initDatas() {
@@ -161,12 +168,6 @@ public class AddDeviceNameActivity extends Activity implements View.OnClickListe
         switchqrcode = getIntent().getStringExtra("switchqrcode");
         setRoomSelectVisible();
         setDeviceNameDefault();
-        layout_title.setReturnClickListener(new TitleLayout.ReturnImageClickListener() {
-            @Override
-            public void onBackPressed() {
-                AddDeviceNameActivity.this.onBackPressed();
-            }
-        });
         mRemoteControls = new ArrayList<>();
         mGetways = new ArrayList<>();
         mGetways.addAll(GetwayManager.getInstance().getAllGetwayDevice());
@@ -277,7 +278,7 @@ public class AddDeviceNameActivity extends Activity implements View.OnClickListe
                 edittext_add_device_input_name.setSelection(3);
                 break;
         }
-        layout_title.setTitleText(titleString);
+        textview_title.setText(titleString);
     }
 
     private void setRoomSelectVisible() {
@@ -596,6 +597,7 @@ public class AddDeviceNameActivity extends Activity implements View.OnClickListe
             public void onSuccess(SDKAction action) {
                 switch (action) {
                     case LOGIN:
+                        Perfence.setPerfence(AppConstant.ADDDOORBELLTIPSACTIVITY,false);
                         isUserLogin = true;
                         manager.connectMQTT(AddDeviceNameActivity.this);
                         String uuid = manager.getUserInfo().getUuid();
@@ -606,7 +608,6 @@ public class AddDeviceNameActivity extends Activity implements View.OnClickListe
                         Perfence.setPerfence(Perfence.PERFENCE_PHONE, user.getName());
                         Perfence.setPerfence(AppConstant.USER.USER_GETIMAGE_FROM_SERVICE, false);
                         Perfence.setPerfence(AppConstant.USER_LOGIN, true);
-
                         break;
                 }
             }
@@ -642,7 +643,6 @@ public class AddDeviceNameActivity extends Activity implements View.OnClickListe
         if (deviceType.equals(DeviceTypeConstant.TYPE.TYPE_AIR_REMOTECONTROL) ||
                 deviceType.equals(DeviceTypeConstant.TYPE.TYPE_TV_REMOTECONTROL) ||
                 deviceType.equals(DeviceTypeConstant.TYPE.TYPE_TVBOX_REMOTECONTROL)
-
                 ) {
             layout_remotecontrol_select.setVisibility(View.VISIBLE);
             layout_getway_select.setVisibility(View.GONE);
@@ -665,6 +665,7 @@ public class AddDeviceNameActivity extends Activity implements View.OnClickListe
             } else if (deviceType.equalsIgnoreCase(DeviceTypeConstant.TYPE.TYPE_MENLING)) {
                 layout_remotecontrol_select.setVisibility(View.GONE);
                 layout_getway_select.setVisibility(View.GONE);
+                imageview_doorbell_step.setVisibility(View.VISIBLE);
             } else {
                 layout_remotecontrol_select.setVisibility(View.GONE);
                 layout_getway_select.setVisibility(View.VISIBLE);
@@ -741,7 +742,6 @@ public class AddDeviceNameActivity extends Activity implements View.OnClickListe
         @Override
         public void onReceive(Context context, Intent intent) {
             if (ACTION.equals(intent.getAction())) {
-                Log.i(TAG, "网络连接变化");
                 ConnectivityManager manager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
                 NetworkInfo activeInfo = manager.getActiveNetworkInfo();
                 if (activeInfo != null && NetUtil.isWiFiActive(context)) {
@@ -750,6 +750,7 @@ public class AddDeviceNameActivity extends Activity implements View.OnClickListe
                     } else {
                         currentNetStatu = NET_TYPE_WIFI_DISCONNECTED;
                     }
+                    Log.i(TAG, "网络连接变化 currentNetStatu"+currentNetStatu);
                     if (currentNetStatu == NET_TYPE_WIFI_CONNECTED) {
                         //重新连接
                         login();
@@ -761,9 +762,10 @@ public class AddDeviceNameActivity extends Activity implements View.OnClickListe
     @Override
     protected void onResume() {
         super.onResume();
+        //这个界面不提示下线
+        Perfence.setPerfence(AppConstant.ADDDOORBELLTIPSACTIVITY,true);
         isUserLogin = Perfence.getBooleanPerfence(AppConstant.USER_LOGIN);
         manager.addEventCallback(ec);
-
         mDeviceManager.addDeviceListener(mDeviceListener);
         mGetwayManager.addGetwayListener(this);
     }
@@ -941,6 +943,14 @@ public class AddDeviceNameActivity extends Activity implements View.OnClickListe
                     layout_remotecontrol_list.setVisibility(View.VISIBLE);
                     imageview_remotecontrol_arror_right.setImageResource(R.drawable.nextdirectionicon);
                 }
+                break;
+            case R.id.framelayout_back:
+                AddDeviceNameActivity.this.onBackPressed();
+                break;
+            case R.id.framelayout_x:
+                 intent=new Intent(AddDeviceNameActivity.this,AddDeviceQRcodeActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
                 break;
         }
     }

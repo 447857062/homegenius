@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:titlelayout="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.deplink.boruSmart.activity.device.doorbell.add.PairGuideTwoActivity">
+    <com.deplink.boruSmart.view.combinationwidget.TitleLayout
+        android:id="@+id/layout_title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/title_bar_height"
+        titlelayout:edit_text_show="false"
+        titlelayout:menu_image_show="false"
+        titlelayout:return_image_show="true"
+        titlelayout:title_text="门铃配网指南" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/layout_title"
+        android:fitsSystemWindows="true">
+        <ImageView
+            android:layout_marginTop="60dp"
+            android:id="@+id/imageview_doorbell"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="centerInside"
+            android:src="@drawable/doorbell_combination"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <ImageView
+            android:layout_below="@+id/imageview_doorbell"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:src="@drawable/doorbell_distribution_network_guide"
+            android:layout_above="@+id/button_next_step"
+            android:layout_centerHorizontal="true" />
+
+
+    </RelativeLayout>
+</android.support.constraint.ConstraintLayout>

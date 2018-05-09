@@ -1,7 +1,6 @@
 package com.deplink.boruSmart.Protocol.packet.ellisdk;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.deplink.boruSmart.util.PublicMethod;
 
@@ -117,13 +116,12 @@ public class UdpPacket implements OnRecvListener {
             while (isRun) {
                 for (int i = 0; i < sendNetPakcetList.size(); i++) {
                     BasicPacket tmp = sendNetPakcetList.get(i);
-                    if (tmp.isFinish) {
+                    if (tmp!=null && tmp.isFinish) {
                         delOneSendPacket(sendNetPakcetList, tmp);
                         continue;
                     }
                     if (tmp != null) {
                         if (tmp.ip != null && tmp.isSetIp) {
-                            Log.i(TAG,"udppacket 141 tmp data="+tmp.toString());
                             netUdp.sendData(tmp.getUdpData());
                             delOneSendPacket(sendNetPakcetList, tmp);
                         } else {
@@ -141,11 +139,11 @@ public class UdpPacket implements OnRecvListener {
                             if (dev != null) {
                                 switch (dev.getDevStatus(PublicMethod.getTimeMs())) {
                                     case OneDev.ConnTypeNULL:
-                                        Log.d("TAG", "设备离线，回掉失败");
+                                      /*  Log.d("TAG", "设备离线，回调失败");
                                         if (tmp.listener != null)
                                             tmp.listener.OnRecvData(tmp);
                                         delOneSendPacket(sendNetPakcetList, tmp);
-                                        break;
+                                        break;*/
                                     case OneDev.ConnTypeLocal:
                                         try {
                                             tmp.ip = InetAddress.getByName("255.255.255.255");
@@ -161,7 +159,6 @@ public class UdpPacket implements OnRecvListener {
                                     try {
                                         tmp.ip = InetAddress.getByName("255.255.255.255");
                                         tmp.port = EllESDK_DEF.LocalConPort;
-                                        Log.i(TAG,"udppacket 187");
                                         netUdp.sendData(tmp.getUdpData(tmp.ip, tmp.port));
                                     } catch (UnknownHostException e) {
                                         e.printStackTrace();

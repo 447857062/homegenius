@@ -1,7 +1,9 @@
 package com.deplink.boruSmart.Protocol.packet.ellisdk;
 
 import android.content.Context;
+import android.util.Log;
 
+import com.deplink.boruSmart.util.DataExchange;
 import com.deplink.boruSmart.util.PublicMethod;
 
 import java.net.InetAddress;
@@ -78,6 +80,7 @@ public class GeneralPacket extends BasicPacket {
         System.arraycopy(SSID.getBytes(), 0, xdata, 2, SSID.length());
         xdata[2 + SSID.length()] = (byte) (pwd.length() & 0xff);
         System.arraycopy(pwd.getBytes(), 0, xdata, 3 + SSID.length(), pwd.length());
+        Log.i(TAG,"xdata="+ DataExchange.byteArrayToHexString(xdata));
         return packData(EllESDK_DEF.FunWiFiConfig, PublicMethod.getUuid(mContext), PublicMethod.getSeq(), xdata, isLocal, mac, type, ver);
     }
 

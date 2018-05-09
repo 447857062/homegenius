@@ -7,5 +7,5 @@ package com.deplink.boruSmart.Protocol.packet.ellisdk;
 
 public interface OnRecvListener {
 
-    public void OnRecvData(BasicPacket packet);
+    void OnRecvData(BasicPacket packet);
 }

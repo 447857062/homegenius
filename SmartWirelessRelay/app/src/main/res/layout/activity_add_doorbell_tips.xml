@@ -24,7 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:scaleType="centerInside"
-            android:src="@drawable/doorbell" />
+            android:src="@drawable/distribution_network_doorbell_indoor_unit" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -72,7 +72,7 @@
             android:background="@drawable/login_button_enable_background"
             android:text="下一步"
             android:textColor="@color/white"
-            android:textSize="@dimen/text_size_small" />
+            android:textSize="16sp" />
     </RelativeLayout>
 
 </RelativeLayout>

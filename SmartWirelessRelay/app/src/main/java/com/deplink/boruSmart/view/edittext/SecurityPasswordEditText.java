@@ -46,19 +46,19 @@ public class SecurityPasswordEditText extends LinearLayout {
 
 	private void initWidget() {  
 		contentView = inflater.inflate(R.layout.sdk2_simple_pwd_widget, null);
-		mEditText = (EditText) contentView
+		mEditText = contentView
 				.findViewById(R.id.sdk2_pwd_edit_simple);  
-		oneTextView = (ImageView) contentView
+		oneTextView = contentView
 				.findViewById(R.id.sdk2_pwd_one_img);  
-		twoTextView = (ImageView) contentView
+		twoTextView = contentView
 				.findViewById(R.id.sdk2_pwd_two_img);  
-		fourTextView = (ImageView) contentView
+		fourTextView = contentView
 				.findViewById(R.id.sdk2_pwd_four_img);  
-		fiveTextView = (ImageView) contentView
+		fiveTextView = contentView
 				.findViewById(R.id.sdk2_pwd_five_img);  
-		sixTextView = (ImageView) contentView
+		sixTextView = contentView
 				.findViewById(R.id.sdk2_pwd_six_img);  
-		threeTextView = (ImageView) contentView
+		threeTextView = contentView
 				.findViewById(R.id.sdk2_pwd_three_img);  
 		LayoutParams lParams = new LayoutParams(
 				LayoutParams.MATCH_PARENT,

@@ -18,6 +18,9 @@
         <item name="windowNoTitle">true</item>
         <item name="android:windowAnimationStyle">@style/FeelyouWindowAnimTheme</item>
     </style>
+    <style name="AppThemeDoorBell" parent="AppBaseTheme">
+        <item name="android:windowAnimationStyle">@style/activityAnimation</item>
+    </style>
     <!--
     当我们从 A1 启动 A2 时，A1 从屏幕上消失，这个动画叫做 android:activityOpenExitAnimation
 当我们从 A1 启动 A2 时，A2 出现在屏幕上，这个动画叫做 android:activityOpenEnterAnimation
@@ -26,6 +29,12 @@
     <style name="FeelyouWindowAnimTheme" parent="@android:style/Animation.Activity">
         <item name="android:activityCloseEnterAnimation">@anim/activity_close_enter</item>
         <item name="android:activityCloseExitAnimation">@anim/activity_close_exit</item>
+    </style>
+    <style name="activityAnimation" parent="@android:style/Animation">
+        <item name="android:activityOpenEnterAnimation">@anim/in_right</item>
+        <item name="android:activityOpenExitAnimation">@anim/out_left</item>
+        <item name="android:activityCloseEnterAnimation">@anim/in_left</item>
+        <item name="android:activityCloseExitAnimation">@anim/out_right</item>
     </style>
     <!-- 取消界面转场动画使用-->
     <style name="noAnimTheme" parent="AppTheme">

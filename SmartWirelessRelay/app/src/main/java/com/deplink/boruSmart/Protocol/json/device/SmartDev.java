@@ -25,7 +25,6 @@ public class SmartDev extends Device {
     private boolean switch_three_open;
     private boolean switch_four_open;
     private String key_codes;
-
     private Router router;
     /**
      * 查询智能设备使用
@@ -151,7 +150,6 @@ public class SmartDev extends Device {
     public void setRemotecontrolUid(String remotecontrolUid) {
         this.remotecontrolUid = remotecontrolUid;
     }
-
     public GatwayDevice getGetwayDevice() {
         return getwayDevice;
     }
