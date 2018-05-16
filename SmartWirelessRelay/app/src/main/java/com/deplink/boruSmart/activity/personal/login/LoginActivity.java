@@ -148,7 +148,6 @@ public class LoginActivity extends Activity implements View.OnClickListener{
                                     Log.i("TPush", "注册失败，错误码：" + errCode + ",错误信息：" + msg);
                                 }
                             });
-                            XGPushManager.enableService(LoginActivity.this, true);
                         }
                         LoginActivity.this.finish();
 

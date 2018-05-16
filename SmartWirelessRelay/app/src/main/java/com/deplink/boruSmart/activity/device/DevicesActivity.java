@@ -161,7 +161,6 @@ public class DevicesActivity extends Activity implements View.OnClickListener, G
             refreshTimer = null;
         }
     }
-    private boolean isRunSeachDoorbell=false;
     private void startTimer() {
         if (refreshTimer == null) {
             refreshTimer = new Timer();
@@ -190,11 +189,9 @@ public class DevicesActivity extends Activity implements View.OnClickListener, G
                             }
                             if(currentSmartDoorBell!=null){
                                 //查询门邻设备状态
-                                if(!isRunSeachDoorbell){
+                                    Log.i(TAG," ellESDK.startSearchDevs()");
                                     ellESDK.startSearchDevs();
-                                    isRunSeachDoorbell=true;
-                                    mHandler.sendEmptyMessageDelayed(MSG_CHECK_DOORBELL_ONLINE_STATU,5000);
-                                }
+                                    mHandler.sendEmptyMessageDelayed(MSG_CHECK_DOORBELL_ONLINE_STATU,3000);
                             }
                             virtualDeviceUpdate();
                             notifyDeviceListView();
@@ -252,7 +249,7 @@ public class DevicesActivity extends Activity implements View.OnClickListener, G
                         }
                     }
                     //停止搜索门铃设备
-                    ellESDK.stopSearchDevs();
+                  //  ellESDK.stopSearchDevs();
                     break;
             }
             return true;
@@ -278,6 +275,7 @@ public class DevicesActivity extends Activity implements View.OnClickListener, G
             mRoomManager.queryRooms();
         }
         notifyDeviceListView();
+        ellESDK.InitEllESDK(this, this);
         startTimer();
     }
     private List<Device>deviceList;
@@ -434,7 +432,7 @@ public class DevicesActivity extends Activity implements View.OnClickListener, G
 
     private void initListener() {
         ellESDK = EllESDK.getInstance();
-        ellESDK.InitEllESDK(this, this);
+
         mDeviceListener = new DeviceListener() {
             @Override
             public void responseQueryResult(String result) {
@@ -1079,19 +1077,21 @@ public class DevicesActivity extends Activity implements View.OnClickListener, G
         Log.i(TAG, "onRecvEllEPacket" + packet.toString() + packet.mac);
         seachedDoorbellmac = DataExchange.byteArrayToHexString(DataExchange.longToEightByte(packet.mac));
         updateDoorBellStatus();
-        Log.i(TAG, "onRecvEllEPacket" + seachedDoorbellmac);
+
 
     }
 
     private void updateDoorBellStatus() {
+        Log.i(TAG, "onRecvEllEPacket" + seachedDoorbellmac);
         if (seachedDoorbellmac != null) {
             seachedDoorbellmac = seachedDoorbellmac.replaceAll("0x", "").trim();
             seachedDoorbellmac = seachedDoorbellmac.replaceAll(" ", "-");
             if (currentSmartDoorBell != null) {
+                Log.i(TAG, "seachedDoorbellmac" + seachedDoorbellmac+
+                        "currentSmartDoorBell.getMac()="+currentSmartDoorBell.getMac());
                 if (seachedDoorbellmac.equalsIgnoreCase(currentSmartDoorBell.getMac())) {
                     currentSmartDoorBell.setStatus("在线");
                     currentSmartDoorBell.saveFast();
-                    ellESDK.stopSearchDevs();
                 }
             }
         }

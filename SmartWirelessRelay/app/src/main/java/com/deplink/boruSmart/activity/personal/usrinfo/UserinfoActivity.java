@@ -211,16 +211,16 @@ public class UserinfoActivity extends Activity implements View.OnClickListener {
     }
 
     private void initViews() {
-        layout_title = (TitleLayout) findViewById(R.id.layout_title);
-        textview_show_nicknamke = (TextView) findViewById(R.id.textview_show_nicknamke);
-        layout_user_header_image = (RelativeLayout) findViewById(R.id.layout_user_header_image);
-        layout_update_user_nickname = (RelativeLayout) findViewById(R.id.layout_update_user_nickname);
-        layout_update_sex = (RelativeLayout) findViewById(R.id.layout_update_sex);
-        layout_birthday = (RelativeLayout) findViewById(R.id.layout_birthday);
-        user_head_portrait = (CircleImageView) findViewById(R.id.user_head_portrait);
-        textview_show_birthday = (TextView) findViewById(R.id.textview_show_birthday);
-        textview_show_sex = (TextView) findViewById(R.id.textview_show_sex);
-        button_logout = (TextView) findViewById(R.id.button_logout);
+        layout_title = findViewById(R.id.layout_title);
+        textview_show_nicknamke = findViewById(R.id.textview_show_nicknamke);
+        layout_user_header_image = findViewById(R.id.layout_user_header_image);
+        layout_update_user_nickname = findViewById(R.id.layout_update_user_nickname);
+        layout_update_sex = findViewById(R.id.layout_update_sex);
+        layout_birthday = findViewById(R.id.layout_birthday);
+        user_head_portrait = findViewById(R.id.user_head_portrait);
+        textview_show_birthday = findViewById(R.id.textview_show_birthday);
+        textview_show_sex = findViewById(R.id.textview_show_sex);
+        button_logout = findViewById(R.id.button_logout);
 
     }
 

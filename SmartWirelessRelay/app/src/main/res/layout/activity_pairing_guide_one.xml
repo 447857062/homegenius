@@ -23,7 +23,7 @@
         android:fitsSystemWindows="true">
 
         <ImageView
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="15dp"
             android:id="@+id/imageview_doorbell"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -35,7 +35,7 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="29dp"
+            android:layout_marginBottom="19dp"
             android:src="@drawable/doorbell_pair_guide"
             android:layout_above="@+id/button_next_step"
             android:layout_centerHorizontal="true" />

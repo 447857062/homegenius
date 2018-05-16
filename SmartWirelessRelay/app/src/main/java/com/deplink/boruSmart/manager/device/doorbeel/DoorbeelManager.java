@@ -239,7 +239,6 @@ public class DoorbeelManager {
                         e.printStackTrace();
                     }
                 }
-
                 if(response.code()==200){
                     for (int i = 0; i < mDeviceListenerList.size(); i++) {
                         Log.i(TAG,"deleteDoorBellVisitor");

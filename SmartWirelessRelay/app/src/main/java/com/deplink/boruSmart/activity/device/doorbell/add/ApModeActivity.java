@@ -41,13 +41,11 @@ public class ApModeActivity extends Activity implements View.OnClickListener{
         button_next_step.setOnClickListener(this);
         final Animation animationFadeIn= AnimationUtils.loadAnimation(this, R.anim.fade_in_doorbell);
         final Animation animationFadeOut= AnimationUtils.loadAnimation(this, R.anim.fade_out_doorbell);
-        final Animation animationFadeHold= AnimationUtils.loadAnimation(this, R.anim.fade_hold_doorbell);
         animationFadeIn.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
 
             }
-
             @Override
             public void onAnimationEnd(Animation animation) {
                 imageview_ap_gif.startAnimation(animationFadeOut);
@@ -59,22 +57,6 @@ public class ApModeActivity extends Activity implements View.OnClickListener{
             }
         });
         animationFadeOut.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                imageview_ap_gif.startAnimation(animationFadeHold);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-        });
-        animationFadeHold.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
 
@@ -102,7 +84,6 @@ public class ApModeActivity extends Activity implements View.OnClickListener{
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-
             case R.id.button_next_step:
                 startActivity(new Intent(this,ConnectApWifiActivity.class));
                 break;

@@ -1,0 +1,6 @@
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/radius4_bg_read_pressed_background" android:state_pressed="true" />
+    <item android:drawable="@drawable/radius4_background_disable" android:state_enabled="false" />
+    <item android:drawable="@drawable/radius4_bg_read_layout_background"
+        android:state_enabled="true" android:state_pressed="false" />
+</selector>

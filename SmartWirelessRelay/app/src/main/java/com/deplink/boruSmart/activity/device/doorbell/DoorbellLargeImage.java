@@ -2,18 +2,17 @@ package com.deplink.boruSmart.activity.device.doorbell;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageView;
 
 import com.deplink.boruSmart.manager.device.doorbeel.DoorBellListener;
 import com.deplink.boruSmart.manager.device.doorbeel.DoorbeelManager;
+import com.deplink.boruSmart.view.imageview.ZoomImageView;
 
 import deplink.com.smartwirelessrelay.homegenius.EllESDK.R;
 
 public class DoorbellLargeImage extends Activity implements View.OnClickListener{
-    private ImageView image_snap;
+    private ZoomImageView image_snap;
     private DoorbeelManager mDoorbeelManager;
     private DoorBellListener mDoorBellListener;
     @Override
@@ -33,8 +32,7 @@ public class DoorbellLargeImage extends Activity implements View.OnClickListener
         mDoorBellListener = new DoorBellListener() {
             public void responseVisitorImage(Bitmap bitmap, int count) {
                 super.responseVisitorImage(bitmap, count);
-                BitmapDrawable bbb = new BitmapDrawable(bitmap);
-                image_snap.setBackgroundDrawable(bbb);
+                image_snap.setImageBitmap(bitmap);
             }
         };
         if(getIntent().getStringExtra("file")!=null){

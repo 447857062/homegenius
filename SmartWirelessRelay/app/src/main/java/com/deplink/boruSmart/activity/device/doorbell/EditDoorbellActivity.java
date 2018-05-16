@@ -83,6 +83,9 @@ public class EditDoorbellActivity extends Activity implements View.OnClickListen
     private String selectLockName;
     private RelativeLayout layout_device_share;
     private TitleLayout layout_title;
+    private long maclong;
+    private byte ver;
+    private byte type;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,9 +94,7 @@ public class EditDoorbellActivity extends Activity implements View.OnClickListen
         initDatas();
         initEvents();
     }
-
     private WIFIData wifiData;
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -117,7 +118,6 @@ public class EditDoorbellActivity extends Activity implements View.OnClickListen
             }else{
                 Log.i(TAG,"绑定的门锁uid是:"+mDoorbeelManager.getCurrentSelectedDoorbeel().getBindLockUid());
             }
-
             ellESDK.startSearchDevs();
             Handler_Background.execute(new Runnable() {
                 @Override
@@ -142,14 +142,8 @@ public class EditDoorbellActivity extends Activity implements View.OnClickListen
                     textview_select_room_name.setText("未选择");
                 }
             }
-
         }
     }
-
-    private long maclong;
-    private byte ver;
-    private byte type;
-
     @Override
     protected void onPause() {
         super.onPause();
@@ -157,7 +151,6 @@ public class EditDoorbellActivity extends Activity implements View.OnClickListen
         mDeviceManager.removeDeviceListener(mDeviceListener);
         manager.removeEventCallback(ec);
     }
-
     private void initEvents() {
         button_delete_device.setOnClickListener(this);
         layout_device_share.setOnClickListener(this);
@@ -336,9 +329,7 @@ public class EditDoorbellActivity extends Activity implements View.OnClickListen
         imageview_lock_arror_right = findViewById(R.id.imageview_lock_arror_right);
         layout_device_share = findViewById(R.id.layout_device_share);
     }
-
     private boolean isOnActivityResult;
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -354,7 +345,6 @@ public class EditDoorbellActivity extends Activity implements View.OnClickListen
             textview_select_room_name.setText(roomName);
         }
     }
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {

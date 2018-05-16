@@ -17,7 +17,6 @@ import com.deplink.boruSmart.Protocol.packet.ellisdk.EllE_Listener;
 import com.deplink.boruSmart.Protocol.packet.ellisdk.Handler_Background;
 import com.deplink.boruSmart.Protocol.packet.ellisdk.Handler_UiThread;
 import com.deplink.boruSmart.Protocol.packet.ellisdk.WIFIData;
-import com.deplink.boruSmart.activity.device.doorbell.EditDoorbellActivity;
 import com.deplink.boruSmart.activity.device.doorbell.add.wifilistadapter.WIFIListAdapter;
 import com.deplink.boruSmart.manager.device.doorbeel.DoorbeelManager;
 import com.deplink.boruSmart.util.DataExchange;
@@ -52,7 +51,12 @@ public class ConfigDoorBellWiFiActivity extends Activity implements EllE_Listene
         initEvents();
         initDatas();
     }
-
+    @Override
+    public void finish() {
+        super.finish();
+        //注释掉activity本身的过渡动画
+        overridePendingTransition(R.anim.in_left, R.anim.out_right);
+    }
     private void initDatas() {
         initialized();
     }
@@ -87,14 +91,17 @@ public class ConfigDoorBellWiFiActivity extends Activity implements EllE_Listene
                                 if (setresult == 1) {
                                     EllESDK.getInstance().stopSearchDevs();
                                     Ftoast.create(ConfigDoorBellWiFiActivity.this).setText("门铃网络已配置,现在重启门铃设备").show();
-                                    if (mDoorbeelManager.isConfigWifi()) {
+                                  /*  if (mDoorbeelManager.isConfigWifi()) {
                                         Intent intent = new Intent(ConfigDoorBellWiFiActivity.this, EditDoorbellActivity.class);
                                         startActivity(intent);
                                     } else {
                                         //启动配网判断界面
                                         startActivity(new Intent(ConfigDoorBellWiFiActivity.this,
                                                 ConfigWifiJugeActivity.class));
-                                    }
+                                    }*/
+                                    //启动配网判断界面
+                                    startActivity(new Intent(ConfigDoorBellWiFiActivity.this,
+                                            ConfigWifiJugeActivity.class));
                                 }
                                 //
                             }

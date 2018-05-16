@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:titlelayout="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.deplink.boruSmart.activity.device.doorbell.add.AutoFindActivity">
+    <com.deplink.boruSmart.view.combinationwidget.TitleLayout
+        android:id="@+id/layout_title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/title_bar_height"
+        titlelayout:edit_text_show="false"
+        titlelayout:menu_image_show="false"
+        titlelayout:return_image_show="true"
+        titlelayout:title_text="门铃自动搜索" />
+    <TextView
+        android:layout_below="@+id/layout_title"
+        android:id="@+id/textview_tips"
+        android:text="确保手机和门铃连接到同一个WiFi网络"
+        android:textSize="14sp"
+        android:textColor="@color/aircondition_mode"
+        android:paddingLeft="15dp"
+        android:layout_marginTop="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <RelativeLayout
+        android:layout_marginTop="30dp"
+        android:id="@+id/framelayout_gif"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/textview_tips"
+        android:layout_above="@+id/layout_find_type_select"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ListView
+            android:layout_centerHorizontal="true"
+            android:layout_above="@+id/frame_gif_inner"
+            android:visibility="gone"
+            android:id="@+id/listview_find_doorbell"
+            android:layout_gravity="center_horizontal"
+            android:divider="@null"
+            android:scrollbars="none"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </ListView>
+        <FrameLayout
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:id="@+id/frame_gif_inner"
+            android:layout_width="wrap_content"
+            android:layout_height="150dp">
+            <FrameLayout
+                android:layout_gravity="center_horizontal|bottom"
+                android:layout_width="wrap_content"
+                android:layout_marginBottom="100dp"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/imageview_gif"
+                    android:src="@drawable/doorbell_fourround"
+                    android:layout_gravity="center_horizontal|center_vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/textview_search_tips"
+                android:layout_marginBottom="50dp"
+                android:gravity="center_horizontal"
+                android:layout_gravity="bottom|center_horizontal"
+                android:text="正在搜索已配网门铃..."
+                android:textSize="14sp"
+                android:textColor="@color/room_type_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </FrameLayout>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:orientation="horizontal"
+        android:id="@+id/layout_find_type_select"
+        android:layout_marginBottom="60dp"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/button_scan_qrcode"
+            android:layout_weight="1"
+            android:text="扫二维码"
+            android:gravity="center_horizontal|center_vertical"
+            android:textSize="16sp"
+            android:textColor="@color/title_blue_bg"
+            android:background="@drawable/button_white_background"
+            android:layout_width="0dp"
+            android:layout_height="44dp" />
+        <Button
+            android:id="@+id/button_re_search"
+            android:layout_marginLeft="15dp"
+            android:text="暂停搜索"
+            android:gravity="center_horizontal|center_vertical"
+            android:textSize="16sp"
+            android:textColor="@color/white"
+            android:layout_weight="1"
+            android:background="@drawable/button_read_background"
+            android:layout_width="0dp"
+            android:layout_height="44dp" />
+
+    </LinearLayout>
+</RelativeLayout>

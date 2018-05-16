@@ -27,7 +27,12 @@ public class ConnectNetWorkActivity extends Activity implements View.OnClickList
         initEvents();
         initDatas();
     }
-
+    @Override
+    public void finish() {
+        super.finish();
+        //注释掉activity本身的过渡动画
+        overridePendingTransition(R.anim.in_left, R.anim.out_right);
+    }
     @Override
     protected void onResume() {
         super.onResume();
@@ -61,6 +66,7 @@ public class ConnectNetWorkActivity extends Activity implements View.OnClickList
                 if(NetUtil.isNetAvailable(this) && !Wifi.getConnectedWifiName(this).contains("SmartDoorBell")){
                     Intent intent = new Intent(ConnectNetWorkActivity.this, AddDeviceNameActivity.class);
                     intent.putExtra("DeviceType", DeviceTypeConstant.TYPE.TYPE_MENLING);
+                    intent.putExtra("showTips", true);
                     startActivity(intent);
                 }else{
                     Intent wifiSettingsIntent = new Intent("android.settings.WIFI_SETTINGS");

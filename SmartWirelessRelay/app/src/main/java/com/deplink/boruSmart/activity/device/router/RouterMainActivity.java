@@ -372,12 +372,13 @@ public class RouterMainActivity extends Activity implements View.OnClickListener
                 if (isStartFromExperience) {
                     startActivity(new Intent(RouterMainActivity.this, RouterSettingActivity.class));
                 } else {
-                    if (deviceOnline) {
+                    startActivity(new Intent(RouterMainActivity.this, RouterSettingActivity.class));
+                 /*   if (deviceOnline) {
                         startActivity(new Intent(RouterMainActivity.this, RouterSettingActivity.class));
                     } else {
                         //本地配置先连路由器
-                        checkRouter();
-                    }
+                        //checkRouter();
+                    }*/
                 }
             }
         });

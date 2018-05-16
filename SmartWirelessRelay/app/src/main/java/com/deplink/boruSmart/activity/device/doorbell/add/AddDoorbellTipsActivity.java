@@ -14,7 +14,6 @@ import com.deplink.boruSmart.Protocol.packet.ellisdk.Handler_Background;
 import com.deplink.boruSmart.Protocol.packet.ellisdk.Handler_UiThread;
 import com.deplink.boruSmart.Protocol.packet.ellisdk.WIFIData;
 import com.deplink.boruSmart.activity.device.AddDeviceNameActivity;
-import com.deplink.boruSmart.activity.device.doorbell.EditDoorbellActivity;
 import com.deplink.boruSmart.constant.DeviceTypeConstant;
 import com.deplink.boruSmart.manager.device.DeviceManager;
 import com.deplink.boruSmart.manager.device.doorbeel.DoorbeelManager;
@@ -78,7 +77,7 @@ public class AddDoorbellTipsActivity extends Activity implements View.OnClickLis
                 }else{
                     if(mDoorbeelManager.isConfigWifi()){
                         Ftoast.create(AddDoorbellTipsActivity.this).setText("门铃网络已配置,现在重启门铃设备").show();
-                        Intent intent = new Intent(AddDoorbellTipsActivity.this, EditDoorbellActivity.class);
+                        Intent intent = new Intent(AddDoorbellTipsActivity.this, ConfigWifiJugeActivity.class);
                         startActivity(intent);
                         AddDoorbellTipsActivity.this.finish();
                     }
@@ -109,7 +108,7 @@ public class AddDoorbellTipsActivity extends Activity implements View.OnClickLis
                                 EllESDK.getInstance().stopSearchDevs();
                                 if(mDoorbeelManager.isConfigWifi()){
                                     Ftoast.create(AddDoorbellTipsActivity.this).setText("门铃网络已配置,现在重启门铃设备").show();
-                                    Intent intent = new Intent(AddDoorbellTipsActivity.this, EditDoorbellActivity.class);
+                                    Intent intent = new Intent(AddDoorbellTipsActivity.this, ConfigWifiJugeActivity.class);
                                     startActivity(intent);
                                 }else{
                                     Ftoast.create(AddDoorbellTipsActivity.this).setText("门铃网络已配置,现在重启门铃设备,等手机连上网络后进行设备添加").show();

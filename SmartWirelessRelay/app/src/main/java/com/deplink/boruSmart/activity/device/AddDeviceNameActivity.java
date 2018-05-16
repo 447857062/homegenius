@@ -159,13 +159,14 @@ public class AddDeviceNameActivity extends Activity implements View.OnClickListe
         imageview_remotecontrol_arror_right = findViewById(R.id.imageview_remotecontrol_arror_right);
         imageview_doorbell_step = findViewById(R.id.imageview_doorbell_step);
     }
-
+    private boolean showTips;
     private void initDatas() {
         initManager();
         //getintent data
         currentAddDevice = getIntent().getStringExtra("currentAddDevice");
         deviceType = getIntent().getStringExtra("DeviceType");
         switchqrcode = getIntent().getStringExtra("switchqrcode");
+        showTips = getIntent().getBooleanExtra("showTips",false);
         setRoomSelectVisible();
         setDeviceNameDefault();
         mRemoteControls = new ArrayList<>();
@@ -666,6 +667,9 @@ public class AddDeviceNameActivity extends Activity implements View.OnClickListe
                 layout_remotecontrol_select.setVisibility(View.GONE);
                 layout_getway_select.setVisibility(View.GONE);
                 imageview_doorbell_step.setVisibility(View.VISIBLE);
+                if(!showTips){
+                    imageview_doorbell_step.setVisibility(View.GONE);
+                }
             } else {
                 layout_remotecontrol_select.setVisibility(View.GONE);
                 layout_getway_select.setVisibility(View.VISIBLE);
@@ -903,6 +907,7 @@ public class AddDeviceNameActivity extends Activity implements View.OnClickListe
 
                         break;
                     case DeviceTypeConstant.TYPE.TYPE_MENLING:
+                        device = gson.fromJson(currentAddDevice, QrcodeSmartDevice.class);
                         if (device == null) {
                             device = new QrcodeSmartDevice();
                             device.setVer("1");

@@ -88,16 +88,6 @@ public class SharedDeviceListActivity extends Activity {
             animationFadeIn = AnimationUtils.loadAnimation(this, R.anim.rotate_find_device);
             refresh_image.setAnimation(animationFadeIn);
         }
-     /*   myScrollView.setmOnScrollViewPull(new MyScrollView.OnScrollViewPull() {
-            @Override
-            public void onScrollViewPull(int offset) {
-                if(offset<0){
-                    animationFadeIn.cancel();
-                    refresh_image.setVisibility(View.GONE);
-                    refresh_image.setBackground(null);
-                }
-            }
-        });*/
     }
 
     private static final int MSG_UPDATE_SHARE_DEVS = 100;

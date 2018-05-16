@@ -15,9 +15,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.content.ContextCompat;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.deplink.boruSmart.constant.AppConstant;
@@ -61,6 +63,7 @@ import deplink.com.smartwirelessrelay.homegenius.EllESDK.R;
         private boolean isUserLogin;
         private TextView textview_visitor_loading;
         private TitleLayout layout_title;
+        private ScrollView scroll_wrap;
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -95,25 +98,31 @@ import deplink.com.smartwirelessrelay.homegenius.EllESDK.R;
             super.onPause();
             mDoorbeelManager.removeDeviceListener(mDoorBellListener);
             manager.removeEventCallback(ec);
-            //  stopTimer();
         }
-
         private void initEvents() {
             if (!isStartFromExperience) {
                 listview_vistor_list.setAdapter(mAdapter);
+                listview_vistor_list.setOnTouchListener(new View.OnTouchListener() {
+
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        if (event.getAction()==MotionEvent.ACTION_UP) {
+                            scroll_wrap.requestDisallowInterceptTouchEvent(false);
+                        }else {
+                            scroll_wrap.requestDisallowInterceptTouchEvent(true);
+                        }
+                        return false;
+                    }
+                });
                 SwipeMenuCreator creator = new SwipeMenuCreator() {
 
                     @Override
                     public void create(SwipeMenu menu) {
-                        // create "delete" item
                         SwipeMenuItem deleteItem = new SwipeMenuItem(
                                 getApplicationContext());
-                        // set item background
                         deleteItem.setBackground(new ColorDrawable(ContextCompat.getColor(
                                 VistorHistoryActivity.this,R.color.delete_button)));
                         deleteItem.setWidth((int) Perfence.dp2px(VistorHistoryActivity.this, 70));
-                        //  deleteItem.setBackground(R.layout.listview_deleteitem_layout);
-                        // set item width
                         deleteItem.setTitle("删除");
                         deleteItem.setTitleSize(14);
                         // set item title font color
@@ -126,8 +135,6 @@ import deplink.com.smartwirelessrelay.homegenius.EllESDK.R;
                 listview_vistor_list.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(final int position, SwipeMenu menu, int index) {
-                        switch (index) {
-                            case 0:
                                 new AlertDialog(VistorHistoryActivity.this).builder().setTitle("删除记录")
                                         .setMsg("删除访问记录?")
                                         .setPositiveButton("确认", new View.OnClickListener() {
@@ -135,6 +142,8 @@ import deplink.com.smartwirelessrelay.homegenius.EllESDK.R;
                                             public void onClick(View v) {
                                                 if (!isStartFromExperience) {
                                                     mDoorbeelManager.deleteDoorbellVistorImage(visitorList.get(position).getFile());
+                                                    visitorList.remove(position);
+                                                    mAdapter.notifyDataSetChanged();
                                                 }
                                             }
                                         }).setNegativeButton("取消", new View.OnClickListener() {
@@ -143,14 +152,10 @@ import deplink.com.smartwirelessrelay.homegenius.EllESDK.R;
 
                                     }
                                 }).show();
-                                break;
-                        }
                         return false;
                     }
                 });
-                //下拉刷星
                 listview_vistor_list.setOnItemClickListener(deviceItemClickListener);
-
             }
         }
 
@@ -159,18 +164,66 @@ import deplink.com.smartwirelessrelay.homegenius.EllESDK.R;
             public boolean handleMessage(Message msg) {
                 switch (msg.what) {
                     case MSG_TOAST_DELETE_RECORD_RESULT:
-                        if ((boolean) msg.obj) {
+                       /* if ((boolean) msg.obj) {
                             Ftoast.create(VistorHistoryActivity.this).setText("删除访客记录成功").show();
                         } else {
                             Ftoast.create(VistorHistoryActivity.this).setText("删除访客记录失败").show();
+                        }*/
+                        break;
+                    case MSG_GET_ONE_PHOTO:
+                        int count=msg.arg1;
+                        Bitmap bitmap= (Bitmap) msg.obj;
+                        if (count <= visitorList.size() ) {
+                            if(visitorListImage.get(count)==null){
+                                visitorListImage.put(count,toRoundCorner(bitmap,30));
+                            }
                         }
-
+                        if(count% 5==0){
+                            mAdapter.notifyDataSetChanged();
+                        }
+                        break;
+                    case MSG_GET_PHOTO_LIST:
+                        List<DoorBellItem> list= (List<DoorBellItem>) msg.obj;
+                        if (list != null) {
+                            Collections.sort(list, new Comparator<DoorBellItem>() {
+                                @Override
+                                public int compare(DoorBellItem o1, DoorBellItem o2) {
+                                    //compareTo就是比较两个值，如果前者大于后者，返回1，等于返回0，小于返回-1
+                                    if (o1.getTimestamp() == o2.getTimestamp()) {
+                                        return 0;
+                                    }
+                                    if (o1.getTimestamp() > o2.getTimestamp()) {
+                                        return -1;
+                                    }
+                                    if (o1.getTimestamp() < o2.getTimestamp()) {
+                                        return 1;
+                                    }
+                                    return 0;
+                                }
+                            });
+                            visitorList.clear();
+                            visitorList.addAll(list);
+                            visitorListImage.clear();
+                            for (int i = 0; i < visitorList.size(); i++) {
+                                mDoorbeelManager.getDoorbellVistorImage(list.get(i).getFile(), i);
+                            }
+                            if (visitorList.size() > 0) {
+                                layout_no_visitor.setVisibility(View.GONE);
+                                textview_visitor_loading.setVisibility(View.GONE);
+                            } else {
+                                layout_no_visitor.setVisibility(View.VISIBLE);
+                                textview_visitor_loading.setVisibility(View.GONE);
+                            }
+                            mAdapter.notifyDataSetChanged();
+                        }
                         break;
                 }
                 return true;
             }
         };
         public static final int MSG_TOAST_DELETE_RECORD_RESULT = 100;
+        public static final int MSG_GET_ONE_PHOTO = 101;
+        public static final int MSG_GET_PHOTO_LIST = 102;
         private Handler mHandler = new WeakRefHandler(mCallback);
         private AdapterView.OnItemClickListener deviceItemClickListener = new AdapterView.OnItemClickListener() {
             @Override
@@ -184,7 +237,7 @@ import deplink.com.smartwirelessrelay.homegenius.EllESDK.R;
             layout_title.setReturnClickListener(new TitleLayout.ReturnImageClickListener() {
                 @Override
                 public void onBackPressed() {
-                    VistorHistoryActivity.this.onBackPressed();
+                    VistorHistoryActivity.this.finish();
                 }
             });
             mDoorbeelManager = DoorbeelManager.getInstance();
@@ -194,57 +247,31 @@ import deplink.com.smartwirelessrelay.homegenius.EllESDK.R;
                 @Override
                 public void responseVisitorListResult(List<DoorBellItem> list) {
                     super.responseVisitorListResult(list);
-                    if (list != null) {
-                        Collections.sort(list, new Comparator<DoorBellItem>() {
-                            @Override
-                            public int compare(DoorBellItem o1, DoorBellItem o2) {
-                                //compareTo就是比较两个值，如果前者大于后者，返回1，等于返回0，小于返回-1
-                                if (o1.getTimestamp() == o2.getTimestamp()) {
-                                    return 0;
-                                }
-                                if (o1.getTimestamp() > o2.getTimestamp()) {
-                                    return -1;
-                                }
-                                if (o1.getTimestamp() < o2.getTimestamp()) {
-                                    return 1;
-                                }
-                                return 0;
-                            }
-                        });
-                        visitorList.clear();
-                        visitorList.addAll(list);
-                        visitorListImage.clear();
-                        for (int i = 0; i < visitorList.size(); i++) {
-                            mDoorbeelManager.getDoorbellVistorImage(list.get(i).getFile(), i);
-                        }
-                        if (visitorList.size() > 0) {
-                            layout_no_visitor.setVisibility(View.GONE);
-                            textview_visitor_loading.setVisibility(View.GONE);
-                        } else {
-                            layout_no_visitor.setVisibility(View.VISIBLE);
-                            textview_visitor_loading.setVisibility(View.GONE);
-                        }
-                    }
+                    Message msg=Message.obtain();
+                    msg.what=MSG_GET_PHOTO_LIST;
+                    msg.obj=list;
+                    mHandler.sendMessage(msg);
+
                 }
 
                 @Override
                 public void responseVisitorImage(Bitmap bitmap, int count) {
                     super.responseVisitorImage(bitmap, count);
-                    if (count <= visitorList.size() ) {
-                        if(visitorListImage.get(count)==null){
-                            visitorListImage.put(count,toRoundCorner(bitmap,30));
-                        }
-                    }
-                    mAdapter.notifyDataSetChanged();
+                    Message msg=Message.obtain();
+                    msg.what=MSG_GET_ONE_PHOTO;
+                    msg.obj=bitmap;
+                    msg.arg1=count;
+                    mHandler.sendMessage(msg);
+
                 }
 
                 @Override
                 public void responseDeleteRecordHistory(boolean success) {
                     super.responseDeleteRecordHistory(success);
-                    Message msg = Message.obtain();
+                  /*  Message msg = Message.obtain();
                     msg.what = MSG_TOAST_DELETE_RECORD_RESULT;
                     msg.obj = success;
-                    mHandler.sendMessage(msg);
+                    mHandler.sendMessage(msg);*/
                 }
             };
             mAdapter = new VisitorListAdapter(this, visitorList, visitorListImage);
@@ -278,6 +305,12 @@ import deplink.com.smartwirelessrelay.homegenius.EllESDK.R;
                 }
             };
         }
+       /* @Override
+        public void finish() {
+            super.finish();
+            //注释掉activity本身的过渡动画
+            overridePendingTransition(R.anim.in_right_offset, R.anim.out_left_offset);
+        }*/
         /**
          * 获取圆角位图的方法
          *
@@ -302,9 +335,10 @@ import deplink.com.smartwirelessrelay.homegenius.EllESDK.R;
             return output;
         }
         private void initViews() {
-            listview_vistor_list = (SwipeMenuListView) findViewById(R.id.listview_vistor_list);
-            layout_no_visitor = (RelativeLayout) findViewById(R.id.layout_no_visitor);
-            textview_visitor_loading = (TextView) findViewById(R.id.textview_visitor_loading);
-            layout_title = (TitleLayout) findViewById(R.id.layout_title);
+            listview_vistor_list = findViewById(R.id.listview_vistor_list);
+            layout_no_visitor = findViewById(R.id.layout_no_visitor);
+            textview_visitor_loading = findViewById(R.id.textview_visitor_loading);
+            layout_title = findViewById(R.id.layout_title);
+            scroll_wrap = findViewById(R.id.scroll_wrap);
         }
     }

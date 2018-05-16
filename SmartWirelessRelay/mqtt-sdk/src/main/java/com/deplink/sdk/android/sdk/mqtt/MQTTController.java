@@ -61,7 +61,11 @@ public class MQTTController implements MqttListener {
         mSDKCoordinator = coordinator;
         if (mContext != context) {
             if (null != mContext) {
-                mContext.unregisterReceiver(broadCast);
+                try {
+                    mContext.unregisterReceiver(broadCast);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
             broadCast = new NetBroadCast();
             IntentFilter filter = new IntentFilter();

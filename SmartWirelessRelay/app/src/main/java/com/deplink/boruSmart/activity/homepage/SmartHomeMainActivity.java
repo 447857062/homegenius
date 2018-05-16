@@ -97,6 +97,7 @@ import com.deplink.sdk.android.sdk.homegenius.Deviceprops;
 import com.deplink.sdk.android.sdk.manager.SDKManager;
 import com.google.gson.Gson;
 import com.tencent.android.tpush.XGIOperateCallback;
+import com.tencent.android.tpush.XGPushConfig;
 import com.tencent.android.tpush.XGPushManager;
 
 import org.litepal.crud.DataSupport;
@@ -444,32 +445,6 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
             @Override
             public void run() {
                 getWeatherInfo(city);
-               /* RestfulToolsWeather.getSingleton().getWeatherInfo(new Callback<JsonObject>() {
-                    @Override
-                    public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                        Log.i(TAG,"response.code()="+response.code());
-                        Log.i(TAG,"call="+call.toString());
-                        if (response.code() == 200) {
-                            JsonObject jsonObjectGson = response.body();
-                            Gson gson = new Gson();
-                            HeWeather6 weatherObject = gson.fromJson(jsonObjectGson.toString(), HeWeather6.class);
-                            Log.i(TAG, "获取天气数据=" + weatherObject.toString());
-                            if (!weatherObject.getInfoList().get(0).getStatus().equalsIgnoreCase("no more requests")) {
-                                if (!weatherObject.getInfoList().get(0).getNow().getTmp().equalsIgnoreCase(tempature)) {
-                                    Perfence.setPerfence(AppConstant.TEMPATURE_VALUE, weatherObject.getInfoList().get(0).getNow().getTmp());
-                                    Message message = new Message();
-                                    message.what = MSG_SHOW_WEATHER_TEXT;
-                                    message.obj = weatherObject.getInfoList().get(0).getNow().getTmp();
-                                    mHandler.sendMessage(message);
-                                }
-                            }
-                        }
-                    }
-                    @Override
-                    public void onFailure(Call<JsonObject> call, Throwable t) {
-                        Log.i(TAG, "获取天气数据onFailure=" + call.toString()+t.getMessage()+t.toString());
-                    }
-                }, city);*/
             }
         }).start();
     }
@@ -906,7 +881,6 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
         if (!TextUtils.isEmpty(pm25)) {
             textview_pm25.setText(pm25);
         }
-
     }
 
     private void setButtomBarIcon() {
@@ -1112,6 +1086,8 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
                         Log.i(TAG, "点击登录 onSuccess login uuid=" + uuid);
                         if (!uuid.equalsIgnoreCase("")) {
                             Log.i("TPush", "注册uuid：" + uuid);
+                            // 获取token
+                          //  XGPushConfig.getToken(SmartHomeMainActivity.this);
                             XGPushManager.registerPush(getApplicationContext(), uuid, new XGIOperateCallback() {
                                 @Override
                                 public void onSuccess(Object data, int flag) {
@@ -1122,7 +1098,7 @@ public class SmartHomeMainActivity extends Activity implements View.OnClickListe
                                     Log.i("TPush", "注册失败，错误码：" + errCode + ",错误信息：" + msg);
                                 }
                             });
-                            XGPushManager.enableService(SmartHomeMainActivity.this, true);
+
                         }
                         break;
                 }

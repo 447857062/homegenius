@@ -25,7 +25,12 @@ public class ConnectApWifiActivity extends Activity implements View.OnClickListe
         initEvents();
         initDatas();
     }
-
+    @Override
+    public void finish() {
+        super.finish();
+        //注释掉activity本身的过渡动画
+        overridePendingTransition(R.anim.in_left, R.anim.out_right);
+    }
     private void initDatas() {
         Perfence.setPerfence(AppConstant.ADDDOORBELLTIPSACTIVITY,true);
     }

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:titlelayout="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+    android:fitsSystemWindows="true"
     android:layout_height="match_parent"
     tools:context="com.deplink.boruSmart.activity.device.doorbell.add.DoorBellConfigWifiTypeSelect">
     <com.deplink.boruSmart.view.combinationwidget.TitleLayout
@@ -15,41 +16,53 @@
         titlelayout:title_text="配网设置选择"
         android:layout_height="@dimen/title_bar_height"
         />
-    <FrameLayout
-        android:id="@+id/frame_doorbell_lookslike"
+    <com.deplink.boruSmart.view.scrollview.MyScrollView
+        android:fitsSystemWindows="true"
         android:layout_below="@+id/layout_title"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="40dp"
-        android:layout_marginTop="20dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-        <ImageView
-            android:id="@+id/imageview_instrution"
-            android:layout_gravity="right|top"
-            android:src="@drawable/instructions_for_use"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <ImageView
-            android:layout_marginRight="31dp"
-            android:src="@drawable/doorbell_combination"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </FrameLayout>
-    <ImageView
-        android:layout_below="@+id/frame_doorbell_lookslike"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/button_doorbell_configwifi_card"
-        android:id="@+id/imageview_doorbell_configwifi"
-        android:layout_centerHorizontal="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-    <ImageView
-        android:layout_below="@+id/imageview_doorbell_configwifi"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/button_doorbell_add_configedwifi"
-        android:id="@+id/imageview_doorbell_add_configedwifi"
-        android:layout_centerHorizontal="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:scrollbars="none"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <FrameLayout
+                android:id="@+id/frame_doorbell_lookslike"
+
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="40dp"
+                android:layout_marginTop="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/imageview_instrution"
+                    android:layout_gravity="right|top"
+                    android:src="@drawable/instructions_for_use"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <ImageView
+                    android:layout_marginRight="31dp"
+                    android:src="@drawable/doorbell_combination"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </FrameLayout>
+            <ImageView
+                android:layout_below="@+id/frame_doorbell_lookslike"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/button_doorbell_configwifi_card"
+                android:id="@+id/imageview_doorbell_configwifi"
+                android:layout_centerHorizontal="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <ImageView
+                android:layout_below="@+id/imageview_doorbell_configwifi"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/button_doorbell_add_configedwifi"
+                android:id="@+id/imageview_doorbell_add_configedwifi"
+                android:layout_centerHorizontal="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
+    </com.deplink.boruSmart.view.scrollview.MyScrollView>
+
 
 </RelativeLayout>
